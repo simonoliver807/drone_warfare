@@ -1,20 +1,26 @@
 {
-  "name": "fs_canvas",
+  "name": "drone_warfare",
   "version": "1.0.0",
-  "description": "full screen game",
-  "main": "gameInit.js",
+  "description": "3d fps space game",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-contrib-requirejs": "^1.0.0",
-    "grunt-contrib-watch": "^1.0.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simonoliver807/drone_warfare.git"
   },
+  "author": "s oliver",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/simonoliver807/drone_warfare/issues"
+  },
+  "homepage": "https://github.com/simonoliver807/drone_warfare#readme",
   "dependencies": {
-    "chroma-js": "^1.2.1",
-    "grunt-contrib-requirejs": "^1.0.0"
+    "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "morgan": "^1.7.0",
+    "reload": "^1.1.0"
   }
 }
