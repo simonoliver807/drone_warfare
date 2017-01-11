@@ -1,0 +1,409 @@
+/**
+ * 1.0 - Normalize
+ *
+ * Normalizing styles have been helped along thanks to the fine work of
+ * Nicolas Gallagher and Jonathan Neal http://necolas.github.com/normalize.css/
+ */
+
+html {
+	font-family: sans-serif;
+	-webkit-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+	height: 100%;
+	width: 100%;
+}
+
+body {
+	margin: 0;
+	height: 100%;
+	width: 100%;
+	
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+main,
+menu,
+nav,
+section,
+summary {
+	display: block;
+}
+
+audio,
+canvas,
+progress,
+video {
+	display: inline-block;
+	vertical-align: baseline;
+}
+
+audio:not([controls]) {
+	display: none;
+	height: 0;
+}
+
+
+a {
+	background-color: transparent;
+}
+
+abbr[title] {
+	border-bottom: 1px dotted;
+}
+
+b,
+strong {
+	font-weight: 700;
+}
+
+small {
+	font-size: 80%;
+}
+
+sub,
+sup {
+	font-size: 75%;
+	line-height: 0;
+	position: relative;
+	vertical-align: baseline;
+}
+
+sup {
+	top: -0.5em;
+}
+
+sub {
+	bottom: -0.25em;
+}
+
+img {
+	border: 0;
+}
+
+svg:not(:root) {
+	overflow: hidden;
+}
+
+figure {
+	margin: 0;
+}
+
+hr {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
+
+code,
+kbd,
+pre,
+samp {
+	font-size: 1em;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+	color: inherit;
+	font: inherit;
+	margin: 0;
+}
+
+select {
+	text-transform: none;
+}
+
+button {
+	overflow: visible;
+}
+
+button,
+input,
+select,
+textarea {
+	max-width: 100%;
+}
+
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+	-webkit-appearance: button;
+	-moz-appearance: button;
+	cursor: pointer;
+}
+
+button[disabled],
+html input[disabled] {
+	cursor: default;
+	opacity: .5;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+	border: 0;
+	padding: 0;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	margin-right: 0.4375em;
+	padding: 0;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+	height: auto;
+}
+
+input[type="search"] {
+	-webkit-appearance: textfield;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+	-webkit-appearance: none;
+}
+
+fieldset {
+	border: 1px solid #d1d1d1;
+	margin: 0 0 1.75em;
+	min-width: inherit;
+	padding: 0.875em;
+}
+
+fieldset > :last-child {
+	margin-bottom: 0;
+}
+
+legend {
+	border: 0;
+	padding: 0;
+}
+
+textarea {
+	overflow: auto;
+	vertical-align: top;
+}
+
+optgroup {
+	font-weight: bold;
+}
+
+
+#perf {
+
+	color: white;
+    font-size: 10px;
+}
+
+
+
+
+#accel {
+	background-color:#2646ea;
+	height:10%;
+	left: 0;
+	margin: 5% 0 0 5%;
+	position: relative;
+	top: 0;
+	width: 0;
+}
+#accelCont {
+	height:10%;
+	position: absolute;
+	width:10%;
+}
+#container {
+	cursor: none;
+	display: block;
+	height:100%;
+	width:100%; 
+	position: absolute;
+}
+.divGreen div {
+	background-color: #66ff33;
+}
+.divRed div {
+	background-color: #ff0000;
+}
+#errScreen {
+	background-color: #000000;
+	display: none;
+	height: 100%;
+	position: absolute;
+	width: 100%;
+	z-index: 1;
+}
+#errScreen #errdiv {
+	color: #ffffff;
+	display: block;
+	left: 50%;
+	margin: 0;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+#gmap {
+    
+    background-color: #000000;
+    height: 50%;
+    margin: 5% 0 0 5%;
+    position: relative;
+    width: 50%;
+
+}
+.mapcircle {
+	border-radius: 100%;
+	height: 20%;
+	left: 50%;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 20%;
+}
+#mapline {
+    height: 2%;
+    position: relative;
+    top: 50%;
+    width: 100%;
+}
+.mapms {
+	background-color: #ffffff;
+	border-radius: 100%;
+	height: 10%;
+	left: 50%;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 10%;
+
+}
+/*accellerator controls*/
+#tapaccel {
+	bottom: 0;
+	right: 0;
+	height:20%;
+	margin:3%;
+	position: absolute;
+	width:5%;
+}
+#addforce {
+	display: none;
+	height: 35%;
+	width: 100%;
+}
+#addforcebut {
+	background-color: #FFFF00;
+    border-radius: 100%;
+    height: 50%;
+    width: 50%;
+    left: 50%;
+    top: 50%;
+    position: relative;
+    transform: translate(-50%, -50%);
+}
+#loadingScreen {
+	background-color: #000000;
+	display: block;
+	height: 100%;
+	position: absolute;
+	width: 100%;
+	z-index: 1;
+}
+#loadingScreen #lscont {
+	color: #ffffff;
+	left: 50%;
+	margin: 0;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.ls {
+	display: inline-block;
+}
+#minusforce {
+	border-radius: 18px;
+	display: none;
+	height: 35%;
+	width: 100%;
+}
+#minusforcebut {
+	background-color: #00FF00;
+    border-radius: 100%;
+    height: 50%;
+    width: 50%;
+    left: 50%;
+    top: 50%;
+    position: relative;
+    transform: translate(-50%, -50%);
+}
+#spacertapaccel {
+	height: 30%;
+	width: 100%;
+}
+#mobcon {
+	bottom: 5%;
+    background-color: #ffffff;
+    display: none;
+    height: 13%;
+    left: 5%;
+    position: absolute;
+    width: 13%;
+    border-radius: 18px;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
