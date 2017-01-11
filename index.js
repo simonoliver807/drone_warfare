@@ -11,6 +11,10 @@ var app = express()
 // var publicDir = path.join(__dirname, 'game')
  
 app.set('port', process.env.PORT || 9000)
+app.set('view engine', 'pug')
+
+
+
 app.use(logger('dev'))
 app.use(bodyParser.json()) //parses json, multi-part (file), url-encoded 
 
