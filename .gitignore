@@ -2,7 +2,3 @@ game/target/*
 game/node_modules/*
 ssa.sh
 
-
-
-# serve ignores
-node_modules/*
