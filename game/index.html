@@ -9,8 +9,9 @@
 	<link rel="stylesheet" type="text/css" href="http://localhost:9000//style/wp.css">
 	<link rel="stylesheet" type="text/css" href="http://localhost:9000/style/frontend.css">
 	<link rel="stylesheet" type="text/css" href="http://localhost:9000/style/frontend-grid.css">
+	<link rel="stylesheet" type="text/css" href="style/style101216.css">
 
-	<link rel="icon" type="image/png" href="images/favicon.ico">
+	<link rel="icon" type="image/png" href="http://localhost:9000/images/favicon.ico">
 	<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
 
 </head>
@@ -138,11 +139,54 @@
 
 			</div><!-- .site-inner -->
 		</div><!-- .site -->
-<!-- 
-<script type='text/Javascript' src='js/defaultpage.js'></script>
- --><script type='text/Javascript' src='js_minified/defaultpage.js'></script>
-<!--  	<script src="/reload/reload.js"></script> 
- <script src="//localhost:35729/livereload.js"></script> -->
+
+
+
+
+
+	<div id="game-content">
+		
+		<input type="hidden" id="insideship" value="inside">
+
+		<div id="loadingScreen">
+			<div id = "lscont">
+				<div class="ls" id="numImg" >0</div>
+				<div class="ls"> of 8 </div>
+				<div class="ls" id='perCom'></div>
+			</div>
+		</div>
+		<div id='errScreen'>
+		</div>
+
+
+		<div id="container" class="container">
+			<div id="accelCont">
+				<div id="accel"></div>
+				<div id="gmap" class='divRed'>
+					<div id="mapcircle1" class="mapcircle"></div>
+					<div id="mapms1" class="mapms"></div>
+					<div id="mapms2" class="mapms"></div>
+					<div id="mapline"></div>
+				</div>
+			<!-- 	<div id="perf"></div> -->
+			</div>
+			<div id="tapaccel">
+				<div id="addforce"><div id="addforcebut"></div></div>
+				<div id="spacertapaccel"></div>
+				<div id="minusforce"><div id="minusforcebut"></div></div>
+			</div>
+			<div id='mobcon'></div>
+		</div>
+
+
+	</div>
+
+
+
+
+<script type='text/Javascript' src='js_minified/defaultpage.js'></script>
+<!--  	<script src="/reload/reload.js"></script>  -->
+ <script src="//localhost:35729/livereload.js"></script>
 
 
 </body>
