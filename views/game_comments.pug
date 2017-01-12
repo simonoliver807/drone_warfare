@@ -1,0 +1,42 @@
+main#main.site-main(role='main')
+  article#post-187.post-187.page.type-page.status-publish.hentry
+    header.entry-header
+      h1.entry-title comments
+    // .entry-header
+    .entry-content
+      .fw-page-builder-content
+        section.fw-main-row
+          .fw-container
+            .fw-row
+              .fw-col-xs-12
+                .form-wrapper.contact-form
+                  form.fw_form_fw_form(data-fw-form-id='fw_form', method='post', action='http://localhost:9000', data-fw-ext-forms-type='contact-forms')
+                    input(type='hidden', name='fwf', value='fw_form')
+                    input#_nonce_271fca0b2bb618b7f84815c4d944dab4(type='hidden', name='_nonce_271fca0b2bb618b7f84815c4d944dab4', value='6289f0d319')
+                    input(type='hidden', name='_wp_http_referer', value='/website/comments/')
+                    input(type='hidden', name='fw_ext_forms_form_type', value='contact-forms')
+                    input(type='hidden', name='fw_ext_forms_form_id', value='b14a954072089ba00f26cfba2268fe50')
+                    .wrap-forms
+                      .fw-row
+                        .fw-col-xs-12.form-builder-item.form-builder-item
+                          .header.title
+                            h2 Please Tell me what you think 
+                            p Drone Warfare
+                            p=pcon_gcom
+                      .fw-row
+                        .fw-col-xs-12.form-builder-item
+                          .field-textarea
+                            label(for='id-1')
+                              | Paragraph Text			
+                              sup *
+                            textarea#id-1(name='textarea_9166f4d', placeholder='', required='required')
+                      .fw-row
+                    div
+                      input(type='submit', value='Send')
+                      each comment in comments
+                        include comment.pug
+      
+
+    // .entry-content
+  // #post-##
+// .site-main

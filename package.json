@@ -19,10 +19,16 @@
   "homepage": "https://github.com/simonoliver807/drone_warfare#readme",
   "dependencies": {
     "express": "^4.14.0",
+    "mongodb": "^2.2.20",
     "pug": "^2.0.0-beta6"
   },
   "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-concurrent": "^2.3.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-nodemon": "^0.4.2",
     "morgan": "^1.7.0",
+    "node-watch": "^0.4.1",
     "reload": "^1.1.0"
   }
 }

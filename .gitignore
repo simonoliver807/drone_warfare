@@ -1,4 +1,7 @@
 game/target/*
 game/node_modules/*
 ssa.sh
+.rebooted
+gruntfile.js
+
 
