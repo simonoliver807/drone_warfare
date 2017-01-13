@@ -5,13 +5,10 @@ html
   head
     meta(charset='UTF-8')
     title= title
-    //
-      <link rel="stylesheet" type="text/css" href="http://siolsite.com/style/wp.css">
-      <link rel="stylesheet" type="text/css" href="http://siolsite.com/style/frontend.css">
-      <link rel="stylesheet" type="text/css" href="http://siolsite.com/style/frontend-grid.css">
-    link(rel='stylesheet', type='text/css', href='http://localhost:9000//style/wp.css')
-    link(rel='stylesheet', type='text/css', href='http://localhost:9000/style/frontend.css')
-    link(rel='stylesheet', type='text/css', href='http://localhost:9000/style/frontend-grid.css')
+    link(rel='stylesheet', type='text/css', href='style/style101216.css')
+    link(rel='stylesheet', type='text/css', href='style/wp.css')
+    link(rel='stylesheet', type='text/css', href='style/frontend.css')
+    link(rel='stylesheet', type='text/css', href='style/frontend-grid.css')
     link(rel='stylesheet', type='text/css', href='style/style101216.css')
     link(rel='icon', type='image/png', href='http://localhost:9000/images/favicon.ico')
     meta(name='viewport', content='user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1')
@@ -23,16 +20,12 @@ html
           .site-header-main
             .site-branding
               p.site-title
-                a(href='http://siolsite.com', rel='home') siolsite
+                a(href='http://siolsite.tk', rel='home') siolsite
               p.site-description Javascript experiments
             // .site-branding
             .header-image
-              //
-                <a rel="home">
-                <img src="http://siolsite.com/images/websiteImg/cropped-banner-web_1280.jpg" srcset="http://siolsite.com/images/websiteImg/cropped-banner-web_1280-300x70.jpg 300w, http://siolsite.com/images/websiteImg/cropped-banner-web_1280-768x179.jpg 768w, http://siolsite.com/images/websiteImg/cropped-banner-web_1280-1024x238.jpg 1024w, http://siolsite.com/images/websiteImg/cropped-banner-web_1280.jpg 1200w" sizes="(max-width: 709px) 85vw, (max-width: 909px) 81vw, (max-width: 1362px) 88vw, 1200px" width="1200" height="279" alt="siolsite">
-                </a>
               a(rel='home')
-                img(src='http://localhost:9000/images/websiteImg/cropped-banner-web_1280.jpg', srcset='http://localhost:9000/images/websiteImg/cropped-banner-web_1280-300x70.jpg 300w, http://localhost:9000/images/websiteImg/cropped-banner-web_1280-768x179.jpg 768w, http://localhost:9000/images/websiteImg/cropped-banner-web_1280-1024x238.jpg 1024w, http://localhost:9000/images/websiteImg/cropped-banner-web_1280.jpg 1200w', sizes='(max-width: 709px) 85vw, (max-width: 909px) 81vw, (max-width: 1362px) 88vw, 1200px', width='1200', height='279', alt='siolsite')
+                  img(src='images/websiteImg/cropped-banner-web_1280.jpg', srcset='images/websiteImg/cropped-banner-web_1280-300x70.jpg 300w, images/websiteImg/cropped-banner-web_1280-768x179.jpg 768w, images/websiteImg/cropped-banner-web_1280-1024x238.jpg 1024w, images/websiteImg/cropped-banner-web_1280.jpg 1200w', sizes='(max-width: 709px) 85vw, (max-width: 909px) 81vw, (max-width: 1362px) 88vw, 1200px', width='1200', height='279', alt='siolsite')
             // .header-image
             div
         // .site-header
@@ -79,12 +72,12 @@ html
                         .fw-row
                           .fw-col-xs-12
                             a#startGame
-                              img(src='http://localhost:9000/images/websiteImg/Screen-Shot-2016-11-25-at-16.35.53.png', alt='http://localhost:9000/images/websiteImg/Screen-Shot-2016-11-25-at-16.35.53.png')
-                              // <img  src="http://siolsite.com/images/websiteImg/Screen-Shot-2016-11-25-at-16.35.53.png" alt="http://siolsite.com/images/websiteImg/Screen-Shot-2016-11-25-at-16.35.53.png" />
+                              //img(src='images/websiteImg/Screen-Shot-2016-11-25-at-16.35.53.png', alt='images/websiteImg/Screen-Shot-2016-11-25-at-16.35.53.png')
+                              img( src="images/websiteImg/Screen-Shot-2016-11-25-at-16.35.53.png" alt="images/websiteImg/Screen-Shot-2016-11-25-at-16.35.53.png")
                 // .entry-content
                 footer.entry-footer
                 //
-                  <footer class="entry-footer"><span class="edit-link"><a class="post-edit-link" href="http://siolsite.com/website/wordpress/wp-admin/post.php?post=171&#038;action=edit">Edit<span class="screen-reader-text"> "Drone Warfare"</span></a></span></footer>
+                  <footer class="entry-footer"><span class="edit-link"><a class="post-edit-link" href="http://siolsite.tk/website/wordpress/wp-admin/post.php?post=171&#038;action=edit">Edit<span class="screen-reader-text"> "Drone Warfare"</span></a></span></footer>
               // #post-##
               include game_comments.pug
             // .site-main
@@ -97,5 +90,5 @@ html
     include game_content.pug
 
     script(type='text/Javascript', src='js_minified/defaultpage.js')
-    script(src="/reload/reload.js")
-    //script(src='//localhost:35729/livereload.js')
+    // script(src="/reload/reload.js")
+    script(src='//localhost:35729/livereload.js')
