@@ -7,6 +7,8 @@ var bodyParser = require('body-parser')
 var logger = require('morgan')
 var fs = require('fs')
 var mc = require('mongodb').MongoClient;
+var uuid = require('node-uuid')
+
 
 var watch = require('node-watch')
  
@@ -18,8 +20,12 @@ app.set('port', process.env.PORT || 9000)
 app.set('view engine', 'pug')
 
 
-
-app.use(logger('dev'))
+logger.token('id', function getId (req) {
+	return req.id
+})
+app.use(assignId)
+app.use(logger(':id :method :url :response-time'))
+//app.use(logger('dev'))
 app.use(bodyParser.urlencoded({
     extended: true
 }))
@@ -29,17 +35,18 @@ app.use(express.static('game'))
 
 
 // // Connect to the db
-mc.connect("mongodb://localhost:27017/gamedata", function(err, db) {
+mc.connect("mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata", function(err, db) {
     if(!err) {
           db.collection('comments').find().toArray(function (err, result) {
     if (err) throw err
 	    app.locals.comments = result;
+		console.log(result); 
 
 	  })
     }
 });
 
-app.locals.comments = [{name:'a', comment:'comment 1'},{name:'b', comment:'comment 2'}]
+//app.locals.comments = [{name:'a', comment:'comment 1'},{name:'b', comment:'comment 2'}]
 
 app.get('/', function (req, res) {
   res.render('index', { title: 'Drone Warfare'})
@@ -56,6 +63,12 @@ app.post('/', function (req, res) {
 	res.render('index', { title: 'Drone Warfare' })
 
 })
+
+
+function assignId (req, res, next) {
+  req.id = uuid.v4()
+  next()
+}
 
 // app.get('/', function( req, res ) {
 
