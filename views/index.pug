@@ -10,8 +10,11 @@ html
     link(rel='stylesheet', type='text/css', href='style/frontend.css')
     link(rel='stylesheet', type='text/css', href='style/frontend-grid.css')
     link(rel='stylesheet', type='text/css', href='style/style101216.css')
-    link(rel='icon', type='image/png', href='http://localhost:9000/images/favicon.ico')
+    link(rel='icon', type='image/png', href='images/favicon.ico')
     meta(name='viewport', content='user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1')
+    meta(name="description" content="3d space first person shooter")
+    meta(name="robots" content='3d, space game, first person shooter, threejs, three js, mobiel game')
+    meta(name="googlebot" content='3d, space game, first person shooter, threejs, three js, mobile game')
   body.page.page-id-171.page-template-default.no-customize-support.no-sidebar
     #page.site
       .site-inner
@@ -61,7 +64,7 @@ html
                                   .fw-row
                                     .fw-col-xs-12.fw-col-sm-6.form-builder-item
                                       .field-radio.input-styled
-                                        label Select to play inside space fighter press f to go fullscreen
+                                        label Select to play inside space fighter
                                         .custom-radio.field-columns-1
                                           .options
                                             input#rand-1(type='radio', name='radio_3698130', value='clicked inside')
@@ -69,11 +72,21 @@ html
                                           .options
                                             input#rand-2(type='radio', name='radio_3698130', value='clicked outside')
                                             label(for='rand-2') clicked outside
-                        .fw-row
-                          .fw-col-xs-12
-                            a#startGame
-                              //img(src='images/websiteImg/Screen-Shot-2016-11-25-at-16.35.53.png', alt='images/websiteImg/Screen-Shot-2016-11-25-at-16.35.53.png')
-                              img( src="images/websiteImg/Screen-Shot-2016-11-25-at-16.35.53.png" alt="images/websiteImg/Screen-Shot-2016-11-25-at-16.35.53.png")
+                                  .fw-row
+                                    .fw-col-xs-12
+                                      a#startGame(target='_self')
+                                        img(src='images/websiteImg/controls.png', alt='images/websiteImg/controls.png')
+                                  .fw-row
+                                    .fw-col-xs-12
+                                      p 
+                                      p Mac/Pc controls :-
+                                      ul
+                                        li Up Arrow forward
+                                        li Down Arrow backwards
+                                        li Space fire laser
+                                        li Mouse control sight
+                                        li Press f to go full screen
+
                 // .entry-content
                 footer.entry-footer
                 //
@@ -81,6 +94,7 @@ html
               // #post-##
               include game_comments.pug
             // .site-main
+            include comment.pug
         // .content-area
       // .site-content
       footer#colophon.site-footer(role='contentinfo')
@@ -90,5 +104,5 @@ html
     include game_content.pug
 
     script(type='text/Javascript', src='js_minified/defaultpage.js')
-    // script(src="/reload/reload.js")
-    script(src='//localhost:35729/livereload.js')
+    script(src="/reload/reload.js")
+    //script(src='//localhost:35729/livereload.js')

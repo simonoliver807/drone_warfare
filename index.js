@@ -8,69 +8,94 @@ var logger = require('morgan')
 var fs = require('fs')
 var mc = require('mongodb').MongoClient;
 var uuid = require('node-uuid')
+var dateformat = require('dateformat')
 
 
 var watch = require('node-watch')
  
 var app = express()
+
+var dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
+
+// mongo ds145848.mlab.com:45848/gamedata -u nabooleo -p ax31zcm
+
+
  
 // var publicDir = path.join(__dirname, 'game')
  
-app.set('port', process.env.PORT || 9000)
-app.set('view engine', 'pug')
+app.set('port', process.env.PORT || 9000);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'pug');
+
+app.use(logger('dev'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json()); //parses json, multi-part (file), url-encoded 
+app.use(express.static( __dirname + '/game'));
 
 
-logger.token('id', function getId (req) {
-	return req.id
-})
-app.use(assignId)
-app.use(logger(':id :method :url :response-time'))
-//app.use(logger('dev'))
-app.use(bodyParser.urlencoded({
-    extended: true
-}))
-app.use(bodyParser.json()) //parses json, multi-part (file), url-encoded 
-app.use(express.static('game'))
-
-
-
-// // Connect to the db
-mc.connect("mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata", function(err, db) {
-    if(!err) {
-          db.collection('comments').find().toArray(function (err, result) {
-    if (err) throw err
-	    app.locals.comments = result;
-		console.log(result); 
-
-	  })
-    }
-});
-
-//app.locals.comments = [{name:'a', comment:'comment 1'},{name:'b', comment:'comment 2'}]
+app.locals.comments = 0;
 
 app.get('/', function (req, res) {
-  res.render('index', { title: 'Drone Warfare'})
+	console.log('res.locals'); 
+	console.log( app.locals); 
+	if( !app.locals.comments) {
+		// // Connect to the db
+		mc.connect(dburl, function(err, db) {
+		    if(!err) {
+		          db.collection('comments').find().toArray(function (err, result) {
+		    		if (err) throw err
+		    		app.locals.comments = result;
+		    		res.render( 'index', { title: 'Drone Warfare' })
+			  	  })
+				  db.close();
+		    }
+		});
+	}
+	else {
+
+		res.render('index', { title: 'Drone Warfare' })
+
+	}
 })
+
+
+
 app.post('/', function (req, res) {
 
-	console.log(req.body.textarea_9166f4d); 
+	console.log(req.body); 
+	console.log(req.body.name)
 	console.log('deal with post')
 
-	if ( req.body.textarea_9166f4d != '') {
-		app.locals.pcon_gcom = 'thanks for you comments'
-	}
-
-	res.render('index', { title: 'Drone Warfare' })
-
+	var now = new Date()
+	mc.connect(dburl, function(err, db) {
+		if(!err) {
+			db.collection('comments').insertOne( {
+				'name' 		: req.body.name,
+				'comment' 	: req.body.textarea_9166f4d,
+				'date'	    : dateformat(now, "mmmm dS, yyyy")
+			});	
+			if ( req.body.textarea_9166f4d != '') {
+				app.locals.pcon_gcom = 'thanks for your comment'
+			}
+			db.collection('comments').find().toArray(function (err, result) {
+		    	if (err) throw err
+		    	app.locals.comments = result;
+		    	res.render( 'index', { title: 'Drone Warfare' })
+			 });
+		}
+		db.close();
+	})
 })
+app.on('error', function(err) {
+ console.log('err'); 
+  // This prints the error message and stack trace to `stderr`.
+  console.error(err.stack);
+});
+// app.use(function (err, req, res, next) {
+//   console.error(err.stack)
+//   res.status(500).send('Something broke!')
+// })
 
-
-function assignId (req, res, next) {
-  req.id = uuid.v4()
-  next()
-}
-
-// app.get('/', function( req, res ) {
 
 var server = http.createServer(app);
 
@@ -82,7 +107,7 @@ var server = http.createServer(app);
 // fs.writeFile('.rebooted', 'rebooted')
  
 // Reload code here 
-//reload(server, app).reload();
+reload(server, app).reload();
  
 server.listen(app.get('port'), function(){
   console.log("Web server listening on port " + app.get('port') + " Date: " + new Date())

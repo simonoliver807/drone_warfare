@@ -1,7 +1,7 @@
 main#main.site-main(role='main')
   article#post-187.post-187.page.type-page.status-publish.hentry
     header.entry-header
-      h1.entry-title comments
+      h1.entry-title Comments
     // .entry-header
     .entry-content
       .fw-page-builder-content
@@ -10,7 +10,7 @@ main#main.site-main(role='main')
             .fw-row
               .fw-col-xs-12
                 .form-wrapper.contact-form
-                  form.fw_form_fw_form(data-fw-form-id='fw_form', method='post', action='http://localhost:9000', data-fw-ext-forms-type='contact-forms')
+                  form.fw_form_fw_form(data-fw-form-id='fw_form', method='post', action='/', data-fw-ext-forms-type='contact-forms')
                     input(type='hidden', name='fwf', value='fw_form')
                     input#_nonce_271fca0b2bb618b7f84815c4d944dab4(type='hidden', name='_nonce_271fca0b2bb618b7f84815c4d944dab4', value='6289f0d319')
                     input(type='hidden', name='_wp_http_referer', value='/website/comments/')
@@ -20,8 +20,8 @@ main#main.site-main(role='main')
                       .fw-row
                         .fw-col-xs-12.form-builder-item.form-builder-item
                           .header.title
-                            h2 Please Tell me what you think 
-                            p Drone Warfare
+                            h2 Please Tell me what you think
+                            h2 How does it run on your device?
                             p=pcon_gcom
                       .fw-row
                         .fw-col-xs-12.form-builder-item
@@ -31,11 +31,15 @@ main#main.site-main(role='main')
                               sup *
                             textarea#id-1(name='textarea_9166f4d', placeholder='', required='required')
                       .fw-row
-                    div
-                      input(type='submit', value='Send')
-                      each comment in comments
-                        include comment.pug
-      
+                        .fw-col-xs-12.form-builder-item
+                           .field-textarea
+                            label(for='id-1')
+                              | Enter your name here    
+                              sup *
+                            input(type='text', name="name" required='required')
+                    .fw-row
+                      .fw-col-xs-12.form-builder-item.form-builder-item      
+                        input(type='submit', value='Send')
 
     // .entry-content
   // #post-##
