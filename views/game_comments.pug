@@ -12,16 +12,15 @@ main#main.site-main(role='main')
                 .form-wrapper.contact-form
                   form.fw_form_fw_form(data-fw-form-id='fw_form', method='post', action='/', data-fw-ext-forms-type='contact-forms')
                     input(type='hidden', name='fwf', value='fw_form')
-                    input#_nonce_271fca0b2bb618b7f84815c4d944dab4(type='hidden', name='_nonce_271fca0b2bb618b7f84815c4d944dab4', value='6289f0d319')
-                    input(type='hidden', name='_wp_http_referer', value='/website/comments/')
-                    input(type='hidden', name='fw_ext_forms_form_type', value='contact-forms')
-                    input(type='hidden', name='fw_ext_forms_form_id', value='b14a954072089ba00f26cfba2268fe50')
+                    //- input#_nonce_271fca0b2bb618b7f84815c4d944dab4(type='hidden', name='_nonce_271fca0b2bb618b7f84815c4d944dab4', value='6289f0d319')
+                    //- input(type='hidden', name='_wp_http_referer', value='/website/comments/')
+                    //- input(type='hidden', name='fw_ext_forms_form_type', value='contact-forms')
+                    //- input(type='hidden', name='fw_ext_forms_form_id', value='b14a954072089ba00f26cfba2268fe50')
                     .wrap-forms
                       .fw-row
                         .fw-col-xs-12.form-builder-item.form-builder-item
                           .header.title
                             h2 Please Tell me what you think
-                            h2 How does it run on your device?
                             p=pcon_gcom
                       .fw-row
                         .fw-col-xs-12.form-builder-item
@@ -29,17 +28,17 @@ main#main.site-main(role='main')
                             label(for='id-1')
                               | Paragraph Text			
                               sup *
-                            textarea#id-1(name='textarea_9166f4d', placeholder='', required='required')
+                            textarea#textarea_1(name='textarea_1', placeholder='')
                       .fw-row
                         .fw-col-xs-12.form-builder-item
                            .field-textarea
                             label(for='id-1')
                               | Enter your name here    
                               sup *
-                            input(type='text', name="name" required='required')
+                            input#commentname( type='text', name="commentname" )
                     .fw-row
                       .fw-col-xs-12.form-builder-item.form-builder-item      
-                        input(type='submit', value='Send')
+                        input#commentsubmit(type='submit', value='Send')
 
     // .entry-content
   // #post-##

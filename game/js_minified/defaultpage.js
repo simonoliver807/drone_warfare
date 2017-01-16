@@ -1,19 +1,50 @@
-var loadgame = document.getElementById('loadGame').addEventListener( 'click', function(data) {
+var url = 'http://localhost:9000/';
 
-	// var form = document.getElementById('form1')
-	// form.submit();
+var loadgame = document.getElementById('loadGame').addEventListener( 'click', function() { runGame(); });
+var startgame = document.getElementById('startGame').addEventListener( 'click', function() { runGame(); });
+var commentsForm = document.getElementById('commentsubmit').addEventListener( 'click', function() { 
 
-	runGame();
-
-
-});
-
-var startgame = document.getElementById('startGame').addEventListener( 'click', function(data) {
-
-	runGame();
+	document.getElementById('commentsubmit').disabled = true; 
+	var name = document.getElementById('commentname').value;
+	var comment = document.getElementById('textarea_1').value;
 
 
-});
+	var xhttp = new XMLHttpRequest();
+	 xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	      console.log('ready to send'); 
+	    }
+	}
+	xhttp.open("POST", url, true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send( 'name='+name+'&comment='+comment );
+	var commentitem = document.getElementById('comnum1').cloneNode(true);
+	commentitem.id = 'new_item';
+	commentitem.getElementsByClassName('fn')[0].innerHTML = name;
+	var monthNames = [
+	  "January", "February", "March",
+	  "April", "May", "June", "July",
+	  "August", "September", "October",
+	  "November", "December"
+	];
+	var date = new Date();
+	//var day = date.getDate();
+	var day = 31;
+	var monthIndex = date.getMonth();
+	var year = date.getFullYear();
+	var fulldate =  monthNames[monthIndex];
+	if (day == 1){ fulldate += ' 1st, '}
+	else if (day == 2){ fulldate += ' 2nd, '}
+	else if (day == 3){ fulldate += ' 3rd, '}
+	else if (day == 31){ fulldate += ' 31st, '}
+	else { fulldate += ' ' + day+'th, '}
+	fulldate += '' + year;
+
+	commentitem.getElementsByTagName('time')[0].innerHTML = fulldate;
+	commentitem.getElementsByTagName('p')[0].innerHTML = comment;
+	document.getElementsByClassName('comment-list')[0].appendChild(commentitem);
+
+ });
 
 
 function runGame() {

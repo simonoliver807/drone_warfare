@@ -10,6 +10,10 @@ var mc = require('mongodb').MongoClient;
 var uuid = require('node-uuid')
 var dateformat = require('dateformat')
 
+var event = require('events');
+var eventEmitter = new event.EventEmitter;
+
+
 
 var watch = require('node-watch')
  
@@ -62,28 +66,26 @@ app.get('/', function (req, res) {
 
 app.post('/', function (req, res) {
 
-	console.log(req.body); 
-	console.log(req.body.name)
 	console.log('deal with post')
 
-	var now = new Date()
+	var now = new Date();
+	app.locals.postresult = 0;
 	mc.connect(dburl, function(err, db) {
 		if(!err) {
-			db.collection('comments').insertOne( {
-				'name' 		: req.body.name,
-				'comment' 	: req.body.textarea_9166f4d,
-				'date'	    : dateformat(now, "mmmm dS, yyyy")
-			});	
-			if ( req.body.textarea_9166f4d != '') {
-				app.locals.pcon_gcom = 'thanks for your comment'
-			}
-			db.collection('comments').find().toArray(function (err, result) {
+			db.collection('comments').find( { name: req.body.name, comment: req.body.comment } ).toArray(function (err, result) {
 		    	if (err) throw err
-		    	app.locals.comments = result;
-		    	res.render( 'index', { title: 'Drone Warfare' })
-			 });
+
+		    	console.log(' result lenght is ' + result.length);
+		    	if( result.length == 0 ){
+			    	db.collection('comments').insertOne( {
+						'name' 		: req.body.name,
+						'comment' 	: req.body.comment,
+						'date'	    : dateformat(now, "mmmm dS, yyyy")
+					});	
+					db.close();
+		    	}
+			});
 		}
-		db.close();
 	})
 })
 app.on('error', function(err) {
@@ -112,5 +114,4 @@ reload(server, app).reload();
 server.listen(app.get('port'), function(){
   console.log("Web server listening on port " + app.get('port') + " Date: " + new Date())
 });
-
 
