@@ -1,4 +1,5 @@
-var url = 'http://localhost:9000/';
+///var url = 'http://localhost:9000/';
+var url = 'http://grisly-scarecrow-29073.herokuapp.com'
 
 var loadgame = document.getElementById('loadGame').addEventListener( 'click', function() { runGame(); });
 var startgame = document.getElementById('startGame').addEventListener( 'click', function() { runGame(); });
