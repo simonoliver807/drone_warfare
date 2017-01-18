@@ -15,9 +15,11 @@ var eventEmitter = new event.EventEmitter;
 
 
 
-var watch = require('node-watch')
+var watch = require('node-watch');
  
-var app = express()
+var app = express();
+var server = http.createServer(app);
+var io = require('socket.io')(server);
 
 var dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
 
@@ -40,8 +42,8 @@ app.use(express.static( __dirname + '/game'));
 app.locals.comments = 0;
 
 app.get('/', function (req, res) {
-	console.log('res.locals'); 
-	console.log( app.locals); 
+	//console.log('res.locals'); 
+	//console.log( app.locals); 
 	if( !app.locals.comments) {
 		// // Connect to the db
 		mc.connect(dburl, function(err, db) {
@@ -65,9 +67,7 @@ app.get('/', function (req, res) {
 
 
 app.post('/', function (req, res) {
-
-	console.log('deal with post')
-
+	//console.log('deal with post')
 	var now = new Date();
 	app.locals.postresult = 0;
 	mc.connect(dburl, function(err, db) {
@@ -99,7 +99,26 @@ app.on('error', function(err) {
 // })
 
 
-var server = http.createServer(app);
+io.on('connection', function (socket) {
+
+	console.log('connection'); 
+	var gameUUID = uuid.v1();
+
+
+    socket.emit('gamestart', { id: gameUUID });
+
+
+    socket.on('getgd', function(gameUUID){
+    	console.log('game uuid is '); 
+        console.log(gameUUID);
+        var gdarr = [];
+    });
+
+
+    socket.on('setgd', function (gd) {
+
+    });
+});
 
 // reloadServer = reload(server, app);
 // watch('.rebooted', function (f, curr, prev) {
