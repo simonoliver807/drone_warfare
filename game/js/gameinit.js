@@ -14,7 +14,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
    // var exmesh = ['sight','hemlight','dirlight','containerMesh','points']
     var pause = 0;
     var v3d = new V3D.View();
-    var socket = new SOCKET_IO('https://grisly-scarecrow-29073.herokuapp.com');
+    var socket = new SOCKET_IO.connect('https://grisly-scarecrow-29073.herokuapp.com');
     //var socket = SOCKET_IO.connect('http://localhost:9000');
     
     //////////////////////////
