@@ -1,4 +1,4 @@
-///var url = 'http://localhost:9000/';
+//var url = 'http://localhost:9000/';
 var url = 'http://grisly-scarecrow-29073.herokuapp.com'
 
 var loadgame = document.getElementById('loadGame').addEventListener( 'click', function() { runGame(); });
@@ -47,7 +47,6 @@ var commentsForm = document.getElementById('commentsubmit').addEventListener( 'c
 
  });
 
-
 function runGame() {
 
 	var radios = document.getElementsByName('radio_3698130');
@@ -64,13 +63,28 @@ function runGame() {
 	page.style.display = 'none';
 	var game = document.getElementById('game-content');	
 	game.style.display = 'block';
+
+
+	//******** minified *************/////////
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js_minified/require.js";
+	// s.setAttribute('data-main', 'js_minified/config.js')
+
+
+	//******** unminified *************/////////
 	var s = document.createElement("script");
 	s.type = "text/javascript";
-	s.src = "js_minified/require.js";
-	s.setAttribute('data-main', 'js_minified/config.js')
+	s.src = "js/require.js";
+	s.setAttribute('data-main', 'js/config.js')
+
+
+
 	var head = document.getElementsByTagName("head")[0];
 	head.appendChild(s);
 
 
 
 }
+
+runGame();
