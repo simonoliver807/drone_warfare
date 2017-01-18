@@ -66,17 +66,17 @@ function runGame() {
 
 
 	//******** minified *************/////////
-	// var s = document.createElement("script");
-	// s.type = "text/javascript";
-	// s.src = "js_minified/require.js";
-	// s.setAttribute('data-main', 'js_minified/config.js')
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js_minified/require.js";
+	s.setAttribute('data-main', 'js_minified/config.js')
 
 
 	//******** unminified *************/////////
-	var s = document.createElement("script");
-	s.type = "text/javascript";
-	s.src = "js/require.js";
-	s.setAttribute('data-main', 'js/config.js')
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js/require.js";
+	// s.setAttribute('data-main', 'js/config.js')
 
 
 
