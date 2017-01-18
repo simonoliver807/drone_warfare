@@ -31,7 +31,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 				//  });
 				
-				try {
+				//try {
 
 				    var levels = gameinit.getObj('levels');
 				     levels.push( {
@@ -284,13 +284,13 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 
 
-				}
-				catch (err) {
-					document.getElementById('loadingScreen').style.display = 'none';
-					var errscreen = document.getElementById('errScreen')
-					errscreen.style.display = 'block';
-					errscreen.innerHTML = '<div id="errdiv">Sorry there has been an error ' + err.message + ' </div>';
-				}
+			//	}
+				// catch (err) {
+				// 	document.getElementById('loadingScreen').style.display = 'none';
+				// 	var errscreen = document.getElementById('errScreen')
+				// 	errscreen.style.display = 'block';
+				// 	errscreen.innerHTML = '<div id="errdiv">Sorry there has been an error ' + err.message + ' </div>';
+				// }
 			},
 
 			handleKeyDown: function( event ) {

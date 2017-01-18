@@ -1,4 +1,4 @@
-define(['oimo', 'v3d'], function(OIMO,V3D) {
+define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
     "use strict";
       
@@ -14,6 +14,8 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
    // var exmesh = ['sight','hemlight','dirlight','containerMesh','points']
     var pause = 0;
     var v3d = new V3D.View();
+    var socket = new SOCKET_IO('https://grisly-scarecrow-29073.herokuapp.com');
+    //var socket = SOCKET_IO.connect('http://localhost:9000');
     
     //////////////////////////
     //****Oimo Variables****//
@@ -38,7 +40,6 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
     var startlevel = 1;     //*************************************
 
 
-    var socket;
     var gameUUID;
     var prs;
 
@@ -111,11 +112,6 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
 
             createWorld: function(timestep){
 
-                // socket = io('http://localhost:9000');
-                // socket.on('gamestart', function (data) {
-                //     gameUUID = data['id'];
-                //     console.log('gu ' + gameUUID); 
-                // });
                  // create oimo world contains all rigidBodys and joint.
 
                 world = new OIMO.World( timestep, boardphase, Iterations, noStat );
@@ -136,6 +132,11 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
                 anibincnt = 1;
                 endsequence = 100;
                 self = this;
+                socket.on('gamestart', function (data) {
+                    gameUUID = data['id'];
+                    console.log('gu ' + gameUUID); 
+                    socket.emit('getgd', gameUUID);
+                });
 
 
             },
@@ -163,6 +164,8 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
                         worldcount += 0.00001;
 
 
+                    // var pause = 1;
+
                       if( !pause && V3D.startRender == numobj ){  
                             // reset bodies to dispose array
                             var btd = []
@@ -183,8 +186,12 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
 
                             anibincnt == 5 ? anibincnt =0 : anibincnt += 1;
 
-                            //prs = [];
-                            // socket.emit('getgd', gameUUID);
+
+
+
+
+                            prs = [];
+                            socket.emit('getgd', gameUUID);
                             // socket.on('sgd', function(gdarr){ 
 
                             //     prs = gdarr;
@@ -198,6 +205,12 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
                             //     }
                             //     socket.emit('setgd', prs);
                             // }
+
+
+
+
+
+
 
                            if(!containerMesh){
                                firstRender = { ms1: 0, ms2: 0 };
