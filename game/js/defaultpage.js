@@ -87,4 +87,4 @@ function runGame() {
 
 }
 
-runGame();
+//runGame();
