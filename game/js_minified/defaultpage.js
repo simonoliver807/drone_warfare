@@ -13,7 +13,6 @@ var commentsForm = document.getElementById('commentsubmit').addEventListener( 'c
 	var xhttp = new XMLHttpRequest();
 	 xhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
-	      console.log('ready to send'); 
 	    }
 	}
 	xhttp.open("POST", url, true);
@@ -59,6 +58,7 @@ function runGame() {
 	        break;
 	    }
 	}
+	document.body.className += ' custom-background-image';
 	var page = document.getElementById('page');
 	page.style.display = 'none';
 	var game = document.getElementById('game-content');	
@@ -86,5 +86,14 @@ function runGame() {
 
 
 }
+(function() {
+	var data = document.getElementById('consoleData');
+	data = JSON.parse(data.value);
+	for( var i = 0; i < data.length; i++ ) {
+		dataObj = data[i];
+		console.log( '%c' + dataObj, 'background: #222; color: #bada55' );
+	}
+
+}) ();
 
 //runGame();
