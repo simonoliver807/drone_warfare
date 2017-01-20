@@ -7,12 +7,18 @@ var bodyParser = require('body-parser')
 var logger = require('morgan')
 var fs = require('fs')
 var mc = require('mongodb').MongoClient;
+var mongoose = require('mongoose');
 var uuid = require('node-uuid')
 var dateformat = require('dateformat')
 
 var event = require('events');
 var eventEmitter = new event.EventEmitter;
 
+var hc = require('./handleComments');
+
+// pass comment to the client
+var cp = new hc();
+ 
 
 
 var watch = require('node-watch');
@@ -22,6 +28,8 @@ var server = http.createServer(app);
 var io = require('socket.io')(server);
 
 var dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
+mongoose.connect(dburl);
+
 
 // mongo ds145848.mlab.com:45848/gamedata -u nabooleo -p ax31zcm
 
@@ -45,12 +53,12 @@ app.get('/', function (req, res) {
 	//console.log('res.locals'); 
 	//console.log( app.locals); 
 	if( !app.locals.comments) {
-		// // Connect to the db
 		mc.connect(dburl, function(err, db) {
 		    if(!err) {
 		          db.collection('comments').find().toArray(function (err, result) {
 		    		if (err) throw err
 		    		app.locals.comments = result;
+		    		app.locals.cd = cp.gcd();
 		    		res.render( 'index', { title: 'Drone Warfare' })
 			  	  })
 				  db.close();
@@ -68,25 +76,45 @@ app.get('/', function (req, res) {
 
 app.post('/', function (req, res) {
 	//console.log('deal with post')
+	//console.log(req.body.l);
 	var now = new Date();
 	app.locals.postresult = 0;
-	mc.connect(dburl, function(err, db) {
-		if(!err) {
-			db.collection('comments').find( { name: req.body.name, comment: req.body.comment } ).toArray(function (err, result) {
-		    	if (err) throw err
+	if(req.body.name && req.body.commnets){
+		mc.connect(dburl, function(err, db) {
+			if(!err) {
+				db.collection('comments').find( { name: req.body.name, comment: req.body.comment } ).toArray(function (err, result) {
+			    	if (err) throw err
 
-		    	console.log(' result lenght is ' + result.length);
-		    	if( result.length == 0 ){
-			    	db.collection('comments').insertOne( {
-						'name' 		: req.body.name,
-						'comment' 	: req.body.comment,
-						'date'	    : dateformat(now, "mmmm dS, yyyy")
-					});	
-					db.close();
-		    	}
-			});
-		}
-	})
+			    	console.log(' result lenght is ' + result.length);
+			    	if( result.length == 0 ){
+				    	db.collection('comments').insertOne( {
+							'name' 		: req.body.name,
+							'comment' 	: req.body.comment,
+							'date'	    : dateformat(now, "mmmm dS, yyyy")
+						});	
+						db.close();
+			    	}
+				});
+			}
+		})
+	}
+	if(req.body.l){
+
+		//console.log('deal with post')
+		//console.log(req.body);
+		mc.connect(dburl, function(err, db) {
+			if(!err) {
+				db.collection('levels').findOne( { level: ~~req.body.l }, function (err, result) {
+			    	if (err) throw err
+			    	delete result['_id'];
+			    	res.send(result);
+				});
+			}
+			else {
+				console.log(err);
+			}
+		})
+	}
 })
 app.on('error', function(err) {
  console.log('err'); 
@@ -99,13 +127,31 @@ app.on('error', function(err) {
 // })
 
 
+
+
+var Multi = mongoose.model('Multi', {gameUUID: String, player1: String, player2: String });
+app.locals.gameData = []; 
+var numberOfGame = 0;
+
 io.on('connection', function (socket) {
 
-	console.log('connection'); 
+	cp.scd(socket.id); 
+	//cp.scd( socket.nsp );
+
 	var gameUUID = uuid.v1();
+	app.locals.gameData[numberOfGame] = new Multi( { gameUUID: gameUUID, player1: socket.id, player2: 'player2' } );
+	numberOfGame += 1;
+	host = true;
 
+	// if(app.locals.ids.length > 2) {
+	// 	console.log(' 3 hosts emitting send');
+	// 	socket.broadcast.to(app.locals.ids[2]).emit('sendto3', 'hello 3');
+	// }
 
-    socket.emit('gamestart', { id: gameUUID });
+   
+   socket.emit('gamestart', { id: gameUUID, host: host });
+
+  // socket.emit('stc', {data: 'stc'} );
 
 
     socket.on('getgd', function(gameUUID){
@@ -116,6 +162,9 @@ io.on('connection', function (socket) {
 
 
     socket.on('setgd', function (gd) {
+
+    });
+    socket.on('disconnect', function(data) {
 
     });
 });
@@ -131,6 +180,6 @@ io.on('connection', function (socket) {
 reload(server, app).reload();
  
 server.listen(app.get('port'), function(){
-  console.log("Web server listening on port " + app.get('port') + " Date: " + new Date())
+ // console.log("Web server listening on port " + app.get('port') + " Date: " + new Date())
 });
 

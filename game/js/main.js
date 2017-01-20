@@ -17,237 +17,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		return {
 			init: function(){
 
-
-				// var socket = io('http://localhost:9000');
-
-				// //var socket = io('https://grisly-scarecrow-29073.herokuapp.com');
-
-			 //  	 socket.on('gamestart', function (data) {
-				//  	console.log(data);
-				//     socket.emit('getgd', { id: data });
-				//     socket.on('ggd', function(gamedata){
-				//     	gameinit.prs.push(gamedata);
-				//     });
-
-				//  });
-				
-				//try {
-
-				    var levels = gameinit.getObj('levels');
-				     levels.push( {
-									"1": {
-										"planet1": {
-											"class": "planet",
-											"type": "sphere",
-											"size": [750, 750, 750],
-											"pos": [500, 10, -10000],
-											"move": false,
-											"world": "world",
-											"color": "0x0000ff",
-											"wireframe": false,
-											"name": "mercury1",
-											"transparent": false,
-											"opacity": 1,
-											"image": "planets/mercury.jpg"
-										},
-										"drone": 100,
-										"ms1": {
-											"type": "box",
-											"size": [700, 300, 700],
-											"pos": [-5000, 0, -2000],
-											"move": true,
-											"world": "world",
-											"name": "ms1",
-											"msname": "ms1",
-											"transparent": true,
-											"opacity": 0,
-											"image": "ms/ms1.obj",
-											"mtl": "ms/ms1.mtl",
-											"new": 1
-										}
-									},
-									"2": {
-										"planet1": {
-											"class": "planet",
-											"type": "sphere",
-											"size": [1000, 1000, 1000],
-											"pos": [2000, 10, -8000],
-											"move": false,
-											"world": "world",
-											"color": "0x0000ff",
-											"wireframe": false,
-											"name": "earth1",
-											"transparent": false,
-											"opacity": 1,
-											"image": "planets/earth.jpg"
-										},
-										"planet2": {
-											"class": "planet",
-											"type": "sphere",
-											"size": [500, 500, 500],
-											"pos": [500, 10, 10000],
-											"move": false,
-											"world": "world",
-											"color": "#0000ff",
-											"wireframe": false,
-											"name": "moon",
-											"transparent": false,
-											"opacity": 1,
-											"image": "planets/moon.jpg"
-										},
-										"drone": 150,
-										"ms1": {
-											"type": "box",
-											"size": [700, 300, 700],
-											"pos": [8000, 0, -1000],
-											"move": true,
-											"world": "world",
-											"name": "ms1",
-											"msname": "ms1",
-											"transparent": "false",
-											"opacity": 0,
-											"image": "ms/ms1.obj",
-											"mtl": "ms/ms1.mtl",
-											"new": 0
-										}
-									},
-									"3": {
-										"planet1": {
-											"class": "planet",
-											"type": "sphere",
-											"size": [750, 750, 750],
-											"pos": [500, 10, 10000],
-											"move": false,
-											"world": "world",
-											"color": "0x0000ff",
-											"wireframe": false,
-											"name": "mercury1",
-											"transparent": false,
-											"opacity": 1,
-											"image": "planets/mercury.jpg"
-										},
-										"planet2": {
-											"class": "planet",
-											"type": "sphere",
-											"size": [500, 500, 500],
-											"pos": [-1500, 100, -10000],
-											"move": false,
-											"world": "world",
-											"color": "#0000ff",
-											"wireframe": false,
-											"name": "moon",
-											"transparent": false,
-											"opacity": 1,
-											"image": "planets/moon.jpg"
-										},
-										"planet3": {
-											"class": "planet",
-											"type": "sphere",
-											"size": [500, 500, 500],
-											"pos": [2000, 100, -10000],
-											"move": false,
-											"world": "world",
-											"color": "#0000ff",
-											"wireframe": false,
-											"name": "molten",
-											"transparent": false,
-											"opacity": 1,
-											"image": "planets/molten.jpg"
-
-										},
-										"drone": 200,
-										"ms1": {			
-											"type": "box",
-											"size": [700, 300, 700],
-											"pos": [-5000, 0, 2000],
-											"move": true,
-											"world": "world",
-											"name": "ms1",
-											"msname": "ms1",
-											"transparent": "false",
-											"opacity": 0,
-											"image": "ms/ms1.obj",
-											"mtl": "ms/ms1.mtl",
-											"new": 0
-										},
-										"ms2": {
-											"type": "box",
-											"size": [700, 300, 700],
-											"pos": [5000, 0, 1000],
-											"move": true,
-											"world": "world",
-											"name": "ms2",
-											"msname": "ms2",
-											"transparent": "false",
-											"opacity": 0,
-											"image": "ms/ms2.obj",
-											"mtl": "ms/ms2.mtl",
-											"new": 1
-										}
-									},
-									"4": {
-										"planet1": {
-											"class": "planet",
-											"type": "sphere",
-											"size": [750, 750, 750],
-											"pos": [500, 10, -10000],
-											"move": false,
-											"world": "world",
-											"color": "0x0000ff",
-											"wireframe": false,
-											"name": "electric1",
-											"transparent": false,
-											"opacity": 1,
-											"image": "planets/electric.jpg"
-										},
-										"planet2": {
-											"class": "planet",
-											"type": "sphere",
-											"size": [450, 450, 450],
-											"pos": [500, 100, 10100],
-											"move": false,
-											"world": "world",
-											"color": "#0000ff",
-											"wireframe": false,
-											"name": "ice",
-											"transparent": false,
-											"opacity": 1,
-											"image": "planets/ice.jpg"
-										},
-										"drone": 250,
-										"ms1": {			
-											"type": "box",
-											"size": [700, 300, 700],
-											"pos": [-5000, 0, 2000],
-											"move": true,
-											"world": "world",
-											"name": "ms1",
-											"msname": "ms1",
-											"transparent": "false",
-											"opacity": 0,
-											"image": "ms/ms1.obj",
-											"mtl": "ms/ms1.mtl",
-											"new": 0
-										},
-										"ms2": {
-											"type": "box",
-											"size": [700, 300, 700],
-											"pos": [8000, 0, 10000],
-											"move": true,
-											"world": "world",
-											"name": "ms2",
-											"msname": "ms2",
-											"transparent": "false",
-											"opacity": 0,
-											"image": "ms/ms2.obj",
-											"mtl": "ms/ms2.mtl",
-											"new": 0
-										}
-									}
-								});
-
-				   // levels.push(JSON.parse(jsonlevels));
-
+		//	try {
 
 					window.oncontextmenu = function (){ return false; }
 					window.addEventListener( 'resize', this.onWindowResize, false );
@@ -263,28 +33,29 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 					v3d = gameinit.getObj('v3d');
 					gameinit.createWorld(timestep);
-					gameinit.populate();
+					//gameinit.populate();
+					gameinit.lgd(1);
 					phaser = false;
 
+							
+				    v3d.initLight();
+				    v3d.initPoints();	
 
-					var n = navigator.userAgent;
+
+				    var n = navigator.userAgent;
 					this.isMobile = false;
 				    if (n.match(/Android/i) || n.match(/webOS/i) || n.match(/iPhone/i) || n.match(/iPad/i) || n.match(/iPod/i) || n.match(/BlackBerry/i) || n.match(/Windows Phone/i)) {
 				    	this.loadMobileEvents(n);
 				    }   
 				    else {
 				    	this.loadEvents();
-				    }
+				    }	
 
-							
-				    v3d.initLight();
-				    v3d.initPoints();		
-
-				    gameinit.oimoLoop();
+				   // gameinit.oimoLoop();
 
 
 
-			//	}
+//				}
 				// catch (err) {
 				// 	document.getElementById('loadingScreen').style.display = 'none';
 				// 	var errscreen = document.getElementById('errScreen')
@@ -416,7 +187,8 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		    			v3d.camdist = 6.9;}
 		    	}
 		    	v3d.camera.position.z = pos;
-		    	v3d.sight.position.z = pos * -1;
+		    	//v3d.sight.position.z = pos * -1;
+		        v3d.tmpsightz = pos * -1;
 		        v3d.tmpVCPprev = new v3d.tvec(0,0,pos);
 		        // for the rotation
 		    	var addforce = document.getElementById('addforce');

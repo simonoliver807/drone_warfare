@@ -189,6 +189,8 @@ V3D.View.prototype = {
 
         this.mouse = new THREE.Vector2();
 
+        this.tmpsightz = 0;
+
 
 
     },
@@ -497,6 +499,9 @@ V3D.View.prototype = {
         this.scene.add( mesh );
 
         this.sight = mesh;
+        if(this.tmpsightz != 0){
+            this.sight.position.z = this.tmpsightz;
+        }
 
     },
     gs_mse_pos: function (gs, pos){

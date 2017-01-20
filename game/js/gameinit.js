@@ -15,7 +15,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
     var pause = 0;
     var v3d = new V3D.View();
     //var socket = new SOCKET_IO.connect('https://grisly-scarecrow-29073.herokuapp.com');
-    var socket = SOCKET_IO.connect('http://localhost:9000');
+    // var socket = SOCKET_IO.connect(url);
     
     //////////////////////////
     //****Oimo Variables****//
@@ -132,30 +132,40 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 anibincnt = 1;
                 endsequence = 100;
                 self = this;
-                socket.on('gamestart', function (data) {
-                    gameUUID = data['id'];
-                    console.log('gu ' + gameUUID); 
-                    socket.emit('getgd', gameUUID);
-                });
+
+
+                // socket.on('gamestart', function (data) {
+                //     gameUUID = data['id'];
+                //     console.log('gu ' + gameUUID); 
+                //  //   socket.emit('getgd', gameUUID);
+                //     if(data['host'] == 1){
+                //         self.host = 1;
+                //         console.log('host ' + data['host']? true:false);
+
+                //     }
+                // });
+                // socket.on('stc', function (data) {
+                //     console.log(data);
+                // })
 
 
             },
-            oimoLoop: function() {  
+            // oimoLoop: function() {  
 
-                    function render(){
+                    render: function(){
 
                         if( endsequence > 0 ){
-                            requestAnimationFrame( render );
+                            requestAnimationFrame( self.render );
                         }
                         if( endsequence == 0 ){                            
                            // console.log('end of level');
                             self.levelGen();
-                            requestAnimationFrame( render );
+                           // requestAnimationFrame( render );
                         }
                          if( endsequence == -1 ){                            
                            // console.log('reset level');
                             self.levelGen(1);
-                            requestAnimationFrame( render );
+                            requestAnimationFrame( self.render );
                         }
 
                         if(numofdrone == 0 && V3D.ms1_1arrpos == 99){
@@ -163,8 +173,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                         }
                         worldcount += 0.00001;
 
-
-                    // var pause = 1;
+                       // var pause = 1;
 
                       if( !pause && V3D.startRender == numobj ){  
                             // reset bodies to dispose array
@@ -189,9 +198,15 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
 
 
-
-                            prs = [];
-                            socket.emit('getgd', gameUUID);
+                            /// mulitplayer **********************
+                            // if(self.host) {
+                            //     console.log('host');
+                            // }
+                            // else{
+                            //     console.log('not host'); 
+                            // }
+                            // pause = 1;
+                            // socket.emit('getgd', gameUUID);
                             // socket.on('sgd', function(gdarr){ 
 
                             //     prs = gdarr;
@@ -571,7 +586,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                                                 mesh.userData.color = worldcount;
                                                 v3d.ms1y.y = 0;
                                                 //if(v3d.ms1y.t == 10 && V3D.ms1_1arrpos !== 99){
-                                                if(v3d.ms1y.t == 1000 && V3D.ms1_1arrpos !== 99){
+                                                if(v3d.ms1y.t == 500 && V3D.ms1_1arrpos !== 99){
                                                    meshs[i] = v3d.swapms(mesh);
                                                    V3D.mspdown.play();
                                                 }
@@ -687,11 +702,11 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                             }
 
                         }
-                    }
-                    render();       
-            },
+                    },
+            //         render();       
+            // },
 
-            populate: function() {
+            populate: function(data) {
 
                 /////////////*********************////////////////
                 /////////////*********************///////////////
@@ -730,7 +745,10 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 if( !startlevel && V3D.bincam ) {
                     V3D.startRender += 1;
                 }
-                this.levelobj = levels[0][x982y];
+                // this.levelobj = levels[0][x982y];
+                this.levelobj = data;
+
+
                 for( obj in  this.levelobj){
                     if(obj.charAt(0) == 'p'){
                         if(obj == 'planet1'){
@@ -1026,6 +1044,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 }
                 numobj =  ms.length + 6;
                 if(!V3D.bincam){ numobj -= 1};
+                requestAnimationFrame(this.render);
             },
             dronePos: function(ms){
 
@@ -1155,8 +1174,20 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 V3D.startRender = 0;
                 V3D.raycastarr = [];
                 bodysNum = bodys.length;
-                this.populate();
+                this.lgd(x982y);
                 endsequence = 100;
+            },
+            lgd: function(l) {
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                      self.populate( JSON.parse(this.responseText) );
+                    }
+                }
+                xhttp.open("POST", url, true);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhttp.send( 'l='+l );
             }
         }
     }
