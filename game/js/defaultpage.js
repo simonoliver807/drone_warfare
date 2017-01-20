@@ -1,5 +1,5 @@
 var url = 'http://localhost:9000/';
-//var url = 'http://grisly-scarecrow-29073.herokuapp.com'
+//var url = 'http://dronewar1.com'
 // change to live
 
 var loadgame = document.getElementById('loadGame').addEventListener( 'click', function() { runGame(); });
