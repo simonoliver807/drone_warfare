@@ -52,7 +52,7 @@ app.locals.comments = 0;
 app.get('/', function (req, res) {
 	//console.log('res.locals'); 
 	//console.log( app.locals); 
-	if( !app.locals.comments) {
+	//if( !app.locals.comments) {
 		mc.connect(dburl, function(err, db) {
 		    if(!err) {
 		          db.collection('comments').find().toArray(function (err, result) {
@@ -64,28 +64,28 @@ app.get('/', function (req, res) {
 				  db.close();
 		    }
 		});
-	}
-	else {
+	//}
+	// else {
 
-		res.render('index', { title: 'Drone Warfare' })
+	// 	res.render('index', { title: 'Drone Warfare' })
 
-	}
+	// }
 })
 
 
 
 app.post('/', function (req, res) {
 	//console.log('deal with post')
-	//console.log(req.body.l);
+	//console.log(req.body);
 	var now = new Date();
-	app.locals.postresult = 0;
-	if(req.body.name && req.body.commnets){
+	if(req.body.name && req.body.comment){
 		mc.connect(dburl, function(err, db) {
 			if(!err) {
 				db.collection('comments').find( { name: req.body.name, comment: req.body.comment } ).toArray(function (err, result) {
 			    	if (err) throw err
 
-			    	console.log(' result lenght is ' + result.length);
+			    	//cp('send to db');
+			    	res.render( 'index', { title: 'Drone Warfare' })
 			    	if( result.length == 0 ){
 				    	db.collection('comments').insertOne( {
 							'name' 		: req.body.name,

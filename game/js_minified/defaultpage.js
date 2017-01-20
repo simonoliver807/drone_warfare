@@ -28,8 +28,7 @@ var commentsForm = document.getElementById('commentsubmit').addEventListener( 'c
 	  "November", "December"
 	];
 	var date = new Date();
-	//var day = date.getDate();
-	var day = 31;
+	day = date.getDate();
 	var monthIndex = date.getMonth();
 	var year = date.getFullYear();
 	var fulldate =  monthNames[monthIndex];

@@ -13,7 +13,9 @@ module.exports = function() {
 				//consoleData.push(util.inspect(data, { showHidden: true, depth: null } ) );
 				consoleData.push(util.inspect(data, { showHidden: true }));
 			}
+			console.log(typeof data);
 			if( typeof data == 'string' ) {
+				console.log( 'the data is ' + data);
 				consoleData.push(data);
 			}
 		},
