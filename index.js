@@ -59,7 +59,7 @@ app.get('/', function (req, res) {
 		    		if (err) throw err
 		    		app.locals.comments = result;
 		    		app.locals.cd = cp.gcd();
-		    		res.render( 'index', { title: 'Drone Warfare' })
+		    		res.render( 'index', { title: 'Drone War 1' })
 			  	  })
 				  db.close();
 		    }
@@ -85,7 +85,7 @@ app.post('/', function (req, res) {
 			    	if (err) throw err
 
 			    	//cp('send to db');
-			    	res.render( 'index', { title: 'Drone Warfare' })
+			    	res.render( 'index', { title: 'Drone War 1' })
 			    	if( result.length == 0 ){
 				    	db.collection('comments').insertOne( {
 							'name' 		: req.body.name,
@@ -127,15 +127,17 @@ app.on('error', function(err) {
 // })
 
 
+var Schema = mongoose.Schema;
+var gameDataSchema = new Schema  ({gameUUID: String, player1: String, player2: String });
+var Multi = mongoose.model('Multi', gameDataSchema);
 
-
-var Multi = mongoose.model('Multi', {gameUUID: String, player1: String, player2: String });
-app.locals.gameData = []; 
+cp.scd(app.locals.gameData);
 var numberOfGame = 0;
 
 io.on('connection', function (socket) {
 
 	cp.scd(socket.id); 
+	console.log(Multi);
 	//cp.scd( socket.nsp );
 
 	var gameUUID = uuid.v1();
@@ -151,7 +153,7 @@ io.on('connection', function (socket) {
    
    socket.emit('gamestart', { id: gameUUID, host: host });
 
-  // socket.emit('stc', {data: 'stc'} );
+   socket.emit('stc', {data: app.locals.gameData } );
 
 
     socket.on('getgd', function(gameUUID){

@@ -1,6 +1,5 @@
 doctype html
-//html.no-js(lang='en-US', manifest='dronewarfare.appcache', type='text/cache-manifest')
-html
+html.no-js(lang='en-US', manifest='dronewarfare.appcache', type='text/cache-manifest')
   head
     meta(charset='UTF-8')
     title= title
@@ -45,8 +44,8 @@ html
                         .fw-row
                           .fw-col-xs-12
                             p
-                              | Click
-                              a#loadGame here
+                              | Click 
+                              a#loadGame  here
                               |  to load game.
                             p Or click on the screen shot below, that shows phone and tablet controls
                             p Any problems let me know in the comments or email me at 
@@ -65,7 +64,8 @@ html
                                   .fw-row
                                     .fw-col-xs-12.fw-col-sm-6.form-builder-item
                                       .field-radio.input-styled
-                                        label Select to play inside space fighter
+                                        p Levels complete when all large ships go dark 
+                                        label Select to play inside/outside space fighter
                                         .custom-radio.field-columns-1
                                           .options
                                             input#rand-1(type='radio', name='radio_3698130', value='clicked inside')
@@ -87,6 +87,7 @@ html
                                         li Space fire laser
                                         li Mouse control sight
                                         li Press f to go full screen
+                                        li Esc to pause
 
                 // .entry-content
                 footer.entry-footer
@@ -105,10 +106,10 @@ html
     include game_content.pug
     input( id='consoleData',type='hidden',value=cd)
 
-    //script(type='text/Javascript', src='js/defaultpage.js')
-    script(type='text/Javascript', src='js_minified/defaultpage.js')
-    //script(src="/reload/reload.js")
-    //script(src='//localhost:35729/livereload.js')
+    script(type='text/Javascript', src='js/defaultpage.js')
+    //script(type='text/Javascript', src='js_minified/defaultpage.js')
+    script(src="/reload/reload.js")
+    script(src='//localhost:35729/livereload.js')
       
 
 
