@@ -1,5 +1,5 @@
-var url = 'http://localhost:9000/';
-//var url = 'http://www.dronewar1.com'
+//var url = 'http://localhost:9000/';
+var url = 'http://www.dronewar1.com'
 // change to live
 
 var loadgame = document.getElementById('loadGame').addEventListener( 'click', function() { runGame(); });
@@ -66,17 +66,17 @@ function runGame() {
 
 
 	//******** minified change to live *************/////////
-	// var s = document.createElement("script");
-	// s.type = "text/javascript";
-	// s.src = "js_minified/require.js";
-	// s.setAttribute('data-main', 'js_minified/config.js')
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js_minified/require.js";
+	s.setAttribute('data-main', 'js_minified/config.js')
 
 
 	//******** unminified *************/////////
-	var s = document.createElement("script");
-	s.type = "text/javascript";
-	s.src = "js/require.js";
-	s.setAttribute('data-main', 'js/config.js')
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js/require.js";
+	// s.setAttribute('data-main', 'js/config.js')
 
 
 
