@@ -14,7 +14,8 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
    // var exmesh = ['sight','hemlight','dirlight','containerMesh','points']
     var pause = 0;
     var v3d = new V3D.View();
-    //var socket = new SOCKET_IO.connect('https://grisly-scarecrow-29073.herokuapp.com');
+
+    // ********** mulit
     // var socket = SOCKET_IO.connect(url);
     
     //////////////////////////
@@ -100,6 +101,8 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
     var firstRender = 0;
 
+    var pdown = 75;
+
 
     // var ms1phaser = 0;
     // var ms2phaser = 0;
@@ -134,6 +137,9 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 self = this;
 
 
+
+
+                ////////// *********** multi
                 // socket.on('gamestart', function (data) {
                 //     gameUUID = data['id'];
                 //     console.log('gu ' + gameUUID); 
@@ -168,12 +174,12 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                             requestAnimationFrame( self.render );
                         }
 
-                        if(numofdrone == 0 && V3D.ms1_1arrpos == 99){
+                        if( V3D.ms1_1arrpos == 99){
                             endsequence -= 1;
                         }
                         worldcount += 0.00001;
 
-                       // var pause = 1;
+                      // var pause = 1;
 
                       if( !pause && V3D.startRender == numobj ){  
                             // reset bodies to dispose array
@@ -586,7 +592,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                                                 mesh.userData.color = worldcount;
                                                 v3d.ms1y.y = 0;
                                                 //if(v3d.ms1y.t == 10 && V3D.ms1_1arrpos !== 99){
-                                                if(v3d.ms1y.t == 500 && V3D.ms1_1arrpos !== 99){
+                                                if(v3d.ms1y.t == pdown && V3D.ms1_1arrpos !== 99){
                                                    meshs[i] = v3d.swapms(mesh);
                                                    V3D.mspdown.play();
                                                 }
@@ -947,7 +953,10 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                     }
 
                }
-               var numofld = Math.round(numofdrone / (numofms * 4));
+               if( x982y === 1 ) { numofld = 8 }
+               else {
+                var numofld = Math.round(numofdrone / (numofms * 4));
+               }
                for(var i=0;i<numofdrone;i++){
 
 
@@ -1169,8 +1178,9 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 v3d.ms2y.t = 0;
                 v3d.ms1y.y = 0;
                 v3d.ms2y.y = 0;
+                pdown = 250;
                // health = 100000000000000;
-                health = 250;
+                health = 150;
                 V3D.startRender = 0;
                 V3D.raycastarr = [];
                 bodysNum = bodys.length;

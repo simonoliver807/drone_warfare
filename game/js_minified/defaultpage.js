@@ -1,5 +1,5 @@
-//var url = 'http://localhost:9000/';
-var url = 'http://www.dronewar1.com'
+var url = 'http://localhost:9000/';
+//var url = 'http://www.dronewar1.com'
 
 var loadgame = document.getElementById('loadGame').addEventListener( 'click', function() { runGame(); });
 var startgame = document.getElementById('startGame').addEventListener( 'click', function() { runGame(); });
@@ -95,4 +95,4 @@ function runGame() {
 
 }) ();
 
-//runGame();
+runGame();
