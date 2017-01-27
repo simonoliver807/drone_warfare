@@ -33,6 +33,7 @@ CACHE:
  audio/pdown.mp3
  audio/droneExpl.wav
  audio/thrusters.wav
+ audio/droneAudio.mp3
 
 NETWORK:
 *
