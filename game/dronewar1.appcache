@@ -31,6 +31,8 @@ CACHE:
  images/ms/ms2_3.obj
  images/ms/ms2_4.obj
  audio/pdown.mp3
+ audio/droneExpl.wav
+ audio/thrusters.wav
 
 NETWORK:
 *
