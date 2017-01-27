@@ -1,1 +1,98 @@
-function runGame(){for(var e=document.getElementsByName("radio_3698130"),t=0,n=e.length;t<n;t++)if(e[t].checked){document.getElementById("insideship").value=e[t].value;break}document.body.className+=" custom-background-image";var a=document.getElementById("page");a.style.display="none";var m=document.getElementById("game-content");m.style.display="block";var d=document.createElement("script");d.type="text/javascript",d.src="js_minified/require.js",d.setAttribute("data-main","js_minified/config.js");var o=document.getElementsByTagName("head")[0];o.appendChild(d)}var url="http://www.dronewar1.com",loadgame=document.getElementById("loadGame").addEventListener("click",function(){runGame()}),startgame=document.getElementById("startGame").addEventListener("click",function(){runGame()}),commentsForm=document.getElementById("commentsubmit").addEventListener("click",function(){document.getElementById("commentsubmit").disabled=!0;var e=document.getElementById("commentname").value,t=document.getElementById("textarea_1").value,n=new XMLHttpRequest;n.onreadystatechange=function(){4==this.readyState&&200==this.status},n.open("POST",url,!0),n.setRequestHeader("Content-type","application/x-www-form-urlencoded"),n.send("name="+e+"&comment="+t);var a=document.getElementById("comnum1").cloneNode(!0);a.id="new_item",a.getElementsByClassName("fn")[0].innerHTML=e;var m=["January","February","March","April","May","June","July","August","September","October","November","December"],d=new Date,o=d.getDate(),c=d.getMonth(),r=d.getFullYear(),l=m[c];l+=1==o?" 1st, ":2==o?" 2nd, ":3==o?" 3rd, ":31==o?" 31st, ":" "+o+"th, ",l+=""+r,a.getElementsByTagName("time")[0].innerHTML=l,a.getElementsByTagName("p")[0].innerHTML=t,document.getElementsByClassName("comment-list")[0].appendChild(a)});!function(){var e=document.getElementById("consoleData");e=JSON.parse(e.value);for(var t=0;t<e.length;t++)dataObj=e[t],console.log("%c"+dataObj,"background: #222; color: #bada55")}();
+var url = 'http://localhost:9000/';
+//var url = 'http://www.dronewar1.com'
+
+var loadgame = document.getElementById('loadGame').addEventListener( 'click', function() { runGame(); });
+var startgame = document.getElementById('startGame').addEventListener( 'click', function() { runGame(); });
+var commentsForm = document.getElementById('commentsubmit').addEventListener( 'click', function() { 
+
+	document.getElementById('commentsubmit').disabled = true; 
+	var name = document.getElementById('commentname').value;
+	var comment = document.getElementById('textarea_1').value;
+
+
+	var xhttp = new XMLHttpRequest();
+	 xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	    }
+	}
+	xhttp.open("POST", url, true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send( 'name='+name+'&comment='+comment );
+	var commentitem = document.getElementById('comnum1').cloneNode(true);
+	commentitem.id = 'new_item';
+	commentitem.getElementsByClassName('fn')[0].innerHTML = name;
+	var monthNames = [
+	  "January", "February", "March",
+	  "April", "May", "June", "July",
+	  "August", "September", "October",
+	  "November", "December"
+	];
+	var date = new Date();
+	day = date.getDate();
+	var monthIndex = date.getMonth();
+	var year = date.getFullYear();
+	var fulldate =  monthNames[monthIndex];
+	if (day == 1){ fulldate += ' 1st, '}
+	else if (day == 2){ fulldate += ' 2nd, '}
+	else if (day == 3){ fulldate += ' 3rd, '}
+	else if (day == 31){ fulldate += ' 31st, '}
+	else { fulldate += ' ' + day+'th, '}
+	fulldate += '' + year;
+
+	commentitem.getElementsByTagName('time')[0].innerHTML = fulldate;
+	commentitem.getElementsByTagName('p')[0].innerHTML = comment;
+	document.getElementsByClassName('comment-list')[0].appendChild(commentitem);
+
+ });
+
+function runGame() {
+
+	var radios = document.getElementsByName('radio_3698130');
+
+	for (var i = 0, length = radios.length; i < length; i++) {
+	    if (radios[i].checked) {
+	        
+	       document.getElementById('insideship').value = radios[i].value;
+
+	        break;
+	    }
+	}
+	document.body.className += ' custom-background-image';
+	var page = document.getElementById('page');
+	page.style.display = 'none';
+	var game = document.getElementById('game-content');	
+	game.style.display = 'block';
+
+
+	//******** minified *************/////////
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js_minified/require.js";
+	s.setAttribute('data-main', 'js_minified/config.js')
+
+
+	//******** unminified *************/////////
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js/require.js";
+	// s.setAttribute('data-main', 'js/config.js')
+
+
+
+	var head = document.getElementsByTagName("head")[0];
+	head.appendChild(s);
+
+
+
+}
+(function() {
+	var data = document.getElementById('consoleData');
+	data = JSON.parse(data.value);
+	for( var i = 0; i < data.length; i++ ) {
+		dataObj = data[i];
+		console.log( '%c' + dataObj, 'background: #222; color: #bada55' );
+	}
+
+}) ();
+
+runGame();

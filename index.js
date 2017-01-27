@@ -134,42 +134,42 @@ var Multi = mongoose.model('Multi', gameDataSchema);
 cp.scd(app.locals.gameData);
 var numberOfGame = 0;
 
-io.on('connection', function (socket) {
+// io.on('connection', function (socket) {
 
-	cp.scd(socket.id); 
-	console.log(Multi);
-	//cp.scd( socket.nsp );
+// 	cp.scd(socket.id); 
+// 	console.log(Multi);
+// 	//cp.scd( socket.nsp );
 
-	var gameUUID = uuid.v1();
-	app.locals.gameData[numberOfGame] = new Multi( { gameUUID: gameUUID, player1: socket.id, player2: 'player2' } );
-	numberOfGame += 1;
-	host = true;
+// 	var gameUUID = uuid.v1();
+// 	app.locals.gameData[numberOfGame] = new Multi( { gameUUID: gameUUID, player1: socket.id, player2: 'player2' } );
+// 	numberOfGame += 1;
+// 	host = true;
 
-	// if(app.locals.ids.length > 2) {
-	// 	console.log(' 3 hosts emitting send');
-	// 	socket.broadcast.to(app.locals.ids[2]).emit('sendto3', 'hello 3');
-	// }
+// 	// if(app.locals.ids.length > 2) {
+// 	// 	console.log(' 3 hosts emitting send');
+// 	// 	socket.broadcast.to(app.locals.ids[2]).emit('sendto3', 'hello 3');
+// 	// }
 
    
-   socket.emit('gamestart', { id: gameUUID, host: host });
+//    socket.emit('gamestart', { id: gameUUID, host: host });
 
-   socket.emit('stc', {data: app.locals.gameData } );
-
-
-    socket.on('getgd', function(gameUUID){
-    	console.log('game uuid is '); 
-        console.log(gameUUID);
-        var gdarr = [];
-    });
+//    socket.emit('stc', {data: app.locals.gameData } );
 
 
-    socket.on('setgd', function (gd) {
+//     socket.on('getgd', function(gameUUID){
+//     	console.log('game uuid is '); 
+//         console.log(gameUUID);
+//         var gdarr = [];
+//     });
 
-    });
-    socket.on('disconnect', function(data) {
 
-    });
-});
+//     socket.on('setgd', function (gd) {
+
+//     });
+//     socket.on('disconnect', function(data) {
+
+//     });
+// });
 
 // reloadServer = reload(server, app);
 // watch('.rebooted', function (f, curr, prev) {
@@ -182,6 +182,6 @@ io.on('connection', function (socket) {
 reload(server, app).reload();
  
 server.listen(app.get('port'), function(){
- // console.log("Web server listening on port " + app.get('port') + " Date: " + new Date())
+  console.log("Web server listening on port " + app.get('port') + " Date: " + new Date())
 });
 

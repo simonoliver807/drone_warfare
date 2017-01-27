@@ -1,13 +1,14 @@
+//html.no-js(lang='en-US', manifest='dronewar1.appcache', type='text/cache-manifest')
+// change to live
 doctype html
-html.no-js(lang='en-US', manifest='dronewarfare.appcache', type='text/cache-manifest')
+html.no-js(lang='en-US', manifest='dronewar1.appcache', type='text/cache-manifest')
   head
     meta(charset='UTF-8')
     title= title
-    link(rel='stylesheet', type='text/css', href='style/style101216.css')
+    link(rel='stylesheet', type='text/css', href='style/style101217.css')
     link(rel='stylesheet', type='text/css', href='style/wp.css')
     link(rel='stylesheet', type='text/css', href='style/frontend.css')
     link(rel='stylesheet', type='text/css', href='style/frontend-grid.css')
-    link(rel='stylesheet', type='text/css', href='style/style101216.css')
     link(rel='icon', type='image/png', href='images/favicon.ico')
     meta(name='viewport', content='user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1')
     meta(name="description" content="3d space, first person shooter, webgl, threejs, mobile game")
@@ -21,7 +22,7 @@ html.no-js(lang='en-US', manifest='dronewarfare.appcache', type='text/cache-mani
           .site-header-main
             .site-branding
               p.site-title
-                a(href='http://siolsite.tk', rel='home') siolsite
+                a(href='http://www.dronewar1.com', rel='home') siolsite
               p.site-description Javascript experiments
             // .site-branding
             .header-image
@@ -43,13 +44,15 @@ html.no-js(lang='en-US', manifest='dronewarfare.appcache', type='text/cache-mani
                       .fw-container
                         .fw-row
                           .fw-col-xs-12
-                            p
+                            h2
                               | Click 
                               a#loadGame  here
                               |  to load game.
                             p Or click on the screen shot below, that shows phone and tablet controls
                             p Any problems let me know in the comments or email me at 
                               a( href="mailto:dronewar1@gmail.com") dronewar1@gmail.com
+                            p Levels complete when all large ships go dark
+
                         .fw-row
                           .fw-col-xs-12
                             .form-wrapper.contact-form
@@ -64,7 +67,6 @@ html.no-js(lang='en-US', manifest='dronewarfare.appcache', type='text/cache-mani
                                   .fw-row
                                     .fw-col-xs-12.fw-col-sm-6.form-builder-item
                                       .field-radio.input-styled
-                                        p Levels complete when all large ships go dark 
                                         label Select to play inside/outside space fighter
                                         .custom-radio.field-columns-1
                                           .options
@@ -88,6 +90,11 @@ html.no-js(lang='en-US', manifest='dronewarfare.appcache', type='text/cache-mani
                                         li Mouse control sight
                                         li Press f to go full screen
                                         li Esc to pause
+                                  .fw-row
+                                    .fw-col-xs-12
+                                      h3 Mute soud fx
+                                      input#sndfxbutton(type="button" value="on")
+
 
                 // .entry-content
                 footer.entry-footer
@@ -104,12 +111,15 @@ html.no-js(lang='en-US', manifest='dronewarfare.appcache', type='text/cache-mani
       // .site-inner
       // .site
     include game_content.pug
+    include levelChng.pug
     input( id='consoleData',type='hidden',value=cd)
 
-    script(type='text/Javascript', src='js/defaultpage.js')
-    //script(type='text/Javascript', src='js_minified/defaultpage.js')
+    //script(type='text/Javascript', src='js/defaultpage.js')
+    script(type='text/Javascript', src='js_minified/defaultpage.js')
+    // change to live
     //script(src="/reload/reload.js")
     //script(src='//localhost:35729/livereload.js')
+    //script(src='//192.168.0.7:35729/livereload.js')
       
 
 

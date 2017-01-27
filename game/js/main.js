@@ -16,8 +16,8 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 		return {
 			init: function(){
-
-		//	try {
+		// change to live
+			try {
 
 					window.oncontextmenu = function (){ return false; }
 					window.addEventListener( 'resize', this.onWindowResize, false );
@@ -55,13 +55,13 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 
 
-//				}
-				// catch (err) {
-				// 	document.getElementById('loadingScreen').style.display = 'none';
-				// 	var errscreen = document.getElementById('errScreen')
-				// 	errscreen.style.display = 'block';
-				// 	errscreen.innerHTML = '<div id="errdiv">Sorry there has been an error ' + err.message + ' </div>';
-				// }
+				}
+				catch (err) {
+					document.getElementById('loadingScreen').style.display = 'none';
+					var errscreen = document.getElementById('errScreen')
+					errscreen.style.display = 'block';
+					errscreen.innerHTML = '<div id="errdiv">Sorry there has been an error ' + err.message + ' </div>';
+				}
 			},
 
 			handleKeyDown: function( event ) {
@@ -88,6 +88,12 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 					var keys = gameinit.getObj('keys');
 					keys[event.which] = 0;;
+					if( event.keyCode == 38 || event.keyCode == 40 ) {
+						if ( soundFX ) {
+							v3d.thruster.stop();
+							v3d.pThrust = 0;
+						}
+					}
 
 			},
 			handleMouseMove: function(event){
@@ -224,14 +230,23 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		    		}
 
 		    	}
+
 		    	function handleEnd() {
 		    		event.preventDefault();
 		    		for(var i = 0; i< event.changedTouches.length; i++) {
 		    			if(event.changedTouches[i].target.id == 'addforce' || event.changedTouches[i].target.id == 'addforcebut'){
 		    				keys[38] = 0;
+		    				if( soundFX ) {
+			    				v3d.thruster.stop();
+								v3d.pThrust = 0;
+							}
 		    			}
 		    			if(event.changedTouches[i].target.id == 'minusforce' || event.changedTouches[i].target.id == 'minusforcebut'){
 		    				keys[40] = 0;
+		    				if( soundFX ) {
+			    				v3d.thruster.stop();
+								v3d.pThrust = 0;
+							}
 		    			}
 		    			if(event.changedTouches[i].target.id == 'mobcon'){
 		    				mobcon.style.opacity = '1';

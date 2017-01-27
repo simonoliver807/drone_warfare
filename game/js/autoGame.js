@@ -15,231 +15,16 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 			init: function() {
 
-				
-				   var levels = gameinit.getObj('levels');
-				     levels.push( {
-									"1": {
-										"planet1": {
-											"class": "planet",
-											"type": "sphere",
-											"size": [750, 750, 750],
-											"pos": [500, 10, -10000],
-											"move": false,
-											"world": "world",
-											"color": "0x0000ff",
-											"wireframe": false,
-											"name": "mercury1",
-											"transparent": false,
-											"opacity": 1,
-											"image": "planets/mercury.jpg"
-										},
-										"drone": 10,
-										"ms1": {
-											"type": "box",
-											"size": [700, 300, 700],
-											"pos": [-5000, 0, -2000],
-											"move": true,
-											"world": "world",
-											"name": "ms1",
-											"msname": "ms1",
-											"transparent": true,
-											"opacity": 0,
-											"image": "ms/ms1.obj",
-											"mtl": "ms/ms1.mtl",
-											"new": 1
-										}
-									},
-									"2": {
-										"planet1": {
-											"class": "planet",
-											"type": "sphere",
-											"size": [1000, 1000, 1000],
-											"pos": [2000, 10, -8000],
-											"move": false,
-											"world": "world",
-											"color": "0x0000ff",
-											"wireframe": false,
-											"name": "earth1",
-											"transparent": false,
-											"opacity": 1,
-											"image": "planets/earth.jpg"
-										},
-										"planet2": {
-											"class": "planet",
-											"type": "sphere",
-											"size": [500, 500, 500],
-											"pos": [500, 10, 10000],
-											"move": false,
-											"world": "world",
-											"color": "#0000ff",
-											"wireframe": false,
-											"name": "moon",
-											"transparent": false,
-											"opacity": 1,
-											"image": "planets/moon.jpg"
-										},
-										"drone": 10,
-										"ms1": {
-											"type": "box",
-											"size": [700, 300, 700],
-											"pos": [8000, 0, -1000],
-											"move": true,
-											"world": "world",
-											"name": "ms1",
-											"msname": "ms1",
-											"transparent": "false",
-											"opacity": 0,
-											"image": "ms/ms1.obj",
-											"mtl": "ms/ms1.mtl",
-											"new": 0
-										}
-									},
-									"3": {
-										"planet1": {
-											"class": "planet",
-											"type": "sphere",
-											"size": [750, 750, 750],
-											"pos": [500, 10, 10000],
-											"move": false,
-											"world": "world",
-											"color": "0x0000ff",
-											"wireframe": false,
-											"name": "mercury1",
-											"transparent": false,
-											"opacity": 1,
-											"image": "planets/mercury.jpg"
-										},
-										"planet2": {
-											"class": "planet",
-											"type": "sphere",
-											"size": [500, 500, 500],
-											"pos": [-1500, 100, -10000],
-											"move": false,
-											"world": "world",
-											"color": "#0000ff",
-											"wireframe": false,
-											"name": "moon",
-											"transparent": false,
-											"opacity": 1,
-											"image": "planets/moon.jpg"
-										},
-										"planet3": {
-											"class": "planet",
-											"type": "sphere",
-											"size": [500, 500, 500],
-											"pos": [2000, 100, -10000],
-											"move": false,
-											"world": "world",
-											"color": "#0000ff",
-											"wireframe": false,
-											"name": "molten",
-											"transparent": false,
-											"opacity": 1,
-											"image": "planets/molten.jpg"
-
-										},
-										"drone": 10,
-										"ms1": {			
-											"type": "box",
-											"size": [700, 300, 700],
-											"pos": [-5000, 0, 2000],
-											"move": true,
-											"world": "world",
-											"name": "ms1",
-											"msname": "ms1",
-											"transparent": "false",
-											"opacity": 0,
-											"image": "ms/ms1.obj",
-											"mtl": "ms/ms1.mtl",
-											"new": 0
-										},
-										"ms2": {
-											"type": "box",
-											"size": [700, 300, 700],
-											"pos": [5000, 0, 1000],
-											"move": true,
-											"world": "world",
-											"name": "ms2",
-											"msname": "ms2",
-											"transparent": "false",
-											"opacity": 0,
-											"image": "ms/ms2.obj",
-											"mtl": "ms/ms2.mtl",
-											"new": 1
-										}
-									},
-									"4": {
-										"planet1": {
-											"class": "planet",
-											"type": "sphere",
-											"size": [750, 750, 750],
-											"pos": [500, 10, -10000],
-											"move": false,
-											"world": "world",
-											"color": "0x0000ff",
-											"wireframe": false,
-											"name": "electric1",
-											"transparent": false,
-											"opacity": 1,
-											"image": "planets/electric.jpg"
-										},
-										"planet2": {
-											"class": "planet",
-											"type": "sphere",
-											"size": [450, 450, 450],
-											"pos": [500, 100, 10100],
-											"move": false,
-											"world": "world",
-											"color": "#0000ff",
-											"wireframe": false,
-											"name": "ice",
-											"transparent": false,
-											"opacity": 1,
-											"image": "planets/ice.jpg"
-										},
-										"drone": 10,
-										"ms1": {			
-											"type": "box",
-											"size": [700, 300, 700],
-											"pos": [-5000, 0, 2000],
-											"move": true,
-											"world": "world",
-											"name": "ms1",
-											"msname": "ms1",
-											"transparent": "false",
-											"opacity": 0,
-											"image": "ms/ms1.obj",
-											"mtl": "ms/ms1.mtl",
-											"new": 0
-										},
-										"ms2": {
-											"type": "box",
-											"size": [700, 300, 700],
-											"pos": [8000, 0, 10000],
-											"move": true,
-											"world": "world",
-											"name": "ms2",
-											"msname": "ms2",
-											"transparent": "false",
-											"opacity": 0,
-											"image": "ms/ms2.obj",
-											"mtl": "ms/ms2.mtl",
-											"new": 0
-											//"new": 0
-										}
-									}
-								});
-
-				   // levels.push(JSON.parse(jsonlevels));
-
 
 					window.oncontextmenu = function (){ return false; }
 					window.addEventListener( 'resize', onWindowResize, false );
+					window.addEventListener( 'keydown', handleKeyDown, false );
 
 
 					v3d = gameinit.getObj('v3d');
 					gameinit.createWorld(timestep);
-					gameinit.populate();
+					gameinit.lgd(1);
+
 
 							
 				    v3d.initLight();
@@ -248,7 +33,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 				    this.x = v3d.w/2;
 				    this.y = v3d.h/2;
-				    this.shp1;
+				    this.shp1 = 0;
 				    this.tarvec = v3d.tvec();
 				    this.tarbody = 0;
 				    this.chngdir = 0;
@@ -260,6 +45,12 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 				    this.lockcount = 0;
 				    this.arrpos = [ 1,0,1,1,0,1 ,-1,0,-1,-1, 0,-1,-1,1, 1,-1,2,0, 2,2 ,0,2,-2,0, -2,-2, 0,-2,-2,2 ];
 				    this.arrposcnt = 0;
+				    this.bincount = 0;
+				    this.retargetCnt = 0;
+
+				    this.notDrone = 1;
+				    this.notMS = 0;
+				    this.lv = 200;
 
 		    		if( V3D.bincam){
 						this.dnum = 7;
@@ -267,17 +58,42 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 					else {
 						this.dnum = 8;
 					}
-				    var bodys = gameinit.getObj('bodys');
-   					for(var i=0; i < bodys.length; i++) {
-						if(bodys[i].name == 'shp1'){
-							this.shp1 = bodys[i].body;
-						}
-					}
 				    var self = this;
 
-				    gameinit.oimoLoop();
 
-				    setInterval( updateShip, 75 );
+
+				    setInterval( checkBody, 10 );
+
+
+				    function handleKeyDown ( event ) {
+
+						//event.preventDefault();
+						if( event.keyCode === 27) {
+							var val = gameinit.gspause() ? 0: 1;
+						    gameinit.gspause(val);
+						}
+						if ( event.keyCode == 70) {
+							document.body.webkitRequestFullScreen();
+						}
+					};
+
+				    function checkBody(){
+
+				    	if ( !self.shp1 ) {
+						    var bodys = gameinit.getObj('bodys');
+						    if( bodys.length > 1 ) {
+			   					for(var i=0; i < bodys.length; i++) {
+									if(bodys[i].name == 'shp1'){
+										self.shp1 = bodys[i].body;
+									}
+								}
+							}
+						}
+						else {
+							updateShip();
+						}
+
+				    }
  
 				    
 					function onWindowResize(){
@@ -291,17 +107,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 
 				    function updateShip() {
-						function handleKeyDown ( event ) {
 
-							//event.preventDefault();
-							if( event.keyCode === 27) {
-								var val = gameinit.gspause() ? 0: 1;
-							    gameinit.gspause(val);
-							}
-							if ( event.keyCode == 70) {
-								document.body.webkitRequestFullScreen();
-							}
-						};
 						function getTar () {
 
 
@@ -314,7 +120,13 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 									var msnum = v3d.scene.children.length;
 									while(msnum--){
 										if(v3d.scene.children[msnum].userData.msname == bodys[i].name){
-											var msyn = v3d.scene.children[msnum].children[0].children[0].children.length;
+											if ( v3d.scene.children[msnum].children[0].children[0].children === undefined ) {
+												msyn = 0;
+												console.log('ms undefined in autogame'); 
+											}
+											else {
+												var msyn = v3d.scene.children[msnum].children[0].children[0].children.length;
+											}
 										}
 									}
 								}
@@ -324,10 +136,11 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 									var len = dist.length();
 									if(len < minlen || minlen === 0 ){
 										minlen = len;
-										var tar = bodys[i].body.position;
-										self.tarvec.set( tar.x, tar.y, tar.z);
+										//var tar = v3d.tvec();
+										//tar.set( bodys[i].body.position.x, bodys[i].body.position.y, bodys[i].body.position.z);
+										self.tarvec.set( bodys[i].body.position.x, bodys[i].body.position.y, bodys[i].body.position.z);
 										self.tarvec.multiplyScalar(100);
-										if(bodys[i].name == 'drone'){
+										if(bodys[i].name == 'drone' && !self.notDrone ){
 											for(var j=0; j< v3d.scene.children[self.dnum].children.length; j++){
 												var drone = v3d.scene.children[self.dnum].children[j];
 												if( self.tarvec.equals(drone.position) ){
@@ -335,7 +148,10 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 												}
 											}
 										}
-										if( bodys[i].name.match('ms') ) {
+										if(bodys[i].name == 'drone' && self.notDrone ){
+											minlen = 0;
+										}
+										if( bodys[i].name.match('ms') && !self.notMS ) {
 											for(var k=0; k< v3d.scene.children.length; k++){
 												var ms = v3d.scene.children[k];
 												if ( ms.userData.msname == bodys[i].name ){
@@ -343,11 +159,12 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 												}
 											}
 										}
+										if( bodys[i].name.match('ms') && self.notMS ) {
+											minlen = 0;
+										}
 									}
 								}
-
 							}
-
 
 						};
 						function toScreenPosition(obj, camera, vec )
@@ -388,13 +205,15 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 						    self.angleprev = 0;
 						    self.setAxis = 1;
 						    self.lockcount = 0;
+						    self.retargetCnt = 0;
+						    self.bincount = 0;
 						}
-						window.addEventListener( 'keydown', handleKeyDown, false );
+					
 						var es = gameinit.getObj('endsequence');
 				    	if( es  < 100 ){
 				    		//self.shp1;
 						    reset();
-						    self.shp1.position.set(0,0,0);
+						   // self.shp1.position.set(0,0,0);
 				    	}
 				    	else {
 				    		var containerMesh = gameinit.getObj('containerMesh');
@@ -415,43 +234,59 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 					    					}
 					    				}
 					    			}
-					    			if ( self.tarbody != 0 ){
-						    			if( self.tarbody.name.match('ms') ){
-						    				for(var i = 0; i < v3d.scene.children.length; i++ ){
+					    			if( self.tarbody.name.match('ms') ){
+					    				for(var i = 0; i < v3d.scene.children.length; i++ ){
 
-						    					if( self.tarbody.userData.msname == v3d.scene.children[i].userData.msname){
+					    					if( self.tarbody.userData.msname == v3d.scene.children[i].userData.msname){
 
-						    						var msyn = v3d.scene.children[i].children[0].children[0].children.length;
-						    						if( msyn ){ target = 1};
+					    						var msyn = v3d.scene.children[i].children[0].children[0].children.length;
+					    						if( msyn ){ target = 1};
 
-						    					}
+					    					}
 
-						    				}
-						    			}
-						    		}
+					    				}
+					    			}
+
+
 					    			if( !target ) {
 					    				reset();
 					    			}
+
+					    			self.retargetCnt ++;
+
 				    			}
 
 				    			if ( self.tarbody == 0){
 									getTar();
 								}
+								if (self.retargetCnt == 100){
+									getTar();
+									self.retargetCnt = 0;
+								}
 
-								self.shp1.linearVelocity.set(0,0,0);
-								var ldh = v3d.tvec(self.tarvec.x, self.tarvec.y, self.tarvec.z);
-								ldh.normalize();
-								var len = ldh.length();
-								ldh.multiplyScalar(0);
+								if ( self.bincount == 3) {
+									self.shp1.linearVelocity.set(0,0,0);
+									var ldh = v3d.tvec(self.tarbody.position.x,self.tarbody.position.y, self.tarbody.position.z);
+									ldh.normalize();
+									//var len = ldh.length();
+									ldh.multiplyScalar(self.lv);
+									self.shp1.linearVelocity.addTime(ldh, self.timestep); 
+									self.bincount = 0;
 
-								self.shp1.linearVelocity.addTime(ldh, self.timestep); 
+								}
+								else {
+									self.bincount ++;
+								}
 								var v1 = v3d.tvec();
 								v1.subVectors(v3d.sight.position, v3d.containerMesh.position).normalize();
 
 
 								var v2 = v3d.tvec();
 
-								v2.subVectors(self.tarvec, v3d.containerMesh.position);
+
+							if ( self.tarbody != 0 ){
+
+								v2.subVectors(self.tarbody.position, v3d.containerMesh.position);
 								v2.normalize();
 								var dp = v1.dot(v2);
 								dp = Math.acos(dp);
@@ -537,7 +372,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 								}
 						    	
 
-								if ( self.tarbody != 0 ){
+								
 
 
 									if( !V3D.bincam ) {
@@ -553,18 +388,8 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 							    		var vector1 = v3d.tvec();
 							    		var vector2 = v3d.tvec();
 
-							    	//	vector2.subVectors( v3d.sight.position, v3d.containerMesh.position ).normalize();
-							    	//	vector2.multiplyScalar(90);	
-
 							    		vector1.subVectors( self.tarbody.position, v3d.containerMesh.position ).normalize();
 							    		vector1.multiplyScalar(90);
-
-							    		// vector2.subVectors( self.tarbody.position, v3d.containerMesh.position );
-							    		// var len = vector2.length();
-							    		// var vector3 = v3d.tvec();
-							    		// vector3.subVectors( v3d.sight.position, v3d.containerMesh.position ).normalize();
-							    		// vector3.multiplyScalar(len);
-
 
 							    		var xy = toScreenPosition( 0, v3d.camera, vector1);
 							    		var xy2 = toScreenPosition( self.tarbody, v3d.camera, 0 );
@@ -587,9 +412,15 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 									if ( self.lockcount == 10 ){
 
-										self.x += self.arrpos[self.arrposcnt];
-										self.y += self.arrpos[self.arrposcnt+1];
-										self.arrposcnt += 2;
+										if( self.arrposcnt < self.arrpos.lenght ){
+											self.x += self.arrpos[self.arrposcnt];
+											self.y += self.arrpos[self.arrposcnt+1];
+											self.arrposcnt += 2;
+										}
+										else {
+											self.arrposcnt = 0;
+											self.lockcount = 0;
+										}
 
 									}
 									if ( self.lockcount < 10 ){

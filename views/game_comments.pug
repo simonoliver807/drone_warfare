@@ -29,14 +29,14 @@ main#main.site-main(role='main')
                             label(for='id-1')
                               | Paragraph Text			
                               sup *
-                            textarea#textarea_1(name='textarea_1', placeholder='')
+                            textarea#textarea_1(name='textarea_1', placeholder='your comment', required='required')
                       .fw-row
                         .fw-col-xs-12.form-builder-item
                            .field-textarea
                             label(for='id-1')
                               | Enter your name here    
                               sup *
-                            input#commentname( type='text', name="commentname" )
+                            input#commentname( type='text', name='commentname',  required='required' )
                     .fw-row
                       .fw-col-xs-12.form-builder-item.form-builder-item      
                         input#commentsubmit(type='submit', value='Send')

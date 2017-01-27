@@ -1,11 +1,107 @@
+"use strict";
+
 //var url = 'http://localhost:9000/';
+//var url = 'http://192.168.0.7:9000/';
 var url = 'http://www.dronewar1.com'
+var soundFX = 1; 
 // change to live
 
-var loadgame = document.getElementById('loadGame').addEventListener( 'click', function() { runGame(); });
-var startgame = document.getElementById('startGame').addEventListener( 'click', function() { runGame(); });
-var commentsForm = document.getElementById('commentsubmit').addEventListener( 'click', function() { 
 
+
+function xhrSuccess () { 
+	this.callback.apply(this, this.arguments); 
+}
+
+function xhrError () { console.error(this.statusText); }
+
+function loadFile (sURL, fCallback /*, argumentToPass1, argumentToPass2, etc. */) {
+  var oReq = new XMLHttpRequest();
+  oReq.callback = fCallback;
+  oReq.arguments = Array.prototype.slice.call(arguments, 2);
+  oReq.onload = xhrSuccess;
+  oReq.onerror = xhrError;
+  oReq.open("get", sURL, true);
+  oReq.responseType = 'arraybuffer';
+  oReq.send(null);
+}
+
+
+var audiocntxt;
+var masterGain;
+var sourceObj = {};
+var sourcenum2 = 0;
+
+function decodeSucc(data) {
+	this.callback.apply(this. this.arguments)
+}
+function decodeErr() {
+	console.error(this.statusText);
+}
+function bufferSound(msg) {
+
+	// console.log(msg);
+	// responseArr.push( this.response );
+
+	console.log(' load sounds ');
+	var msg1 = msg;
+	audiocntxt.decodeAudioData( this.response, function(data) {
+
+	 	if ( data.duration > 3 && data.duration < 3.1) {
+	 		var name = 'thruster';
+	 	}
+	 	if ( data.duration > 9.1 && data.duration < 9.15) {
+	 		var name = 'droneExpl';
+	 	}
+		if ( data.duration > 14.1 && data.duration < 14.15) {
+	 		var name = 'pdown';
+	 	}
+	 	if ( data.duration > 81.86 && data.duration < 81.88) {
+	 		var name = 'droneAudio';
+	 	}
+
+		sourceObj[name].buffer = data;
+		sourceObj[name].connect( audiocntxt.destination );
+		sourcenum2 += 1;
+		if( sourcenum2 === 4) {
+			console.log('load all sounds');
+		}
+
+	});
+
+	
+}
+
+var loadgame = document.getElementById('loadGame').addEventListener( 'click', initgame);
+var startgame = document.getElementById('startGame').addEventListener( 'click', initgame);
+document.getElementById('sndfxbutton').addEventListener( 'click', setSoundFx);
+
+function initgame() { 
+
+	var isChrome = navigator.userAgent.match('Chrome');
+
+	if( isChrome ) {
+		audiocntxt = new AudioContext();
+	}
+	else {
+		audiocntxt = new webkitAudioContext();
+	}
+	masterGain = audiocntxt.createGain();
+	masterGain.connect(audiocntxt.destination);
+	sourceObj['droneExpl'] = audiocntxt.createBufferSource();
+	sourceObj['droneAudio'] = audiocntxt.createBufferSource();
+	sourceObj['pdown'] = audiocntxt.createBufferSource();
+	sourceObj['thruster'] = audiocntxt.createBufferSource();
+	loadFile("audio/droneExpl.wav", bufferSound, "loaded droneExpl\n\n");
+	loadFile("audio/droneAudio.mp3", bufferSound, "loaded droneAudio\n\n");
+	loadFile("audio/pdown.mp3", bufferSound, "loaded pdown\n\n");
+	loadFile("audio/thrusters.wav", bufferSound, "loaded thrusters\n\n");
+
+	//change to live
+	//runGame();
+};
+document.getElementById('commentsubmit').addEventListener( 'submit', function(event) { 
+
+	event.preventDefault();
 	document.getElementById('commentsubmit').disabled = true; 
 	var name = document.getElementById('commentname').value;
 	var comment = document.getElementById('textarea_1').value;
@@ -45,6 +141,20 @@ var commentsForm = document.getElementById('commentsubmit').addEventListener( 'c
 	document.getElementsByClassName('comment-list')[0].appendChild(commentitem);
 
  });
+function setSoundFx(event) {
+	var el = event.currentTarget;
+	if ( el.value == 'on' ) {
+		 el.value = 'off';
+		 el.style.background = '#000000';
+		 soundFX = 0; 
+
+	}
+	else {
+		el.value = 'on';
+		el.style.background = '#00b300';
+		soundFX = 1; 
+	}
+}
 
 function runGame() {
 
@@ -95,5 +205,12 @@ function runGame() {
 	}
 
 }) ();
-
+// change to live
 //runGame();
+//initgame();
+
+
+
+
+
+

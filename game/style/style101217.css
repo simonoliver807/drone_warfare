@@ -227,7 +227,8 @@ optgroup {
 	width:10%;
 }
 #container {
-	cursor: none;
+	/*change to live*/
+	/*cursor: none;*/
 	display: block;
 	height:100%;
 	width:100%; 
@@ -340,6 +341,30 @@ optgroup {
 .ls {
 	display: inline-block;
 }
+#level1Img {
+	display: none;
+}
+#level2Img {
+	display: none;
+}
+#level3Img {
+	display: none;
+}
+#level4Img {
+	display: none;
+}
+#level5Img {
+	display: none;
+}
+#levelChng {
+	position: absolute;
+	margin-left: 0;
+	top: 50%;
+	width: 100%;
+}
+.levelChngImg {
+	margin: 0 auto;
+}
 #minusforce {
 	border-radius: 18px;
 	display: none;
@@ -369,7 +394,19 @@ optgroup {
     position: absolute;
     width: 13%;
     border-radius: 18px;
-} 
+}
+#respawnImg {
+	display: none;
+}
+#sndfxbutton {
+	background: #00b300;
+	outline: none;
+	width: 76px; 
+}
+#sndfxbutton:hover {
+	background: #007acc;
+	width: 76px; 
+}
 
 
 
