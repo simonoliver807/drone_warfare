@@ -107,7 +107,8 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
     var self;
 
     // change to live
-    var health = 250; 
+    // 250 for health maybe to high
+    var health = 150; 
     //var health = 10;
     var dronelaunch = 0;
     var level1imgCnt = 0;
@@ -189,12 +190,6 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
                 worldcount += 0.00001;
 
-                if( dronelaunch < 600 && dronelaunch != -1  ) {
-                    dronelaunch += 1;
-                }
-                else {
-                    dronelaunch = 0;
-                }
 
             //   var pause = 1;
 
@@ -203,6 +198,13 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                     var btd = [];
                     world.step();
                     v3d.render();
+
+                    if( dronelaunch < 60 && dronelaunch != -1  ) {
+                        dronelaunch += 0.1;
+                    }
+                    else {
+                        dronelaunch = 0;
+                    }
 
 
                     if(firstRender != 0){
@@ -557,8 +559,8 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
                         } 
 
-                        if( dronelaunch == 600) {
-                            //console.log('drone launch'); 
+                        if( dronelaunch >= 60) {
+                            console.log('drone launch'); 
                             var newld = 1;
                             while ( newld ){
                                 if( bodys[newld].name == "drone" && !bodys[newld].ld && !bodys[newld].nrtm ) {
@@ -1248,7 +1250,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 dronelaunch = 0;
                 // change to live
                 //health = 100000000000000;
-                health = 250;
+                health = 150;
                 V3D.startRender = 0;
                 V3D.raycastarr = [];
                 bodysNum = bodys.length;
