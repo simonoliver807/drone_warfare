@@ -492,9 +492,9 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                         }
                     }
                     
-
-                    perf = world.performance.show();
-                    perfcont.innerHTML = perf;
+                    // change to live
+                    // perf = world.performance.show();
+                    // perfcont.innerHTML = perf;
                   
 
                    // var x, y, z, mesh, body;
