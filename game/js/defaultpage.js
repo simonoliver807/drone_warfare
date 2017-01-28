@@ -97,7 +97,7 @@ function initgame() {
 	loadFile("audio/thrusters.wav", bufferSound, "loaded thrusters\n\n");
 
 	//change to live
-	//runGame();
+	runGame();
 };
 document.getElementById('commentsubmit').addEventListener( 'submit', function(event) { 
 
