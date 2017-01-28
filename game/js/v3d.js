@@ -1,6 +1,6 @@
 define(['three'], function(THREE) {
 'use strict';
-var THREE;
+
 var V3D = {};
 V3D.ToRad = Math.PI/180;
 V3D.ToDeg = 180 / Math.PI;

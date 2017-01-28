@@ -68,7 +68,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
     var canvasCentreY = v3d.h/2;
 
     var containerMeshPrev;
-    containerMeshPrev = new OIMO.Vec3(0,0,0)
+    containerMeshPrev = new OIMO.Vec3(0,0,0);
     var canvas = document.getElementById('container');
     var keys = [];
     var pddist = new OIMO.Vec3();
@@ -88,7 +88,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
     var ms1len = 0;
     var ms2len = 0;
-    var msTotal_list = []
+    var msTotal_list = [];
 
     var numofdrone = 0;
     var numofdroneleft = 0;
@@ -111,6 +111,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
     //var health = 10;
     var dronelaunch = 0;
     var level1imgCnt = 0;
+    var pdown;
 
         return {
 
@@ -129,7 +130,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                     return bodys[bodys.length -1];
                 }
                 containerMesh = 0;
-                prs = [{id:'temp1',gameid:12345,posx:0,posy:0,posx:0,rotx:0,roty:0,rotz:0}];
+                prs = [{id:'temp1',gameid:12345,posx:0,posy:0,posz:0,rotx:0,roty:0,rotz:0}];
 
 
                 // change to live
@@ -199,7 +200,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
               if( !pause && V3D.startRender == numobj ){  
                     // reset bodies to dispose array
-                    var btd = []
+                    var btd = [];
                     world.step();
                     v3d.render();
 
@@ -227,7 +228,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                     }
 
 
-                    anibincnt == 5 ? anibincnt =0 : anibincnt += 1;
+                    anibincnt == 5 ? anibincnt = 0 : anibincnt += 1;
 
 
 
