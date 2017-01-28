@@ -100,19 +100,18 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
     var firstRender = 0;
 
-    // change to live
-    // var ms1phaser = 0;
-    // var ms2phaser = 0;
     var numobj = 0;
     var self;
 
     // change to live
     // 250 for health maybe to high
-    var health = 150; 
-    //var health = 10;
+    var health = 90; 
+    
     var dronelaunch = 0;
     var level1imgCnt = 0;
     var pdown;
+    var mslist = [];
+    var dronelaunchTime = 60;
 
         return {
 
@@ -170,10 +169,12 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 //if( endsequence > 0 ){
                     //console.log('normal r a f'); 
                 //}
-                if( V3D.ms1_1arrpos == 99 && endsequence > 0 ){
-                    endsequence --;
-                    var currentLevel = x982y + 1;
-                    document.getElementById('level'+currentLevel+'Img').style.display = 'block';
+                if( V3D.ms1_1arrpos === 99 && endsequence > 0 ){
+                    if ( V3D.ms2_1arrpos === 0 || V3D.ms2_1arrpos === 99) {
+                        endsequence --;
+                        var currentLevel = x982y + 1;
+                        document.getElementById('level'+currentLevel+'Img').style.display = 'block';
+                    }
                 }
                 if( endsequence == 0 ){                            
                     //console.log('end of level');
@@ -199,7 +200,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                     world.step();
                     v3d.render();
 
-                    if( dronelaunch < 60 && dronelaunch != -1  ) {
+                    if( dronelaunch < dronelaunchTime && dronelaunch != -1  ) {
                         dronelaunch += 0.1;
                     }
                     else {
@@ -343,7 +344,9 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                                         V3D.ms1_1arrpos = i;
                                     }
                                     if(v3d.scene.children[i].name == 'ms2_1'){
-                                        V3D.ms2_1arrpos = i;
+                                        if( mslist.indexOf('ms2') != -1) {
+                                            V3D.ms2_1arrpos = i;
+                                        }
                                     }
 
                                 }
@@ -458,7 +461,14 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                                 health -= 1;
                                 if(health === 0){ 
                                     endsequence = -200; 
-                                    document.getElementById('respawnImg').style.display = 'block';
+
+                                        document.getElementById('respawnImg').style.display = 'block';
+                                        if( V3D.ms1_1arrpos === 99 && endsequence < 0 ){
+                                            if ( V3D.ms2_1arrpos === 0 || V3D.ms2_1arrpos === 99) {
+                                                var currentLevel = x982y + 1;
+                                                document.getElementById('level'+currentLevel+'Img').style.display = 'none';
+                                            }
+                                        }
                                 }
                             } 
                             //  if((n1==name2 && n2==name5) || (n2==name2 && n1==name5)){
@@ -559,7 +569,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
                         } 
 
-                        if( dronelaunch >= 60) {
+                        if( dronelaunch >= dronelaunchTime) {
                             console.log('drone launch'); 
                             var newld = 1;
                             while ( newld ){
@@ -884,7 +894,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 }
 
                 var k = ms.length;
-                var mslist = [];
+                mslist = [];
                 while(k--){
                     mslist.push(ms[k].name);
                     if ( msTotal_list.indexOf(ms[k].name) === -1 ) {
@@ -1250,14 +1260,17 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 dronelaunch = 0;
                 // change to live
                 //health = 100000000000000;
-                health = 150;
+                health = 90;
                 V3D.startRender = 0;
                 V3D.raycastarr = [];
-                bodysNum = bodys.length;
                 V3D.ms1_1arrpos = 0;
+                V3D.ms2_1arrpos = 0;
+                bodysNum = bodys.length;
                 meshs = [];
                 meshNum = 0;
                 containerMesh = 0;
+                dronelaunchTime -= 10;
+
 
 
                 this.lgd(x982y);
@@ -1266,6 +1279,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                     document.getElementById('respawnImg').style.display = 'none';
                     v3d.sight.material.transparent = false;
                     v3d.sight.material.opacity = 1;
+                    dronelaunchTime = 60;
                 }
                 else {
                     document.getElementById('level'+x982y+'Img').style.display = 'none';
