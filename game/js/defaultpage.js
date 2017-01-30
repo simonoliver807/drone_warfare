@@ -185,8 +185,8 @@ function runGame() {
 	//******** minified change to live *************/////////
 	var s = document.createElement("script");
 	s.type = "text/javascript";
-	s.src = "js_minified/require.js";
-	s.setAttribute('data-main', 'js_minified/config.js')
+	s.src = "js_min/require.js";
+	s.setAttribute('data-main', 'js_min/config.js')
 
 
 	//******** unminified *************/////////
