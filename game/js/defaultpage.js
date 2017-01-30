@@ -74,6 +74,14 @@ function bufferSound(msg) {
 var loadgame = document.getElementById('loadGame').addEventListener( 'click', initgame);
 var startgame = document.getElementById('startGame').addEventListener( 'click', initgame);
 document.getElementById('sndfxbutton').addEventListener( 'click', setSoundFx);
+document.getElementById('dwnav').addEventListener( 'click', navFunc);
+document.getElementById('wanav').addEventListener( 'click', navFunc);
+document.getElementById('titleLink').addEventListener( 'click', navFunc);
+document.getElementById('bannerLink').addEventListener( 'click', navFunc);
+document.getElementById('menu-toggle').addEventListener( 'click', updateNav);
+
+
+
 
 function initgame() { 
 
@@ -174,7 +182,6 @@ function runGame() {
 	var game = document.getElementById('game-content');	
 	game.style.display = 'block';
 
-
 	//******** minified change to live *************/////////
 	var s = document.createElement("script");
 	s.type = "text/javascript";
@@ -196,6 +203,50 @@ function runGame() {
 
 
 }
+function navFunc(event) {
+
+	var target = event.target;
+	if ( target.id.match('dwnav') ){
+		var dronewar1 = document.getElementById('dronewar1');
+		dronewar1.style.display = 'block';
+		document.getElementById('dwli').className = 'current-menu-item';
+		var web_app = document.getElementById('web_app');
+		web_app.style.display = 'none';
+		document.getElementById('wali').className = ''
+	}	
+	if ( target.id.match('wanav') ){
+		var dronewar1 = document.getElementById('dronewar1');
+		dronewar1.style.display = 'none';
+		document.getElementById('dwli').className = ''
+		dronewar1.className = ''
+		var web_app = document.getElementById('web_app');
+		web_app.style.display = 'block';
+		document.getElementById('wali').className = 'current-menu-item'
+	}
+	if ( target.id == 'titleLink' || target.id == 'bannerImg') {
+		var page = { target: { id: 'dwnav' } };
+		navFunc(page);
+	}
+	return false;
+
+}
+function updateNav (event) {
+
+	var navbar = document.getElementById('site-header-menu');
+	var navbutclss = event.target.className;
+	if ( navbutclss.match( 'toggled-on' ) ) {
+		event.target.className = 'menu-toggle';
+		navbar.className = 'site-header-menu '
+		//navbar.style.display = 'none';
+	}
+	if ( !navbutclss.match( 'toggled-on' ) ) {
+		event.target.className = 'menu-toggle toggled-on';
+		navbar.className = 'site-header-menu toggled-on'
+		//navbar.style.display = 'block';
+	}
+
+
+}
 (function() {
 	var data = document.getElementById('consoleData');
 	data = JSON.parse(data.value);
@@ -208,6 +259,8 @@ function runGame() {
 // change to live
 //runGame();
 //initgame();
+//var page = { target: { id: 'wanav' } };
+//navFunc(a);
 
 
 

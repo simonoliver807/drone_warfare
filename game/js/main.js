@@ -46,6 +46,9 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 					this.isMobile = false;
 				    if (n.match(/Android/i) || n.match(/webOS/i) || n.match(/iPhone/i) || n.match(/iPad/i) || n.match(/iPod/i) || n.match(/BlackBerry/i) || n.match(/Windows Phone/i)) {
 				    	this.loadMobileEvents(n);
+				    	if( n.match(/iPhone/i) && !window.navigator.standalone ) {
+				    		this.showPopup('isShowPopup');
+				    	}
 				    }   
 				    else {
 				    	this.loadEvents();
@@ -60,7 +63,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 					document.getElementById('loadingScreen').style.display = 'none';
 					var errscreen = document.getElementById('errScreen')
 					errscreen.style.display = 'block';
-					errscreen.innerHTML = '<div id="errdiv">Sorry there has been an error ' + err.message + ' </div>';
+					errscreen.innerHTML = '<div id="errdiv">Sorry drone war 1 is not available at this time </div>';
 				}
 			},
 
@@ -164,6 +167,39 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 				}
 
 			},
+			showPopup: function (type) {
+
+				var popup = document.getElementById('popup');
+				var orchng = 0;
+				if ( type == 'orchng' && popup.style.display == 'block') {
+
+					orchng = 1;
+
+				}
+				if ( type == 'isShowPopup' || orchng ) {
+		    		var screen = document.body;
+		    		popup.style.display = 'block';
+		    		popup.style.top = Math.max(0, ((screen.clientHeight - popup.clientHeight) / 2) + screen.scrollTop) + "px";
+		    		popup.style.left = Math.max(0, ((screen.clientWidth - popup.clientWidth) / 2) + screen.scrollLeft) + "px";
+		    		document.getElementById('nothanks').addEventListener('click', this.showWebAppPage);
+		    		document.getElementById('yesplease').addEventListener('click', this.showWebAppPage);
+		    	}
+
+			},
+			showWebAppPage: function (event) {
+				if ( event.target.id.match('yesplease') ){
+					
+					if ( !gameinit.gspause() ) {
+						gameinit.gspause( 1 );
+					}
+					document.getElementById('level1Img').style.display = 'none'
+					document.getElementById('page').style.display = 'block';
+					document.getElementById('game-content').style.display = 'none';
+					var page = { target: { id: 'wanav' } };
+					navFunc(page);
+				}
+				document.getElementById('popup').style.display = 'none';
+			},
 			loadEvents: function(){
 
 				window.addEventListener( 'keydown', this.handleKeyDown, false );
@@ -174,6 +210,10 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 			},
 			loadMobileEvents: function(n) {
 				self = this;
+				window.addEventListener('orientationchange', function() {
+					console.log(event);
+					self.showPopup('orchng');
+				});
 				mobcon.style.display = 'block';
 				var keys = gameinit.getObj('keys');
 		    	if( n.match(/iPhone/) ){

@@ -493,7 +493,12 @@ V3D.View.prototype = {
 
         if(!V3D.bincam){
 
-            var geometry = new THREE.CircleGeometry( 0.2, 8 );
+            if( navigator.userAgent.match(/iPhone/i)  ) {
+                var geometry = new THREE.CircleGeometry( 0.4, 8 );
+            }
+            else {
+                var geometry = new THREE.CircleGeometry( 0.2, 8 );
+            }
             var material = new THREE.MeshBasicMaterial( { color: 0x0099ff} );
             var circle = new THREE.Mesh( geometry, material );
             mesh.add( circle );

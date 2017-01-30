@@ -53,6 +53,9 @@ a {
 	background-color: transparent;
 	cursor: pointer;
 }
+a:focus {
+	outline: none;
+}
 
 abbr[title] {
 	border-bottom: 1px dotted;
@@ -234,6 +237,9 @@ optgroup {
 	width:100%; 
 	position: absolute;
 }
+.dh20 {
+	height: 20px;
+}
 .divGreen div {
 	background-color: #66ff33;
 }
@@ -365,6 +371,11 @@ optgroup {
 .levelChngImg {
 	margin: 0 auto;
 }
+.menu-toggle.toggled-on {
+    background-color: #1a1a1a;
+    border-color: #1a1a1a;
+    color: #fff;
+}
 #minusforce {
 	border-radius: 18px;
 	display: none;
@@ -407,14 +418,143 @@ optgroup {
 	background: #007acc;
 	width: 76px; 
 }
+#web_app {
+	display: none;
+}
 
 
+ /* ios pop up */
+ #popup {
+  background:rgba(255,255,255,0.85);
+  border-radius: 8px;
+  box-sizing: border-box;
+  display: none;
+  margin:0 auto;
+  margin-top: 20px;
+  position: absolute;
+  text-align: center;
+  width:84%;
+  z-index: 10;
+}
+
+#popup h3 {
+  margin: 20px 10px 0 10px;
+  padding: 0;
+}
+
+#popup p {
+  margin: 15px;
+  padding: 0;
+}
+
+#popup .button-holder a {
+  color: #007AFF;
+  text-decoration: none;
+  line-height:45px;
+  font-weight:bold;
+  display: block;
+  border-top: 1px solid #BABABA;
+}
+
+#popup .two-button a{
+  width: 50%;
+  float: left;
+  box-sizing: border-box
+}
+
+#popup .two-button a:first-child {
+  border-right: 1px solid #BABABA
+}
 
 
+@media only screen 
+and (min-device-width : 375px) 
+and (max-device-width : 667px) { 
+
+	#addforce {
+		display: none;
+    	height: 35%;
+    	width: 100%;
+	}
+	#addforcebut {
+		background-color: #FFFF00;
+		border-radius: 100%;
+		height: 35%;
+		width: 35%;
+		left: 50%;
+		top: 50%;
+		position: relative;
+		transform: translate(-50%, -50%);
+	}
+	#minusforcebut {
+		background-color: #00FF00;
+		border-radius: 100%;
+		height: 35%;
+		width: 35%;
+		left: 50%;
+		top: 50%;
+		position: relative;
+		transform: translate(-50%, -50%);
+	}
+	#spacertapaccel {
+    	height: 18%;
+    	width: 100%;
+	}
+	#tapaccel {
+		bottom: 0;
+	    height: 35%;
+	    margin: 3% 3% 0 3%;
+	    position: absolute;
+	    right: 0;
+	    width: 7%;
+	}
 
 
+}
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) { 
+
+	#addforce {
+		display: none;
+    	height: 35%;
+    	width: 100%;
+	}
+	#addforcebut {
+		background-color: #FFFF00;
+		border-radius: 100%;
+		height: 35%;
+		width: 35%;
+		left: 50%;
+		top: 50%;
+		position: relative;
+		transform: translate(-50%, -50%);
+	}
+	#minusforcebut {
+		background-color: #00FF00;
+		border-radius: 100%;
+		height: 35%;
+		width: 35%;
+		left: 50%;
+		top: 50%;
+		position: relative;
+		transform: translate(-50%, -50%);
+	}
+	#spacertapaccel {
+    	height: 18%;
+    	width: 100%;
+	}
+	#tapaccel {
+		bottom: 0;
+	    height: 35%;
+	    margin: 3% 3% 0 3%;
+	    position: absolute;
+	    right: 0;
+	    width: 7%;
+	}
 
 
+}
 
 
 

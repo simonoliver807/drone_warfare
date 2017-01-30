@@ -2,7 +2,7 @@ CACHE MANIFEST
 
 CACHE:
 
- style/style280117.css
+ style/style30a0117.css
  js/require.js
  js/config.js
  images/cpv/cpv.mtl
@@ -11,8 +11,6 @@ CACHE:
  images/ani/exdrone1.obj
  images/ani/exdrone2.obj
  images/ani/exdrone3.obj
- images/phasers/bluefire.png
- images/phasers/dphaser.obj
  images/cpv/ed1a.jpg
  images/cpv/cp6b.jpg
  images/cpv/cpv.obj
@@ -30,6 +28,16 @@ CACHE:
  images/ms/ms2_2.obj
  images/ms/ms2_3.obj
  images/ms/ms2_4.obj
+ images/phasers/bluefire.png
+ images/websiteImg/cropped-banner-web_1280-768x179.jpg
+ images/websiteImg/dt1.png
+ images/websiteImg/dt2.png
+ images/websiteImg/lvlchngimg/level1.png
+ images/websiteImg/lvlchngimg/level2.png
+ images/websiteImg/lvlchngimg/level3.png
+ images/websiteImg/lvlchngimg/level4.png
+ images/websiteImg/lvlchngimg/level5.png
+ images/websiteImg/lvlchngimg/respawn.png
  audio/pdown.mp3
  audio/droneExpl.wav
  audio/thrusters.wav
