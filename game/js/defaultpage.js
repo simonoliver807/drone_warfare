@@ -1,8 +1,8 @@
 "use strict";
 
-//var url = 'http://localhost:9000/';
+var url = 'http://localhost:9000/';
 //var url = 'http://192.168.0.7:9000/';
-var url = 'http://www.dronewar1.com'
+//var url = 'http://www.dronewar1.com'
 var soundFX = 1; 
 // change to live
 
@@ -183,17 +183,17 @@ function runGame() {
 	game.style.display = 'block';
 
 	//******** minified change to live *************/////////
-	var s = document.createElement("script");
-	s.type = "text/javascript";
-	s.src = "js_min/require.js";
-	s.setAttribute('data-main', 'js_min/config.js')
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js_min/require.js";
+	// s.setAttribute('data-main', 'js_min/config.js')
 
 
 	//******** unminified *************/////////
-	// var s = document.createElement("script");
-	// s.type = "text/javascript";
-	// s.src = "js/require.js";
-	// s.setAttribute('data-main', 'js/config.js')
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js/require.js";
+	s.setAttribute('data-main', 'js/config.js')
 
 
 
@@ -251,13 +251,13 @@ function updateNav (event) {
 	var data = document.getElementById('consoleData');
 	data = JSON.parse(data.value);
 	for( var i = 0; i < data.length; i++ ) {
-		dataObj = data[i];
+		var dataObj = data[i];
 		console.log( '%c' + dataObj, 'background: #222; color: #bada55' );
 	}
 
 }) ();
 // change to live
-//runGame();
+runGame();
 //initgame();
 //var page = { target: { id: 'wanav' } };
 //navFunc(a);

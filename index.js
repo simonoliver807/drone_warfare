@@ -27,6 +27,9 @@ var app = express();
 var server = http.createServer(app);
 var io = require('socket.io')(server);
 
+// var multiserver = http.createServer(app);
+// var io = require('socket.io')( multiserver );
+
 var dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
 mongoose.connect(dburl);
 
@@ -41,7 +44,7 @@ app.set('port', process.env.PORT || 9000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
 
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); //parses json, multi-part (file), url-encoded 
 app.use(express.static( __dirname + '/game'));
@@ -128,58 +131,74 @@ app.on('error', function(err) {
 
 
 var Schema = mongoose.Schema;
-var gameDataSchema = new Schema  ({gameUUID: String, player1: String, player2: String });
+var gameDataSchema = new Schema  ({ player1: String, player2: String, bodys: { Buffer } });
 var Multi = mongoose.model('Multi', gameDataSchema);
 
-cp.scd(app.locals.gameData);
 var numberOfGame = 0;
 
-// io.on('connection', function (socket) {
+io.on('connection', (socket) => {
 
-// 	cp.scd(socket.id); 
-// 	console.log(Multi);
-// 	//cp.scd( socket.nsp );
+	console.log('connection');
 
-// 	var gameUUID = uuid.v1();
-// 	app.locals.gameData[numberOfGame] = new Multi( { gameUUID: gameUUID, player1: socket.id, player2: 'player2' } );
-// 	numberOfGame += 1;
-// 	host = true;
+	// cp.scd(socket.id); 
+	// console.log(Multi);
+	// cp.scd( socket.nsp );
 
-// 	// if(app.locals.ids.length > 2) {
-// 	// 	console.log(' 3 hosts emitting send');
-// 	// 	socket.broadcast.to(app.locals.ids[2]).emit('sendto3', 'hello 3');
-// 	// }
+	var lastRec = Multi.find().sort({_id:1}).limit(1);
+	lastRec.exec( (err, lastRec) => {
 
+		console.log(lastRec.length);
+
+		if ( lastRec.length === 0 || lastRec.player2 != 'player2') {
+
+			Multi.create( { player1: socket.id, player2: 'player2', bodys: {} }, ( err, multi ) => {
+				if( err ) console.log('error starting game');
+
+				socket.emit('gamestart', { id: multi.id , host: true });
+				app.locals.gid = multi.id;
+			});
+			numberOfGame += 1;
+		}
+		else {
+
+			Multi.update( { _id: lastRec.id} , { $set: { player2: socket.id } });
+			socket.emit('gamestart', { id: lastRec.id, host: false });
+			app.locals.gid = lastRec.id;
+		}
+
+
+
+
+	});
    
-//    socket.emit('gamestart', { id: gameUUID, host: host });
 
-//    socket.emit('stc', {data: app.locals.gameData } );
-
-
-//     socket.on('getgd', function(gameUUID){
-//     	console.log('game uuid is '); 
-//         console.log(gameUUID);
-//         var gdarr = [];
-//     });
+  	//socket.emit('stc', {data: app.locals.gid } );
 
 
-//     socket.on('setgd', function (gd) {
+    socket.on('getgd', function(gameUUID){
+    	console.log('game uuid is '); 
+        console.log(gameUUID);
+    });
 
-//     });
-//     socket.on('disconnect', function(data) {
 
-//     });
-// });
+    socket.on('setgd', function (gd) {
+
+    	Multi.update({ _id: gd.id }, { $set: { bodys: gd.body}} );
+    	Multi.find({}).exec( function(err, data) {
+
+    		console.log(data);
+    	});
+
+    });
+    socket.on('disconnect', function(data) {
+    	console.log('disconnect');
+    });
+});
 
 // reloadServer = reload(server, app);
-// watch('.rebooted', function (f, curr, prev) {
-//     // Fire server-side reload event 
-//     reloadServer.reload();
-// });
-// fs.writeFile('.rebooted', 'rebooted')
  
-// Reload code here 
-reload(server, app).reload();
+// // Reload code here 
+// reload(server, app).reload();
  
 server.listen(app.get('port'), function(){
   console.log("Web server listening on port " + app.get('port') + " Date: " + new Date())

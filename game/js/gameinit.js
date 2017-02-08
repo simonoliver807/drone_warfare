@@ -15,8 +15,10 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
     var pause = 0;
     var v3d = new V3D.View();
 
-    // ********** mulit
-    // var socket = SOCKET_IO.connect(url);
+    // ********** mulit   change to live
+    var socket = SOCKET_IO.connect(url);
+
+
     
     //////////////////////////
     //****Oimo Variables****//
@@ -134,7 +136,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
 
                 // change to live
-              //  perfcont = document.getElementById('perf');
+                perfcont = document.getElementById('perf');
 
 
                 perf = 0;
@@ -146,19 +148,19 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
 
                 ////////// ********** multi
-                // socket.on('gamestart', function (data) {
-                //     gameUUID = data['id'];
-                //     console.log('gu ' + gameUUID); 
-                //  //   socket.emit('getgd', gameUUID);
-                //     if(data['host'] == 1){
-                //         self.host = 1;
-                //         console.log('host ' + data['host']? true:false);
+                socket.on('gamestart', function (data) {
+                    gameUUID = data['id'];
+                    console.log('gu ' + gameUUID); 
+                 //   socket.emit('getgd', gameUUID);
+                    if(data['host'] == 1){
+                        self.host = 1;
+                        console.log('host ' + data['host']? true:false);
 
-                //     }
-                // });
-                // socket.on('stc', function (data) {
-                //     console.log(data);
-                // })
+                    }
+                });
+                socket.on('stc', function (data) {
+                    console.log(data);
+                })
 
 
             },
@@ -192,7 +194,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 worldcount += 0.00001;
 
 
-               //var pause = 1;
+               var pause = 1;
                // change to live
                
 
@@ -245,7 +247,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                     // else{
                     //     console.log('not host'); 
                     // }
-                    // pause = 1;
+                    // //pause = 1;
                     // socket.emit('getgd', gameUUID);
                     // socket.on('sgd', function(gdarr){ 
 
@@ -507,8 +509,8 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                     }
                     
                     // change to live
-                    // perf = world.performance.show();
-                    // perfcont.innerHTML = perf;
+                    perf = world.performance.show();
+                    perfcont.innerHTML = perf;
                   
 
                    // var x, y, z, mesh, body;
