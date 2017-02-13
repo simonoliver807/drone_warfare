@@ -10,6 +10,7 @@ var mc = require('mongodb').MongoClient;
 var mongoose = require('mongoose');
 var uuid = require('node-uuid')
 var dateformat = require('dateformat')
+const async = require('async');
 
 var event = require('events');
 var eventEmitter = new event.EventEmitter;
@@ -18,7 +19,6 @@ var hc = require('./handleComments');
 
 // pass comment to the client
 var cp = new hc();
- 
 
 
 var watch = require('node-watch');
@@ -41,35 +41,50 @@ app.set('port', process.env.PORT || 9000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
 
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); //parses json, multi-part (file), url-encoded 
 app.use(express.static( __dirname + '/game'));
 
+app.locals.shaders = { };
+fs.readdir(__dirname + '/shaders/', function (err, filesPath) {
+    if (err) throw err;
+    filesPath = filesPath.map(function(filePath){ //generating paths to file
+        return __dirname + '/shaders/' + filePath;
+    });
+    async.map(filesPath, function(filePath, cb){ //reading files or dir
+        fs.readFile(filePath, 'utf8', cb);
+    }, function(err, results) {
+        for ( var i in results) {
+        	if ( results[i].match('laservs') ) {
+        		app.locals.shaders.laservs = results[i];
+        	}
+        	if ( results[i].match('laserfs') ) {
+        		app.locals.shaders.laserfs = results[i];
+        	}
+        }
+    })
+})
+
 
 app.locals.comments = 0;
-
 app.get('/', function (req, res) {
-	//console.log('res.locals'); 
-	//console.log( app.locals); 
-	//if( !app.locals.comments) {
 		mc.connect(dburl, function(err, db) {
 		    if(!err) {
 		          db.collection('comments').find().toArray(function (err, result) {
 		    		if (err) throw err
 		    		app.locals.comments = result;
 		    		app.locals.cd = cp.gcd();
-		    		res.render( 'index', { title: 'Drone War 1' })
+		    		res.render( 'index', { 
+		    			title: 'Drone War 1',
+		    			laservs: app.locals.shaders.laservs,
+	        			laserfs: app.locals.shaders.laserfs
+	        		})
 			  	  })
 				  db.close();
 		    }
 		});
-	//}
-	// else {
 
-	// 	res.render('index', { title: 'Drone Warfare' })
-
-	// }
 })
 
 

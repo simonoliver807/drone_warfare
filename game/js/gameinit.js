@@ -708,6 +708,8 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                         }
 
                     }
+                    // change to live
+                     v3d.phaser();
                     if (endsequence >= 0) {
                         if(keys[38] && !keys[32]){
                             v3d.addForce();
@@ -744,7 +746,8 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                                 if ( dbody.ld ) {
                                     drone.userData.ld = 1;
                                 }
-                                v3d.updateDrones( dbody, drone, dbody.ms );
+                                // change to live
+                               // v3d.updateDrones( dbody, drone, dbody.ms );
                             }
                             if ( !drone.userData.ld && !drone.userData.rtm) {
                                 pddist.sub(containerMesh.position,meshs[i].position);
