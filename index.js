@@ -25,7 +25,7 @@ var watch = require('node-watch');
  
 var app = express();
 var server = http.createServer(app);
-var io = require('socket.io')(server);
+const io = require('socket.io')(server);
 
 // var multiserver = http.createServer(app);
 // var io = require('socket.io')( multiserver );
