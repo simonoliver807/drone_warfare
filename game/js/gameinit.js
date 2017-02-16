@@ -194,7 +194,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 worldcount += 0.00001;
 
 
-               var pause = 1;
+               //var pause = 1;
                // change to live
                
 
