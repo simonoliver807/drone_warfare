@@ -266,11 +266,20 @@ V3D.View.prototype = {
     render : function(){
 
          if( this.startRot.rot !== 0 && this.containerMesh != 0){ this.applyRot() };
+
+        // shader updates
+        var planets = this.scene.children[ V3D.mesharrpos.pl ].children;
+        for ( var i = 0; i < planets.length; i++ ){
+            if( planets[i].name.match('mercury1') ){
+                var time = performance.now();
+                planets[0].material.uniforms.u_time.value = time/1000;
+            }
+        }
     	this.renderer.render( this.scene, this.camera );
 
         if(V3D.bincam) {
-            this.laser.material.transparent = true;
-            this.laser.material.opacity = 0;
+            // this.laser.material.transparent = true;
+            // this.laser.material.opacity = 0;
            // this.laser.children[0].material.visible = false;
             // this.laser.children[0].material.transparent = true;
             // this.laser.children[0].material.opacity = 0;
@@ -289,11 +298,11 @@ V3D.View.prototype = {
       //  geos['cylTarget'] = new THREE.CylinderGeometry( 20, 20, 20 );
         geos['phaser'] = new THREE.SphereGeometry(0.5, 32, 32);
         geos['dphaser'] = new THREE.SphereGeometry(1, 32, 32);
-        geos['mercelec1'] = new THREE.SphereBufferGeometry(750, 16, 12);
         geos['earth1'] = new THREE.SphereBufferGeometry(1000, 16, 12);
         geos['earth1'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 23.5 ) ) );
         geos['shp1'] = new THREE.SphereGeometry(0.1)
         geos['sight'] = new THREE.BoxGeometry(15,15,0.5);
+        geos['mercelec1'] = new THREE.SphereBufferGeometry(750, 16, 12);
         geos['mothershipbb1'] = new THREE.BoxGeometry(700,300,700,10,10,10);
         geos['mothershipbb2'] = new THREE.BoxGeometry(1600,300,300,10,10,10);
         geos['moonice'] = new THREE.SphereGeometry(500, 16, 12);
@@ -305,7 +314,7 @@ V3D.View.prototype = {
         geos['msphaser2'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
 
         geos['laser'] = new THREE.CylinderGeometry(0.06,0.06,5000);
-        geos['laserglow1'] = new THREE.PlaneGeometry(1, 5000);
+        geos['laserglow1'] = new THREE.PlaneGeometry(0.8, 5000);
       //  geos['laserglow2'] = new THREE.PlaneGeometry(10 , 5000);
         
 
@@ -400,18 +409,21 @@ V3D.View.prototype = {
                // this.geos['laserglow'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
                // var glowmesh = new THREE.Mesh(this.geos['laserglow'], material, 'laserglow');
 
-            var material = new THREE.MeshBasicMaterial({ color: cylinder.color, transparent: true, opacity: 0});
-            this.geos[cylinder.name].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
-            this.laser = new THREE.Mesh( this.geos[cylinder.name], material, cylinder.name  );
+            // var material = new THREE.MeshBasicMaterial({ color: cylinder.color, transparent: true, opacity: 0});
+            // this.geos[cylinder.name].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
+            // this.laser = new THREE.Mesh( this.geos[cylinder.name], material, cylinder.name  );
 
+            // change to live move to plane section
 
             var laserfs = document.getElementById( 'laserfs' ).textContent;
             var laservs = document.getElementById( 'laservs' ).textContent;
-            laserfs = laserfs.replace('&lt;', '<');
             var material =  new THREE.RawShaderMaterial({
                 uniforms: {
-                    u_color: {
-                        value: new THREE.Vector3(51,173,255)
+                    u_color1: {
+                        value: new THREE.Vector3( 51,173,255 )
+                    },
+                    u_color2: {
+                        value: new THREE.Vector3( 0, 153, 255 )
                     }
                 },
                 vertexShader: laservs,
@@ -421,7 +433,7 @@ V3D.View.prototype = {
             } );
             this.geos['laserglow1'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
             this.glowmesh = new THREE.Mesh( this.geos['laserglow1'], material ); 
-            this.laser.add(this.glowmesh);
+           // this.laser.add(this.glowmesh);
 
             return;
         }
@@ -440,7 +452,26 @@ V3D.View.prototype = {
             var texture = new THREE.TextureLoader().load(setImage);
             var material = new THREE.MeshBasicMaterial({map:texture});
             if ( sphere.name == 'mercury1' || sphere.name == 'electric1') {
+                var planet1fs = document.getElementById( 'planet1fs' ).textContent;
+                var planet1vs = document.getElementById( 'planet1vs' ).textContent;
                 geometry = this.geos['mercelec1'];
+                var material = new THREE.RawShaderMaterial({
+                    uniforms: {
+                        texture: { 
+                            value: texture
+                        },
+                        u_time: {
+                            value: 1.0
+                        } 
+                    },
+                    vertexShader: planet1vs,
+                    fragmentShader: planet1fs,
+                    transparent: false,
+                    side: THREE.DoubleSide
+                })
+            }
+            else {
+               var material = new THREE.MeshBasicMaterial({map:texture}); 
             }
             if ( sphere.name == 'moon' || sphere.name == 'ice') {
                 geometry = this.geos['moonice'];
@@ -766,16 +797,17 @@ V3D.View.prototype = {
     phaser: function() {
 
         if(this.containerMesh.children.length == 5){
-           this.containerMesh.add(this.laser);
-           this.laser.position.z += 2500;
+            this.containerMesh.add(this.glowmesh);
+           //this.containerMesh.add(this.laser);
+           this.glowmesh.position.z += 2500;
         }
         if(V3D.bincam){
-            this.laser.material.opacity = 1;
-            this.laser.material.transparent = false;
+            // this.laser.material.opacity = 1;
+            // this.laser.material.transparent = false;
             this.glowmesh.material.visible = true;   
 
 
-            this.laser.updateMatrixWorld();
+            //this.laser.updateMatrixWorld();
 
 
             var x = V3D.msePos.x;

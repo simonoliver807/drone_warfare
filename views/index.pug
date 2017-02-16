@@ -77,8 +77,12 @@ html
     input( id='consoleData',type='hidden',value=cd)
 
     //    shaders
-    script(type='x-shader/x-vertex', id='laservs')= laservs
-    script(type='x-shader/x-vertex', id='laserfs')= laserfs
+    script(type='x-shader/x-vertex', id='laservs')!= laservs
+    script(type='x-shader/x-vertex', id='laserfs')!= laserfs
+    script(type='x-shader/x-fragment', id='planet1fs')!= planet1fs
+    script(type='x-shader/x-vertex', id='planet1vs')!= planet1vs
+    script(type='x-shader/x-fragment', id='planetGlowfs')!= planetGlowfs
+    script(type='x-shader/x-vertex', id='planetGlowvs')!= planetGlowvs
 
     script(type='text/Javascript', src='js/defaultpage.js')
     //script(type='text/Javascript', src='js_min/defaultpage.js')

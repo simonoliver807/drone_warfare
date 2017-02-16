@@ -62,6 +62,18 @@ fs.readdir(__dirname + '/shaders/', function (err, filesPath) {
         	if ( results[i].match('laserfs') ) {
         		app.locals.shaders.laserfs = results[i];
         	}
+        	if ( results[i].match('planet1vs') ) {
+	        	app.locals.shaders.planet1vs = results[i];
+	        }
+	        if ( results[i].match('planet1fs') ) {
+	        	app.locals.shaders.planet1fs = results[i];
+	        }
+        	if ( results[i].match('planetGlowfs') ) {
+        		app.locals.shaders.planetGlowfs = results[i];
+        	}
+        	if ( results[i].match('planetGlowvs') ) {
+        		app.locals.shaders.planetGlowvs = results[i];
+        	}
         }
     })
 })
@@ -78,7 +90,11 @@ app.get('/', function (req, res) {
 		    		res.render( 'index', { 
 		    			title: 'Drone War 1',
 		    			laservs: app.locals.shaders.laservs,
-	        			laserfs: app.locals.shaders.laserfs
+	        			laserfs: app.locals.shaders.laserfs,
+	        			planet1vs: app.locals.shaders.planet1vs,
+	        			planet1fs: app.locals.shaders.planet1fs,
+	        			planetGlowvs: app.locals.shaders.planetGlowvs,
+	        			planetGlowfs: app.locals.shaders.planetGlowfs,
 	        		})
 			  	  })
 				  db.close();
