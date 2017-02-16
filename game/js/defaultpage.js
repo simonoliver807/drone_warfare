@@ -4,7 +4,7 @@ var url = 'http://localhost:9000/';
 //var url = 'http://192.168.0.7:9000/';
 //var url = 'http://www.dronewar1.com'
 var soundFX = 1; 
-// change to live
+// change to live 
 
 
 
