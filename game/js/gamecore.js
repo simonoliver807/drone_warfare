@@ -10,16 +10,16 @@
    *  MIT Licensed.
    */
 
-  var EventEmitter = require('events').EventEmitter
-    , Controller = require('n3d-controller')
-    , domready = require('domready')
-    , util   = require('util')
-    , io     = require('socket.io-browserify')
-    , Player = require('../shared/Player.js')
-    , golden_ratio = 1.6180339887
+  // var EventEmitter = require('events').EventEmitter
+  //   , Controller = require('n3d-controller')
+  //   , domready = require('domready')
+  //   , util   = require('util')
+  //   , io     = require('socket.io-browserify')
+  //   , Player = require('../shared/Player.js')
+  //   , golden_ratio = 1.6180339887
 
   function game_core() {
-    EventEmitter.call(this)
+    // EventEmitter.call(this)
 
     this.player_self = new Player(this)
     this.player_set  = {}
@@ -34,9 +34,9 @@
     this._dte = new Date().getTime()
   }
 
-  util.inherits(game_core, EventEmitter)
-  require('../shared/common.js')(game_core)
-  module.exports = game_core
+  // util.inherits(game_core, EventEmitter)
+  // require('../shared/common.js')(game_core)
+  // module.exports = game_core
 
   game_core.prototype.start = function(opts) {
     var self  = this

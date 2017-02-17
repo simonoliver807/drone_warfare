@@ -1,24 +1,27 @@
 //multiplayer
 var express = require('express')
 var http = require('http')
+var lc = require('./logtoclient');
+var logger = require('morgan')
 var path = require('path')
 var reload = require('reload')
 var bodyParser = require('body-parser')
-var logger = require('morgan')
 var fs = require('fs')
-var mc = require('mongodb').MongoClient;
-var mongoose = require('mongoose');
+var mc = require('mongodb').MongoClient
+var mongoose = require('mongoose')
 var uuid = require('node-uuid')
 var dateformat = require('dateformat')
-const async = require('async');
+const async = require('async')
+const game_server = require('./multiserver/registry')
+
+
 
 var event = require('events');
 var eventEmitter = new event.EventEmitter;
 
-var hc = require('./handleComments');
 
 // pass comment to the client
-var cp = new hc();
+var cp = new lc();
 
 
 var watch = require('node-watch');
@@ -155,10 +158,7 @@ app.on('error', function(err) {
   // This prints the error message and stack trace to `stderr`.
   console.error(err.stack);
 });
-// app.use(function (err, req, res, next) {
-//   console.error(err.stack)
-//   res.status(500).send('Something broke!')
-// })
+
 
 
 var Schema = mongoose.Schema;
@@ -166,6 +166,18 @@ var gameDataSchema = new Schema  ({ player1: String, player2: String, bodys: { B
 var Multi = mongoose.model('Multi', gameDataSchema);
 
 var numberOfGame = 0;
+
+
+io.use(function(socket, next) {
+  var handshakeData = socket.request;
+  // make sure the handshake data looks good as before
+  // if error do this:
+    // next(new Error('not authorized');
+  // else just call next
+  next();
+});
+
+
 
 io.on('connection', (socket) => {
 
@@ -176,9 +188,10 @@ io.on('connection', (socket) => {
 	// cp.scd( socket.nsp );
 
 	var lastRec = Multi.find().sort({_id:1}).limit(1);
+
 	lastRec.exec( (err, lastRec) => {
 
-		console.log(lastRec.length);
+		console.log(lastRec.player2);
 
 		if ( lastRec.length === 0 || lastRec.player2 != 'player2') {
 
@@ -206,7 +219,7 @@ io.on('connection', (socket) => {
   	//socket.emit('stc', {data: app.locals.gid } );
 
 
-    socket.on('getgd', function(gameUUID){
+    socket.on('getgd', (gameUUID) => {
     	console.log('game uuid is '); 
         console.log(gameUUID);
     });

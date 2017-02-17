@@ -18,15 +18,15 @@
    */
 
     var game_server = module.exports = { games: {}, game_count: 0 }
-      , uuid        = require('node-uuid')
-      , color       = require('./ansi-color.js')
+    const uuid = require('node-uuid')
+//      , color       = require('./ansi-color.js')
 
     // Since we are sharing code with the browser, we
     // are going to include some values to handle that.
     global.window = global.document = global
 
     // Import shared game library code.
-    var game_core = require('./gamecore.server.js')
+    var game_core = require('./multiserver/gamecore.server')
 
   //
 
