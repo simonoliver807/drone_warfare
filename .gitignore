@@ -4,5 +4,7 @@ game/Gruntfile.js
 ssa.sh
 .rebooted
 Gruntfile.js
+.DS_Store
+
 
 
