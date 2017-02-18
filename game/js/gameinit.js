@@ -151,16 +151,17 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 socket.on('gamestart', function (data) {
                     gameUUID = data['id'];
                     console.log('gu ' + gameUUID); 
+                    console.log(data);
                  //   socket.emit('getgd', gameUUID);
                     if(data['host'] == 1){
                         self.host = 1;
-                        console.log('host ' + data['host']? true:false);
+                      //  console.log('host ' + data['host']? true:false);
 
                     }
                 });
-                socket.on('stc', function (data) {
-                    console.log(data);
-                })
+                // socket.on('stc', function (data) {
+                //     console.log(data);
+                // })
 
 
             },
@@ -193,9 +194,9 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
                 worldcount += 0.00001;
 
-
-               //var pause = 1;
-               // change to live
+                // change to live: remove
+               var pause = 1;
+               
                
 
               if( !pause && V3D.startRender == numobj ){  

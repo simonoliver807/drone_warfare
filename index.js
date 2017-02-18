@@ -35,6 +35,7 @@ const io = require('socket.io')(server);
 
 var dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
 mongoose.connect(dburl);
+mongoose.Promise = global.Promise;
 
 
 // mongo ds145848.mlab.com:45848/gamedata -u nabooleo -p ax31zcm
@@ -160,10 +161,26 @@ app.on('error', function(err) {
 });
 
 
-
 var Schema = mongoose.Schema;
-var gameDataSchema = new Schema  ({ player1: String, player2: String, bodys: { Buffer } });
+var gameDataSchema = new Schema  ({ 
+									player1: String,
+									player2: String, 
+									bodys: { Buffer },
+									gamecore: {} 
+								  },
+								  {
+									timestamps: { createdAt: 'created_at' }	 
+								  });
 var Multi = mongoose.model('Multi', gameDataSchema);
+app.locals.host = 1;
+
+// Multi.update( { _id: "58a868cdf4c8a506b431b819"} , { $set: { player2: 'slkfj' } });
+// Multi.findOne().sort({_id:1}).limit(1).then( (game) => {
+
+// 	game_server.join_game( game );
+// 	game.player2 = 'update';
+// 	game.save();
+// }); 
 
 var numberOfGame = 0;
 
@@ -179,64 +196,88 @@ io.use(function(socket, next) {
 
 
 
-io.on('connection', (socket) => {
+io.on('connection', (client) => {
 
-	console.log('connection');
+	console.log( 'connection ');
 
 	// cp.scd(socket.id); 
 	// console.log(Multi);
 	// cp.scd( socket.nsp );
 
-	var lastRec = Multi.find().sort({_id:1}).limit(1);
 
-	lastRec.exec( (err, lastRec) => {
+	client.ip = client.handshake.address.address;
 
-		console.log(lastRec.player2);
+	Multi.findOne().sort({_id:-1}).limit(1).then( ( game ) => {
 
-		if ( lastRec.length === 0 || lastRec.player2 != 'player2') {
+			//console.log(game);
 
-			Multi.create( { player1: socket.id, player2: 'player2', bodys: {} }, ( err, multi ) => {
+		if ( app.locals.host ) {
+			Multi.create( { player1: client.id, player2: 'player2', bodys: {} }, ( err, multi ) => {
 				if( err ) console.log('error starting game');
 
-				socket.emit('gamestart', { id: multi.id , host: true });
-				app.locals.gid = multi.id;
+				game_server.join_game( multi );
+				client.emit('gamestart', { id: multi.id , host: true });
 			});
 			numberOfGame += 1;
 		}
-		else {
-
-			Multi.update( { _id: lastRec.id} , { $set: { player2: socket.id } });
-			socket.emit('gamestart', { id: lastRec.id, host: false });
-			app.locals.gid = lastRec.id;
+		if ( !app.locals.host )
+		 {
+			if ( game === null || game.player2 != 'player2'){
+				setImmediate( function() {
+					handlePl2(client.id);
+				});
+			}
+			else {
+				game.player2 = client.id;
+				game.save();
+				game_server.join_game( game );
+				client.emit('gamestart', { id: game.id, host: false });
+			}
 		}
-
-
-
-
+		app.locals.host ? app.locals.host = false : app.locals.host = true ;
+	}).catch( (err) => {
+		console.log('there is a db error');
+		console.log(err);
 	});
    
 
-  	//socket.emit('stc', {data: app.locals.gid } );
+
+    // client.on('getgd', (gameUUID) => {
+    // 	console.log('game uuid is '); 
+    //     console.log(gameUUID);
+    // });
 
 
-    socket.on('getgd', (gameUUID) => {
-    	console.log('game uuid is '); 
-        console.log(gameUUID);
+    client.on('setgd', function (gd) {
+
+    	// Multi.update({ _id: gd.id }, { $set: { bodys: gd.body}} );
+    	// Multi.find({}).exec( function(err, data) {
+
+    	// 	console.log(data);
+    	// });
+    	game_server.setgd(client, gd );
+
     });
 
-
-    socket.on('setgd', function (gd) {
-
-    	Multi.update({ _id: gd.id }, { $set: { bodys: gd.body}} );
-    	Multi.find({}).exec( function(err, data) {
-
-    		console.log(data);
-    	});
-
-    });
-    socket.on('disconnect', function(data) {
+    client.on('disconnect', function(data) {
     	console.log('disconnect');
     });
+
+    function handlePl2 (client_id) {
+
+		Multi.findOne().sort({_id:-1}).limit(1).then( ( game ) => {
+			game.player2 = client_id;
+			game.save();
+			game_server.join_game( game );
+			client.emit('gamestart', { id: game.id, host: false });
+		});
+
+	}
+
+
+
+
+
 });
 
 // reloadServer = reload(server, app);
