@@ -6,6 +6,7 @@ precision mediump float;
 
 #define pi 3.14159265359;
 
+uniform float glowFloat;
 varying vec2 vUv;
 
 
@@ -39,7 +40,7 @@ void main() {
       
       float fa = ( 5.0/10.0);
       float fb = (18.0/10.0);
-      float fc = (22.0/4.1);
+      float fc = (22.0/glowFloat);
       
       alphachan =  fa*x6 - fb*x4 + fc*x2;  
       alphachan = 1. - alphachan;

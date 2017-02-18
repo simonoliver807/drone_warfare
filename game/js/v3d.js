@@ -12,7 +12,7 @@ V3D.exdrone2;
 V3D.exdrone3;
 V3D.phasers;
 V3D.dphasers;
-V3D.mesharrpos = {phasers:0,dphasers:0,pl:0};
+V3D.mesharrpos = {phasers:0,dphasers:0,pl:0,planetGlow:0};
 V3D.grouppart = new THREE.Object3D();
 V3D.ms1phaser = new THREE.Group();
 V3D.ms2phaser = new THREE.Group();
@@ -270,11 +270,17 @@ V3D.View.prototype = {
         // shader updates
         var planets = this.scene.children[ V3D.mesharrpos.pl ].children;
         for ( var i = 0; i < planets.length; i++ ){
-            if( planets[i].name.match('mercury1') ){
+            if( planets[i].name.match('mercury1' ) ){
                 var time = performance.now();
                 planets[0].material.uniforms.u_time.value = time/1000;
             }
         }
+        this.scene.children[V3D.mesharrpos.planetGlow].lookAt(this.camera.position);
+        if( this.scene.children[V3D.mesharrpos.planetGlow].material.visible ){
+            this.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value += time/1000000000;
+        }
+
+
     	this.renderer.render( this.scene, this.camera );
 
         if(V3D.bincam) {
@@ -403,40 +409,6 @@ V3D.View.prototype = {
 
              return;
         }
-        if(cylinder.name == 'laser'){
-
-               // var material = new THREE.MeshBasicMaterial({ color: cylinder.color, transparent: true, opacity: 0 });
-               // this.geos['laserglow'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
-               // var glowmesh = new THREE.Mesh(this.geos['laserglow'], material, 'laserglow');
-
-            // var material = new THREE.MeshBasicMaterial({ color: cylinder.color, transparent: true, opacity: 0});
-            // this.geos[cylinder.name].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
-            // this.laser = new THREE.Mesh( this.geos[cylinder.name], material, cylinder.name  );
-
-            // change to live move to plane section
-
-            var laserfs = document.getElementById( 'laserfs' ).textContent;
-            var laservs = document.getElementById( 'laservs' ).textContent;
-            var material =  new THREE.RawShaderMaterial({
-                uniforms: {
-                    u_color1: {
-                        value: new THREE.Vector3( 51,173,255 )
-                    },
-                    u_color2: {
-                        value: new THREE.Vector3( 0, 153, 255 )
-                    }
-                },
-                vertexShader: laservs,
-                fragmentShader: laserfs,
-                transparent: true,
-                side: THREE.DoubleSide
-            } );
-            this.geos['laserglow1'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
-            this.glowmesh = new THREE.Mesh( this.geos['laserglow1'], material ); 
-           // this.laser.add(this.glowmesh);
-
-            return;
-        }
         else {
             this.loadOBJ(this.dronetex,this.scene,cylinder); 
         }
@@ -514,6 +486,57 @@ V3D.View.prototype = {
         }
 
         
+    },
+    addPlane : function( plane ) {
+
+        if ( plane == 'laser' ) {
+            var laserfs = document.getElementById( 'laserfs' ).textContent;
+            var laservs = document.getElementById( 'laservs' ).textContent;
+            var material =  new THREE.RawShaderMaterial({
+                uniforms: {
+                    u_color1: {
+                        value: new THREE.Vector3( 51,173,255 )
+                    },
+                    u_color2: {
+                        value: new THREE.Vector3( 0, 153, 255 )
+                    }
+                },
+                vertexShader: laservs,
+                fragmentShader: laserfs,
+                transparent: true
+                // ===side: THREE.DoubleSide
+            } );
+            this.geos['laserglow1'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 270 ) ) );
+            this.glowmesh = new THREE.Mesh( this.geos['laserglow1'], material ); 
+        }
+
+        if ( plane == 'planetGlow' ) {
+
+            var circlefs = document.getElementById( 'planetGlowfs' ).textContent;
+            var circlevs = document.getElementById( 'planetGlowvs' ).textContent;
+
+            var geometry = new THREE.PlaneGeometry(5000, 5000);
+            var circlegeo = new THREE.BufferGeometry();
+            circlegeo.fromGeometry(geometry);
+            var material = new THREE.RawShaderMaterial({
+                uniforms: {
+                    glowFloat: {
+                        value: 0.59
+                    }
+                },
+                vertexShader: circlevs,
+                fragmentShader: circlefs,
+                transparent: true,
+                visible: false
+            })
+            var circle = new THREE.Mesh( circlegeo, material );
+            circle.name = 'planetGlow';
+            V3D.mesharrpos.planetGlow = this.scene.children.length;
+            this.scene.add(circle);
+        }
+
+
+
     },
     addLine : function() {
 
@@ -804,21 +827,23 @@ V3D.View.prototype = {
         if(V3D.bincam){
             // this.laser.material.opacity = 1;
             // this.laser.material.transparent = false;
-            this.glowmesh.material.visible = true;   
+            this.glowmesh.material.visible = true;  
+            var camDir = this.camera.getWorldDirection();
+           //if ( camDir.y <= 0.879 && camDir.y >= -0.879 ) {
 
+                 var x = V3D.msePos.x;
+                 var y = V3D.msePos.y;
 
-            //this.laser.updateMatrixWorld();
+                 var angle = Math.atan2(x,y);
 
+                 var q1 = new THREE.Quaternion();
+                 q1.setFromAxisAngle( new THREE.Vector3( 0,0,1 ), angle );
+                this.glowmesh.quaternion.set( q1.x, q1.y, q1.z, q1.w);
 
-            var x = V3D.msePos.x;
-            var y = V3D.msePos.y;
-
-            var angle = Math.atan2(x,y);
-
-            var q1 = new THREE.Quaternion();
-            q1.setFromAxisAngle( new THREE.Vector3( 0,0,1 ), angle );
-           // this.glowmesh.quaternion.multiply( q1 );
-           this.glowmesh.quaternion.set( q1.x, q1.y, q1.z, q1.w);
+                var q = new THREE.Quaternion();
+                q.setFromRotationMatrix( this.camera.matrix );
+                console.log (this.glowmesh.rotation);
+                console.log( this.containerMesh.rotation )
 
         }
         else {

@@ -708,8 +708,10 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                         }
 
                     }
-                    // change to live
+                    // change to live: remove
                      v3d.phaser();
+                     ///////////////////////
+
                     if (endsequence >= 0) {
                         if(keys[38] && !keys[32]){
                             v3d.addForce();
@@ -770,10 +772,16 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                                 V3D.ms1phaser.children[p].scale.z += 0.5;
                                 V3D.ms1phaser.children[p].position.z += 5;
                             }
+                            else {
+                                v3d.scene.children[V3D.mesharrpos.planetGlow].material.visible = true;
+                            }
                         if(V3D.ms2phaser.children[p]){
                             if( V3D.ms2phaser.children[p].scale.z * 20 < ms2len ){
                                 V3D.ms2phaser.children[p].scale.z += 0.5;
                                 V3D.ms2phaser.children[p].position.z += 5; 
+                            }
+                            else {
+                                v3d.scene.children[V3D.mesharrpos.planetGlow].material.visible = true;
                             }
                         }
                     }
@@ -815,6 +823,8 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
                    // add the sight
                    v3d.addLine();
+                   // add the planet glow
+                   v3d.addPlane( 'planetGlow' );
 
                 }
                 if( !startlevel && V3D.bincam ) {
@@ -872,6 +882,11 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 
                 for( var i=0; i<spheres.length; i++) {
                     if(spheres[i].name != 'containerMesh'){
+                        if( spheres[i].class == 'planet' && spheres[i].name.match('1') ){
+
+                            v3d.scene.children[V3D.mesharrpos.planetGlow].position.set( spheres[i].pos[0], spheres[i].pos[1], spheres[i].pos[2] );
+
+                        }
                         spheres[i].world = world;
                         bodys[bodysNum] = new OIMO.Body(spheres[i]);
                         if( planetlist.indexOf( spheres[i].name ) != -1 ){
@@ -1112,8 +1127,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
 
                     if(V3D.bincam){
-                        var laser = {type: 'cylinder', name: 'laser', color: 0x0099ff};
-                        v3d.addCylinder(laser);
+                        v3d.addPlane( 'laser' );
                     }
                 }
                 else {
