@@ -33,7 +33,8 @@ const io = require('socket.io')(server);
 // var multiserver = http.createServer(app);
 // var io = require('socket.io')( multiserver );
 
-var dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
+//var dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
+var dburl = "mongodb://localhost:27017/test";
 mongoose.connect(dburl);
 mongoose.Promise = global.Promise;
 
@@ -283,7 +284,7 @@ io.on('connection', (client) => {
 // reloadServer = reload(server, app);
  
 // // Reload code here 
-// reload(server, app).reload();
+reload(server, app).reload();
  
 server.listen(app.get('port'), function(){
   console.log("Web server listening on port " + app.get('port') + " Date: " + new Date())
