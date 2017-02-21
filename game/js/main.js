@@ -130,41 +130,67 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 				var perhu = v3d.h - perh;
 				var perhd = perh
 
+
+				// V3D.pageX = event.pageX;
+				// V3D.pageY = event.pageY;
+
+				V3D.pageX = x;
+				V3D.pageY = y;
+
 				if ( clientX > perwr ){
-					if( clientY > v3d.h/2){
-						v3d.startRot = {rot: 'dr'};
-					}
-					else {
-						v3d.startRot = {rot: 'ur'};
-					}
+					v3d.startRot = 1;
 				}
 				else if ( clientX < perwl ) {
-					if( clientY > v3d.h/2){
-						v3d.startRot = {rot: 'dl'};
-					}
-					else {
-						v3d.startRot = {rot: 'ul'};
-					}
+					v3d.startRot = 1;
 				}
 				else if ( clientY > perhu ) {
-					if( clientX > v3d.w/2){
-						v3d.startRot = {rot: 'dr'}; 
-					}
-					else {
-						v3d.startRot = {rot: 'dl'};
-					}
+					v3d.startRot = 1;
 				}
 				else if ( clientY < perhd ) {
-					if( clientX > v3d.w/2){
-						v3d.startRot = {rot: 'ur'}; 
-					}
-					else {
-						v3d.startRot = {rot: 'ul'};
-					}
+				 	v3d.startRot = 1;
 				}
 				else {
-					v3d.startRot = {rot: 0};
+				 	v3d.startRot = 0;
 				}
+
+
+
+
+				// if ( clientX > perwr ){
+				// 	if( clientY > v3d.h/2){
+				// 		v3d.startRot = {rot: 'dr'};
+				// 	}
+				// 	else {
+				// 		v3d.startRot = {rot: 'ur'};
+				// 	}
+				// }
+				// else if ( clientX < perwl ) {
+				// 	if( clientY > v3d.h/2){
+				// 		v3d.startRot = {rot: 'dl'};
+				// 	}
+				// 	else {
+				// 		v3d.startRot = {rot: 'ul'};
+				// 	}
+				// }
+				// else if ( clientY > perhu ) {
+				// 	if( clientX > v3d.w/2){
+				// 		v3d.startRot = {rot: 'dr'}; 
+				// 	}
+				// 	else {
+				// 		v3d.startRot = {rot: 'dl'};
+				// 	}
+				// }
+				// else if ( clientY < perhd ) {
+				// 	if( clientX > v3d.w/2){
+				// 		v3d.startRot = {rot: 'ur'}; 
+				// 	}
+				// 	else {
+				// 		v3d.startRot = {rot: 'ul'};
+				// 	}
+				// }
+				// else {
+				// 	v3d.startRot = {rot: 0};
+				// }
 
 			},
 			showPopup: function (type) {
@@ -311,6 +337,8 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		    	v3d.renderer.setSize( window.innerWidth, window.innerHeight );
 		    	v3d.h = window.innerHeight;
 		    	v3d.w = window.innerWidth;
+
+		    	v3d.controls.handleResize();
 
 			}
 

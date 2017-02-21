@@ -33,7 +33,19 @@ const io = require('socket.io')(server);
 // var multiserver = http.createServer(app);
 // var io = require('socket.io')( multiserver );
 
-var dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
+// change to live
+//var dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
+var dburl = 'mongodb://localhost:27017/test';
+
+
+// mc.connect( dburl, function(err, db) {
+//   if(err) throw err;
+//   db.listCollections().toArray( function( err, col) {
+//   	console.log(col);
+//   })
+//   db.close();
+// });
+
 mongoose.connect(dburl);
 
 
@@ -80,6 +92,12 @@ fs.readdir(__dirname + '/shaders/', function (err, filesPath) {
         	if ( results[i].match('planetGlowvs') ) {
         		app.locals.shaders.planetGlowvs = results[i];
         	}
+        	if ( results[i].match('starfs') ) {
+        		app.locals.shaders.starfs = results[i];
+        	}
+        	if ( results[i].match('starvs') ) {
+        		app.locals.shaders.starvs = results[i];
+        	}
         }
     })
 })
@@ -101,6 +119,8 @@ app.get('/', function (req, res) {
 	        			planet1fs: app.locals.shaders.planet1fs,
 	        			planetGlowvs: app.locals.shaders.planetGlowvs,
 	        			planetGlowfs: app.locals.shaders.planetGlowfs,
+	        			starvs: app.locals.shaders.starvs,
+	        			starfs: app.locals.shaders.starfs,
 	        		})
 			  	  })
 				  db.close();
@@ -137,11 +157,16 @@ app.post('/', function (req, res) {
 	}
 	if(req.body.l){
 
-		//console.log('deal with post')
 		//console.log(req.body);
 		mc.connect(dburl, function(err, db) {
+
+		//	console.log(db);
+
 			if(!err) {
 				db.collection('levels').findOne( { level: ~~req.body.l }, function (err, result) {
+
+					//console.log(result);
+
 			    	if (err) throw err
 			    	delete result['_id'];
 			    	res.send(result);
@@ -242,7 +267,7 @@ io.on('connection', (socket) => {
 // reloadServer = reload(server, app);
  
 // // Reload code here 
-// reload(server, app).reload();
+reload(server, app).reload();
  
 server.listen(app.get('port'), function(){
   console.log("Web server listening on port " + app.get('port') + " Date: " + new Date())

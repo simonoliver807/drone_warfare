@@ -16,7 +16,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
     var v3d = new V3D.View();
 
     // ********** mulit   change to live
-    var socket = SOCKET_IO.connect(url);
+    // var socket = SOCKET_IO.connect(url);
 
 
     
@@ -148,19 +148,19 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
 
                 ////////// ********** multi
-                socket.on('gamestart', function (data) {
-                    gameUUID = data['id'];
-                    console.log('gu ' + gameUUID); 
-                 //   socket.emit('getgd', gameUUID);
-                    if(data['host'] == 1){
-                        self.host = 1;
-                        console.log('host ' + data['host']? true:false);
+                // socket.on('gamestart', function (data) {
+                //     gameUUID = data['id'];
+                //     console.log('gu ' + gameUUID); 
+                //  //   socket.emit('getgd', gameUUID);
+                //     if(data['host'] == 1){
+                //         self.host = 1;
+                //         console.log('host ' + data['host']? true:false);
 
-                    }
-                });
-                socket.on('stc', function (data) {
-                    console.log(data);
-                })
+                //     }
+                // });
+                // socket.on('stc', function (data) {
+                //     console.log(data);
+                // })
 
 
             },
@@ -203,6 +203,8 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                     var btd = [];
                     world.step();
                     v3d.render();
+                    v3d.controls.update();
+
 
                     if( dronelaunch < dronelaunchTime && dronelaunch != -1  ) {
                         dronelaunch += 0.1;
@@ -376,6 +378,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                                 meshs.push(v3d.scene.children[v3d.dronenum].children[i]);
                             }
                             v3d.containerMesh = v3d.scene.children[contmeshnum];
+                            v3d.controls.target = v3d.containerMesh.position;
                             containerMesh = v3d.scene.children[contmeshnum];
                             meshNum = meshs.length;
                         }
@@ -559,15 +562,15 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                                 v3d.camera.position.x += tmpPosX;
                                 v3d.camera.position.y += tmpPosY; 
                                 v3d.camera.position.z += tmpPosZ;
-                                if(v3d.startRot.rot !== 0){
+                                // if(v3d.startRot.rot !== 0){
 
-                                    v3d.camera.position.x += v3d.camrot.x;
-                                    v3d.camera.position.y += v3d.camrot.y;
-                                    v3d.camera.position.z += v3d.camrot.z;
-                                    v3d.camera.lookAt( containerMesh.position );
+                                //     v3d.camera.position.x += v3d.camrot.x;
+                                //     v3d.camera.position.y += v3d.camrot.y;
+                                //     v3d.camera.position.z += v3d.camrot.z;
+                                //     v3d.camera.lookAt( containerMesh.position );
                                     
-                                };
-                                v3d.camera.updateMatrixWorld();
+                                // };
+                               // v3d.camera.updateMatrixWorld();
                             }
 
 

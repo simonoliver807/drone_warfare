@@ -28,8 +28,8 @@ V3D.raycastarr = [];
 // remove
 V3D.clientx = 0;
 V3D.clienty = 0;
-
-
+V3D.pageX = window.innerWidth/2;
+V3D.pageY = window.innerHeight/2;
 
 V3D.View = function(h,v,d){
     
@@ -42,7 +42,8 @@ V3D.View = function(h,v,d){
 	this.initBasic();
     this.sight;
 
-    this.startRot = { issleeping: 1, rot: 0, axis: new THREE.Vector3() };
+   // this.startRot = { issleeping: 1, rot: 0, axis: new THREE.Vector3() };
+    this.startRot = 0;
     this.world;
 
 
@@ -57,6 +58,7 @@ V3D.View.prototype = {
         //this.renderer = new THREE.WebGLRenderer({ antialias:true });
 
     	this.renderer.setSize( this.w, this.h );
+
     	// this.renderer.setClearColor( 0x1d1f20, 1 );
      //    this.renderer.setPixelRatio( window.devicePixelRatio );
      //    this.renderer.autoClear = false;
@@ -68,6 +70,8 @@ V3D.View.prototype = {
 
     	// siolsite this.camera = new THREE.PerspectiveCamera( 60, this.w/this.h, 0.1, 2000 );
         this.camera = new THREE.PerspectiveCamera( 60, this.w/this.h, 0.1, 20000 );
+
+
         // this.camhelp = new THREE.CameraHelper( this.camera );
         this.camera.useQuarternion = true;
         this.tanFOV = Math.tan( ( ( Math.PI / 180 ) * this.camera.fov / 2 ) );
@@ -106,6 +110,16 @@ V3D.View.prototype = {
         
     	this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color( 0x000000 );
+
+        ///////////////////////////////
+        ////// helper camera ///////////
+        /////////////////////////////////
+        this.camP = new THREE.PerspectiveCamera( 50, this.w/this.h, 1, 20000 );
+        this.camP.position.set( 0 ,0 ,50);
+        this.camP.lookAt( new THREE.Vector3(0,0,0));
+        this.camHelper = new THREE.CameraHelper( this.camP );
+       // this.scene.add( this.camHelper );
+
         
         
         this.container = document.getElementById(this.id)
@@ -199,6 +213,24 @@ V3D.View.prototype = {
         this.glowmesh;
 
 
+        this.controls = new THREE.TrackballControls( this.camera );
+        //this.controls = new THREE.TrackballControls( this.camP );
+
+        this.controls.rotateSpeed = 2.0;
+       // this.controls.zoomSpeed = 1.2;
+        this.controls.panSpeed = 0.8;
+
+        this.controls.noZoom = true;
+        this.controls.noPan = true;
+
+        this.controls.staticMoving = false;
+        this.controls.dynamicDampingFactor = 0.3;
+        this.mseCords = { pageX: V3D.pageX, pageY: V3D.pageY };
+        this.controls.threemm(this.mseCords);
+
+        //this.controls.addEventListener( 'change', this.render() );
+
+
 
     },
     initLight:function(){
@@ -219,24 +251,99 @@ V3D.View.prototype = {
     },
     initPoints: function() {
 
-        var particles = 1500;
-        var geometry = new THREE.BufferGeometry();
-        var positions = new Float32Array( particles * 3 );
+      //   var particles = 1500;
+      //   var geometry = new THREE.BufferGeometry();
+      //   var positions = new Float32Array( particles * 3 );
 
-        for( var i = 0; i < positions.length; i++) {
-            var x = this.randMinMax(-35000,35000);
-            var y = this.randMinMax(-35000,35000);
-            var z = this.randMinMax(-35000,35000);
-            positions[ i ]     = x;
-            positions[ i + 1 ] = y;
-            positions[ i + 2 ] = z;
-        }
-        geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
-      //  geometry.computeBoundingSphere();
-        var points = new THREE.Points( geometry, new THREE.PointsMaterial( { size: 15, color: '#ffffff' } ) );
+      //   for( var i = 0; i < positions.length; i++) {
+      //       var x = this.randMinMax(-35000,35000);
+      //       var y = this.randMinMax(-35000,35000);
+      //       var z = this.randMinMax(-35000,35000);
+      //       positions[ i ]     = x;
+      //       positions[ i + 1 ] = y;
+      //       positions[ i + 2 ] = z;
+      //   }
+      //   geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+      // //  geometry.computeBoundingSphere();
+      //   var points = new THREE.Points( geometry, new THREE.PointsMaterial( { size: 15, color: '#ffffff' } ) );
 
-        points.name = 'points';
-        this.scene.add( points );
+      //   points.name = 'points';
+      //   this.scene.add( points );
+
+    var sqg = new THREE.BufferGeometry();
+
+    // laser res ***************
+    //var planegeo = new THREE.PlaneGeometry( window.innerWidth, window.innerHeight );
+    // square res **************
+    var planegeo = new THREE.PlaneGeometry(75, 75);
+
+
+
+    var squares = 900;
+    var vertices = new Float32Array( squares * 3 * 6);
+    var uv = new Float32Array ( squares * 2 * 6)
+    var pos = 0;
+    for ( var i = 0; i < vertices.length ; i+=18) {
+        var sqg1 = new THREE.BufferGeometry();
+        sqg1.fromGeometry( planegeo );
+
+        var x = this.randMinMax(-15000,15000);
+        var y = this.randMinMax(-15000,15000);
+        var z = this.randMinMax(-15000,15000);
+        sqg1.translate(x, y, z);
+
+        vertices[i] = sqg1.attributes.position.array[0];
+        vertices[i+ 1] = sqg1.attributes.position.array[1];
+        vertices[i+ 2] = sqg1.attributes.position.array[2];
+        vertices[i+ 3] = sqg1.attributes.position.array[3];
+        vertices[i+ 4] = sqg1.attributes.position.array[4];
+        vertices[i+ 5] = sqg1.attributes.position.array[5];
+        vertices[i+ 6] = sqg1.attributes.position.array[6];
+        vertices[i+ 7] = sqg1.attributes.position.array[7];
+        vertices[i+ 8] = sqg1.attributes.position.array[8];
+        vertices[i+ 9] = sqg1.attributes.position.array[9];
+        vertices[i+ 10] = sqg1.attributes.position.array[10];
+        vertices[i+ 11] = sqg1.attributes.position.array[11];
+        vertices[i+ 12] = sqg1.attributes.position.array[12];
+        vertices[i+ 13] = sqg1.attributes.position.array[13];
+        vertices[i+ 14] = sqg1.attributes.position.array[14];
+        vertices[i+ 15] = sqg1.attributes.position.array[15];
+        vertices[i+ 16] = sqg1.attributes.position.array[16];
+        vertices[i+ 17] = sqg1.attributes.position.array[17];
+
+    }
+    for( var uv_i = 0; uv_i < uv.length; uv_i += 12 ) {
+
+        uv[uv_i] = sqg1.attributes.uv.array[0];
+        uv[uv_i + 1] = sqg1.attributes.uv.array[1];
+        uv[uv_i + 2] = sqg1.attributes.uv.array[2];
+        uv[uv_i + 3] = sqg1.attributes.uv.array[3];
+        uv[uv_i + 4] = sqg1.attributes.uv.array[4];
+        uv[uv_i + 5] = sqg1.attributes.uv.array[5];
+        uv[uv_i + 6] = sqg1.attributes.uv.array[6];
+        uv[uv_i + 7] = sqg1.attributes.uv.array[7];
+        uv[uv_i + 8] = sqg1.attributes.uv.array[8];
+        uv[uv_i + 9] = sqg1.attributes.uv.array[9];
+        uv[uv_i + 10] = sqg1.attributes.uv.array[10];
+        uv[uv_i + 11] = sqg1.attributes.uv.array[11];
+    }
+
+
+    sqg.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+    sqg.addAttribute( 'uv', new THREE.BufferAttribute( uv, 2 ) );
+    var starfs = document.getElementById( 'starfs' ).textContent;
+    var starvs = document.getElementById( 'starvs' ).textContent;
+    var material =  new THREE.ShaderMaterial({
+        vertexShader: starvs,
+        fragmentShader: starfs,
+        transparent: true,
+        side: THREE.DoubleSide
+    } );
+    var sq = new THREE.Mesh( sqg, material );
+    this.scene.add( sq );
+
+
+
     },
     expart: function() {
 
@@ -265,7 +372,20 @@ V3D.View.prototype = {
 
     render : function(){
 
-         if( this.startRot.rot !== 0 && this.containerMesh != 0){ this.applyRot() };
+       // if( this.startRot.rot !== 0 && this.containerMesh != 0){ this.applyRot() };
+        if( this.startRot !== 0 && this.containerMesh != 0){ 
+            var rotVec2 = new THREE.Vector2( V3D.pageX, V3D.pageY );
+            rotVec2.x = THREE.Math.mapLinear( rotVec2.x, 0, this.w, -1, 1 );
+            rotVec2.y = THREE.Math.mapLinear( rotVec2.y, 0, this.h, -1, 1 );
+
+            rotVec2.multiplyScalar(10);
+            this.mseCords.pageX += rotVec2.x;
+            this.mseCords.pageY += rotVec2.y;
+
+            this.controls.threemm( this.mseCords );
+
+        }
+
 
         // shader updates
         var planets = this.scene.children[ V3D.mesharrpos.pl ].children;
@@ -281,7 +401,18 @@ V3D.View.prototype = {
         }
 
 
-    	this.renderer.render( this.scene, this.camera );
+        var helpercam = 0;
+        if ( !helpercam ) {
+    	   this.renderer.render( this.scene, this.camera );
+        }
+        else {
+            if ( this.containerMesh ) {
+                this.camHelper.lookAt( this.containerMesh.position );
+            }
+            this.camHelper.update()
+            this.camHelper.visible = true;
+            this.renderer.render( this.scene, this.camP );
+        }
 
         if(V3D.bincam) {
             // this.laser.material.transparent = true;
@@ -306,7 +437,7 @@ V3D.View.prototype = {
         geos['dphaser'] = new THREE.SphereGeometry(1, 32, 32);
         geos['earth1'] = new THREE.SphereBufferGeometry(1000, 16, 12);
         geos['earth1'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 23.5 ) ) );
-        geos['shp1'] = new THREE.SphereGeometry(0.1)
+        geos['shp1'] = new THREE.SphereGeometry(0.1) // should be 0.1
         geos['sight'] = new THREE.BoxGeometry(15,15,0.5);
         geos['mercelec1'] = new THREE.SphereBufferGeometry(750, 16, 12);
         geos['mothershipbb1'] = new THREE.BoxGeometry(700,300,700,10,10,10);
@@ -319,9 +450,8 @@ V3D.View.prototype = {
         geos['msphaser2'] = new THREE.CylinderGeometry( 5, 5, 20 );
         geos['msphaser2'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
 
-        geos['laser'] = new THREE.CylinderGeometry(0.06,0.06,5000);
-        geos['laserglow1'] = new THREE.PlaneGeometry(0.8, 5000);
-      //  geos['laserglow2'] = new THREE.PlaneGeometry(10 , 5000);
+       // geos['laser'] = new THREE.CylinderGeometry(0.06,0.06,5000);
+        geos['laserglow'] = new THREE.PlaneGeometry(1, 500);
         
 
         this.geos = geos;
@@ -438,8 +568,8 @@ V3D.View.prototype = {
                     },
                     vertexShader: planet1vs,
                     fragmentShader: planet1fs,
-                    transparent: false,
-                    side: THREE.DoubleSide
+                    transparent: false
+
                 })
             }
             else {
@@ -503,11 +633,14 @@ V3D.View.prototype = {
                 },
                 vertexShader: laservs,
                 fragmentShader: laserfs,
-                transparent: true
-                // ===side: THREE.DoubleSide
+                transparent: true,
+                side: THREE.DoubleSide
             } );
-            this.geos['laserglow1'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 270 ) ) );
-            this.glowmesh = new THREE.Mesh( this.geos['laserglow1'], material ); 
+           // this.geos['laserglow'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
+           // this.geos['laserglow'].applyMatrix( new THREE.Matrix4().makeRotationZ( THREE.Math.degToRad( 90 ) ) );
+            this.glowmesh = new THREE.Mesh( this.geos['laserglow'], material );
+        //   this.scene.add(this.glowmesh); 
+
         }
 
         if ( plane == 'planetGlow' ) {
@@ -819,31 +952,69 @@ V3D.View.prototype = {
     },
     phaser: function() {
 
-        if(this.containerMesh.children.length == 5){
-            this.containerMesh.add(this.glowmesh);
-           //this.containerMesh.add(this.laser);
-           this.glowmesh.position.z += 2500;
+        if(this.containerMesh.children.length == 5 && this.sight.children.length == 0){
+
+            // if ( this.sight.children == 0 ){
+            //     this.sight.add(this.glowmesh);
+            //     this.glowmesh.position.z -= 175;
+            // }
+
+            //this.containerMesh.add( this.glowmesh );
+           
+
+            // this.glowmesh.position.z += 250;
+
+
+
+
+            // console.log(this.glowmesh.position.z);
+
         }
         if(V3D.bincam){
-            // this.laser.material.opacity = 1;
-            // this.laser.material.transparent = false;
+
             this.glowmesh.material.visible = true;  
-            var camDir = this.camera.getWorldDirection();
-           //if ( camDir.y <= 0.879 && camDir.y >= -0.879 ) {
 
-                 var x = V3D.msePos.x;
-                 var y = V3D.msePos.y;
+            // this.glowmesh.position.copy ( this.containerMesh.position );
+           // this.glowmesh.position.x += 100;
 
-                 var angle = Math.atan2(x,y);
 
-                 var q1 = new THREE.Quaternion();
-                 q1.setFromAxisAngle( new THREE.Vector3( 0,0,1 ), angle );
-                this.glowmesh.quaternion.set( q1.x, q1.y, q1.z, q1.w);
+            //  var dir = this.getPlayerDir('forward', this.containerMesh.position);
 
-                var q = new THREE.Quaternion();
-                q.setFromRotationMatrix( this.camera.matrix );
-                console.log (this.glowmesh.rotation);
-                console.log( this.containerMesh.rotation )
+            // // var axis = new THREE.Vector3(0, 1, 0);
+            // // this.glowmesh.quaternion.setFromUnitVectors( axis, dir);
+
+            // // dir.multiplyScalar(250);
+            // // this.glowmesh.position.copy( dir.clone().multiplyScalar(0.5));
+
+
+            // // var q = new THREE.Quaternion();
+            // // q.setFromRotationMatrix(this.sight.matrix);
+            // // this.glowmesh.quaternion.set( q.x, q.y, q.z, q.w);
+            // // this.glowmesh.position.copy(this.sight.position);
+
+            //console.log(this.containerMesh.rotation);
+            // console.log(this.containerMesh.quaternion);
+            
+
+            
+        
+
+
+
+                //  var x = V3D.msePos.x;
+                //  var y = V3D.msePos.y;
+
+                //  var angle = Math.atan2(x,y);
+
+                //  var q1 = new THREE.Quaternion();
+                //  q1.setFromAxisAngle( new THREE.Vector3( 0,0,1 ), angle );
+                // this.glowmesh.quaternion.copy( q1 );
+
+               // console.log(this.glowmesh.quaternion);
+
+                // console.log (this.glowmesh.rotation);
+                // console.log( this.containerMesh.rotation );
+                // console.log(this.camera.rotation);
 
         }
         else {
