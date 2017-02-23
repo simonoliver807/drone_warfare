@@ -12,7 +12,7 @@ V3D.exdrone2;
 V3D.exdrone3;
 V3D.phasers;
 V3D.dphasers;
-V3D.mesharrpos = {phasers:0,dphasers:0,pl:0,planetGlow:0};
+V3D.mesharrpos = {phasers:0,dphasers:0,pl:0,planetGlow:0,shp1:0};
 V3D.grouppart = new THREE.Object3D();
 V3D.ms1phaser = new THREE.Group();
 V3D.ms2phaser = new THREE.Group();
@@ -55,21 +55,16 @@ V3D.View.prototype = {
     	this.clock = new THREE.Clock();
     	this.renderer = new THREE.WebGLRenderer({precision: "mediump", antialias:false});
 
-        //this.renderer = new THREE.WebGLRenderer({ antialias:true });
+        this.renderer = new THREE.WebGLRenderer({ antialias: false });
 
     	this.renderer.setSize( this.w, this.h );
-
-    	// this.renderer.setClearColor( 0x1d1f20, 1 );
-     //    this.renderer.setPixelRatio( window.devicePixelRatio );
-     //    this.renderer.autoClear = false;
-
         this.renderer.setClearColor( 0x000000, 1 );
         this.renderer.setPixelRatio( window.devicePixelRatio );
        this.renderer.autoClear = true;
 
 
     	// siolsite this.camera = new THREE.PerspectiveCamera( 60, this.w/this.h, 0.1, 2000 );
-        this.camera = new THREE.PerspectiveCamera( 60, this.w/this.h, 0.1, 20000 );
+        this.camera = new THREE.PerspectiveCamera( 60, this.w/this.h, 1, 50000  );
 
 
         // this.camhelp = new THREE.CameraHelper( this.camera );
@@ -142,6 +137,7 @@ V3D.View.prototype = {
         this.cp = new THREE.Vector3();
         this.camdir = new THREE.Vector3();
         this.tusv = new THREE.Vector3();
+        this.q = new THREE.Quaternion();
 
 
 
@@ -245,8 +241,8 @@ V3D.View.prototype = {
         this.scene.add( dirlight1 );
         this.scene.add( dirlight2 );
 
-     // var hemlight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
-     // this.scene.add( hemlight );
+        // var light = new THREE.AmbientLight(0xFFFFFF);
+        // this.scene.add(light);
 
     },
     initPoints: function() {
@@ -275,11 +271,11 @@ V3D.View.prototype = {
     // laser res ***************
     //var planegeo = new THREE.PlaneGeometry( window.innerWidth, window.innerHeight );
     // square res **************
-    var planegeo = new THREE.PlaneGeometry(75, 75);
+    var planegeo = new THREE.PlaneGeometry(250, 250);
 
 
 
-    var squares = 900;
+    var squares = 300;
     var vertices = new Float32Array( squares * 3 * 6);
     var uv = new Float32Array ( squares * 2 * 6)
     var pos = 0;
@@ -340,6 +336,7 @@ V3D.View.prototype = {
         side: THREE.DoubleSide
     } );
     var sq = new THREE.Mesh( sqg, material );
+    sq.name = 'startpoints';
     this.scene.add( sq );
 
 
@@ -383,7 +380,12 @@ V3D.View.prototype = {
             this.mseCords.pageY += rotVec2.y;
 
             this.controls.threemm( this.mseCords );
-
+        }
+        this.applyRot();
+        for (var i = 0; i < this.scene.children.length; i++) {
+            if (this.scene.children[i].name == 'starpoints') {
+                this.scene.children[i].lookAt( this.camera.position);
+            }
         }
 
 
@@ -431,13 +433,14 @@ V3D.View.prototype = {
     initBasic:function(){
         var geos = {};
         geos['boxTarget'] = new THREE.BoxGeometry(50,50,50);
-        geos['containerMesh'] = new THREE.SphereGeometry(8);
+        geos['containerMesh'] = new THREE.SphereGeometry(0.1);
       //  geos['cylTarget'] = new THREE.CylinderGeometry( 20, 20, 20 );
         geos['phaser'] = new THREE.SphereGeometry(0.5, 32, 32);
         geos['dphaser'] = new THREE.SphereGeometry(1, 32, 32);
         geos['earth1'] = new THREE.SphereBufferGeometry(1000, 16, 12);
         geos['earth1'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 23.5 ) ) );
         geos['shp1'] = new THREE.SphereGeometry(0.1) // should be 0.1
+
         geos['sight'] = new THREE.BoxGeometry(15,15,0.5);
         geos['mercelec1'] = new THREE.SphereBufferGeometry(750, 16, 12);
         geos['mothershipbb1'] = new THREE.BoxGeometry(700,300,700,10,10,10);
@@ -601,10 +604,12 @@ V3D.View.prototype = {
             this.loadOBJ(texture,this.scene,sphere);
         }
         if(sphere.name == 'shp1') {
-            var material = new THREE.MeshBasicMaterial({ color: sphere.color, wireframe: sphere.wireframe, name: sphere.name, transparent: sphere.transparent, opacity: sphere.opacity });
-            var mesh = new THREE.Mesh( this.geos[sphere.name], material, sphere.name );
-            mesh.position.set( sphere.pos[0], sphere.pos[1], sphere.pos[2] );
-            this.scene.add( mesh );
+            // var material = new THREE.MeshBasicMaterial({ color: sphere.color, wireframe: sphere.wireframe, name: sphere.name, transparent: sphere.transparent, opacity: sphere.opacity });
+            // var mesh = new THREE.Mesh( this.geos[sphere.name], material, sphere.name );
+            // mesh.position.set( sphere.pos[0], sphere.pos[1], sphere.pos[2] );
+            // this.scene.add( mesh );
+            var texture = '';
+            var object = this.loadOBJ(texture,this.scene,sphere);
         }
 
 
@@ -636,8 +641,8 @@ V3D.View.prototype = {
                 transparent: true,
                 side: THREE.DoubleSide
             } );
-           // this.geos['laserglow'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
-           // this.geos['laserglow'].applyMatrix( new THREE.Matrix4().makeRotationZ( THREE.Math.degToRad( 90 ) ) );
+         this.geos['laserglow'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
+           // this.geos['laserglow'].applyMatrix( new THREE.Matrix4().makeRotationY( THREE.Math.degToRad( 90 ) ) );
             this.glowmesh = new THREE.Mesh( this.geos['laserglow'], material );
         //   this.scene.add(this.glowmesh); 
 
@@ -761,89 +766,97 @@ V3D.View.prototype = {
         
 
             this.camdir.subVectors(this.camera.position, this.containerMesh.position).normalize();
-            var q = new THREE.Quaternion();
-            q.setFromAxisAngle( this.camdir, Math.PI/2 );
-            this.sight.up.set(q.x, q.y, q.z);
-            this.sight.quaternion.set(this.camera.quaternion.x,this.camera.quaternion.y,this.camera.quaternion.z, this.camera.quaternion.w)
+            this.q.setFromAxisAngle( this.camdir, Math.PI/2 );
+            this.sight.up.set(this.q.x, this.q.y, this.q.z);
+            this.sight.quaternion.set(this.camera.quaternion.x,this.camera.quaternion.y,this.camera.quaternion.z, this.camera.quaternion.w);
 
-            this.tusv.subVectors(this.sight.position,this.containerMesh.position);
-            var m = this.lookAtFunc(this.tusv, this.up);
-            this.containerMesh.quaternion.setFromRotationMatrix( m );            
+            this.scene.children[ V3D.mesharrpos.shp1 ].up.set(this.q.x, this.q.y, this.q.z);
+            this.scene.children[ V3D.mesharrpos.shp1 ].quaternion.set(this.camera.quaternion.x,this.camera.quaternion.y,this.camera.quaternion.z, this.camera.quaternion.w); 
+            this.scene.children[ V3D.mesharrpos.shp1 ].lookAt(this.sight.position);
+
+            //this.tusv.subVectors(this.sight.position,this.containerMesh.position);
+           // var m = this.lookAtFunc(this.tusv, this.up);
+            // for (var i = 0; i < this.scene.children.length; i++) {
+            //     this.scene.children[i].quaternion.setFromRotationMatrix( m );
+            // }
+           // this.containerMesh.quaternion.setFromRotationMatrix( m );    
+
             
 
     },
     applyRot: function () {
 
 
-        this.rotdir.subVectors( this.camera.position, this.containerMesh.position);
-        if (this.msechngdir === undefined){
-            this.msechngdir = this.startRot.rot;  
-        }
-        if (this.msechngdir.charAt(0) !== this.startRot.rot.charAt(0)){
-            this.chngeindir = true;
-            this.msechngdir = this.startRot.rot;
-        }
 
-        if( (this.rotdir.y > -this.camdist && this.rotdir.y < this.camdist) || this.chngeindir){
+        // this.rotdir.subVectors( this.camera.position, this.containerMesh.position);
+        // if (this.msechngdir === undefined){
+        //     this.msechngdir = this.startRot.rot;  
+        // }
+        // if (this.msechngdir.charAt(0) !== this.startRot.rot.charAt(0)){
+        //     this.chngeindir = true;
+        //     this.msechngdir = this.startRot.rot;
+        // }
 
-            this.rotaxis.subVectors(this.tmpCM, V3D.msePos);
+        // if( (this.rotdir.y > -this.camdist && this.rotdir.y < this.camdist) || this.chngeindir){
 
-            this.rotaxis.z = 0;
+        //     this.rotaxis.subVectors(this.tmpCM, V3D.msePos);
 
-            this.rotaxis.set ( this.rotaxis.y, this.rotaxis.x*-1, this.rotaxis.z );
+        //     this.rotaxis.z = 0;
 
-            this.rotaxis.applyEuler(this.camera.rotation);
+        //     this.rotaxis.set ( this.rotaxis.y, this.rotaxis.x*-1, this.rotaxis.z );
+
+        //     this.rotaxis.applyEuler(this.camera.rotation);
                 
-            this.tmpVCP.copy(this.tmpVCPprev);
-            this.tmpVCP.applyAxisAngle( this.rotaxis, this.camAngle );
+        //     this.tmpVCP.copy(this.tmpVCPprev);
+        //     this.tmpVCP.applyAxisAngle( this.rotaxis, this.camAngle );
 
-            this.tmpVCP.x -= this.tmpVCPprev.x;
-            this.tmpVCP.y -= this.tmpVCPprev.y;
-            this.tmpVCP.z -= this.tmpVCPprev.z;
+        //     this.tmpVCP.x -= this.tmpVCPprev.x;
+        //     this.tmpVCP.y -= this.tmpVCPprev.y;
+        //     this.tmpVCP.z -= this.tmpVCPprev.z;
 
-            if(this.chngeindir){
-                this.chngeindir = false; 
-                if ( this.tmpVCPprev.y + this.tmpVCP.y > this.camdist ) {
-                    this.tmpVCP.y = this.tmpVCPprev.y - (this.camdist - this.regulaterot);
-                    this.tmpVCP.y *= -1;
-                }
-                else if ( this.tmpVCPprev.y + this.tmpVCP.y < -this.camdist ) {
-                    this.tmpVCP.y = this.tmpVCPprev.y + (this.camdist - this.regulaterot);
-                    this.tmpVCP.y *= -1;    
-                }
-            }
-            this.tmpVCPprev.x += this.tmpVCP.x; 
-            this.tmpVCPprev.y += this.tmpVCP.y;
-            this.tmpVCPprev.z += this.tmpVCP.z;
-            this.camrot.x = this.tmpVCP.x;
-            this.camrot.y = this.tmpVCP.y;
-            this.camrot.z = this.tmpVCP.z;
-        }
-        else {
+        //     if(this.chngeindir){
+        //         this.chngeindir = false; 
+        //         if ( this.tmpVCPprev.y + this.tmpVCP.y > this.camdist ) {
+        //             this.tmpVCP.y = this.tmpVCPprev.y - (this.camdist - this.regulaterot);
+        //             this.tmpVCP.y *= -1;
+        //         }
+        //         else if ( this.tmpVCPprev.y + this.tmpVCP.y < -this.camdist ) {
+        //             this.tmpVCP.y = this.tmpVCPprev.y + (this.camdist - this.regulaterot);
+        //             this.tmpVCP.y *= -1;    
+        //         }
+        //     }
+        //     this.tmpVCPprev.x += this.tmpVCP.x; 
+        //     this.tmpVCPprev.y += this.tmpVCP.y;
+        //     this.tmpVCPprev.z += this.tmpVCP.z;
+        //     this.camrot.x = this.tmpVCP.x;
+        //     this.camrot.y = this.tmpVCP.y;
+        //     this.camrot.z = this.tmpVCP.z;
+        // }
+        // else {
 
-            if(this.startRot.rot == 'ul' || this.startRot.rot == 'dl'){
-                var camAngle = 0.025;
-            }
-            else {
-                var camAngle = -0.025;
-            }
-            this.tmpVCP.copy(this.tmpVCPprev);
-            this.tmpVCP.applyAxisAngle( this.up, camAngle );
+        //     if(this.startRot.rot == 'ul' || this.startRot.rot == 'dl'){
+        //         var camAngle = 0.025;
+        //     }
+        //     else {
+        //         var camAngle = -0.025;
+        //     }
+        //     this.tmpVCP.copy(this.tmpVCPprev);
+        //     this.tmpVCP.applyAxisAngle( this.up, camAngle );
 
-            this.tmpVCP.x -= this.tmpVCPprev.x;
-            this.tmpVCP.y -= this.tmpVCPprev.y;
-            this.tmpVCP.z -= this.tmpVCPprev.z;
+        //     this.tmpVCP.x -= this.tmpVCPprev.x;
+        //     this.tmpVCP.y -= this.tmpVCPprev.y;
+        //     this.tmpVCP.z -= this.tmpVCPprev.z;
 
 
-            this.tmpVCPprev.x += this.tmpVCP.x;
-            this.tmpVCPprev.y += this.tmpVCP.y;
-            this.tmpVCPprev.z += this.tmpVCP.z;
+        //     this.tmpVCPprev.x += this.tmpVCP.x;
+        //     this.tmpVCPprev.y += this.tmpVCP.y;
+        //     this.tmpVCPprev.z += this.tmpVCP.z;
 
-            this.camrot.x = this.tmpVCP.x;
-            this.camrot.y = this.tmpVCP.y;
-            this.camrot.z = this.tmpVCP.z;
+        //     this.camrot.x = this.tmpVCP.x;
+        //     this.camrot.y = this.tmpVCP.y;
+        //     this.camrot.z = this.tmpVCP.z;
 
-        }
+        // }
             
     },
     lookAtFunc: function(currdir,up) {
@@ -952,17 +965,20 @@ V3D.View.prototype = {
     },
     phaser: function() {
 
-        if(this.containerMesh.children.length == 5 && this.sight.children.length == 0){
+
+       // if(this.containerMesh.children.length == 5 && this.sight.children.length == 0){
+       if ( this.scene.children[ V3D.mesharrpos.shp1 ].children.length == 5 && this.sight.children.length == 0 ) {
 
             // if ( this.sight.children == 0 ){
             //     this.sight.add(this.glowmesh);
             //     this.glowmesh.position.z -= 175;
             // }
 
-            //this.containerMesh.add( this.glowmesh );
-           
+        
+            this.scene.children[ V3D.mesharrpos.shp1 ].add(this.glowmesh);
+            this.glowmesh.position.z += 250;
 
-            // this.glowmesh.position.z += 250;
+
 
 
 
@@ -974,41 +990,16 @@ V3D.View.prototype = {
 
             this.glowmesh.material.visible = true;  
 
-            // this.glowmesh.position.copy ( this.containerMesh.position );
-           // this.glowmesh.position.x += 100;
+                // var x = V3D.msePos.x;
+                // var y = V3D.msePos.y;
 
+                // var angle = Math.atan2(x,y);
 
-            //  var dir = this.getPlayerDir('forward', this.containerMesh.position);
-
-            // // var axis = new THREE.Vector3(0, 1, 0);
-            // // this.glowmesh.quaternion.setFromUnitVectors( axis, dir);
-
-            // // dir.multiplyScalar(250);
-            // // this.glowmesh.position.copy( dir.clone().multiplyScalar(0.5));
-
-
-            // // var q = new THREE.Quaternion();
-            // // q.setFromRotationMatrix(this.sight.matrix);
-            // // this.glowmesh.quaternion.set( q.x, q.y, q.z, q.w);
-            // // this.glowmesh.position.copy(this.sight.position);
-
-            //console.log(this.containerMesh.rotation);
-            // console.log(this.containerMesh.quaternion);
-            
-
-            
-        
-
-
-
-                //  var x = V3D.msePos.x;
-                //  var y = V3D.msePos.y;
-
-                //  var angle = Math.atan2(x,y);
-
-                //  var q1 = new THREE.Quaternion();
-                //  q1.setFromAxisAngle( new THREE.Vector3( 0,0,1 ), angle );
+                // var q1 = new THREE.Quaternion();
+                // q1.setFromAxisAngle( new THREE.Vector3( 0,0,1 ), angle );
+                // console.log(angle);
                 // this.glowmesh.quaternion.copy( q1 );
+                // console.log(angle);
 
                // console.log(this.glowmesh.quaternion);
 
@@ -1691,6 +1682,9 @@ V3D.View.prototype = {
                 objLoader.load( 'images/'+image, function ( object ) {
                     object.position.set(obj.pos[0], obj.pos[1], obj.pos[2]);
                     object.name = obj.name;
+                    if ( object.name == 'shp1' ) {
+                        V3D.mesharrpos.shp1 = scene.children.length;
+                    }
                     if(obj.msname){
                         object.userData.msname = obj.msname;
                     }
