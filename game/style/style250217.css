@@ -479,8 +479,8 @@ and (max-device-width : 667px) {
 	#addforcebut {
 		background-color: #FFFF00;
 		border-radius: 100%;
-		height: 35%;
-		width: 35%;
+		height: 30%;
+		width: 30%;
 		left: 50%;
 		top: 50%;
 		position: relative;
@@ -502,11 +502,11 @@ and (max-device-width : 667px) {
 	}
 	#tapaccel {
 		bottom: 0;
-	    height: 35%;
+	    height: 41%;
 	    margin: 3% 3% 0 3%;
 	    position: absolute;
 	    right: 0;
-	    width: 7%;
+	    width: 10%;
 	}
 
 
@@ -523,8 +523,8 @@ and (max-device-width : 480px) {
 	#addforcebut {
 		background-color: #FFFF00;
 		border-radius: 100%;
-		height: 35%;
-		width: 35%;
+		height: 30%;
+		width: 30%;
 		left: 50%;
 		top: 50%;
 		position: relative;
@@ -546,11 +546,11 @@ and (max-device-width : 480px) {
 	}
 	#tapaccel {
 		bottom: 0;
-	    height: 35%;
+	    height: 41%;
 	    margin: 3% 3% 0 3%;
 	    position: absolute;
 	    right: 0;
-	    width: 7%;
+	    width: 10%;
 	}
 
 

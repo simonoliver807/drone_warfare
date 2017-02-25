@@ -45,6 +45,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 				    var n = navigator.userAgent;
 					this.isMobile = false;
 				    if (n.match(/Android/i) || n.match(/webOS/i) || n.match(/iPhone/i) || n.match(/iPad/i) || n.match(/iPod/i) || n.match(/BlackBerry/i) || n.match(/Windows Phone/i)) {
+				    	v3d.ismobile = true;
 				    	this.loadMobileEvents(n);
 				    	// if( n.match(/iPhone/i) && !window.navigator.standalone ) {
 				    	// 	this.showPopup('isShowPopup');
@@ -302,14 +303,14 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		    			if(event.changedTouches[i].target.id == 'addforce' || event.changedTouches[i].target.id == 'addforcebut'){
 		    				keys[38] = 0;
 		    				if( soundFX ) {
-			    				v3d.thruster.stop();
+			    				//v3d.thruster.stop();
 								v3d.pThrust = 0;
 							}
 		    			}
 		    			if(event.changedTouches[i].target.id == 'minusforce' || event.changedTouches[i].target.id == 'minusforcebut'){
 		    				keys[40] = 0;
 		    				if( soundFX ) {
-			    				v3d.thruster.stop();
+			    				//v3d.thruster.stop();
 								v3d.pThrust = 0;
 							}
 		    			}

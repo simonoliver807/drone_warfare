@@ -744,7 +744,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                                     drone.userData.ld = 1;
                                 }
                                 // change to live
-                                v3d.updateDrones( dbody, drone, dbody.ms );
+                                //v3d.updateDrones( dbody, drone, dbody.ms );
                             }
                             if ( !drone.userData.ld && !drone.userData.rtm) {
                                 pddist.sub(containerMesh.position,meshs[i].position);

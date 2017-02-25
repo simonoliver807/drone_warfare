@@ -46,6 +46,7 @@ V3D.View = function(h,v,d){
    // this.startRot = { issleeping: 1, rot: 0, axis: new THREE.Vector3() };
     this.startRot = 0;
     this.world;
+    this.ismobile = false;
 
 
 }
@@ -379,7 +380,12 @@ V3D.View.prototype = {
             rotVec2.x = THREE.Math.mapLinear( rotVec2.x, 0, this.w, -1, 1 );
             rotVec2.y = THREE.Math.mapLinear( rotVec2.y, 0, this.h, -1, 1 );
 
-            rotVec2.multiplyScalar(10);
+            if ( this.ismobile ) {
+                rotVec2.multiplyScalar(5);
+            }
+            else {
+                rotVec2.multiplyScalar(10);
+            }
             this.mseCords.pageX += rotVec2.x;
             this.mseCords.pageY += rotVec2.y;
 
@@ -1131,12 +1137,11 @@ V3D.View.prototype = {
     playDroneEx: function() {
 
         if ( soundFX) {
-            var dExpl = audiocntxt.createBufferSource();
-            dExpl.buffer = sourceObj['droneExpl'].buffer;
-            dExpl.connect(masterGain);
+           var dExpl = audiocntxt.createBufferSource();
+           dExpl.buffer = sourceObj['droneExpl'].buffer;
+           dExpl.connect(masterGain);
             dExpl.start(0);
         }
-
 
     },
     playpdown: function() {
