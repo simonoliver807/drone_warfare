@@ -1,7 +1,7 @@
 //html(lang='en-US', manifest='dronewar1.appcache', type='text/cache-manifest')
 // change to live
 doctype html
-html
+html(lang='en-US', manifest='dronewar1.appcache', type='text/cache-manifest')
   head
     meta(charset='UTF-8')
     title= title
@@ -88,10 +88,10 @@ html
     script(type='x-shader/x-fragment', id='starfs')!= starfs
     script(type='x-shader/x-vertex', id='starvs')!= starvs
 
-    script(type='text/Javascript', src='js/defaultpage.js')
-    //script(type='text/Javascript', src='js_min/defaultpage.js')
+    //script(type='text/Javascript', src='js/defaultpage.js')
+    script(type='text/Javascript', src='js_min/defaultpage.js')
     // change to live
-    script(src="/reload/reload.js")
+    //script(src="/reload/reload.js")
     //script(src='//localhost:35729/livereload.js')
     //script(src='//192.168.0.7:35729/livereload.js')
 

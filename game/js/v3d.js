@@ -5,6 +5,7 @@ var V3D = {};
 V3D.ToRad = Math.PI/180;
 V3D.ToDeg = 180 / Math.PI;
 V3D.msePos = new THREE.Vector3(0,0,0);
+V3D.mm = 0;
 V3D.startRender = 0;
 V3D.bincam = 1;
 V3D.exdrone1;
@@ -60,7 +61,7 @@ V3D.View.prototype = {
     	this.renderer.setSize( this.w, this.h );
         this.renderer.setClearColor( 0x000000, 1 );
         this.renderer.setPixelRatio( window.devicePixelRatio );
-       this.renderer.autoClear = true;
+        this.renderer.autoClear = true;
 
 
     	// siolsite this.camera = new THREE.PerspectiveCamera( 60, this.w/this.h, 0.1, 2000 );
@@ -72,9 +73,8 @@ V3D.View.prototype = {
         this.tanFOV = Math.tan( ( ( Math.PI / 180 ) * this.camera.fov / 2 ) );
 
         
-        // need to update both cam pos and tmpVCPprev here and for mobile
         var insideship = document.getElementById('insideship');
-       // // change to live
+        // change to live
         //insideship.value = 'clicked inside'
         if(insideship.value == 'clicked inside'){
             V3D.bincam = 0;
@@ -110,7 +110,7 @@ V3D.View.prototype = {
         ////// helper camera ///////////
         /////////////////////////////////
         this.camP = new THREE.PerspectiveCamera( 50, this.w/this.h, 1, 20000 );
-        this.camP.position.set( 0 ,0 ,50);
+        this.camP.position.set( 0 ,0 ,30);
         this.camP.lookAt( new THREE.Vector3(0,0,0));
         this.camHelper = new THREE.CameraHelper( this.camP );
        // this.scene.add( this.camHelper );
@@ -138,6 +138,8 @@ V3D.View.prototype = {
         this.camdir = new THREE.Vector3();
         this.tusv = new THREE.Vector3();
         this.q = new THREE.Quaternion();
+        this.m = new THREE.Matrix4();
+        this.angle = 0;
 
 
 
@@ -205,8 +207,10 @@ V3D.View.prototype = {
         this.pThrust = 0;
         this.thruster;
 
-
+        // shaders
+        this.starpoint;
         this.glowmesh;
+        this.pglowt = 1000000000;
 
 
         this.controls = new THREE.TrackballControls( this.camera );
@@ -224,7 +228,8 @@ V3D.View.prototype = {
         this.mseCords = { pageX: V3D.pageX, pageY: V3D.pageY };
         this.controls.threemm(this.mseCords);
 
-        //this.controls.addEventListener( 'change', this.render() );
+
+        this.tmpangle = 0;
 
 
 
@@ -330,14 +335,19 @@ V3D.View.prototype = {
     var starfs = document.getElementById( 'starfs' ).textContent;
     var starvs = document.getElementById( 'starvs' ).textContent;
     var material =  new THREE.ShaderMaterial({
+        uniforms: {
+            quat1: {
+                value: new THREE.Quaternion()
+            }
+        },
         vertexShader: starvs,
         fragmentShader: starfs,
         transparent: true,
         side: THREE.DoubleSide
     } );
-    var sq = new THREE.Mesh( sqg, material );
-    sq.name = 'startpoints';
-    this.scene.add( sq );
+    this.starpoint = new THREE.Mesh( sqg, material );
+    this.starpoint.name = 'starpoints';
+    this.scene.add( this.starpoint );
 
 
 
@@ -346,18 +356,12 @@ V3D.View.prototype = {
 
         var particles = 500;
         var geometry = new THREE.Geometry();
-       // var positions = new Float32Array( particles * 3 );
-
-        //geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
-        //geometry.computeBoundingSphere();
         for ( var i = 0; i < particles; i++){
-            var avec = new THREE.Vector3(0,0,0);
-            geometry.vertices.push(avec);
+            var avec = new THREE.Vector3();
+            geometry.vertices.push( avec );
         }
         var points = new THREE.Points( geometry, new THREE.PointsMaterial( { size: 2, color: '#ffff00' } ) );
         points.name = 'points1';
-        //points.visible = true;
-        //points.geometry.attributes.position.setDynamic(true);
 
         return points;
 
@@ -382,11 +386,6 @@ V3D.View.prototype = {
             this.controls.threemm( this.mseCords );
         }
         this.applyRot();
-        for (var i = 0; i < this.scene.children.length; i++) {
-            if (this.scene.children[i].name == 'starpoints') {
-                this.scene.children[i].lookAt( this.camera.position);
-            }
-        }
 
 
         // shader updates
@@ -399,8 +398,14 @@ V3D.View.prototype = {
         }
         this.scene.children[V3D.mesharrpos.planetGlow].lookAt(this.camera.position);
         if( this.scene.children[V3D.mesharrpos.planetGlow].material.visible ){
+
             this.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value += time/1000000000;
         }
+
+        this.tmpangle += 0.1;
+        var q1 = new THREE.Quaternion();
+        q1.setFromAxisAngle( new THREE.Vector3(0,1,0), this.tmpangle);
+        this.starpoint.material.uniforms.quat1.value.set( q1.x, q1.y, q1.z, q1.w );
 
 
         var helpercam = 0;
@@ -417,11 +422,7 @@ V3D.View.prototype = {
         }
 
         if(V3D.bincam) {
-            // this.laser.material.transparent = true;
-            // this.laser.material.opacity = 0;
-           // this.laser.children[0].material.visible = false;
-            // this.laser.children[0].material.transparent = true;
-            // this.laser.children[0].material.opacity = 0;
+            this.glowmesh.material.visible = false;
         }
         else {
             this.sight.children[0].material.transparent = true;
@@ -454,7 +455,7 @@ V3D.View.prototype = {
         geos['msphaser2'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
 
        // geos['laser'] = new THREE.CylinderGeometry(0.06,0.06,5000);
-        geos['laserglow'] = new THREE.PlaneGeometry(1, 500);
+        geos['laserglow'] = new THREE.PlaneGeometry(0.8, 1000);
         
 
         this.geos = geos;
@@ -589,29 +590,31 @@ V3D.View.prototype = {
             mesh.position.set( sphere.pos[0], sphere.pos[1], sphere.pos[2] );
             this.scene.children[V3D.mesharrpos.pl].add( mesh );
         }
-        if(sphere.name == 'containerMesh' && sphere.image != 0){
-            var texture = '';
-            var object = this.loadOBJ(texture,this.scene,sphere);
-        }
-        if(sphere.name == 'containerMesh' && sphere.image === 0) {
+
+        if(sphere.name == 'containerMesh' ) {
             var material = new THREE.MeshBasicMaterial({ color: sphere.color, wireframe: sphere.wireframe, name: sphere.name, transparent: sphere.transparent, opacity: sphere.opacity });
             var mesh = new THREE.Mesh( this.geos[sphere.name], material, sphere.name );
             mesh.position.set( sphere.pos[0], sphere.pos[1], sphere.pos[2] );
             this.scene.add( mesh );
         }
+
         if(sphere.name == 'phasers' || sphere.name == 'dphasers') {
             var texture = new THREE.TextureLoader().load(sphere.texture);
             this.loadOBJ(texture,this.scene,sphere);
         }
-        if(sphere.name == 'shp1') {
-            // var material = new THREE.MeshBasicMaterial({ color: sphere.color, wireframe: sphere.wireframe, name: sphere.name, transparent: sphere.transparent, opacity: sphere.opacity });
-            // var mesh = new THREE.Mesh( this.geos[sphere.name], material, sphere.name );
-            // mesh.position.set( sphere.pos[0], sphere.pos[1], sphere.pos[2] );
-            // this.scene.add( mesh );
+
+        if(sphere.name == 'shp1' && sphere.image != 0){
             var texture = '';
             var object = this.loadOBJ(texture,this.scene,sphere);
         }
 
+        if(sphere.name == 'shp1' && sphere.image === 0) {
+            var material = new THREE.MeshBasicMaterial({ color: sphere.color, wireframe: sphere.wireframe, name: sphere.name, transparent: sphere.transparent, opacity: sphere.opacity });
+            var mesh = new THREE.Mesh( this.geos[sphere.name], material, sphere.name );
+            mesh.position.set( sphere.pos[0], sphere.pos[1], sphere.pos[2] );
+            V3D.mesharrpos.shp1 = this.scene.children.length;
+            this.scene.add( mesh );
+        }
 
         if(sphere.name == 'phaser') {
             var material = new THREE.MeshBasicMaterial({ color: sphere.color, wireframe: sphere.wireframe, name: sphere.name, transparent: sphere.transparent, opacity: sphere.opacity });
@@ -641,7 +644,7 @@ V3D.View.prototype = {
                 transparent: true,
                 side: THREE.DoubleSide
             } );
-         this.geos['laserglow'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
+            this.geos['laserglow'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
            // this.geos['laserglow'].applyMatrix( new THREE.Matrix4().makeRotationY( THREE.Math.degToRad( 90 ) ) );
             this.glowmesh = new THREE.Mesh( this.geos['laserglow'], material );
         //   this.scene.add(this.glowmesh); 
@@ -770,7 +773,9 @@ V3D.View.prototype = {
             this.sight.up.set(this.q.x, this.q.y, this.q.z);
             this.sight.quaternion.set(this.camera.quaternion.x,this.camera.quaternion.y,this.camera.quaternion.z, this.camera.quaternion.w);
 
-            this.scene.children[ V3D.mesharrpos.shp1 ].up.set(this.q.x, this.q.y, this.q.z);
+            if( V3D.mm ){ 
+                this.scene.children[ V3D.mesharrpos.shp1 ].up.set(this.q.x, this.q.y, this.q.z);
+            }
             this.scene.children[ V3D.mesharrpos.shp1 ].quaternion.set(this.camera.quaternion.x,this.camera.quaternion.y,this.camera.quaternion.z, this.camera.quaternion.w); 
             this.scene.children[ V3D.mesharrpos.shp1 ].lookAt(this.sight.position);
 
@@ -965,25 +970,10 @@ V3D.View.prototype = {
     },
     phaser: function() {
 
-
-       // if(this.containerMesh.children.length == 5 && this.sight.children.length == 0){
        if ( this.scene.children[ V3D.mesharrpos.shp1 ].children.length == 5 && this.sight.children.length == 0 ) {
-
-            // if ( this.sight.children == 0 ){
-            //     this.sight.add(this.glowmesh);
-            //     this.glowmesh.position.z -= 175;
-            // }
-
         
             this.scene.children[ V3D.mesharrpos.shp1 ].add(this.glowmesh);
-            this.glowmesh.position.z += 250;
-
-
-
-
-
-
-            // console.log(this.glowmesh.position.z);
+            this.glowmesh.position.z += 500;
 
         }
         if(V3D.bincam){
@@ -1001,12 +991,6 @@ V3D.View.prototype = {
                 // this.glowmesh.quaternion.copy( q1 );
                 // console.log(angle);
 
-               // console.log(this.glowmesh.quaternion);
-
-                // console.log (this.glowmesh.rotation);
-                // console.log( this.containerMesh.rotation );
-                // console.log(this.camera.rotation);
-
         }
         else {
             this.sight.children[0].material.transparent = false;
@@ -1017,159 +1001,63 @@ V3D.View.prototype = {
         ms1 = ms2 = -1;
         ms1len = ms2len = 0;
         if( !V3D.bincam ) {
-            this.mouse.x = ( V3D.clientx / this.w ) * 2 - 1;
-            this.mouse.y = - ( V3D.clienty / this.h ) * 2 + 1;
-            this.lraycaster.setFromCamera( this.mouse, this.camera );
-            var intersects = this.lraycaster.intersectObjects( V3D.raycastarr, true );
-            for(var i=0; i < intersects.length; i++) {
-                if( intersects[i].object.name == 'ms_Object007.001'){
-                    if(!ms1len){
-                        ms1 = i;
-                        ms1len = intersects[i].distance;
-                    }
-                    if( ms1len && intersects[i].distance < ms1len ) {
-                        ms1 = i;
-                        ms1len = intersects[i].distance;
-                    }
-                }
-                 if( intersects[i].object.name == 'DestroyerR_Destroyer_Untitled.000'){
-                    if(!ms2len){
-                        ms2 = i;
-                        ms2len = intersects[i].distance;
-                    }
-                    if( ms2len && intersects[i].distance < ms2len ) {
-                        ms2 = i;
-                        ms2len = intersects[i].distance;
-                    }
-                }
-            }
-            for(var i=0; i < intersects.length; i++) {
-                if( intersects[i].object.name == 'ms_Object007.001' && this.ms1y.y == 0) {
-                     this.ms1y.y = 1;
-                     this.ms1y.t += 1;
-                }
-                if( intersects[i].object.name == "DestroyerR_Destroyer_Untitled.000" && this.ms2y.y == 0) {
-                     this.ms2y.y = 1;
-                     this.ms2y.t += 1;
-                }
-                if( intersects[i].object.name == 'drone' && intersects[i].object.userData.tbd == 0  ) {
-                    if( ms1 != -1) {
-                        if ( intersects[ms1].distance > intersects[i].distance ) {
-                            intersects[i].object.userData.tbd = 1;
-                        }
-                    }
-                    if( ms2 != -1 ) {
-                        if ( intersects[ms2].distance > intersects[i].distance ) {
-                            intersects[i].object.userData.tbd = 1;
-                        }
-                    }
-                    if( ms1 === -1 && ms2 === -1) {
-                        intersects[i].object.userData.tbd = 1;
-                    }
-                   // put back this.playDroneEx();
-                   this.playDroneEx();
-                }
-            }
+            // this.mouse.x = ( V3D.clientx / this.w ) * 2 - 1;
+            // this.mouse.y = - ( V3D.clienty / this.h ) * 2 + 1;
+            //this.lraycaster.setFromCamera( this.mouse, this.camera );
+           this.lraycaster.setFromCamera( V3D.msePos, this.camera );
         }
         if (V3D.bincam ){
             this.lraycaster.set( this.containerMesh.position, this.getPlayerDir( 'forward', this.containerMesh.position ) );
-            var intersects = this.lraycaster.intersectObjects( V3D.raycastarr, true );
-            for(var i=0; i < intersects.length; i++) {
-                if( intersects[i].object.name == 'ms_Object007.001'){
-                    if(!ms1len){
-                        ms1 = i;
-                        ms1len = intersects[i].distance;
-                    }
-                    if( ms1len && intersects[i].distance < ms1len ) {
-                        ms1 = i;
-                        ms1len = intersects[i].distance;
-                    }
+        }
+        var intersects = this.lraycaster.intersectObjects( V3D.raycastarr, true );
+        for(var i=0; i < intersects.length; i++) {
+            if( intersects[i].object.name == 'ms_Object007.001'){
+                if(!ms1len){
+                    ms1 = i;
+                    ms1len = intersects[i].distance;
                 }
-                 if( intersects[i].object.name == 'DestroyerR_Destroyer_Untitled.000'){
-                    if(!ms2len){
-                        ms2 = i;
-                        ms2len = intersects[i].distance;
-                    }
-                    if( ms2len && intersects[i].distance < ms2len ) {
-                        ms2 = i;
-                        ms2len = intersects[i].distance;
-                    }
+                if( ms1len && intersects[i].distance < ms1len ) {
+                    ms1 = i;
+                    ms1len = intersects[i].distance;
                 }
             }
-            for(var i=0; i < intersects.length; i++) {
-                if( intersects[i].object.name == 'ms_Object007.001' && this.ms1y.y == 0) {
-                    this.ms1y.y = 1;
-                    this.ms1y.t += 1;
+             if( intersects[i].object.name == 'DestroyerR_Destroyer_Untitled.000'){
+                if(!ms2len){
+                    ms2 = i;
+                    ms2len = intersects[i].distance;
                 }
-                if( intersects[i].object.name == "DestroyerR_Destroyer_Untitled.000" && this.ms2y.y == 0) {
-                     this.ms2y.y = 1;
-                     this.ms2y.t += 1;
-                }
-                if( intersects[i].object.name == 'drone' && intersects[i].object.userData.tbd == 0  ) {
-                    if( ms1 != -1) {
-                        if ( intersects[ms1].distance > intersects[i].distance ) {
-                            intersects[i].object.userData.tbd = 1;
-                        }
-                    }
-                    if( ms2 != -1 ) {
-                        if ( intersects[ms2].distance > intersects[i].distance ) {
-                            intersects[i].object.userData.tbd = 1;
-                        }
-                    }
-                    if( ms1 === -1 && ms2 === -1) {
-                        intersects[i].object.userData.tbd = 1;
-                    }
-                   // put back this.playDroneEx();
-                   this.playDroneEx();
+                if( ms2len && intersects[i].distance < ms2len ) {
+                    ms2 = i;
+                    ms2len = intersects[i].distance;
                 }
             }
         }
-
-        // this.lraycaster.set(this.containerMesh.position, direction);
-        // //lraycaster.set(cmnorm, direction);
-
-        // var raycastdrone = this.lraycaster.intersectObjects( this.scene.children[this.dronenum].children);
-        // if(raycastdrone.length && raycastdrone[0].object.userData.tbd == 0  ) {
-        //     raycastdrone[0].object.userData.tbd = 1;
-            // V3D.dronewav.pause();
-            // V3D.dronewav.currentTime = 0;
-            // setTimeout(function(){
-            //     V3D.dronewav.play();
-            // },20);
-       // }
-        // var raycastms1 = lraycaster.intersectObject(this.scene.children[this.ms1arrpos].children[0]);
-        // if(raycastms1.length){
-        //     this.ms1y.y = 1;
-        //     this.ms1y.t += 1;
-        // }
-
-
-        // if ( this.scene.children[this.ms1arrpos].children[0].geometry.boundingSphere.radius < 2000 ) { 
-        //     this.scene.children[this.ms1arrpos].children[0].geometry.boundingSphere.radius += 1000;
-        // }
-
-        // var mesh = this.scene.children[this.ms1arrpos].children[0];
-        // var sphere = new THREE.Sphere();
-        // sphere.copy( mesh.geometry.boundingSphere );
-        // sphere.applyMatrix4( mesh.matrixWorld );
-        // var hit = lraycaster.ray.distanceToPoint( sphere.center ) <= sphere.radius;
-        // if( hit ){
-        //     this.ms1y.y = 1;
-        //     this.ms1y.t += 1;
-        // }
-
-
-        // if(this.ms2arrpos){
-        //     var raycastms2 = this.lraycaster.intersectObject(this.scene.children[this.ms2arrpos].children[0]);
-        //     if(raycastms2.length){
-        //         this.ms2y.y = 1;
-        //         this.ms2y.t += 1;
-        //     }
-        // }
-
-
-
-
+        for(var i=0; i < intersects.length; i++) {
+            if( intersects[i].object.name == 'ms_Object007.001' && this.ms1y.y == 0) {
+                 this.ms1y.y = 1;
+                 this.ms1y.t += 1;
+            }
+            if( intersects[i].object.name == "DestroyerR_Destroyer_Untitled.000" && this.ms2y.y == 0) {
+                 this.ms2y.y = 1;
+                 this.ms2y.t += 1;
+            }
+            if( intersects[i].object.name == 'drone' && intersects[i].object.userData.tbd == 0  ) {
+                if( ms1 != -1) {
+                    if ( intersects[ms1].distance > intersects[i].distance ) {
+                        intersects[i].object.userData.tbd = 1;
+                    }
+                }
+                if( ms2 != -1 ) {
+                    if ( intersects[ms2].distance > intersects[i].distance ) {
+                        intersects[i].object.userData.tbd = 1;
+                    }
+                }
+                if( ms1 === -1 && ms2 === -1) {
+                    intersects[i].object.userData.tbd = 1;
+                }
+               this.playDroneEx();
+            }
+        }
 
         // var heading = this.getPlayerDir('forward', this.containerMesh.position);
         // var mag = 2000;
@@ -1236,36 +1124,39 @@ V3D.View.prototype = {
       //  shplv.multiplyScalar(len + appvelmag);
      //   rb.body.linearVelocity.addEqual(shplv);
     },
+    raycastloop: function() {
+
+    },
     // change to live
     playDroneEx: function() {
 
-        // if ( soundFX) {
-        //     var dExpl = audiocntxt.createBufferSource();
-        //     dExpl.buffer = sourceObj['droneExpl'].buffer;
-        //     dExpl.connect(masterGain);
-        //     dExpl.start(0);
-        // }
+        if ( soundFX) {
+            var dExpl = audiocntxt.createBufferSource();
+            dExpl.buffer = sourceObj['droneExpl'].buffer;
+            dExpl.connect(masterGain);
+            dExpl.start(0);
+        }
 
 
     },
     playpdown: function() {
 
-        // if ( soundFX ) {
-        //     var pdown = audiocntxt.createBufferSource();
-        //     pdown.buffer = sourceObj['pdown'].buffer;
-        //     pdown.connect(masterGain);
-        //     pdown.start(0);
-        // }
+        if ( soundFX ) {
+            var pdown = audiocntxt.createBufferSource();
+            pdown.buffer = sourceObj['pdown'].buffer;
+            pdown.connect(masterGain);
+            pdown.start(0);
+        }
     },
     playThruster: function() {
 
-        // if ( soundFX ) {
-        //     this.thruster = audiocntxt.createBufferSource();
-        //     this.thruster.buffer = sourceObj['thruster'].buffer;
-        //     this.thruster.connect(masterGain);
-        //     this.thruster.loop = true;
-        //     this.thruster.start(0);
-        // }
+        if ( soundFX ) {
+            this.thruster = audiocntxt.createBufferSource();
+            this.thruster.buffer = sourceObj['thruster'].buffer;
+            this.thruster.connect(masterGain);
+            this.thruster.loop = true;
+            this.thruster.start(0);
+        }
     },
     updateDrones: function(dbody,drone,ms){
 
@@ -1292,18 +1183,18 @@ V3D.View.prototype = {
             //     this.playaudio = 1;
             // }
             this.ldh.normalize()
-            var m = this.lookAtFunc(this.ldh, this.up);
+            this.m = this.lookAtFunc(this.ldh, this.up);
             var q = new THREE.Quaternion();
-            q.setFromRotationMatrix( m );
+            q.setFromRotationMatrix( this.m );
             rb.setQuaternion(q);
 
-            var angle = 2 * Math.acos(q.w);
+            this.angle = 2 * Math.acos(q.w);
 
             if( drone.userData.bincount === 0) {
 
-                if( this.drota != angle) {
+                if( this.drota != this.angle) {
 
-                    var anglediff = this.drota - angle;
+                    var anglediff = this.drota - this.angle;
                     if( anglediff < 0 ) { anglediff *= -1; }
                     var mag = anglediff;
                     
@@ -1323,7 +1214,7 @@ V3D.View.prototype = {
 
                     correctvec.multiplyScalar(-mag);
                     rb.linearVelocity.addTime(correctvec, this.world.timeStep);
-                    this.drota = angle;
+                    this.drota = this.angle;
                     //console.log(rb.linearVelocity); 
                   //  console.log('anglediff' + anglediff);
 
@@ -1716,9 +1607,9 @@ V3D.View.prototype = {
         var mspos = new THREE.Vector3( ms.position.x, ms.position.y, ms.position.z);
         mspos.multiplyScalar(100);
         dir.subVectors( this.planetpos, mspos);
-        var m = this.lookAtFunc( dir, new THREE.Vector3(0,1,0));
+        this.m = this.lookAtFunc( dir, new THREE.Vector3(0,1,0));
         var q = new THREE.Quaternion();
-        q.setFromRotationMatrix( m );
+        q.setFromRotationMatrix( this.m );
         return q;
     },
     rotPlanetoid: function(body,mesh){

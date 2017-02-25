@@ -38,7 +38,6 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
     var world;
     var worldcount = 0;
 
-    var levels = [];
     var x982y = 1;      //*************************************
     var startlevel = 1;     //*************************************
 
@@ -136,7 +135,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
 
                 // change to live
-                perfcont = document.getElementById('perf');
+               // perfcont = document.getElementById('perf');
 
 
                 perf = 0;
@@ -279,7 +278,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                            // container to hold three.js objects
                             for(var b = 0; b < bodys.length; b++){
                                 for(var i =0; i < v3d.scene.children.length ; i++){
-                                    if(bodys[b].name == v3d.scene.children[i].name){
+                                    if(bodys[b].name == v3d.scene.children[i].name ){
                                             meshs.push(v3d.scene.children[i]);
                                             if(bodys[b].name == 'ms1' || bodys[b].name == 'ms2'){
 
@@ -497,12 +496,12 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                             V3D.grouppart.remove( V3D.grouppart.children[i] );
                         }
                         else {
-                            var expart = V3D.grouppart.children[i].geometry.vertices;;
+                            var expart = V3D.grouppart.children[i].geometry.vertices;
                             for(var numarr = 0; numarr< expart.length; numarr++){
-                                var num = Math.random() * 10;
-                                if( numarr % 2 === 0 ){
-                                    num *= -1;
-                                }
+                                // var num = Math.random() * 10;
+                                // if( numarr % 2 === 0 ){
+                                //     num *= -1;
+                                // }
                                  V3D.grouppart.children[i].geometry.vertices[numarr].x += Math.random() * 10;
                                  V3D.grouppart.children[i].geometry.vertices[numarr].y += Math.random() * 10;
                                  V3D.grouppart.children[i].geometry.vertices[numarr].z += Math.random() * 10;
@@ -512,8 +511,8 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                     }
                     
                     // change to live
-                    perf = world.performance.show();
-                    perfcont.innerHTML = perf;
+                    // perf = world.performance.show();
+                    // perfcont.innerHTML = perf;
                   
 
                    // var x, y, z, mesh, body;
@@ -597,7 +596,6 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                         }
 
                         if ( btd.indexOf(body.body.shapes.id) != -1 || mesh.userData.tbd == 1 ) {
-                            //if(body.ld && numofdrone > totaldrones/4){
                             if( body.ld ) {
                                 var ms = {pos: []};
                                 if ( body.ms == 'ms1' ) {
@@ -608,8 +606,6 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                                 }
                                 self.loadExdrone( mesh );
                                 var pos = self.dronePos(ms);
-                             //   body.body.linearVelocity.set(0,0,0);
-                             //   body.body.angularVelocity.set(0,0,0);
                                 body.body.position.set(pos[0]/100,pos[1]/100,pos[2]/100); 
                                 mesh.userData.tbd = -2;
                             }
@@ -620,12 +616,6 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                                 var m = mesh.material;
                                 g.dispose();
                                 if( typeof(m.dispose) === 'undefined' ){                 
-                                        // V3D.exdrone1.userData.active = true;
-                                        // var exdrone = V3D.exdrone1.children[0].clone();
-                                        // exdrone.position.set(mesh.position.x,mesh.position.y,mesh.position.z);
-                                        // exdrone.quaternion.set(mesh.quaternion.x,mesh.quaternion.y,mesh.quaternion.z,mesh.quaternion.w);
-                                        // exdrone.visible = true;
-                                        // V3D.exdrone1.children.push(exdrone);
                                         self.loadExdrone( mesh );
                                         m.materials[0].dispose();
                                         m.materials[1].dispose();
@@ -714,7 +704,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
                     }
                     // change to live: remove
-                     v3d.phaser();
+                     //v3d.phaser();
                      ///////////////////////
 
                     if (endsequence >= 0) {
@@ -754,7 +744,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                                     drone.userData.ld = 1;
                                 }
                                 // change to live
-                               // v3d.updateDrones( dbody, drone, dbody.ms );
+                                v3d.updateDrones( dbody, drone, dbody.ms );
                             }
                             if ( !drone.userData.ld && !drone.userData.rtm) {
                                 pddist.sub(containerMesh.position,meshs[i].position);
@@ -824,8 +814,8 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                                 { type: 'sphere', size:[8, 8, 8], pos:[0,0,0], move: true, world: world, color: '#ff0000', wireframe: 'false',  name: 'containerMesh', transparent: 'false', opacity: 1, image: 0  }];
 
                     if(!V3D.bincam) {
-                        spheres[1].image = 0;
-                        spheres[1].mtl = 0;
+                        spheres[0].image = 0;
+                        spheres[0].mtl = 0;
                     }
 
                    // add the sight
@@ -850,8 +840,9 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
 
 
                 pdown = this.levelobj.dow;
+                v3d.pglowt = this.levelobj.pglowt;
                 for( obj in  this.levelobj){
-                    if(obj.charAt(0) == 'p'){
+                    if( obj.charAt(0) == 'p' && obj != 'pglowt' ){
                         if(obj == 'planet1'){
                            halfdiamplanet = this.levelobj[obj].size[0]/2;
                            var pos = this.levelobj[obj].pos;
@@ -874,8 +865,9 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 var i = v3d.scene.children[V3D.mesharrpos.pl].children.length;
                 while(i--){
                     if(planetlist.indexOf( v3d.scene.children[V3D.mesharrpos.pl].children[i].name ) != -1) {
-                        v3d.scene.children[V3D.mesharrpos.pl].children[i].material.transparent = true;
-                        v3d.scene.children[V3D.mesharrpos.pl].children[i].material.opacity = 0;
+                        v3d.scene.children[V3D.mesharrpos.pl].children[i].material.visible = false;
+                        // v3d.scene.children[V3D.mesharrpos.pl].children[i].material.transparent = true;
+                        // v3d.scene.children[V3D.mesharrpos.pl].children[i].material.opacity = 0;
                     }
                 }
                 var i = bodys.length;
@@ -899,8 +891,9 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                         if( planetlist.indexOf( spheres[i].name ) != -1 ){
                             var pos = planetlist.indexOf( spheres[i].name ); 
                             var planet = v3d.scene.children[V3D.mesharrpos.pl].children[pos];
-                            planet.material.transparent = false;
-                            planet.material.opacity = 1;
+                            // planet.material.transparent = false;
+                            // planet.material.opacity = 1;
+                            planet.material.visible = true;
                             planet.position.set( spheres[i].pos[0], spheres[i].pos[1], spheres[i].pos[2] );
 
                         }
@@ -1203,8 +1196,8 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                     case 'keys':
                         return keys;
                         break;
-                    case 'levels':
-                        return levels;
+                    case 'x982y':
+                        return x982y;
                         break;
                     case 'endsequence':
                         return endsequence;
@@ -1243,6 +1236,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                         }
                     }
                 } 
+                v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value = 0.59;
                 // if(x982y === 2){
                 //     x982y = 3;
                 // }

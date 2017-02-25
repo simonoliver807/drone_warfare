@@ -21,8 +21,8 @@ module.exports = function(grunt) {
         requirejs: {
           compile: {
             options: {
-              baseUrl: '/Users/simon_oliver807/Documents/dronewar1/drone_warfare/game/js',
-              mainConfigFile: '/Users/simon_oliver807/Documents/dronewar1/drone_warfare/game/js/config.js',
+              baseUrl: '/Users/simonoliver/Documents/dronewar1/drone_warfare/game/js',
+              mainConfigFile: '/Users/simonoliver/Documents/dronewar1/drone_warfare/game/js/config.js',
               modules:[
                 {
                   name: 'config'

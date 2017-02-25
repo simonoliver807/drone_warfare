@@ -34,8 +34,8 @@ const io = require('socket.io')(server);
 // var io = require('socket.io')( multiserver );
 
 // change to live
-//var dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
-var dburl = 'mongodb://localhost:27017/test';
+var dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
+//var dburl = 'mongodb://localhost:27017/test';
 
 
 // mc.connect( dburl, function(err, db) {

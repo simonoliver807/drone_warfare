@@ -32,8 +32,8 @@ void main() {
 
 
 	vec2 middleGrad = vec2(0.0);
-	 middleGrad.x = ssdata(vec2(0.1, 0.45), st.x);
-	 middleGrad.y = ssdata(vec2(0.1, 0.45), 1.0 - st.x);
+	 middleGrad.x = ssdata(vec2(0.1, 0.6), st.x);
+	 middleGrad.y = ssdata(vec2(0.1, 0.6), 1.0 - st.x);
 	float pct = middleGrad.x * middleGrad.y;
 
 

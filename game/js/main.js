@@ -17,7 +17,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		return {
 			init: function(){
 		// change to live
-		//	try {
+			try {
 
 					window.oncontextmenu = function (){ return false; }
 					window.addEventListener( 'resize', this.onWindowResize, false );
@@ -46,9 +46,9 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 					this.isMobile = false;
 				    if (n.match(/Android/i) || n.match(/webOS/i) || n.match(/iPhone/i) || n.match(/iPad/i) || n.match(/iPod/i) || n.match(/BlackBerry/i) || n.match(/Windows Phone/i)) {
 				    	this.loadMobileEvents(n);
-				    	if( n.match(/iPhone/i) && !window.navigator.standalone ) {
-				    		this.showPopup('isShowPopup');
-				    	}
+				    	// if( n.match(/iPhone/i) && !window.navigator.standalone ) {
+				    	// 	this.showPopup('isShowPopup');
+				    	// }
 				    }   
 				    else {
 				    	this.loadEvents();
@@ -56,15 +56,13 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 				   // gameinit.oimoLoop();
 
-
-
-				// }
-				// catch (err) {
-				// 	document.getElementById('loadingScreen').style.display = 'none';
-				// 	var errscreen = document.getElementById('errScreen')
-				// 	errscreen.style.display = 'block';
-				// 	errscreen.innerHTML = '<div id="errdiv">Sorry drone war 1 is not available at this time </div>';
-				// }
+				}
+				catch (err) {
+					document.getElementById('loadingScreen').style.display = 'none';
+					var errscreen = document.getElementById('errScreen')
+					errscreen.style.display = 'block';
+					errscreen.innerHTML = '<div id="errdiv">Sorry drone war 1 is not available at this time </div>';
+				}
 			},
 
 			handleKeyDown: function( event ) {
@@ -101,6 +99,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 			},
 			handleMouseMove: function(event){
 
+				if(V3D.mm === 0) { V3D.mm = 1 };
 
 				if( event.target.id == 'mobcon') {
 		    		var x = ((event.pageX - mobcon.offsetLeft)/13)*100 ;

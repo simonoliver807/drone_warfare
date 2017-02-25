@@ -68,7 +68,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 				    function handleKeyDown ( event ) {
 
 						//event.preventDefault();
-						if( event.keyCode === 27) {
+						if( event.keyCode === 80) {
 							var val = gameinit.gspause() ? 0: 1;
 						    gameinit.gspause(val);
 						}
@@ -435,41 +435,23 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 						    	y = self.y;
 						    	V3D.msePos.set( ( x / v3d.w ) * 2 - 1, - ( y / v3d.h ) * 2 + 1, 0.5 )
 
+						    	V3D.pageX = x;
+								V3D.pageY = y;
 
 								if ( x > perwr ){
-									if( y > v3d.h/2){
-										v3d.startRot = {rot: 'dr'};
-									}
-									else {
-										v3d.startRot = {rot: 'ur'};
-									}
+									v3d.startRot = 1;
 								}
 								else if ( x < perwl ) {
-									if( y > v3d.h/2){
-										v3d.startRot = {rot: 'dl'};
-									}
-									else {
-										v3d.startRot = {rot: 'ul'};
-									}
+									v3d.startRot = 1;
 								}
 								else if ( y > perhu ) {
-									if( x > v3d.w/2){
-										v3d.startRot = {rot: 'dr'}; 
-									}
-									else {
-										v3d.startRot = {rot: 'dl'};
-									}
+									v3d.startRot = 1;
 								}
 								else if ( y < perhd ) {
-									if( x > v3d.w/2){
-										v3d.startRot = {rot: 'ur'}; 
-									}
-									else {
-										v3d.startRot = {rot: 'ul'};
-									}
+								 	v3d.startRot = 1;
 								}
 								else {
-									v3d.startRot = {rot: 0};
+								 	v3d.startRot = 0;
 								}
 
 								self.angleprev = dp;
