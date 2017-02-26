@@ -80,10 +80,6 @@
     // Full stack of the connected clients/players.
     this.player_manifest = {}
 
-    // The speed at which the clients move.
-    this.playerspeed = 90
-    this.playercount = 0
-
     // Set up some physics integration values
     this._pdt  = 0.0001                 //The physics update delta time
     this._pdte = new Date().getTime()   //The physics update last delta time
@@ -129,14 +125,14 @@
 
   //  Main update loop
 
-      game_core.prototype.update = function(t) {
+      game_core.prototype.updategame = function(t) {
 
-        console.log(this.var);
+        //console.log(this.var);
         if(this.var) {
-          console.log(this.lastframetime)
-          console.log('this.lastframetime')
-          console.log(t);
-          console.log('t');
+          // console.log(this.lastframetime)
+          // console.log('this.lastframetime')
+          // console.log(t);
+          // console.log('t');
         }
         this.var += 1;
 
@@ -150,11 +146,12 @@
         // Update the game specifics
         this.server_update()
 
+        //debugger;
         // schedule the next update
-        this.updateid = window.requestAnimationFrame(this.update.bind(this), this.viewport);
+        this.updateid = window.requestAnimationFrame(this.updategame.bind(this), this.viewport);
 
-        console.log(this.updateid);
-        console.log('the update id')
+        // console.log(this.updateid);
+        // console.log('the update id')
       }
 
 
@@ -217,6 +214,9 @@
     var instanceOIMO = new OIMO;
     this.world = new instanceOIMO.World( timestep, boardphase, Iterations, noStat );
     setInterval(function() {
+
+      //debugger;
+
       this.world.step();
       this._pdt  = (new Date().getTime() - this._pdte) / 1000.0;
       this._pdte = new Date().getTime();
@@ -225,6 +225,7 @@
   }
 
   game_core.prototype.update_physics = function() {
+
 
     for (var id in this.player_manifest) {
       // handle players
@@ -245,6 +246,8 @@
 
   game_core.prototype.server_update = function() {
 
+    this.angle;
+
     // Update the state of our local clock to match the timer
     this.server_time = this.local_time
 
@@ -256,6 +259,9 @@
   //
 
   game_core.prototype.server_prepare_update = function() {
+
+    ////debugger;
+
     var packet = {}
 
     for (var id in this.player_manifest) {
@@ -272,6 +278,9 @@
   //
 
   game_core.prototype.server_transmit_update = function(packet) {
+
+    ////debugger;
+
     this.last_state = {
       vals: packet,
       t:    this.server_time

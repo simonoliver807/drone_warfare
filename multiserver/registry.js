@@ -137,7 +137,10 @@
         this.log('   Game start: '+ game.id);
         this.game_count++
         game.gamecore = new game_core(game);
-        game.gamecore.update(new Date().getTime());
+
+        //debugger;
+
+        game.gamecore.updategame(new Date().getTime());
         game.save();
 
         // Create a new game instance
@@ -209,7 +212,8 @@
           joined_a_game = true
           // connect client to this game, create a
           // player & increase the player count.
-          console.log( game );
+          //console.log( game );
+          
           game.gamecore.player_connect(client)
           game.player_count++
           // client.game = game_instance

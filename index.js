@@ -216,7 +216,10 @@ io.on('connection', (client) => {
 			Multi.create( { player1: client.id, player2: 'player2', bodys: {} }, ( err, multi ) => {
 				if( err ) console.log('error starting game');
 
+		
+
 				game_server.join_game( multi );
+				debugger;
 				client.emit('gamestart', { id: multi.id , host: true });
 			});
 			numberOfGame += 1;
