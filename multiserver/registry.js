@@ -59,28 +59,28 @@
 
   //
 
-      game_server.onMessage = function(client, message) {
+     // game_server.setgd = function(client, message) {
 
-        if (this.fake_latency && message.split('.')[0].substr(0, 1) == 'i') {
+        // if (this.fake_latency && message.split('.')[0].substr(0, 1) == 'i') {
 
-          // store all input message
-          game_server.messages.push({ client: client, message: message })
+        //   // store all input message
+        //   game_server.messages.push({ client: client, message: message })
 
-          setTimeout(function() {
-            if (game_server.messages.length) {
-              game_server._onMessage(game_server.messages[0].client, game_server.messages[0].message)
-              game_server.messages.splice(0, 1)
-            }
-          }.bind(this), this.fake_latency)
+        //   // setTimeout(function() {
+        //   //   if (game_server.messages.length) {
+        //   //     game_server._onMessage(game_server.messages[0].client, game_server.messages[0].message)
+        //   //     game_server.messages.splice(0, 1)
+        //   //   }
+        //   // }.bind(this), this.fake_latency)
 
-        } else {
-          game_server._onMessage(client, message)
-        }
-      }
+        // } else {
+        //   game_server._onMessage(client, message)
+        // }
+    //  }
 
   //
     
-      game_server._onMessage = function(client, message) {
+      game_server.setgd = function(client, message) {
 
         // Cut the message up into sub components
         var message_parts = message.split('.')
@@ -131,33 +131,45 @@
 
   //
 
-      game_server.create_game = function(client) {
+      game_server.create_game = function( game ) {
+
+        console.log('creating game');
+        this.log('   Game start: '+ game.id);
+        this.game_count++
+        game.gamecore = new game_core(game);
+
+        //debugger;
+
+        game.gamecore.updategame(new Date().getTime());
+        game.save();
 
         // Create a new game instance
-        var thegame = {
-          uuid: uuid.v4({ rng: uuid.nodeRNG }),   // generate a new id for the game
-          player_count: 0,                        // for simple checking of state
-          player_capacity: 1024 * 1024 * 0.5      // 524,288 max
-        }
+        // var thegame = {
+        //   uuid: uuid.v4({ rng: uuid.nodeRNG }),   // generate a new id for the game
+        //   player_count: 0,                        // for simple checking of state
+        //   player_capacity: 1024 * 1024 * 0.5      // 524,288 max
+        // }
 
         // Store it in the list of game
-        this.games[thegame.uuid] = thegame
-        this.game_count++
+       // this.games[thegame.uuid] = thegame
+        
 
         // Create a new game core instance, this actually runs the
         // game code like collisions and such.
-        thegame.gamecore = new game_core(thegame)
+        //thegame.gamecore = new game_core(thegame)
+        
 
         // Start updating the game loop on the server
-        thegame.gamecore.update(new Date().getTime())
+        //thegame.gamecore.update(new Date().getTime())
+       
 
         // the client needs to know which game it is connected to.
-        client.game = thegame
+    //    client.game = thegame
 
-        this.log('   Game start: ' + color.white + client.game.uuid + color.reset + '   ')
+       // this.log('   Game start: ' + color.white + client.game.uuid + color.reset + '   ')
 
         // return the new game instance.
-        return thegame
+      //  return game
       }
 
   //
@@ -191,46 +203,61 @@
 
   //
 
-      game_server.join_game = function(client) {
+      game_server.join_game = function( game ) {
 
-        if (this.game_count) {
+        //console.log(client);
 
-          var joined_a_game = false
+        if ( game.player2 != 'player2' ) {
 
-          //Check the list of games for an open game
-          for (var gameid in this.games) {
+          joined_a_game = true
+          // connect client to this game, create a
+          // player & increase the player count.
+          //console.log( game );
+          
+          game.gamecore.player_connect(client)
+          game.player_count++
+          // client.game = game_instance
+          // game_instance.player_count++
 
-            //only care about our own properties.
-            if (! this.games.hasOwnProperty(gameid)) continue
 
-            //get the game we are checking against
-            var game_instance = this.games[gameid]
+         // if (joined_a_game) break
 
-            if (game_instance.player_count < game_instance.player_capacity) {
+          // var joined_a_game = false
 
-              joined_a_game = true
+          // //Check the list of games for an open game
+          // for (var gameid in this.games) {
 
-              // connect client to this game, create a
-              // player & increase the player count.
-              game_instance.gamecore.player_connect(client)
-              client.game = game_instance
-              game_instance.player_count++
+          //   //only care about our own properties.
+          //   if (! this.games.hasOwnProperty(gameid)) continue
 
-              }
-              if (joined_a_game) break
-            }
+          //   //get the game we are checking against
+          //   var game_instance = this.games[gameid]
 
-            //now if we didn't join a game, we create one
-            if (! joined_a_game) {
-              this.create_game(client)
-              this.join_game(client)    // and join it.
-            }
+          //   if (game_instance.player_count < game_instance.player_capacity) {
+
+          //     joined_a_game = true
+
+          //     // connect client to this game, create a
+          //     // player & increase the player count.
+          //     game_instance.gamecore.player_connect(client)
+          //     client.game = game_instance
+          //     game_instance.player_count++
+
+          //     }
+          //     if (joined_a_game) break
+          //   }
+
+          //   //now if we didn't join a game, we create one
+          //   if (! joined_a_game) {
+          //     this.create_game(game)
+          //     this.join_game(game)    // and join it.
+          //   }
 
           } else {
 
           //no games? create one!
-          this.create_game(client)
-          this.join_game(client)    // and join it.
+          this.create_game(game)
+          //this.join_game(game)    // and join it.
         }
       }
 
