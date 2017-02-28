@@ -17,7 +17,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		return {
 			init: function(){
 		// change to live
-			try {
+			//try {
 
 					window.oncontextmenu = function (){ return false; }
 					window.addEventListener( 'resize', this.onWindowResize, false );
@@ -55,15 +55,13 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 				    	this.loadEvents();
 				    }	
 
-				   // gameinit.oimoLoop();
-
-				}
-				catch (err) {
-					document.getElementById('loadingScreen').style.display = 'none';
-					var errscreen = document.getElementById('errScreen')
-					errscreen.style.display = 'block';
-					errscreen.innerHTML = '<div id="errdiv">Sorry drone war 1 is not available at this time </div>';
-				}
+				// }
+				// catch (err) {
+				// 	document.getElementById('loadingScreen').style.display = 'none';
+				// 	var errscreen = document.getElementById('errScreen')
+				// 	errscreen.style.display = 'block';
+				// 	errscreen.innerHTML = '<div id="errdiv">Sorry drone war 1 is not available at this time </div>';
+				// }
 			},
 
 			handleKeyDown: function( event ) {
@@ -131,9 +129,6 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 				var perhd = perh
 
 
-				// V3D.pageX = event.pageX;
-				// V3D.pageY = event.pageY;
-
 				V3D.pageX = x;
 				V3D.pageY = y;
 
@@ -152,46 +147,6 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 				else {
 				 	v3d.startRot = 0;
 				}
-
-
-
-
-				// if ( clientX > perwr ){
-				// 	if( clientY > v3d.h/2){
-				// 		v3d.startRot = {rot: 'dr'};
-				// 	}
-				// 	else {
-				// 		v3d.startRot = {rot: 'ur'};
-				// 	}
-				// }
-				// else if ( clientX < perwl ) {
-				// 	if( clientY > v3d.h/2){
-				// 		v3d.startRot = {rot: 'dl'};
-				// 	}
-				// 	else {
-				// 		v3d.startRot = {rot: 'ul'};
-				// 	}
-				// }
-				// else if ( clientY > perhu ) {
-				// 	if( clientX > v3d.w/2){
-				// 		v3d.startRot = {rot: 'dr'}; 
-				// 	}
-				// 	else {
-				// 		v3d.startRot = {rot: 'dl'};
-				// 	}
-				// }
-				// else if ( clientY < perhd ) {
-				// 	if( clientX > v3d.w/2){
-				// 		v3d.startRot = {rot: 'ur'}; 
-				// 	}
-				// 	else {
-				// 		v3d.startRot = {rot: 'ul'};
-				// 	}
-				// }
-				// else {
-				// 	v3d.startRot = {rot: 0};
-				// }
-
 			},
 			showPopup: function (type) {
 

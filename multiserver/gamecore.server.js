@@ -20,7 +20,7 @@
   //  requestAnimationFrame polyfill by Erik Möller
   //  fixes from Paul Irish and Tino Zijdel
 
-  var OIMO = require('../multiserver/oimo');
+var gameinitserver = require('../multiserver/gameinitserver');
 
 
 
@@ -38,7 +38,7 @@
     }
 
     if (! window.requestAnimationFrame) {
-      window.requestAnimationFrame = function (callback, element) {
+      window.requestAnimationFrame = function ( callback ) {
         var currTime = Date.now(), timeToCall = Math.max(0, frame_time - (currTime - lastTime))
         var id = window.setTimeout(function() { callback(currTime + timeToCall) }, timeToCall)
         lastTime = currTime + timeToCall
@@ -67,8 +67,8 @@
     console.log('this.instance')
     console.log( this.instance );
 
-    // OIMO world
-    this.world;
+
+    this.gi = new gameinitserver;
 
 
     //Store a flag if we are the server
@@ -90,10 +90,10 @@
 
     // Start a physics loop, this is separate to the rendering
     // as this happens at a fixed frequency
-    this.create_physics_simulation()
+    this.player_manifest[this.instance._doc.player1] = this.create_physics_simulation()
 
     // Start a fast paced timer for measuring time easier
-   // this.create_timer()
+    this.create_timer()
 
 
     this.server_time = 0
@@ -125,7 +125,7 @@
 
   //  Main update loop
 
-      game_core.prototype.updategame = function(t) {
+      game_core.prototype.update_game = function(t) {
 
         //console.log(this.var);
         if(this.var) {
@@ -144,11 +144,12 @@
         this.lastframetime = t
 
         // Update the game specifics
+
         this.server_update()
 
-        //debugger;
+       
         // schedule the next update
-        this.updateid = window.requestAnimationFrame(this.updategame.bind(this), this.viewport);
+        this.updateid = window.requestAnimationFrame( this.update_game.bind(this) );
 
         // console.log(this.updateid);
         // console.log('the update id')
@@ -205,33 +206,35 @@
 
 
   game_core.prototype.create_physics_simulation = function() {
-    var boardphase = 2;
-    // The number of iterations for constraint solvers : default 8.
-    var Iterations = 8;
-    // calculate statistique or not
-    var noStat = false;
-    var timestep = 1/60; //is 15ms same as set timeout
-    var instanceOIMO = new OIMO;
-    this.world = new instanceOIMO.World( timestep, boardphase, Iterations, noStat );
+
+    this.gi.createWorld();
+    var player1 = this.gi.populate('player1');
+
     setInterval(function() {
-
-      //debugger;
-
-      this.world.step();
+      this.gi.render();
       this._pdt  = (new Date().getTime() - this._pdte) / 1000.0;
       this._pdte = new Date().getTime();
       this.update_physics();
     }.bind(this), 15)
+
+    return player1;
+
   }
 
   game_core.prototype.update_physics = function() {
 
 
     for (var id in this.player_manifest) {
+
       // handle players
-      this.player_manifest[id].old_state.pos = this.pos(this.player_manifest[id].pos)
+      // this.player_manifest[id].old_state.pos = this.pos(this.player_manifest[id].position)
+      // var new_dir = this.process_input(this.player_manifest[id])
+      // this.player_manifest[id].pos = this.v_add(this.player_manifest[id].old_state.pos, new_dir)
+
+
+      var old_pos = this.player_manifest[id].body.position;
       var new_dir = this.process_input(this.player_manifest[id])
-      this.player_manifest[id].pos = this.v_add(this.player_manifest[id].old_state.pos, new_dir)
+      //this.player_manifest[id].pos = this.v_add(this.player_manifest[id].old_state.pos, new_dir)
 
       // TODO: collisions are not implemented !
       // Keep the physics position in the world
@@ -255,7 +258,6 @@
     var packet = this.server_prepare_update()
     this.server_transmit_update(packet)
   }
-
   //
 
   game_core.prototype.server_prepare_update = function() {
@@ -266,8 +268,8 @@
 
     for (var id in this.player_manifest) {
       packet[id] = {
-        pos: this.player_manifest[id].pos,
-        idx: this.player_manifest[id].index,
+        pos: this.player_manifest[id].body.position,
+       // idx: this.player_manifest[id].index,
         isq: this.player_manifest[id].last_input_seq || 0
       }
     }
@@ -287,31 +289,23 @@
     }
 
     for (var id in this.player_manifest) {
-      this.last_state.uuid = id
-      if (this.player_manifest[id].instance) {
-        this.player_manifest[id].instance.emit('onserverupdate', this.last_state)
-      }
+      this.last_state.uuid = id;
+      debugger
+      this.server.emit('onserverupdate', this.last_state);
+      // if (this.player_manifest[id].instance) {
+      //   this.player_manifest[id].instance.emit('onserverupdate', this.last_state)
+      // }
     }
   }
 
   game_core.prototype.create_timer = function() {
-  setInterval(function() {
-    this._dt  = new Date().getTime() - this._dte
-    this._dte = new Date().getTime()
-    this.local_time += this._dt / 1000.0
-  }.bind(this), 4)
+    setInterval(function() {
+      this._dt  = new Date().getTime() - this._dte
+      this._dte = new Date().getTime()
+      this.local_time += this._dt / 1000.0
+    }.bind(this), 4)
   }
 
-
-  game_core.prototype.physics_movement_vector_from_direction = function(x, y, z) {
-
-  // Must be fixed step, at physics sync speed.
-    return {
-      x: (x * (this.playerspeed * 0.015)).fixed(3),
-      y: (y * (this.playerspeed * 0.015)).fixed(3),
-      z: (z * (this.playerspeed * 0.015)).fixed(3)
-    }
-  }
 
 
   game_core.prototype.process_input = function(player) {
@@ -339,7 +333,8 @@
     }
 
     // we have a direction vector now, so apply the same physics as the client
-    var resulting_vector = this.physics_movement_vector_from_direction(x_dir, y_dir, z_dir)
+   // var resulting_vector = this.physics_movement_vector_from_direction(x_dir, y_dir, z_dir)
+
     if (player.inputs.length) {
       // we can now clear the array since these have been processed
       player.last_input_time = player.inputs[ic - 1].time
@@ -347,23 +342,26 @@
     }
 
     // give it back
-    return resulting_vector
+   // return resulting_vector
+   return
+
+  }
+  game_core.prototype.physics_movement_vector_from_direction = function(x, y, z) {
+
+  // Must be fixed step, at physics sync speed.
+    return {
+      x: (x * (this.playerspeed * 0.015)).fixed(3),
+      y: (y * (this.playerspeed * 0.015)).fixed(3),
+      z: (z * (this.playerspeed * 0.015)).fixed(3)
+    }
   }
 
-  game_core.prototype.player_connect = function(player) {
-      // someone entered the game, add them to our list !
-      this.playercount++
-      var p = new game_player(this, player)
+  game_core.prototype.player_connect = function( game ) {
 
-      // spiral spawn location.
-      var angle  = 0.5 * this.playercount
-      var radius = 30 + 5 * this.playercount
-      p.pos.x = radius * Math.cos(angle)
-      p.pos.z = radius * Math.sin(angle)
-      p.cur_state.pos = this.pos(p.pos)
+      var newplayer = this.gi.addpl()
 
       // add new player to storage.
-      this.player_manifest[player.uuid] = p
+      this.player_manifest[ game._doc.player2 ] = newplayer;
   }
 
   //

@@ -1,5 +1,5 @@
-requirejs(['autoGame','gamecore','oimo','three','objloader','socket_io','tgaloader','mtlloader','trackballcontrols','v3d','gameinit','main'],
-        function (AUTOGAME,GAMECORE,OIMO, THREE, OBJLOADER, SOCKET_IO,TGALoader, MTLLoader,TRACKBALLCONTROLS, V3D, GAMEINIT, MAIN) {
+requirejs(['autoGame','oimo','three','lib/objloader','lib/tgaloader','lib/mtlloader','trackballcontrols','v3d','gameinit','main'],
+        function (AUTOGAME,OIMO,THREE, OBJLOADER,TGALoader, MTLLoader,TRACKBALLCONTROLS,V3D, GAMEINIT, MAIN) {
             	
 
             	var main = new MAIN;

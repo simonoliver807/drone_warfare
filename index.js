@@ -1,3 +1,5 @@
+"use strict";
+
 //multiplayer
 var express = require('express')
 var http = require('http')
@@ -192,7 +194,7 @@ var gameDataSchema = new Schema  ({
 									player1: String,
 									player2: String, 
 									bodys: { Buffer },
-									gamecore: {} 
+									gamecore: Number
 								  },
 								  {
 									timestamps: { createdAt: 'created_at' }	 
@@ -210,9 +212,19 @@ app.locals.host = 1;
 
 var numberOfGame = 0;
 
+// Multi.create( { player1: '1abc', player2: 'player2', bodys: {} }, ( err, multi ) => {
+// 	if( err ) console.log('error starting game');
+
+
+
+// 	game_server.join_game( multi );
+
+// });
+
 
 io.use(function(socket, next) {
   var handshakeData = socket.request;
+
   // make sure the handshake data looks good as before
   // if error do this:
     // next(new Error('not authorized');
@@ -240,12 +252,9 @@ io.on('connection', (client) => {
 		if ( app.locals.host ) {
 			Multi.create( { player1: client.id, player2: 'player2', bodys: {} }, ( err, multi ) => {
 				if( err ) console.log('error starting game');
-
-		
-
-				game_server.join_game( multi );
-				debugger;
 				client.emit('gamestart', { id: multi.id , host: true });
+				game_server.join_game( multi, client );
+
 			});
 			numberOfGame += 1;
 		}
@@ -259,8 +268,9 @@ io.on('connection', (client) => {
 			else {
 				game.player2 = client.id;
 				game.save();
-				game_server.join_game( game );
+				console.log(game);
 				client.emit('gamestart', { id: game.id, host: false });
+				game_server.join_game( game );
 			}
 		}
 		app.locals.host ? app.locals.host = false : app.locals.host = true ;
@@ -287,6 +297,10 @@ io.on('connection', (client) => {
     	game_server.setgd(client, gd );
 
     });
+   	client.on('sendlatency', function(data) {
+	
+		client.emit('setlatency', { latency: data.latency });
+	})
 
     client.on('disconnect', function(data) {
     	console.log('disconnect');
@@ -297,8 +311,9 @@ io.on('connection', (client) => {
 		Multi.findOne().sort({_id:-1}).limit(1).then( ( game ) => {
 			game.player2 = client_id;
 			game.save();
-			game_server.join_game( game );
 			client.emit('gamestart', { id: game.id, host: false });
+			game_server.join_game( game );
+			console.log(game);
 		});
 
 	}

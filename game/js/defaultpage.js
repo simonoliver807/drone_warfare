@@ -1,8 +1,8 @@
 "use strict";
 
 //var url = 'http://localhost:9000/';
-//var url = 'http://192.168.0.2:9000/';
-var url = 'http://www.dronewar1.com'
+var url = 'http://192.168.0.2:9000/';
+//var url = 'http://www.dronewar1.com'
 var soundFX = 1; 
 // change to live 
 
@@ -183,17 +183,19 @@ function runGame() {
 	game.style.display = 'block';
 
 	//******** minified change to live *************/////////
-	var s = document.createElement("script");
-	s.type = "text/javascript";
-	s.src = "js_min/require.js";
-	s.setAttribute('data-main', 'js_min/config.js')
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js_min/require.js";
+	// s.setAttribute('data-main', 'js_min/config.js')
 
 
 	//******** unminified *************/////////
-	// var s = document.createElement("script");
-	// s.type = "text/javascript";
-	// s.src = "js/require.js";
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js/require.js";
+	// multi
 	// s.setAttribute('data-main', 'js/config.js')
+	s.setAttribute('data-main', 'js/configmulti.js')
 
 
 
@@ -257,7 +259,7 @@ function updateNav (event) {
 
 }) ();
 // change to live
-//runGame();
+runGame();
 //initgame();
 //var page = { target: { id: 'wanav' } };
 //navFunc(a);

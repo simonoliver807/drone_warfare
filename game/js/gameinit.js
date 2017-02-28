@@ -1,4 +1,4 @@
-define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
+define(['oimo', 'v3d'], function(OIMO,V3D) {
 
     "use strict";
       
@@ -15,8 +15,8 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
     var pause = 0;
     var v3d = new V3D.View();
 
-    // ********** mulit   change to live
-    // var socket = SOCKET_IO.connect(url);
+    // multi
+    var ismulti = 1;
 
 
     
@@ -143,27 +143,6 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 endsequence = 100;
                 self = this;
 
-
-
-
-
-                socket.on('gamestart', function (data) {
-                    gameUUID = data['id'];
-                    console.log('gu ' + gameUUID); 
-                    console.log(data);
-                 //   socket.emit('getgd', gameUUID);
-                    if(data['host'] == 1){
-                        self.host = 1;
-                      //  console.log('host ' + data['host']? true:false);
-
-                    }
-                });
-
-                // socket.on('stc', function (data) {
-                //     console.log(data);
-                // })
-
-
             },
 
 
@@ -195,7 +174,7 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                 worldcount += 0.00001;
 
                 // change to live: remove
-               var pause = 1;
+              // var pause = 1;
                
                
 
@@ -818,6 +797,10 @@ define(['oimo', 'v3d','socket_io'], function(OIMO,V3D,SOCKET_IO) {
                     if(!V3D.bincam) {
                         spheres[0].image = 0;
                         spheres[0].mtl = 0;
+                    }
+                    if( ismulti ) {
+                        spheres[2] = { type: 'sphere', size: [shp1r, shp1r, shp1r], pos:[0,0,0], move: true, noSleep: true, world: world, color: 0xffffff , wireframe: 'false', name:"shp1", transparent: 'true', opacity: 0, image:'cpv/cpv.obj', mtl:'cpv/cpv.mtl'}
+                        spheres[3] = { type: 'sphere', size:[8, 8, 8], pos:[0,0,0], move: true, world: world, color: '#ff0000', wireframe: 'false',  name: 'containerMesh', transparent: 'false', opacity: 1, image: 0  }; 
                     }
 
                    // add the sight

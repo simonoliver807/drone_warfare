@@ -131,17 +131,20 @@
 
   //
 
-      game_server.create_game = function( game ) {
+      game_server.create_game = function( game, client ) {
 
+        debugger
         console.log('creating game');
         this.log('   Game start: '+ game.id);
         this.game_count++
-        game.gamecore = new game_core(game);
+        var gamecore = new game_core(game);
+        this.games[ game.id ] = gamecore;
+        this.games[ game.id ].server = client;
 
-        //debugger;
 
-        game.gamecore.updategame(new Date().getTime());
-        game.save();
+
+        this.games[ game.id ].update_game(new Date().getTime());
+       // debugger;
 
         // Create a new game instance
         // var thegame = {
@@ -203,19 +206,21 @@
 
   //
 
-      game_server.join_game = function( game ) {
+      game_server.join_game = function( game, client ) {
 
         //console.log(client);
 
         if ( game.player2 != 'player2' ) {
 
-          joined_a_game = true
           // connect client to this game, create a
           // player & increase the player count.
           //console.log( game );
-          
-          game.gamecore.player_connect(client)
-          game.player_count++
+        
+
+          this.games[ game.id ].player_connect(game)
+
+
+          //game.player_count++
           // client.game = game_instance
           // game_instance.player_count++
 
@@ -256,7 +261,7 @@
           } else {
 
           //no games? create one!
-          this.create_game(game)
+          this.create_game(game, client)
           //this.join_game(game)    // and join it.
         }
       }
