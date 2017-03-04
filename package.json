@@ -25,6 +25,7 @@
     "express": "^4.14.0",
     "mongodb": "^2.2.20",
     "mongoose": "^4.7.7",
+    "monitor.io": "^0.1.0",
     "node-uuid": "^1.4.7",
     "pug": "^2.0.0-beta6",
     "socket.io": "^1.7.2"

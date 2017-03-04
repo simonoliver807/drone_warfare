@@ -40,6 +40,7 @@ var gameinitserver = require('../multiserver/gameinitserver');
     if (! window.requestAnimationFrame) {
       window.requestAnimationFrame = function ( callback ) {
         var currTime = Date.now(), timeToCall = Math.max(0, frame_time - (currTime - lastTime))
+
         var id = window.setTimeout(function() { callback(currTime + timeToCall) }, timeToCall)
         lastTime = currTime + timeToCall
         return id
@@ -61,18 +62,16 @@ var gameinitserver = require('../multiserver/gameinitserver');
 
   var game_core = function(game_instance) {
 
-    //Store the instance, if any
-    this.instance = game_instance
+    this.x = 1;
 
-    console.log('this.instance')
-    console.log( this.instance );
-
-
+    this.gid = game_instance.id;
     this.gi = new gameinitserver;
 
+    console.log(game_instance);
 
     //Store a flag if we are the server
-    this.server = this.instance !== undefined
+    this.server = game_instance !== undefined
+    this.roomid = game_instance.player1;
 
     // TODO: collisions are not implemented yet !
     //this.world = { width:800, height:800, depth:800 }
@@ -90,7 +89,14 @@ var gameinitserver = require('../multiserver/gameinitserver');
 
     // Start a physics loop, this is separate to the rendering
     // as this happens at a fixed frequency
-    this.player_manifest[this.instance._doc.player1] = this.create_physics_simulation()
+
+    console.log( game_instance.player1 )
+    console.log('player 1 on server_update')
+
+
+
+    this.player_manifest[ game_instance.player1 ] = this.create_physics_simulation();
+   // this.player_manifest[ game_instance.player1 ].
 
     // Start a fast paced timer for measuring time easier
     this.create_timer()
@@ -101,8 +107,6 @@ var gameinitserver = require('../multiserver/gameinitserver');
 
     this.var = 0;
   }
-
-
 
   //require('../multiserver/common.js')(game_core)
 
@@ -125,35 +129,36 @@ var gameinitserver = require('../multiserver/gameinitserver');
 
   //  Main update loop
 
-      game_core.prototype.update_game = function(t) {
+  game_core.prototype.update_game = function(t) {
 
-        //console.log(this.var);
-        if(this.var) {
-          // console.log(this.lastframetime)
-          // console.log('this.lastframetime')
-          // console.log(t);
-          // console.log('t');
-        }
-        this.var += 1;
+    //console.log(this.var);
+    if(this.var) {
+      // console.log(this.lastframetime)
+      // console.log('this.lastframetime')
+      // console.log(t);
+      // console.log('t');
+    }
+    this.var += 1;
 
-        // Work out the delta time
-        //this.dt = this.lastframetime ? ((t - this.lastframetime) / 1000.0).fixed() : 0.016
-        this.dt = this.lastframetime ? ((t - this.lastframetime) / 1000.0) : 0.016
+    // Work out the delta time
+    //this.dt = this.lastframetime ? ((t - this.lastframetime) / 1000.0).fixed() : 0.016
+    this.dt = this.lastframetime ? ((t - this.lastframetime) / 1000.0) : 0.016
 
-        // Store the last frame time
-        this.lastframetime = t
+    // Store the last frame time
+    this.lastframetime = t
 
-        // Update the game specifics
+    // Update the game specifics
+    this.server_update()
 
-        this.server_update()
+   
+    // schedule the next update
+    this.updateid = window.requestAnimationFrame( this.update_game.bind(this) );
 
-       
-        // schedule the next update
-        this.updateid = window.requestAnimationFrame( this.update_game.bind(this) );
+    
 
-        // console.log(this.updateid);
-        // console.log('the update id')
-      }
+    // console.log(this.updateid);
+    // console.log('the update id')
+  }
 
 
   /**
@@ -161,46 +166,46 @@ var gameinitserver = require('../multiserver/gameinitserver');
    *  In this example, `item` is always of type game_player.
    */
 
-      game_core.prototype.check_collision = function(item) {
+    game_core.prototype.check_collision = function(item) {
 
-        // TODO: collisions not implemented yet !
-        /**
-        // left
-        if (item.pos.x <= item.pos_limits.x_min) {
-          item.pos.x = item.pos_limits.x_min
-        }
-
-        // right
-        if (item.pos.x >= item.pos_limits.x_max) {
-          item.pos.x = item.pos_limits.x_max
-        }
-    
-        // floor
-        if (item.pos.y <= item.pos_limits.y_min) {
-          item.pos.y = item.pos_limits.y_min
-        }
-
-        // top
-        if (item.pos.y >= item.pos_limits.y_max) {
-          item.pos.y = item.pos_limits.y_max
-        }
-
-        // front
-        if (item.pos.z <= item.pos_limits.z_min) {
-          item.pos.z = item.pos_limits.z_min
-        }
-
-        // back
-        if (item.pos.z >= item.pos_limits.z_max) {
-          item.pos.z = item.pos_limits.z_max
-        }
-
-        // Fixed point helps be more deterministic
-        item.pos.x = item.pos.x.fixed(4)
-        item.pos.y = item.pos.y.fixed(4)
-        item.pos.z = item.pos.z.fixed(4)
-        */
+      // TODO: collisions not implemented yet !
+      /**
+      // left
+      if (item.pos.x <= item.pos_limits.x_min) {
+        item.pos.x = item.pos_limits.x_min
       }
+
+      // right
+      if (item.pos.x >= item.pos_limits.x_max) {
+        item.pos.x = item.pos_limits.x_max
+      }
+  
+      // floor
+      if (item.pos.y <= item.pos_limits.y_min) {
+        item.pos.y = item.pos_limits.y_min
+      }
+
+      // top
+      if (item.pos.y >= item.pos_limits.y_max) {
+        item.pos.y = item.pos_limits.y_max
+      }
+
+      // front
+      if (item.pos.z <= item.pos_limits.z_min) {
+        item.pos.z = item.pos_limits.z_min
+      }
+
+      // back
+      if (item.pos.z >= item.pos_limits.z_max) {
+        item.pos.z = item.pos_limits.z_max
+      }
+
+      // Fixed point helps be more deterministic
+      item.pos.x = item.pos.x.fixed(4)
+      item.pos.y = item.pos.y.fixed(4)
+      item.pos.z = item.pos.z.fixed(4)
+      */
+    }
 
   //
 
@@ -208,7 +213,7 @@ var gameinitserver = require('../multiserver/gameinitserver');
   game_core.prototype.create_physics_simulation = function() {
 
     this.gi.createWorld();
-    var player1 = this.gi.populate('player1');
+    var player1 = this.gi.populate();
 
     setInterval(function() {
       this.gi.render();
@@ -223,22 +228,38 @@ var gameinitserver = require('../multiserver/gameinitserver');
 
   game_core.prototype.update_physics = function() {
 
+    var x = 1;
 
     for (var id in this.player_manifest) {
 
       // handle players
+
+      // this.pos() just returns the position as a vector
       // this.player_manifest[id].old_state.pos = this.pos(this.player_manifest[id].position)
       // var new_dir = this.process_input(this.player_manifest[id])
       // this.player_manifest[id].pos = this.v_add(this.player_manifest[id].old_state.pos, new_dir)
 
 
-      var old_pos = this.player_manifest[id].body.position;
-      var new_dir = this.process_input(this.player_manifest[id])
+      // var old_pos = this.player_manifest[id].body.position;
+      // var new_dir = this.process_input(this.player_manifest[id])
       //this.player_manifest[id].pos = this.v_add(this.player_manifest[id].old_state.pos, new_dir)
 
       // TODO: collisions are not implemented !
       // Keep the physics position in the world
       //this.check_collision(this.player_manifest[id])
+
+      // update OIMO
+
+
+      if( this.player_manifest[id].inputs.length ) { 
+
+        this.player_manifest[id].body.position.set( this.player_manifest[id].inputs[0].pos[0], this.player_manifest[id].inputs[0].pos[1], this.player_manifest[id].inputs[0].pos[2] );
+      
+        console.log( this.player_manifest[id].inputs )
+        console.log(id)
+        console.log(' ');
+
+      }
 
       // clear buffer
       this.player_manifest[id].inputs = []
@@ -256,20 +277,24 @@ var gameinitserver = require('../multiserver/gameinitserver');
 
     // prepare and send updates.
     var packet = this.server_prepare_update()
+
+    // console.log(packet);
+    // console.log('packet');
+
     this.server_transmit_update(packet)
   }
   //
 
   game_core.prototype.server_prepare_update = function() {
 
-    ////debugger;
 
     var packet = {}
 
     for (var id in this.player_manifest) {
       packet[id] = {
         pos: this.player_manifest[id].body.position,
-       // idx: this.player_manifest[id].index,
+        playerid: id,
+        idx: 0,
         isq: this.player_manifest[id].last_input_seq || 0
       }
     }
@@ -281,21 +306,45 @@ var gameinitserver = require('../multiserver/gameinitserver');
 
   game_core.prototype.server_transmit_update = function(packet) {
 
-    ////debugger;
 
     this.last_state = {
+      gid: this.gid,
       vals: packet,
       t:    this.server_time
     }
+    var sockets = this.server.client.sockets;
+    var socket = sockets[this.roomid];
 
-    for (var id in this.player_manifest) {
-      this.last_state.uuid = id;
-      debugger
-      this.server.emit('onserverupdate', this.last_state);
-      // if (this.player_manifest[id].instance) {
-      //   this.player_manifest[id].instance.emit('onserverupdate', this.last_state)
-      // }
+   console.log(packet);
+    if (this.x) {
+      if(!socket){
+        //debugger
+        console.log( this.roomid )
+         console.log(packet);
+        this.x = 0;
+      }
     }
+
+    socket.emit('onserverupdate', this.last_state);
+    socket.to( this.roomid ).emit('onserverupdate', this.last_state);
+
+    // emit to everyone in player1's room 
+
+   //socket.broadcast.emit('onserverupdate', this.last_state);
+
+    // for (var id in this.player_manifest) {
+    //   this.last_state.uuid = id;
+
+    //   console.log('id')
+    //   console.log(id);
+    //   console.log('last state pos')
+    //   console.log( this.last_state.vals[id].pos )
+
+    //   this.server.broadcast.emit('onserverupdate', this.last_state);
+    //   // if (this.player_manifest[id].instance) {
+    //   //   this.player_manifest[id].instance.emit('onserverupdate', this.last_state)
+    //   // }
+    // }
   }
 
   game_core.prototype.create_timer = function() {
@@ -315,6 +364,8 @@ var gameinitserver = require('../multiserver/gameinitserver');
     var x_dir = 0
     var y_dir = 0
     var z_dir = 0
+
+    debugger
 
     var ic = player.inputs.length
     if (ic) {
@@ -361,21 +412,19 @@ var gameinitserver = require('../multiserver/gameinitserver');
       var newplayer = this.gi.addpl()
 
       // add new player to storage.
-      this.player_manifest[ game._doc.player2 ] = newplayer;
+      this.player_manifest[ game.player2 ] = newplayer;
   }
 
-  //
 
-  game_core.prototype.player_disconnect = function(uuid) {
+  game_core.prototype.player_disconnect = function( uuid ) {
     // someone quit the game, delete them from our list !
     delete this.player_manifest[uuid]
   }
 
-  //
 
-  game_core.prototype.handle_server_input = function(client, input, input_time, input_seq) {
+  game_core.prototype.handle_server_input = function( input, input_time, input_seq, pl_uuid ) {
 
-    var player_client = this.player_manifest[client.uuid]
+    var player_client = this.player_manifest[ pl_uuid ]; 
 
     if (player_client && player_client.inputs) {
       if (input.length) {
@@ -385,7 +434,7 @@ var gameinitserver = require('../multiserver/gameinitserver');
         }
 
         // Store the input on the player instance for processing in the physics loop
-        player_client.inputs.push({ inputs: input, time: input_time, seq: input_seq })
+        player_client.inputs.push({ pos: input, time: input_time, seq: input_seq })
       }
     }
   }

@@ -1,6 +1,6 @@
 "use strict";
 
-//var url = 'http://localhost:9000/';
+
 var url = 'http://192.168.0.2:9000/';
 //var url = 'http://www.dronewar1.com'
 var soundFX = 1; 
@@ -193,8 +193,8 @@ function runGame() {
 	var s = document.createElement("script");
 	s.type = "text/javascript";
 	s.src = "js/require.js";
-	// multi
-	// s.setAttribute('data-main', 'js/config.js')
+	// change to live multi
+	//s.setAttribute('data-main', 'js/config.js')
 	s.setAttribute('data-main', 'js/configmulti.js')
 
 

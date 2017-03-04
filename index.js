@@ -18,6 +18,7 @@ const game_server = require('./multiserver/registry')
 
 
 
+
 var event = require('events');
 var eventEmitter = new event.EventEmitter;
 
@@ -28,12 +29,12 @@ var cp = new lc();
 
 var watch = require('node-watch');
  
+ // set up ws and monitor
 var app = express();
 var server = http.createServer(app);
 const io = require('socket.io')(server);
+//var monitorio = require('monitor.io');
 
-// var multiserver = http.createServer(app);
-// var io = require('socket.io')( multiserver );
 
 
 
@@ -221,9 +222,14 @@ var numberOfGame = 0;
 
 // });
 
-
+//io.use( monitorio({ port: undefined }) );
 io.use(function(socket, next) {
+
+
   var handshakeData = socket.request;
+
+
+  ///cp.scd(handshakeData);
 
   // make sure the handshake data looks good as before
   // if error do this:
@@ -252,9 +258,18 @@ io.on('connection', (client) => {
 		if ( app.locals.host ) {
 			Multi.create( { player1: client.id, player2: 'player2', bodys: {} }, ( err, multi ) => {
 				if( err ) console.log('error starting game');
-				client.emit('gamestart', { id: multi.id , host: true });
-				game_server.join_game( multi, client );
+				// send the game id to the client
+				//client.emit('gamestart', { id: multi.id , host: 1, playerid: client.id });
+				//game_server.join_game( multi, client );
 
+				client.emit('gamestart', { id: "58b9a0333a0d150b5274ec80" , host: 1, playerid: client.id });
+				var tempMulti = { 
+								  player1: client.id,
+								  player2: 'player2',
+								  id: '58b9a0333a0d150b5274ec80' }
+				game_server.join_game( tempMulti, client );
+
+				
 			});
 			numberOfGame += 1;
 		}
@@ -262,60 +277,77 @@ io.on('connection', (client) => {
 		 {
 			if ( game === null || game.player2 != 'player2'){
 				setImmediate( function() {
-					handlePl2(client.id);
+					handlePl2(client);
 				});
 			}
 			else {
-				game.player2 = client.id;
-				game.save();
-				console.log(game);
-				client.emit('gamestart', { id: game.id, host: false });
-				game_server.join_game( game );
+
+				// change to live
+				//game.player2 = client.id;
+				//game.save();
+				//client.join(game.player1);
+				//client.emit('gamestart', { id: game.id, host: 0, playerid: client.id });
+				//game_server.join_game( game, client );
+
+				client.emit('gamestart', { id: "58b9a0333a0d150b5274ec80", host: 0, playerid: client.id });
+				var x = 1;
+				for (var id in client.adapter.nsp.connected){
+					if ( x ) {
+					client.join(id);
+					var tempgame = { 
+					  player1: id,
+					  player2: client.id,
+					  id: '58b9a0333a0d150b5274ec80' }
+					  x = 0;
+					}
+				 }
+				 game_server.join_game( tempgame, client );
 			}
 		}
-		app.locals.host ? app.locals.host = false : app.locals.host = true ;
+		app.locals.host ? app.locals.host = 0 : app.locals.host = 1 ;
 	}).catch( (err) => {
 		console.log('there is a db error');
 		console.log(err);
 	});
-   
 
+    client.on('setgd', function ( data ) {
 
-    // client.on('getgd', (gameUUID) => {
-    // 	console.log('game uuid is '); 
-    //     console.log(gameUUID);
-    // });
-
-
-    client.on('setgd', function (gd) {
-
-    	// Multi.update({ _id: gd.id }, { $set: { bodys: gd.body}} );
-    	// Multi.find({}).exec( function(err, data) {
-
-    	// 	console.log(data);
-    	// });
-    	game_server.setgd(client, gd );
+    	game_server.setgd( data );
 
     });
-   	client.on('sendlatency', function(data) {
+   	client.on('sendlatency', function( data ) {
 	
 		client.emit('setlatency', { latency: data.latency });
 	})
 
-    client.on('disconnect', function(data) {
+    client.on('disconnect', function( data ) {
     	console.log('disconnect');
     });
 
-    function handlePl2 (client_id) {
+    function handlePl2 (client) {
 
-		Multi.findOne().sort({_id:-1}).limit(1).then( ( game ) => {
-			game.player2 = client_id;
-			game.save();
-			client.emit('gamestart', { id: game.id, host: false });
-			game_server.join_game( game );
-			console.log(game);
-		});
+    	// change to live
+		// Multi.findOne().sort({_id:-1}).limit(1).then( ( game ) => {
+		// 	game.player2 = client_id;
+		// 	game.save();
+		// 	client.emit('gamestart', { id: game.id, host: 0, playerid: client.id  });
+		//  client.join(game.player1);
+		// 	game_server.join_game( game );
+		// });
 
+		client.emit('gamestart', { id: "58b9a0333a0d150b5274ec80", host: 0, playerid: client.id });
+		var x = 1;
+		for (var id in client.adapter.nsp.connected){
+			if ( x ) {
+			client.join(id);
+			var tempgame = { 
+			  player1: id,
+			  player2: client.id,
+			  id: '58b9a0333a0d150b5274ec80' }
+			  x = 0;
+			}
+		 }
+		 game_server.join_game( tempgame, client );
 	}
 
 

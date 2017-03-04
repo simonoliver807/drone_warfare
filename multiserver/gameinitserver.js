@@ -142,7 +142,7 @@ module.exports = function () {
             },
             addpl: function() {
 
-                var sphere = [{ type: 'sphere', size: [shp1r, shp1r, shp1r], pos:[ 100, 0, 100], move: true, noSleep: true, world: world, name: 'player2' }];
+                var sphere = [{ type: 'sphere', size: [shp1r, shp1r, shp1r], pos:[ 20,0,-100 ], move: true, noSleep: true, world: world, name: 'player2' }];
 
                 bodys[bodysNum] = new OIMO.Body(sphere[0]);
                 bodys[bodysNum].inputs = [];
@@ -169,12 +169,14 @@ module.exports = function () {
                             spheres = [{ type: 'sphere', size: [shp1r, shp1r, shp1r], pos:[0,0,0], move: true, noSleep: true, world: world, name: 'player1' }];
 
                 }
-                bodys[bodysNum] = new OIMO.Body(spheres[0]);
+                var player1 = bodys[bodysNum] = new OIMO.Body(spheres[0]);
                 bodys[bodysNum].inputs = [];
-
-
                 bodysNum += 1;
-                return bodys[bodysNum - 1];
+
+
+
+
+                return player1;
 
 
             }

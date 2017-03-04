@@ -150,7 +150,7 @@ V3D.View.prototype = {
         this.newsightpos = new THREE.Vector3();
         this.dir = new THREE.Vector3();
         this.bodys = [];
-        this.velocity = 1;
+       // this.velocity = 1;
         this.reverse = false;
         this.heading = new THREE.Vector3();
         this.shootStart = new THREE.Vector3();
@@ -414,7 +414,7 @@ V3D.View.prototype = {
         this.starpoint.material.uniforms.quat1.value.set( q1.x, q1.y, q1.z, q1.w );
 
 
-        var helpercam = 0;
+        var helpercam = 1;
         if ( !helpercam ) {
     	   this.renderer.render( this.scene, this.camera );
         }
@@ -621,7 +621,6 @@ V3D.View.prototype = {
             V3D.mesharrpos.shp1 = this.scene.children.length;
             this.scene.add( mesh );
         }
-
         if(sphere.name == 'phaser') {
             var material = new THREE.MeshBasicMaterial({ color: sphere.color, wireframe: sphere.wireframe, name: sphere.name, transparent: sphere.transparent, opacity: sphere.opacity });
             var mesh = new THREE.Mesh( this.geos[sphere.name], material, sphere.name );
@@ -932,7 +931,7 @@ V3D.View.prototype = {
             this.reverse = false;
         }
 
-        this.velocity = 1 + rb.linearVelocity.length() / 10;
+      //  this.velocity = 1 + rb.linearVelocity.length() / 10;
         
     },
     minusForce: function() {
@@ -971,7 +970,7 @@ V3D.View.prototype = {
         var perlv = ((rb.linearVelocity.length()/40)*100) - 5;
         accel.style.width = perlv + '%';
         // if(this.velocity < 3){
-            this.velocity = 1 + rb.linearVelocity.length() / 10;
+           // this.velocity = 1 + rb.linearVelocity.length() / 10;
         //}
     },
     phaser: function() {
@@ -1136,32 +1135,32 @@ V3D.View.prototype = {
     // change to live
     playDroneEx: function() {
 
-        if ( soundFX) {
-           var dExpl = audiocntxt.createBufferSource();
-           dExpl.buffer = sourceObj['droneExpl'].buffer;
-           dExpl.connect(masterGain);
-            dExpl.start(0);
-        }
+        // if ( soundFX) {
+        //    var dExpl = audiocntxt.createBufferSource();
+        //    dExpl.buffer = sourceObj['droneExpl'].buffer;
+        //    dExpl.connect(masterGain);
+        //     dExpl.start(0);
+        // }
 
     },
     playpdown: function() {
 
-        if ( soundFX ) {
-            var pdown = audiocntxt.createBufferSource();
-            pdown.buffer = sourceObj['pdown'].buffer;
-            pdown.connect(masterGain);
-            pdown.start(0);
-        }
+        // if ( soundFX ) {
+        //     var pdown = audiocntxt.createBufferSource();
+        //     pdown.buffer = sourceObj['pdown'].buffer;
+        //     pdown.connect(masterGain);
+        //     pdown.start(0);
+        // }
     },
     playThruster: function() {
 
-        if ( soundFX ) {
-            this.thruster = audiocntxt.createBufferSource();
-            this.thruster.buffer = sourceObj['thruster'].buffer;
-            this.thruster.connect(masterGain);
-            this.thruster.loop = true;
-            this.thruster.start(0);
-        }
+        // if ( soundFX ) {
+        //     this.thruster = audiocntxt.createBufferSource();
+        //     this.thruster.buffer = sourceObj['thruster'].buffer;
+        //     this.thruster.connect(masterGain);
+        //     this.thruster.loop = true;
+        //     this.thruster.start(0);
+        // }
     },
     updateDrones: function(dbody,drone,ms){
 

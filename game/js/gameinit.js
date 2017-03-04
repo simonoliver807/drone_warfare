@@ -15,9 +15,6 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
     var pause = 0;
     var v3d = new V3D.View();
 
-    // multi
-    var ismulti = 1;
-
 
     
     //////////////////////////
@@ -174,7 +171,7 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
                 worldcount += 0.00001;
 
                 // change to live: remove
-              // var pause = 1;
+               //var pause = 1;
                
                
 
@@ -797,10 +794,6 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
                     if(!V3D.bincam) {
                         spheres[0].image = 0;
                         spheres[0].mtl = 0;
-                    }
-                    if( ismulti ) {
-                        spheres[2] = { type: 'sphere', size: [shp1r, shp1r, shp1r], pos:[0,0,0], move: true, noSleep: true, world: world, color: 0xffffff , wireframe: 'false', name:"shp1", transparent: 'true', opacity: 0, image:'cpv/cpv.obj', mtl:'cpv/cpv.mtl'}
-                        spheres[3] = { type: 'sphere', size:[8, 8, 8], pos:[0,0,0], move: true, world: world, color: '#ff0000', wireframe: 'false',  name: 'containerMesh', transparent: 'false', opacity: 1, image: 0  }; 
                     }
 
                    // add the sight

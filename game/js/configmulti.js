@@ -1,12 +1,9 @@
-requirejs(['autoGame','gamecore','oimo','three','lib/objloader','socket_io','lib/tgaloader','lib/mtlloader','trackballcontrols','v3d','gameinit','main'],
-        function (AUTOGAME,GAMECORE,OIMO, THREE, OBJLOADER, SOCKET_IO,TGALoader, MTLLoader,TRACKBALLCONTROLS, V3D, GAMEINIT, MAIN) {
+requirejs(['autoGame','oimo','three','lib/objloader','socket_io','lib/tgaloader','lib/mtlloader','trackballcontrols','v3d','multi/gamecore','multi/gameinitmulti','multi/mainmulti'],
+        function (AUTOGAME,OIMO, THREE, OBJLOADER, SOCKET_IO,TGALoader, MTLLoader,TRACKBALLCONTROLS, V3D, GAMECORE, GAMEINITMULTI, MAINMULTI) {
             	
 
-            	var main = new MAIN;
+            	var main = new MAINMULTI;
             	main.init();
-
-            	var gc = new GAMECORE;
-            	gc.start();
 
             	// change to live
             	// var autoGame = new AUTOGAME;
