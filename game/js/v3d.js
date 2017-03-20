@@ -76,8 +76,13 @@ V3D.View.prototype = {
         
         var insideship = document.getElementById('insideship');
         // change to live
-        //insideship.value = 'clicked inside'
-        if(insideship.value == 'clicked inside'){
+        if (String(window.location).indexOf('ply1') != -1) {
+            insideship.value = 'clicked outside';
+        }
+        else {
+            insideship.value = 'clicked inside';
+        }
+        if(insideship.value == 'clicked outside'){
             V3D.bincam = 0;
         }
         else {
@@ -86,22 +91,22 @@ V3D.View.prototype = {
 
         if( V3D.bincam ) {
             this.camera.position.z = 10;
-            this.tmpVCPprev = new THREE.Vector3(0,0,10);
-            this.camdist = 9.9;
-            this.regulaterot = 0.1;
+            // this.tmpVCPprev = new THREE.Vector3(0,0,10);
+            // this.camdist = 9.9;
+            // this.regulaterot = 0.1;
         }
         else {
             this.camera.position.z = 0.1;
-            this.tmpVCPprev = new THREE.Vector3(0,0,0.1);
-            this.camdist = 0.09;
-            this.regulaterot = 0.01;
+            // this.tmpVCPprev = new THREE.Vector3(0,0,0.1);
+            // this.camdist = 0.09;
+            // this.regulaterot = 0.01;
         }
 
         this.camera.matrixAutoUpdate = true;
-        this.camAngle = -0.025;
+        // this.camAngle = -0.025;
 
-        this.msechngdir;
-        this.chngeindir = false;
+        // this.msechngdir;
+        // this.chngeindir = false;
         
         
     	this.scene = new THREE.Scene();
@@ -414,7 +419,7 @@ V3D.View.prototype = {
         this.starpoint.material.uniforms.quat1.value.set( q1.x, q1.y, q1.z, q1.w );
 
 
-        var helpercam = 1;
+        var helpercam = 0;
         if ( !helpercam ) {
     	   this.renderer.render( this.scene, this.camera );
         }
@@ -652,6 +657,7 @@ V3D.View.prototype = {
             this.geos['laserglow'].applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
            // this.geos['laserglow'].applyMatrix( new THREE.Matrix4().makeRotationY( THREE.Math.degToRad( 90 ) ) );
             this.glowmesh = new THREE.Mesh( this.geos['laserglow'], material );
+            this.glowmesh.name = 'glowmesh';
         //   this.scene.add(this.glowmesh); 
 
         }
@@ -983,7 +989,7 @@ V3D.View.prototype = {
         }
         if(V3D.bincam){
 
-            this.glowmesh.material.visible = true;  
+          this.glowmesh.material.visible = true;  
 
                 // var x = V3D.msePos.x;
                 // var y = V3D.msePos.y;
@@ -1615,6 +1621,11 @@ V3D.View.prototype = {
         var q = new THREE.Quaternion();
         q.setFromRotationMatrix( this.m );
         return q;
+    },
+    newTexture: function( texture ) {
+
+        return new THREE.TextureLoader().load(texture);
+
     },
     rotPlanetoid: function(body,mesh){
 

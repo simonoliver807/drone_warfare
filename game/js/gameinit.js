@@ -722,7 +722,7 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
                                     drone.userData.ld = 1;
                                 }
                                 // change to live
-                                v3d.updateDrones( dbody, drone, dbody.ms );
+                                //v3d.updateDrones( dbody, drone, dbody.ms );
                             }
                             if ( !drone.userData.ld && !drone.userData.rtm) {
                                 pddist.sub(containerMesh.position,meshs[i].position);
@@ -1050,7 +1050,7 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
                         }
                         else {
                             bodys[bodysNum] = new OIMO.Body(droneobj);
-                            bodys[bodysNum].drota = 0;
+                            //bodys[bodysNum].drota = 0;
                             bodys[bodysNum].ms = ms[msnum].msname;
                             // nrtm : never return to ms
                             if ( numofld ) {
@@ -1076,7 +1076,7 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
                         var pos = this.dronePos(ms[msnum]);
                         var droneobj= { type:'cylinder', size:[w,h,d], pos: pos, move: true, world:world, noSleep: true, color:'#66ff33', wireframe: 'false', name: 'drone', transparent: 'false', opacity: 1, image:'Free_Droid/bake.obj'};
                         bodys[bodysNum] = new OIMO.Body(droneobj);
-                        bodys[bodysNum].drota = 0;
+                       // bodys[bodysNum].drota = 0;
                         bodys[bodysNum].ms = ms[msnum].msname;
                         bodysNum += 1;
                         cylArr.push(droneobj);

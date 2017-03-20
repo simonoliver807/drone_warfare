@@ -25,15 +25,10 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 					accel = document.getElementById('accel');
 					var ac = document.getElementById('accelCont');
 					var tapaccel = document.getElementById('tapaccel');
-					// var ach = ac.clientHeight/2;
-					// var acw = ac.clientWidth * 0.01;
-					// accel.style.top = ach+'px';
-					// accel.style.right = acw + 'px';
 					var mobcon = document.getElementById('mobcon')
 
 					v3d = gameinit.getObj('v3d');
 					gameinit.createWorld(timestep);
-					//gameinit.populate();
 					gameinit.lgd(1);
 					phaser = false;
 
@@ -66,7 +61,7 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 
 			handleKeyDown: function( event ) {
 
-				//event.preventDefault();
+				event.preventDefault();
 				if( event.keyCode === 80) {
 					var val = gameinit.gspause() ? 0: 1;
 				    gameinit.gspause(val);

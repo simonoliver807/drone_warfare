@@ -14,7 +14,7 @@ var mongoose = require('mongoose')
 var uuid = require('node-uuid')
 var dateformat = require('dateformat')
 const async = require('async')
-const game_server = require('./multiserver/registry')
+const game_server = require('./multiserver/game_server')
 
 
 
@@ -26,13 +26,13 @@ var eventEmitter = new event.EventEmitter;
 // pass comment to the client
 var cp = new lc();
 
-
 var watch = require('node-watch');
  
  // set up ws and monitor
 var app = express();
 var server = http.createServer(app);
 const io = require('socket.io')(server);
+var gameserver;
 //var monitorio = require('monitor.io');
 
 
@@ -135,7 +135,7 @@ app.get('/', function (req, res) {
 })
 
 
-
+app.locals.levels = 0;
 app.post('/', function (req, res) {
 	//console.log('deal with post')
 	//console.log(req.body);
@@ -164,8 +164,6 @@ app.post('/', function (req, res) {
 
 		//console.log(req.body);
 		mc.connect(dburl, function(err, db) {
-
-		//	console.log(db);
 
 			if(!err) {
 				db.collection('levels').findOne( { level: ~~req.body.l }, function (err, result) {
@@ -201,34 +199,29 @@ var gameDataSchema = new Schema  ({
 									timestamps: { createdAt: 'created_at' }	 
 								  });
 var Multi = mongoose.model('Multi', gameDataSchema);
-app.locals.host = 1;
 
-// Multi.update( { _id: "58a868cdf4c8a506b431b819"} , { $set: { player2: 'slkfj' } });
-// Multi.findOne().sort({_id:1}).limit(1).then( (game) => {
+mc.connect(dburl, function(err, db) {
 
-// 	game_server.join_game( game );
-// 	game.player2 = 'update';
-// 	game.save();
-// }); 
+//	console.log(db);
+	if( !app.locals.levels ) {
 
-var numberOfGame = 0;
+		db.collection('levels').find({}).toArray( function(err, result) {
+		
+			if (err) throw err
+			app.locals.levels = result;
+			gameserver = new game_server( app.locals.levels );
 
-// Multi.create( { player1: '1abc', player2: 'player2', bodys: {} }, ( err, multi ) => {
-// 	if( err ) console.log('error starting game');
+		})
+
+	}
+});
 
 
-
-// 	game_server.join_game( multi );
-
-// });
 
 //io.use( monitorio({ port: undefined }) );
 io.use(function(socket, next) {
 
-
   var handshakeData = socket.request;
-
-
   ///cp.scd(handshakeData);
 
   // make sure the handshake data looks good as before
@@ -238,8 +231,8 @@ io.use(function(socket, next) {
   next();
 });
 
-
-
+app.locals.host = 1;
+var numberOfGame = 0;
 io.on('connection', (client) => {
 
 	console.log( 'connection ');
@@ -249,59 +242,62 @@ io.on('connection', (client) => {
 	// cp.scd( socket.nsp );
 
 
-	client.ip = client.handshake.address.address;
+	//client.ip = client.handshake.address.address;
 
 	Multi.findOne().sort({_id:-1}).limit(1).then( ( game ) => {
 
-			//console.log(game);
+		console.log(' app locals host ');
+		console.log( app.locals.host);
 
 		if ( app.locals.host ) {
 			Multi.create( { player1: client.id, player2: 'player2', bodys: {} }, ( err, multi ) => {
 				if( err ) console.log('error starting game');
 				// send the game id to the client
-				//client.emit('gamestart', { id: multi.id , host: 1, playerid: client.id });
-				//game_server.join_game( multi, client );
+				client.emit('gamestart', { id: multi.id , host: 1, playerid: client.id });
+				gameserver.join_game( multi, client );
 
-				client.emit('gamestart', { id: "58b9a0333a0d150b5274ec80" , host: 1, playerid: client.id });
-				var tempMulti = { 
-								  player1: client.id,
-								  player2: 'player2',
-								  id: '58b9a0333a0d150b5274ec80' }
-				game_server.join_game( tempMulti, client );
+				// client.emit('gamestart', { id: "58b9a0333a0d150b5274ec80" , host: 1, playerid: client.id });
+				// var tempMulti = { 
+				// 				  player1: client.id,
+				// 				  player2: 'player2',
+				// 				  id: '58b9a0333a0d150b5274ec80' 
+				// 				}
+				// gameserver.join_game( tempMulti, client );
 
 				
 			});
 			numberOfGame += 1;
 		}
-		if ( !app.locals.host )
-		 {
+		if ( !app.locals.host ) {
 			if ( game === null || game.player2 != 'player2'){
 				setImmediate( function() {
 					handlePl2(client);
 				});
 			}
 			else {
+			
 
 				// change to live
-				//game.player2 = client.id;
-				//game.save();
+				game.player2 = client.id;
+				game.save();
 				//client.join(game.player1);
-				//client.emit('gamestart', { id: game.id, host: 0, playerid: client.id });
-				//game_server.join_game( game, client );
+				client.emit('gamestart', { id: game.id, host: 0, playerid: client.id });
+				gameserver.join_game( game, client );
 
-				client.emit('gamestart', { id: "58b9a0333a0d150b5274ec80", host: 0, playerid: client.id });
-				var x = 1;
-				for (var id in client.adapter.nsp.connected){
-					if ( x ) {
-					client.join(id);
-					var tempgame = { 
-					  player1: id,
-					  player2: client.id,
-					  id: '58b9a0333a0d150b5274ec80' }
-					  x = 0;
-					}
-				 }
-				 game_server.join_game( tempgame, client );
+
+
+				//var x = 1;
+				// for (var id in client.adapter.nsp.connected){
+				// 	if ( x ) {
+				// 	//client.join(id);
+				// 	var tempgame = { 
+				// 	  player1: id,
+				// 	  player2: client.id,
+				// 	  id: '58b9a0333a0d150b5274ec80' }
+				// 	  x = 0;
+				// 	}
+				//  }
+				//gameserver.join_game( tempgame, client );
 			}
 		}
 		app.locals.host ? app.locals.host = 0 : app.locals.host = 1 ;
@@ -312,42 +308,56 @@ io.on('connection', (client) => {
 
     client.on('setgd', function ( data ) {
 
-    	game_server.setgd( data );
+    	gameserver.setgd( data );
 
     });
    	client.on('sendlatency', function( data ) {
 	
 		client.emit('setlatency', { latency: data.latency });
-	})
-
+	});
+   	client.on('dataload1', function( data ) {
+   		gameserver.dataload1(data);
+   	});
     client.on('disconnect', function( data ) {
     	console.log('disconnect');
     });
 
     function handlePl2 (client) {
 
+    	debugger
     	// change to live
-		// Multi.findOne().sort({_id:-1}).limit(1).then( ( game ) => {
-		// 	game.player2 = client_id;
-		// 	game.save();
-		// 	client.emit('gamestart', { id: game.id, host: 0, playerid: client.id  });
-		//  client.join(game.player1);
-		// 	game_server.join_game( game );
-		// });
+		Multi.findOne().sort({_id:-1}).limit(1).then( ( game ) => {
+			game.player2 = client_id;
+			game.save();
+			client.emit('gamestart', { id: game.id, host: 0, playerid: client.id  });
+		 	//client.join(game.player1);
+			gameserver.join_game( game );
+		});
+ 		app.locals.host = 1;
 
-		client.emit('gamestart', { id: "58b9a0333a0d150b5274ec80", host: 0, playerid: client.id });
-		var x = 1;
-		for (var id in client.adapter.nsp.connected){
-			if ( x ) {
-			client.join(id);
-			var tempgame = { 
-			  player1: id,
-			  player2: client.id,
-			  id: '58b9a0333a0d150b5274ec80' }
-			  x = 0;
-			}
-		 }
-		 game_server.join_game( tempgame, client );
+		//client.emit('gamestart', { id: "58b9a0333a0d150b5274ec80", host: 0, playerid: client.id });
+
+		// for (var id in client.adapter.nsp.connected){
+		// 	var id = id;
+		// }
+
+		// var tempgame = { 
+		// player1: id,
+		// player2: client.id,
+	 // 	id: '58b9a0333a0d150b5274ec80' }
+		// var x = 1;
+		// for (var id in client.adapter.nsp.connected){
+		// 	if ( x ) {
+		// 	client.join(id);
+		// 	var tempgame = { 
+		// 	  player1: id,
+		// 	  player2: client.id,
+		// 	  id: '58b9a0333a0d150b5274ec80' }
+		// 	  x = 0;
+		// 	}
+		//  }
+		// gameserver.join_game( tempgame, client );
+		
 	}
 
 

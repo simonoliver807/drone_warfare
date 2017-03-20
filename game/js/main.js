@@ -17,8 +17,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		return {
 			init: function(){
 		// change to live
-			//try {
-
+			try {
 					window.oncontextmenu = function (){ return false; }
 					window.addEventListener( 'resize', this.onWindowResize, false );
 
@@ -55,13 +54,13 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 				    	this.loadEvents();
 				    }	
 
-				// }
-				// catch (err) {
-				// 	document.getElementById('loadingScreen').style.display = 'none';
-				// 	var errscreen = document.getElementById('errScreen')
-				// 	errscreen.style.display = 'block';
-				// 	errscreen.innerHTML = '<div id="errdiv">Sorry drone war 1 is not available at this time </div>';
-				// }
+				}
+				catch (err) {
+					document.getElementById('loadingScreen').style.display = 'none';
+					var errscreen = document.getElementById('errScreen')
+					errscreen.style.display = 'block';
+					errscreen.innerHTML = '<div id="errdiv">Sorry drone war 1 is not available at this time </div>';
+				}
 			},
 
 			handleKeyDown: function( event ) {

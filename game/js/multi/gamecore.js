@@ -27,20 +27,20 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
     // Store the instance, if any
    // this.instance = player_instance
     //this.game = game_instance
-    this.index = Math.random() < 0.5 ? 0 : 1
+    this.index = Math.random() < 0.5 ? 0 : 1;
 
     // Set up initial values for our state information
-    this.pos = { x:0, y:0, z:0 }
+    this.pos = new OIMO.Vec3();
     this.ghostpos = new OIMO.Vec3();
-    this.destpos  = { x:0, y:0, z:0 }
+    this.destpos  = new OIMO.Vec3();
     this.state = 'new player'
     // this.color = 'rgba(240,240,240,1.0)'
     // this.color_2d = 'rgba(240,240,240,1.0)'
     // this.info_color = 'rgba(220,240,220,0.8)'
 
     // These are used in moving us around later
-    this.old_state = { pos: { x:0, y:0, z:0 } }
-    this.cur_state = { pos: { x:0, y:0, z:0 } }  // spawn here!
+    this.old_state = new OIMO.Vec3();
+    this.cur_state = new OIMO.Vec3(); // spawn here!
     this.state_time = new Date().getTime()
 
     // Our local history of inputs
@@ -52,24 +52,30 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
 
             // ********** mulit   change to live
         this.socket = SOCKET_IO.connect(url);
+        this.startgame = 2;
         this.player_self = new Player();    
         this.player_set  = {};
         this.playercount = 0;
         this.server_updates = [];
-        this._pdt  = 0.0001;                   //The physics update delta time
-        this._pdte = new Date().getTime();     //The physics update last delta time
         // A local timer for precision on server and client
         this.local_time = 0.016;               //The local timer
-        this._dt  = new Date().getTime();      //The local timer delta
-        this._dte = new Date().getTime();     //The local timer last frame time
         this.host = 0;
         this.gameid;
 
         this.tvec3 = new OIMO.Vec3();
         this.pvec3 = new OIMO.Vec3();
+        this.tquat = new OIMO.Quaternion();
+        this.pquat = new OIMO.Quaternion();
 
+        this.bodys;
+
+        this.firstStream = 1;
+
+        // const
         this.ply1;
         this.ply2;
+        this.ply2mesh;
+        this.client_smooth = 8;     // amount of smoothing to apply to client update dest    
 
 
 
@@ -84,12 +90,36 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
       return (p * (1 - _t) + n * _t);
     }
 
+    // game_core.prototype.lerpVectors = function ( v1, v2, alpha ) {
+
+    //   var retv = new OIMO.Vec3();
+    //   return retv.sub( v1, v2).multiplyScalar( alpha ).addEqual( v1 ); 
+
+    // },
+
+    game_core.prototype.setply1ply2 = function( ply1, ply2, ply2mesh, bodys ) {
+
+      this.ply1 = ply1;
+      this.ply2 = ply2;
+      this.ply2mesh = ply2mesh;
+      this.player_self.pos.set( this.ply1.body.position.x, this.ply1.body.position.y, ply1.body.position.z  )
+      this.add_player ( this.player_self.id, [ this.ply1.body.position.x, this.ply1.body.position.y, ply1.body.position.z ], 10 ) 
+      this.bodys = bodys;
+    }
+    game_core.prototype.getdata = function() {
+
+      var data = { ply1id: this.player_self.id, time: this.client_time };
+
+      return data;
+
+    }
+
     game_core.prototype.start = function( ) {
       var self  = this
 
       this.client_create_configuration();
       this.client_connect_to_server();
-     this.create_timer()
+      this.create_timer()
      // this.client_create_ping_timer()
 
       // var data = { vals: 
@@ -137,13 +167,12 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
 
         this.heading = 0
 
-        this.naive_approach = false     // Whether or not to use the naive approach
-        this.show_server_pos = false    // Whether or not to show the server position
-        this.show_dest_pos = false      // Whether or not to show the interpolation goal
-        this.client_predict = true      // Whether or not the client is predicting input
-        this.input_seq = 0              // When predicting client inputs, we store the last input as a sequence number
-        this.client_smoothing = true    // Whether or not the client side prediction tries to smooth things out
-        this.client_smooth = 8          // amount of smoothing to apply to client update dest
+        // this.show_server_pos = false    // Whether or not to show the server position
+        // this.show_dest_pos = false      // Whether or not to show the interpolation goal
+        // this.client_predict = true      // Whether or not the client is predicting input
+        //this.input_seq = 0              // When predicting client inputs, we store the last input as a sequence number
+       // this.client_smoothing =     // Whether or not the client side prediction tries to smooth things out
+        //this.client_smooth = 8          // amount of smoothing to apply to client update dest
 
         this.net_latency = 0.001        // the latency between the client and the server (ping/2)
         this.net_ping = 0.001           // The round trip time from here to the server,and back
@@ -159,31 +188,36 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
         this.client_time = 0.01         // Our local 'clock' based on server time - client interpolation(net_offset).
         this.server_time = 0.01         // The time the server reported it was at, last we heard from it
 
-        this.dt = 0.016                 // The time that the last frame took to run
-        this.fps = 0                    // The current instantaneous fps (1/this.dt)
-        this.fps_avg_count = 0          // The number of samples we have taken for fps_avg
-        this.fps_avg = 0                // The current average fps displayed in the debug UI
-        this.fps_avg_acc = 0            // The accumulation of the last avgcount fps samples
+        this.dt = 0.001;                 // The time that the last frame took to run
+        this.dte = 0;
+        this.pdt = 0.16;
+        this.fps = 0;                    // The current instantaneous fps (1/this.dt)
+        this.fps_avg_count = 0;          // The number of samples we have taken for fps_avg
+        this.fps_avg = 0;                // The current average fps displayed in the debug UI
+        this.fps_avg_acc = 0;            // The accumulation of the last avgcount fps samples
+        this.serverfps = 0;
+        this.fpsamplerate = 0;
 
-        this.lit = 0
-        this.llt = new Date().getTime()
+        this.lit = 0;
+        this.llt = new Date().getTime();
+
+        this.pldata;
+        this.currpos; 
+        this.numofdrones;
+        this.dronebodys;
+        this.pl2dronesarr = [];
+        this.expartarr = [];
     }
 
     game_core.prototype.client_connect_to_server = function() {
 
-      // Store a local reference to our connection to the server
-      // this.socket = io.connect()
-
-      // When we connect, we are not 'connected' until we have a server id
-      // and are placed in a game by the server. The server sends us a message for that.
-      // this.socket.on('connect', function() {
-      //   this.player_self.state = 'connecting'
-      // }.bind(this))
 
       // Sent when we are disconnected (network, server down, etc)
       this.socket.on('disconnect', this.client_ondisconnect.bind(this));
       // Sent each tick of the server simulation. This is our authoritive update
       this.socket.on('onserverupdate', this.client_onserverupdate_received.bind(this));
+      // handle initial drone pos and id
+      this.socket.on('setdrone', this.setdrone.bind(this));
       // Handle when we connect to the server, showing state and storing id's.
       this.socket.on('gamestart', this.ongamestart.bind(this));
       // On message from the server, we parse the commands and send it to the handlers
@@ -198,52 +232,81 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
       // The server responded with our unique identity.
         this.player_self.id = data.playerid;
         this.gameid = data.id;
-        console.log(data);
         //   socket.emit('getgd', gameUUID);
         if(data.host){
           this.host = 1;
         }
+        console.log(data);
+
+    }
+    game_core.prototype.setdrone = function(data) {
+      
+      if ( this.bodys && this.firstStream ){
+          var pl = 0;
+          var ddata = [];
+          for ( var id in data ) {
+            ddata[pl] = new Float32Array( data[id].pldata );
+            pl ++;
+          }
+          pl = 0;
+          var pl1data = ddata[pl].length-1;
+          var pl2data = ddata[pl].length-1;
+          for (var i = this.bodys.length - 1; i >= 0; i--) {
+            if( this.bodys[i].name == 'drone' ) {
+              if(!pl){
+                this.bodys[i].id = ddata[pl][pl1data];
+                this.bodys[i].ld = pl + 1; 
+                this.bodys[i].body.position.set( ddata[pl][pl1data-3], ddata[pl][pl1data-2], ddata[pl][pl1data-1]  );
+                pl1data -= 4;
+              }
+              if(pl){
+                this.bodys[i].id = ddata[pl][pl2data];
+                this.bodys[i].ld = pl + 1; 
+                this.bodys[i].body.position.set( ddata[pl][pl2data-3], ddata[pl][pl2data-2], ddata[pl][pl2data-1]  );
+                pl2data -= 4;
+              }
+              pl ? pl = 0 : pl = 1;
+            }
+          }
+        this.socket.emit( 'dataload1', { id: this.player_self.id, gid: this.gameid });
+        this.firstStream = 0;
+        this.startgame = 1 ;
+      }
+
+
 
     }
     game_core.prototype.client_onserverupdate_received = function(data) {
 
-      // console.log(' data from server');
-      // console.log(data)
+        data.vals.pldata = new Float32Array( data.vals.pldata );
+
+        this.server_time = data.t;
+        if( this.fpsamplerate == 10 ) {
+          this.serverfps = Math.floor(1 / data.fps); 
+          this.fpsamplerate = 0;
+        } 
+        else { this.fpsamplerate ++; }
+        this.client_time = this.server_time - (this.net_offset / 1000);
 
 
-      this.server_time = data.t
-      this.client_time = this.server_time - (this.net_offset / 1000)
-
-      for (var id in data.vals) {
         // player must exist before it can be updated.
-        if (this.player_set[id] === undefined) {
+        if (this.player_set[ data.vals.playerid ] === undefined) {
 
-          // create local player character (with pos & color).
-          this.add_player(id, data.vals[id].pos, data.vals[id].idx)
-          // player color is decided, we don't need this anymore.
-          delete data.vals[id].idx
+          this.add_player( data.vals.playerid, [ data.vals.pldata[0], data.vals.pldata[1], data.vals.pldata[2] ], 20 );
+
         }
         this.server_updates.push(data)
 
         if (this.server_updates.length >= (60 * this.buffer_size)) {
-          this.server_updates.splice(0, 1)
+          this.server_updates.splice(0, 1);
         }
 
-        this.oldest_tick = this.server_updates[0].t
+        this.oldest_tick = this.server_updates[0].t;
 
        
         // check this
        // this.client_process_net_prediction_correction()
-        
-      }
-
-      // purge any local players that don't exist in this update
-      // because they are out-of-range (issue #3) or disconnected.
-      // for (var id in this.player_set) {
-      //   if (data.vals[id] === undefined) {
-      //     this.remove_player(id)
-      //   }
-      // }
+      
     }
 
     game_core.prototype.client_create_ping_timer = function() {
@@ -259,9 +322,9 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
 
     game_core.prototype.create_timer = function() {
       setInterval(function() {
-        this._dt  = new Date().getTime() - this._dte
-        this._dte = new Date().getTime()
-        this.local_time += this._dt / 1000.0
+        this.dt  = new Date().getTime() - this.dte;
+        this.dte = new Date().getTime();
+        this.local_time += this.dt / 1000.0;
       }.bind(this), 4)
     }
 
@@ -276,18 +339,17 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
       _playersettings.add(this, 'heading').listen()
       _playersettings.open()
 
-      var _othersettings = this.gui.addFolder('Methods')
+      // var _othersettings = this.gui.addFolder('Methods')
 
-      _othersettings.add(this, 'naive_approach').listen()
-      _othersettings.add(this, 'client_smoothing').listen()
-      _othersettings.add(this, 'client_smooth').listen()
-      _othersettings.add(this, 'client_predict').listen()
+      // _othersettings.add(this, 'naive_approach').listen()
+      // _othersettings.add(this, 'client_smooth').listen()
+      // _othersettings.add(this, 'client_predict').listen()
 
       var _debugsettings = this.gui.addFolder('Debug view')
           
       _debugsettings.add(this, 'fps_avg').listen()
-      _debugsettings.add(this, 'show_server_pos').listen()
-      _debugsettings.add(this, 'show_dest_pos').listen()
+    //  _debugsettings.add(this, 'show_server_pos').listen()
+    //  _debugsettings.add(this, 'show_dest_pos').listen()
       _debugsettings.add(this, 'local_time').listen()
 
       _debugsettings.open()
@@ -308,20 +370,23 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
           
       _netsettings.add(this, 'net_offset').min(0.01).step(0.001).listen()
       _netsettings.add(this, 'server_time').step(0.001).listen()
-      _netsettings.add(this, 'client_time').step(0.001).listen()
+      _netsettings.add(this, 'client_time').step(0.001).listen();
+      _netsettings.add(this, 'serverfps').step(0.001).listen()
 
       _netsettings.open()
     }
 
-    game_core.prototype.update = function( ply1,ply2 ) {
 
-      this.ply1 = ply1;
-      this.ply2 = ply2;
 
+
+    game_core.prototype.update = function( pos, lv, rot, phaser, dronebodys, pl2dronesarr ) {
+
+
+      this.pl2dronesarr = pl2dronesarr;
       // delta time
       var t = new Date().getTime();
       //this.dt = this.lastframetime ? ((t - this.lastframetime) / 1000.0).fixed() : 0.016;
-       this.dt = this.lastframetime ? ((t - this.lastframetime) / 1000.0) : 0.016;
+      this.pdt = this.lastframetime ? ((t - this.lastframetime) / 1000.0) : 0.016;
 
       this.lastframetime = t;
 
@@ -329,11 +394,9 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
       
       this.client_process_net_updates()
 
-      // is there great enough movement to warrant server update
-       //if ((cX > -0.1 && cX < 0.1) && (cZ > -0.1 && cZ < 0.1)) return
-      if(true){
-        this.client_handle_input( this.ply1.body.position);
-      }
+
+      this.client_handle_input( pos, lv, rot, phaser, dronebodys );
+  
       // Set actual player positions from the server update.
      
       // check this
@@ -348,6 +411,10 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
 
       //this.updateid = requestAnimationFrame(this.update.bind(this), this.viewport)
     }
+
+
+
+
     game_core.prototype.client_process_net_updates = function() {
       // No updates...
       if (! this.server_updates.length) return
@@ -396,11 +463,12 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
       // lerp requires the 0,1 value to lerp to? thats the one.
 
       if (target && previous) {
+
         this.target_time = target.t
 
-        var difference = this.target_time - current_time
-          , max_difference = (target.t - previous.t).toFixed(3)
-          , time_point = (difference / max_difference).toFixed(3)
+        var difference = this.target_time - current_time;
+        var max_difference = (target.t - previous.t);
+        var time_point = (difference / max_difference);
 
         // Because we use the same target and previous in extreme cases
         // It is possible to get incorrect values due to division by 0 difference
@@ -409,121 +477,137 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
         if (time_point == -Infinity) time_point = 0
         if (time_point == Infinity) time_point = 0
 
-        // The most recent server update
-        var latest_server_data = this.server_updates[this.server_updates.length - 1]
 
-        for (var id in latest_server_data.vals) {
+        // go update the drones
+        this.updatedrones( target, previous, time_point );
 
-          if ( id != this.player_self.id) {
 
-            // These are the exact server positions from this tick, but only for the ghost
-            var other_server_pos = (latest_server_data.vals[id]) ? latest_server_data.vals[id].pos : 0
+        if ( target.vals.playerid != this.player_self.id) {
+          var id = target.vals.playerid;
 
-            // The other players positions in this timeline, behind us and in front of us
-            var other_target_pos = (target.vals[id]) ? this.tvec3.set(target.vals[id].pos.x,target.vals[id].pos.y,target.vals[id].pos.z) : new OIMO.Vec3();
-            var other_past_pos = (previous.vals[id]) ? this.pvec3.set(previous.vals[id].pos.x,previous.vals[id].pos.y,previous.vals[id].pos.z) : other_target_pos;  //set to target if this guy is new
-
-            if (this.player_set[id]) {
-              // update the dest block, this is a simple lerp
-              // to the target from the previous point in the server_updates buffer
-              this.player_set[id].ghostpos.set( other_server_pos.x,other_server_pos.y, other_server_pos.z );
-              this.player_set[id].destpos  = this.v_lerp(other_past_pos, other_target_pos, time_point)
-
-              // apply smoothing from current pos to the new destination pos
-              if (this.client_smoothing) {
-                this.player_set[id].pos = this.v_lerp(this.player_set[id].pos, this.player_set[id].destpos, this._pdt * this.client_smooth);
-                if ( this.player_set[id].pos.x != 0 && this.player_set[id].pos.y != 0 && this.player_set[id].pos.z != 0  ) {
-                  this.ply2.body.position.set( this.player_set[id].pos.x, this.player_set[id].pos.y, this.player_set[id].pos.z );
-                }
-              } else {
-                this.player_set[id].pos = this.pos(this.player_set[id].destpos)
-              }
-            }
-          }
-        }
-
-        // Now, if not predicting client movement, we will maintain the local player position
-        // using the same method, smoothing the players information from the past.
-        if (! this.client_predict && ! this.naive_approach) {
-
-          // These are the exact server positions from this tick, but only for the ghost
-          var my_server_pos = latest_server_data.vals[latest_server_data.uuid].pos
 
           // The other players positions in this timeline, behind us and in front of us
-          var my_target_pos = target.vals[target.uuid].pos
-            , my_past_pos = previous.vals[previous.uuid].pos
+          var other_target_pos = (target.vals) ? this.tvec3.set(target.vals.pldata[0], target.vals.pldata[1], target.vals.pldata[2]) : new OIMO.Vec3();
+          var other_past_pos = (previous.vals) ? this.pvec3.set(previous.vals.pldata[0], previous.vals.pldata[1],previous.vals.pldata[2] ) : other_target_pos;  //set to target if this guy is new
 
-          // Snap the ghost to the new server position
-          this.player_self.ghostpos = this.pos(my_server_pos)
-          var local_target = this.v_lerp(my_past_pos, my_target_pos, time_point)
+          this.ply2mesh.userData.tquat.set( target.vals.pldata[3], target.vals.pldata[4], target.vals.pldata[5], target.vals.pldata[6] );
+          this.ply2mesh.userData.pquat.set( previous.vals.pldata[3], previous.vals.pldata[4], previous.vals.pldata[5], previous.vals.pldata[6] );  //set to target if this guy is new
+          if( target.vals.pldata[7] ){ this.ply2mesh.children[5].material.visible = true; }
+          else { this.ply2mesh.children[5].material.visible = false; }
 
-          // Smoothly follow the destination position
-          if (this.client_smoothing) {
-            this.player_self.pos = this.v_lerp(this.player_self.pos, local_target, this._pdt * this.client_smooth)
-          } else {
-            this.player_self.pos = this.pos(local_target)
+          //this.ply2mesh.userData.multiq.slerp( this.tquat, time_point );
+          //this.ply2mesh.quaternion.slerp( this.tquat, time_point );
+
+          if (this.player_set[id]) {
+            // update the dest block, this is a simple lerp
+            // to the target from the previous point in the server_updates buffer
+            this.player_set[id].destpos  = this.v_lerp(other_past_pos, other_target_pos, time_point);
+            // do the same for the quaternion
+            this.ply2mesh.userData.tquat.slerp( this.ply2mesh.userData.pquat, time_point);
+            this.ply2mesh.quaternion.set( this.ply2mesh.userData.tquat.x, this.ply2mesh.userData.tquat.y, this.ply2mesh.userData.tquat.z, this.ply2mesh.userData.tquat.w );
+
+            
+            //apply smoothing from current pos to the new destination pos
+            if (this.client_smooth) {
+              //this.player_set[id].pos = this.lerpVectors(this.player_set[id].pos, this.player_set[id].destpos, this.pdt * this.client_smooth);
+              this.player_set[id].pos = this.v_lerp(this.player_set[id].pos, this.player_set[id].destpos,  this.pdt * this.client_smooth );
+              var subvec = new OIMO.Vec3();
+              subvec.sub( this.ply2.body.position , this.player_set[id].pos );
+              if ( (subvec.x > 0.01 || subvec.x < -0.01) || ( subvec.y >  0.01 || subvec.y < -0.01 ) || ( subvec.z >  0.01 || subvec.z < -0.01) ) {
+                this.ply2.body.position.set( this.player_set[id].pos.x, this.player_set[id].pos.y, this.player_set[id].pos.z );
+                this.ply2.body.sleepPosition.set( this.player_set[id].pos.x, this.player_set[id].pos.y, this.player_set[id].pos.z );
+                this.ply2mesh.position.set( this.player_set[id].pos.x * 100, this.player_set[id].pos.y * 100, this.player_set[id].pos.z * 100 ); 
+              }
+              else { this.player_set[id].pos.x = this.ply2.body.position.x;
+                     this.player_set[id].pos.y = this.ply2.body.position.y;
+                     this.player_set[id].pos.z = this.ply2.body.position.z; 
+                   }
+            }
+            else {
+              this.ply2.body.position.set( this.player_set[id].destpos.x, this.player_set[id].destpos.y, this.player_set[id].destpos.z );
+            }
           }
         }
       }
     }
+    
+    game_core.prototype.updatedrones = function( target, previous, time_point  ) {
 
-    game_core.prototype.client_handle_input = function(inpt) {
-      // This takes input from the client and keeps a record,
-      // It also sends the input information to the server immediately
-      // as it is pressed. It also tags each input with a sequence number.
+      // if ( this.firstStream) {
+      //   for (var i = this.bodys.length -1; i >= 0; i--) {
+      //     if( this.bodys[i].name == 'drone') {
+      //       this.bodys[i].id = i + 1;
+      //     }
+      //   }
+      //   this.firstStream = 0;
+      // }
 
-      if (inpt.x != 0 || inpt.y != 0 || inpt.z != 0) {
-        // Update what sequence we are on now
-        this.input_seq += 1
+      var tpos = target.vals.pldata.length -1;
+      var i = this.pl2dronesarr.length;
+      while( i-- ){
+          if ( this.pl2dronesarr[i].id === target.vals.pldata[tpos] ) {
+            if ( !this.pl2dronesarr[i].body.sleeping) {
+              this.pl2dronesarr[i].body.sleep();
+            }
+            this.pl2dronesarr[i].body.sleepPosition.set( target.vals.pldata[tpos-3], target.vals.pldata[tpos-2], target.vals.pldata[tpos-1] );
+            this.pl2dronesarr[i].body.position.set( target.vals.pldata[tpos-3], target.vals.pldata[tpos-2], target.vals.pldata[tpos-1] );
+            tpos -= 4;
+          }
+          if ( target.vals.pldata[tpos] == 9999 ) {
+            this.expartarr.push( {x: target.vals.pldata[tpos-3], y: target.vals.pldata[tpos-2], z: target.vals.pldata[tpos-1] })
+            tpos -= 4;
+          }
+        }
 
-        // Store the input state as a snapshot of what happened.
-        this.player_self.inputs.push({
-          inputs: [ inpt.x, inpt.y ,inpt.z ],
-          time:   this.local_time,
-          seq:    this.input_seq
-        })
 
-        // modify the coordinate values ready for socket transport to server.
-        var input = String(inpt.x).replace('.', ',') + ':' + String(inpt.y).replace('.', ',') + ':' + String(inpt.z).replace('.', ',')
 
-        // Send the packet of information to the server.
-        // The input packets are labelled with an 'i' in front.
-        var server_packet = 'i.';
-        server_packet += input + '.';
-        server_packet += this.local_time.toFixed(3).replace('.', '-') + '.';
-        server_packet += this.input_seq + '.';
-        server_packet += this.player_self.id + '.';
-        server_packet += this.gameid;
-
-        this.socket.emit('setgd', server_packet);
-
-        // Return the direction if needed
-      ////********** check this on orig
-       // return this.physics_movement_vector_from_direction(x_dir, y_dir, z_dir)
-
-      } 
     }
 
-    game_core.prototype.check_collision = function(player) {
-      // TODO: collisions not implemented yet !
+    game_core.prototype.client_handle_input = function(inptpos,inptlv,rot, phaser, dronebodys) {
+
+        if ( this.numofdrones != dronebodys.length ) {
+          this.pldata = new Float32Array( (dronebodys.length * 7) + 12);
+          this.numofdrones = dronebodys.length;
+        }
+
+
+        this.pldata[0]  = inptpos.x;
+        this.pldata[1]  = inptpos.y;
+        this.pldata[2]  = inptpos.z;
+        this.pldata[3]  = inptlv.x;
+        this.pldata[4]  = inptlv.y;
+        this.pldata[5]  = inptlv.z;
+        this.pldata[6]  = rot.x;
+        this.pldata[7]  = rot.y;
+        this.pldata[8]  = rot.z;
+        this.pldata[9]  = rot.w;
+        this.pldata[10] = phaser;
+        this.pldata[11] = this.local_time;
+
+        // drone data
+        var i = dronebodys.length;
+        var meshpos;
+        this.currpos = 12;
+        while(i--){
+          // if( dronebodys[i].ld == 1 ) {
+            //meshpos = i + 1;
+            this.pldata[this.currpos]    = dronebodys[i].body.position.x;
+            this.pldata[this.currpos+1]  = dronebodys[i].body.position.y;
+            this.pldata[this.currpos+2]  = dronebodys[i].body.position.z;
+            this.pldata[this.currpos+3]  = dronebodys[i].body.linearVelocity.x;
+            this.pldata[this.currpos+4]  = dronebodys[i].body.linearVelocity.y;
+            this.pldata[this.currpos+5]  = dronebodys[i].body.linearVelocity.z;
+            this.pldata[this.currpos+6]  = dronebodys[i].id; 
+            this.currpos += 7;   
+         // }     
+        }
+
+
+        var dataarr = [ this.pldata.buffer, this.player_self.id, this.gameid ];
+        this.socket.emit('setgd', dataarr );
+
     }
 
-    // game_core.prototype.client_get_inputs = function() {
-
-    //   // process controller coordinates
-    //   cX = this.controller.deltaX() * 0.016
-    //   cZ = this.controller.deltaY() * 0.016
-
-    //   // ignore smaller controller movements,
-    //   // and avoid the additional calculations that follow..
-    //   if ((cX > -0.1 && cX < 0.1) && (cZ > -0.1 && cZ < 0.1)) return
-
-    //   // clamp the values (i.e. max velocity)
-    //   cX = Math.min(Math.max(cX, -3), 3)
-    //   cZ = Math.min(Math.max(cZ, -3), 3)
-
-    //   return { x:cX, y:0, z:cZ }
-    // }
 
 
     game_core.prototype.client_process_net_prediction_correction = function() {
@@ -670,7 +754,7 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
 
     game_core.prototype.client_refresh_fps = function() {
       // We store the fps for 10 frames, by adding it to this accumulator
-      this.fps = 1 / this.dt
+      this.fps = 1 / this.pdt
       this.fps_avg_acc += this.fps
       this.fps_avg_count++
 
@@ -696,7 +780,9 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
       this.playercount++
       this.player_set[id] = new Player(this)
       this.player_set[id].id = id
-      this.player_set[id].cur_state = pos
+      this.player_set[id].cur_state.set( pos[0], pos[1], pos[2] );
+      this.player_set[id].pos.set( pos[0], pos[1], pos[2] );
+
 
       // need to override these values obtained from server.
       this.player_set[id].index = parseInt(idx)

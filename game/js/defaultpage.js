@@ -71,8 +71,9 @@ function bufferSound(msg) {
 	
 }
 
-var loadgame = document.getElementById('loadGame').addEventListener( 'click', initgame);
-var startgame = document.getElementById('startGame').addEventListener( 'click', initgame);
+document.getElementById('loadGame').addEventListener( 'click', initgame);
+document.getElementById('loadMultiGame').addEventListener( 'click', initgame);
+document.getElementById('startGame').addEventListener( 'click', initgame);
 document.getElementById('sndfxbutton').addEventListener( 'click', setSoundFx);
 document.getElementById('dwnav').addEventListener( 'click', navFunc);
 document.getElementById('wanav').addEventListener( 'click', navFunc);
@@ -83,7 +84,7 @@ document.getElementById('menu-toggle').addEventListener( 'click', updateNav);
 
 
 
-function initgame() { 
+function initgame( ev ) { 
 
 	var isChrome = navigator.userAgent.match('Chrome');
 
@@ -104,8 +105,11 @@ function initgame() {
 	loadFile("audio/pdown.mp3", bufferSound, "loaded pdown\n\n");
 	loadFile("audio/thrusters.wav", bufferSound, "loaded thrusters\n\n");
 
+	var numpl;
+	ev.target.id.match('loadMultiGame') ? numpl = 1 : numpl = 0;
+
 	//change to live
-	runGame();
+	runGame(numpl);
 };
 document.getElementById('commentsubmit').addEventListener( 'submit', function(event) { 
 
@@ -164,7 +168,7 @@ function setSoundFx(event) {
 	}
 }
 
-function runGame() {
+function runGame(numpl) {
 
 	var radios = document.getElementsByName('radio_3698130');
 
@@ -194,10 +198,16 @@ function runGame() {
 	s.type = "text/javascript";
 	s.src = "js/require.js";
 	// change to live multi
-	//s.setAttribute('data-main', 'js/config.js')
-	s.setAttribute('data-main', 'js/configmulti.js')
-
-
+	if( numpl ) {
+		s.setAttribute('data-main', 'js/configmulti.js');
+	}
+	else {
+		s.setAttribute('data-main', 'js/config.js')
+	}
+	if (window.screen.height < 768) {
+		document.getElementById('arrowmarginup').className += ' fa-1';
+		document.getElementById('arrowmargindown').className += ' fa-1';
+	}
 
 	var head = document.getElementsByTagName("head")[0];
 	head.appendChild(s);
@@ -259,7 +269,7 @@ function updateNav (event) {
 
 }) ();
 // change to live
-runGame();
+runGame(1);
 //initgame();
 //var page = { target: { id: 'wanav' } };
 //navFunc(a);
