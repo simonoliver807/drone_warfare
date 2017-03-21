@@ -103,6 +103,9 @@ var fs = require('fs');
     this.pldata = {};
     this.firststream = 2;
     this.tempexpart = [];
+    this.idexcl = [];
+    // regex to match 4 same num
+    this.m4num = new RegExp(/^([0-9])\1{3}$/);
 
     //this.pldata[ game_instance.player1 ] = new Float32Array( 8 );
 
@@ -175,9 +178,13 @@ var fs = require('fs');
                 this.bodys[i].body.position.set( this.dronearr[id][pos][0], this.dronearr[id][pos][1], this.dronearr[id][pos][2]  );
                 this.bodys[i].body.linearVelocity.set( this.dronearr[id][pos][3], this.dronearr[id][pos][4], this.dronearr[id][pos][5] )
               }
-              if ( this.dronearr[id][pos][6] === 9999 ) {
-                debugger
+              var num = this.dronearr[id][pos][6] + ''; 
+              if ( num.substr(-4, num.length) == '9999' ) {
+      
+                this.idexcl.push( ~~num.substr(0 , num.length - 4) );
                 this.tempexpart.push ( { id: id, body: { position: { x: this.dronearr[id][pos][0], y: this.dronearr[id][pos][1], z: this.dronearr[id][pos][2] }, id: 9999} } )
+
+
                 //reload last drone again if ex drone
                 i-- 
               }
@@ -292,7 +299,7 @@ var fs = require('fs');
     for (var i = this.bodys.length - 1; i >= (this.bodys.length - this.numofdrone); i--) {
         this.bodys[i].ld == 1 ? id = this.id1 : id = this.id2;
         pl = this.bodys[i].ld;
-        if ( id ) {
+        if ( id && this.idexcl.indexOf( this.bodys[i].id ) === -1 ) {
           this.pldata[id][this.currpos[pl]]    = this.bodys[i].body.position.x;
           this.pldata[id][this.currpos[pl]+1]  = this.bodys[i].body.position.y;
           this.pldata[id][this.currpos[pl]+2]  = this.bodys[i].body.position.z;
@@ -306,21 +313,21 @@ var fs = require('fs');
     }
     for ( var i = 0; i < this.tempexpart.length; i++ ) {
         var id = this.tempexpart[i].id;
-
-        debugger
-
         this.player_manifest[id].name == 'player1' ? pl = 1 : pl == 2; 
         this.pldata[id][this.currpos[pl]]    = this.tempexpart[i].body.position.x;
         this.pldata[id][this.currpos[pl]+1]  = this.tempexpart[i].body.position.y;
         this.pldata[id][this.currpos[pl]+2]  = this.tempexpart[i].body.position.z;
         this.pldata[id][this.currpos[pl]+3]  = this.tempexpart[i].body.id; 
         this.currpos[ pl ] += 4;   
+
+        console.log( this.pldata[id] );
     }
-    console.log( this.pldata );
+
     // change to live
     if ( this.tempexpart.length ) {
       debugger
       this.tempexpart = [];
+      this.idexcl = [];
     }
 
       packet[this.id1] = {

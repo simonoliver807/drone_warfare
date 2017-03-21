@@ -77,10 +77,10 @@ V3D.View.prototype = {
         var insideship = document.getElementById('insideship');
         // change to live
         if (String(window.location).indexOf('ply1') != -1) {
-            insideship.value = 'clicked outside';
+            insideship.value = 'clicked inside';
         }
         else {
-            insideship.value = 'clicked inside';
+            insideship.value = 'clicked outside';
         }
         if(insideship.value == 'clicked outside'){
             V3D.bincam = 0;

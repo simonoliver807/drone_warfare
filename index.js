@@ -324,7 +324,6 @@ io.on('connection', (client) => {
 
     function handlePl2 (client) {
 
-    	debugger
     	// change to live
 		Multi.findOne().sort({_id:-1}).limit(1).then( ( game ) => {
 			game.player2 = client_id;

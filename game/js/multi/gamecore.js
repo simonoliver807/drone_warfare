@@ -554,7 +554,7 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
             tpos -= 4;
           }
           if ( target.vals.pldata[tpos] == 9999 ) {
-            this.expartarr.push( {x: target.vals.pldata[tpos-3], y: target.vals.pldata[tpos-2], z: target.vals.pldata[tpos-1] })
+            this.expartarr.push( {x: target.vals.pldata[tpos-3] * 100, y: target.vals.pldata[tpos-2] * 100, z: target.vals.pldata[tpos-1] * 100 })
             tpos -= 4;
           }
         }

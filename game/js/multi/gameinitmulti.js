@@ -210,7 +210,7 @@ define(['oimo', 'v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                     }
 
 
-                    if(firstRender != 0 && gamecore.startgame ){
+                    if(firstRender != 0 ){
                         if( firstRender.ms1 ) {
                             bodys[firstRender.ms1].body.setupMass(0x2);
                         }
@@ -794,7 +794,7 @@ define(['oimo', 'v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
 
                                     // set the drone data for multi
                                     if ( drone.userData.tbd){
-                                         dronesarr.push( { id: 9999, body: { position: { x: dbody.body.position.x, y: dbody.body.position.y, z: dbody.body.position.z }, linearVelocity: { x: 0, y: 0, z: 0  } } } );
+                                         dronesarr.push( { id: dbody.id + '' + 9999, body: { position: { x: dbody.body.position.x, y: dbody.body.position.y, z: dbody.body.position.z }, linearVelocity: { x: 0, y: 0, z: 0  } } } );
                                     }
                                     dronesarr.push( dbody );
                                 }
@@ -878,8 +878,8 @@ define(['oimo', 'v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                 numofdrone = 0;
                 if(startlevel) {
                     // spheres = [{ type: 'sphere', size: [shp1r, shp1r, shp1r], pos:[0,0,0], move: true, noSleep: true, world: world, color: 0xffffff , wireframe: 'false', name:"shp1", transparent: 'true', opacity: 0},
-                               // { type: 'sphere', size:[8, 8, 8], pos:[0,0,0], move: true, world: world, color: '#ff0000', wireframe: 'false',  name: 'containerMesh', transparent: 'false', opacity: 1, image:'cpv/cpv.obj', mtl:'cpv/cpv.mtl'}];
-                            spheres = [{ type: 'sphere', size: [shp1r, shp1r, shp1r], pos:[0,0,0], move: true, noSleep: true, world: world, color: 0xffffff , wireframe: 'false', name:"shp1", transparent: 'true', opacity: 0, image:'cpv/cpvlge.obj', mtl:'cpv/cpv.mtl'},
+                    //            { type: 'sphere', size:[8, 8, 8], pos:[0,0,0], move: true, world: world, color: '#ff0000', wireframe: 'false',  name: 'containerMesh', transparent: 'false', opacity: 1, image:'cpv/cpv.obj', mtl:'cpv/cpv.mtl'}];
+                            spheres = [{ type: 'sphere', size: [shp1r, shp1r, shp1r], pos:[0,0,0], move: true, noSleep: true, world: world, color: 0xffffff , wireframe: 'false', name:"shp1", transparent: 'true', opacity: 0, image:'cpv/cpv.obj', mtl:'cpv/cpv.mtl'},
                                         { type: 'sphere', size:[8, 8, 8], pos:[0,0,0], move: true, world: world, color: '#ff0000', wireframe: 'false',  name: 'containerMesh', transparent: 'false', opacity: 1, image: 0  }];
 
                     // if(!V3D.bincam) {

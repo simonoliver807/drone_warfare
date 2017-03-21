@@ -65,14 +65,7 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 
 
 				    this.lv = 200;
-
-		   //  		if( V3D.bincam){
-					// 	this.dnum = 8;
-					// }
-					// else {
-					// 	this.dnum = 9;
-					// }
-					this.dnum;
+				    this.dnum;
 				    var self = this;
 				    this.host = 0;
 				    this.player = 0;
@@ -107,7 +100,18 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 								}
 							}
 						}
-						else {
+						if ( !self.dnum ) {							
+						    for( var i = 0; i < v3d.scene.children.length ; i++ ) {
+
+						    	if ( v3d.scene.children[i].name == 'drones' ) {
+
+						    		self.dnum = i;
+
+						    	}
+
+						    }
+						 }
+						if( self.shp1 && self.dnum ) {
 							updateShip();
 						}
 
@@ -298,11 +302,12 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 			    				}
 			    				if ( !self.host ) {
 
-		    					    self.notDrone = 1;
+		    					    self.notDrone = 0;
 
-				    				self.notMS = 0;
+				    				self.notMS = 1;
 
-				    				self.dnum = 9;
+				    				self.notpl2 = 1;
+
 				    				if ( self.setpl2rev ) {
 				    					self.lv = -200;
 				    				} 
@@ -314,7 +319,7 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 
 				    				self.notMS = 1;
 
-				    				self.dnum = 8
+				    				self.notpl2 = 1;
 
 			    				}
 				    			if ( self.tarbody == 0){
@@ -347,8 +352,7 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 
 							if ( self.tarbody != 0 ){
 
-								v2.subVectors(self.tarbody.position, v3d.containerMesh.position);
-								v2.normalize();
+								v2.subVectors(self.tarbody.position, v3d.containerMesh.position).normalize();
 								var dp = v1.dot(v2);
 								dp = Math.acos(dp);
 								var axis = v3d.tvec();
@@ -447,12 +451,13 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 							    	}
 							    	if( V3D.bincam ) {
 							    		var vector1 = v3d.tvec();
-							    		// var vector2 = v3d.tvec();
+							    		var vector2 = v3d.tvec();
 
 							    		vector1.subVectors( self.tarbody.position, v3d.containerMesh.position ).normalize();
 							    		vector1.multiplyScalar(90);
+							    		vector2.addVectors( vector1, v3d.containerMesh.position );
 
-							    		var xy = toScreenPosition( 0, v3d.camera, vector1);
+							    		var xy = toScreenPosition( 0, v3d.camera, vector2);
 							    		var xy2 = toScreenPosition( self.tarbody, v3d.camera, 0 );
 							    	}
 
