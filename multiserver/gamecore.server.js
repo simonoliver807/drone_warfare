@@ -74,7 +74,6 @@ var fs = require('fs');
     this.levels = levels;
     this.clients = {};
     this.clients['player1'] = client;
-
     console.log(game_instance);
 
 
@@ -104,8 +103,6 @@ var fs = require('fs');
     this.firststream = 2;
     this.tempexpart = [];
     this.idexcl = [];
-    // regex to match 4 same num
-    this.m4num = new RegExp(/^([0-9])\1{3}$/);
 
     //this.pldata[ game_instance.player1 ] = new Float32Array( 8 );
 
@@ -125,6 +122,8 @@ var fs = require('fs');
     this.player_manifest[ game_instance.player1 ].rot = [0,0,0,0];
     this.player_manifest[ game_instance.player1 ].phaser = 0;
     this.player_manifest[ game_instance.player1].numofdrone = 0;
+    this.player_manifest[ game_instance.player1].ms1y =  { y: 0 };
+    this.t = 0;
     this.id1 = game_instance.player1;
     this.id2 = 0;
     this.currpos = [];
@@ -146,7 +145,7 @@ var fs = require('fs');
       this.pdtfps.push( this._pdt );
       this._pdte = new Date().getTime();
       this.update_physics();
-    }.bind(this), 15)
+    }.bind(this), 16)
 
     return player1;
 
@@ -158,63 +157,60 @@ var fs = require('fs');
 
     for (var id in this.player_manifest) {
 
-      // update OIMO
       if( this.player_manifest[id].inputs.length ) { 
 
-       // console.log(this.player_manifest[id].inputs)
+        // if( this.player_manifest[id].inputs[10] < 0.000001 ){
+        //   console.log(this.player_manifest[id].inputs);
+        //    debugger; 
+        // }
 
         this.player_manifest[id].body.position.set( this.player_manifest[id].inputs[0].pos[0], this.player_manifest[id].inputs[0].pos[1], this.player_manifest[id].inputs[0].pos[2] );
         this.player_manifest[id].body.linearVelocity.set( this.player_manifest[id].inputs[0].lv[0], this.player_manifest[id].inputs[0].lv[1], this.player_manifest[id].inputs[0].lv[2] );
         this.player_manifest[id].rot = this.player_manifest[id].inputs[0].rot;
         this.player_manifest[id].phaser = this.player_manifest[id].inputs[0].phaser;
 
-        if ( this.dronearr[id].length ) {
 
-          var pos = 0;
-          // loop through the drones lowest id first both in bodys array and dronearr
-          for( var i = 0; i < this.bodys.length; i++ ) {
-            try {
+        var pos = 0;
+        var updatepos;
+        // loop through the drones lowest id first both in bodys array and dronearr
+        for( var i = 0; i < this.bodys.length; i++ ) {
+
+          try {
+
+            if ( this.dronearr[id][pos] ) {
               if ( this.bodys[i].name == 'drone' && this.bodys[i].id == this.dronearr[id][pos][6]){
+
                 this.bodys[i].body.position.set( this.dronearr[id][pos][0], this.dronearr[id][pos][1], this.dronearr[id][pos][2]  );
                 this.bodys[i].body.linearVelocity.set( this.dronearr[id][pos][3], this.dronearr[id][pos][4], this.dronearr[id][pos][5] )
+                updatepos = 1;
+                
               }
               var num = this.dronearr[id][pos][6] + ''; 
-              if ( num.substr(-4, num.length) == '9999' ) {
-      
+              if ( num.substr(-4, num.length) == '9999' ) {        
                 this.idexcl.push( ~~num.substr(0 , num.length - 4) );
-                this.tempexpart.push ( { id: id, body: { position: { x: this.dronearr[id][pos][0], y: this.dronearr[id][pos][1], z: this.dronearr[id][pos][2] }, id: 9999} } )
+                this.tempexpart.push ( { id: id, body: { position: { x: this.dronearr[id][pos][0], y: this.dronearr[id][pos][1], z: this.dronearr[id][pos][2] }, id: this.dronearr[id][pos][6] } } )
 
-
+                updatepos = 1;
                 //reload last drone again if ex drone
                 i-- 
               }
-              if ( pos < this.dronearr[id].length-1 ) { pos++ ;}
-              else { break ;}
+              if ( updatepos ) { pos ++ };
             }
-            catch (err) {
-              debugger
+            else {
+              break;
             }
+
           }
-
+          catch (err) {
+            debugger
+          }
         }
-
-
-     //   console.log( this.player_manifest[id].inputs[0])
-      
-        // console.log('position: ' + id)
-        // console.log( this.player_manifest[id].body.position );
-        // console.log('linearVelocity')
-        // console.log( this.player_manifest[id].body.linearVelocity );      
-        // console.log('rotation')
-        // console.log( this.player_manifest[id].rot );
-        // console.log('phaser')
-        // console.log( this.player_manifest[id].phaser );
-        // console.log('time ')
-        // console.log(this.server_time);
-        // console.log('');
-
         // clear buffer
       this.player_manifest[id].inputs = []
+
+
+      x++;
+
       }
     }
   }
@@ -222,15 +218,6 @@ var fs = require('fs');
   //
 
   game_core.prototype.server_update = function() {
-
-    // if(this.var) {
-    //   console.log(this.lastframetime)
-    //   console.log('this.lastframetime')
-    //   console.log(t);
-    //   console.log('t');
-    // }
-    // this.var += 1;
-
 
     var t = new Date().getTime(); 
     this.dt = (t - this.lastframetime) / 1000.0 ;
@@ -258,14 +245,40 @@ var fs = require('fs');
 
     var ld = 0;
 
-    var packet = {}
+    var packet = {};
+
+    var ply1nod = 0;
+    var ply2nod = 0;
+
+
+    for ( var i = 0; i < this.bodys.length; i++ ) {
+
+      if ( this.bodys[i].ld == 1 && this.idexcl.indexOf( this.bodys[i].id ) === -1  ) {
+
+        ply1nod ++;
+
+      }
+      if ( this.bodys[i].ld == 2 && this.idexcl.indexOf( this.bodys[i].id ) === -1  ) {
+
+        ply2nod ++;
+
+      }  
+    }
 
     for (var id in this.player_manifest) {
-      if ( this.player_manifest[id].numofdrone != this.gi.getnumofdrone( this.player_manifest[id].name ) ) {
-        this.player_manifest[id].numofdrone = this.gi.getnumofdrone( this.player_manifest[id].name );
-        for (var id in this.player_manifest) {
-          this.pldata[id] = new Float32Array( (this.player_manifest[id].numofdrone * 4) + 8 );
+      var numofdrone = 0;
+
+      for ( var i = 0; i < this.tempexpart.length; i++ ) {
+        if ( this.tempexpart[i].id == id ) {
+          numofdrone ++;
         }
+      }
+
+      if ( this.player_manifest[id].name == 'player1') {
+        this.pldata[id] = new Float32Array(  10 + ( ( ply1nod + numofdrone) * 4 ) );
+      }
+      if ( this.player_manifest[id].name == 'player2') {
+        this.pldata[id] = new Float32Array(  10 + ( ( ply2nod + numofdrone) * 4 ) );
       }
 
 
@@ -279,6 +292,8 @@ var fs = require('fs');
         this.pldata[id][5] = this.player_manifest[id].rot[2];
         this.pldata[id][6] = this.player_manifest[id].rot[3];
         this.pldata[id][7] = this.player_manifest[id].phaser;
+        this.pldata[id][8] = this.player_manifest[id].ms1y.y;
+        this.pldata[id][9] = this.t;
 
       }
       catch (err) {
@@ -287,54 +302,80 @@ var fs = require('fs');
       }
 
     }
+    // if ( this.ms1y.y ) {
+    // console.log(this.ms1y)
+    // console.log('y: ' + this.pldata[id][8]);
+    // console.log('t: ' + this.pldata[id][9]);
+    // }
 
-    // this.player_manifest[id].name == 'player1' ? ld = 1 : ld = 2;
-    // drone data
+    // prepare drone drone data
     // offset currpos so the pos matches the player id
-    this.currpos = [ 0, 8, 8 ];
+    this.currpos = [ 0, 10, 10 ];
     var id;
     var i = this.bodys.length;
     var pl;
 
-    for (var i = this.bodys.length - 1; i >= (this.bodys.length - this.numofdrone); i--) {
-        this.bodys[i].ld == 1 ? id = this.id1 : id = this.id2;
-        pl = this.bodys[i].ld;
-        if ( id && this.idexcl.indexOf( this.bodys[i].id ) === -1 ) {
-          this.pldata[id][this.currpos[pl]]    = this.bodys[i].body.position.x;
-          this.pldata[id][this.currpos[pl]+1]  = this.bodys[i].body.position.y;
-          this.pldata[id][this.currpos[pl]+2]  = this.bodys[i].body.position.z;
-          // this.pldata[id][this.currpos[pl]+3]  = this.bodys[i].body.linearVelocity.x;
-          // this.pldata[id][this.currpos[pl]+4]  = this.bodys[i].body.linearVelocity.y;
-          // this.pldata[id][this.currpos[pl]+5]  = this.bodys[i].body.linearVelocity.z;
-          this.pldata[id][this.currpos[pl]+3]  = this.bodys[i].id; 
-          this.currpos[ pl ] += 4;      
-        }
-        id = 0;
+    // use this loop for first stream so all drone positions can set at first
+    // for (var i = this.bodys.length - 1; i >= (this.bodys.length - this.numofdrone); i--) {
+    //     this.bodys[i].ld == 1 ? id = this.id1 : id = this.id2;
+    //     pl = this.bodys[i].ld;
+    //     if ( id && this.idexcl.indexOf( this.bodys[i].id ) === -1 ) {
+    //       this.pldata[id][this.currpos[pl]]    = this.bodys[i].body.position.x;
+    //       this.pldata[id][this.currpos[pl]+1]  = this.bodys[i].body.position.y;
+    //       this.pldata[id][this.currpos[pl]+2]  = this.bodys[i].body.position.z;
+    //       // this.pldata[id][this.currpos[pl]+3]  = this.bodys[i].body.linearVelocity.x;
+    //       // this.pldata[id][this.currpos[pl]+4]  = this.bodys[i].body.linearVelocity.y;
+    //       // this.pldata[id][this.currpos[pl]+5]  = this.bodys[i].body.linearVelocity.z;
+    //       this.pldata[id][this.currpos[pl]+3]  = this.bodys[i].id; 
+    //       this.currpos[ pl ] += 4;      
+    //     }
+    //     id = 0;
+    // }
+
+
+    // seperate first stream in seperate function
+
+    // then use
+    for ( var i = 0; i < this.bodys.length; i++){
+
+      if ( this.bodys[i].ld == 1) {
+
+      }
+      if ( this.bodys[i]. =)
+      pl = this.bodys[i].ld;
+
+
     }
+
+   debugger
     for ( var i = 0; i < this.tempexpart.length; i++ ) {
+
         var id = this.tempexpart[i].id;
-        this.player_manifest[id].name == 'player1' ? pl = 1 : pl == 2; 
+        this.player_manifest[id].name == 'player1' ? pl = 1 : pl = 2; 
         this.pldata[id][this.currpos[pl]]    = this.tempexpart[i].body.position.x;
         this.pldata[id][this.currpos[pl]+1]  = this.tempexpart[i].body.position.y;
         this.pldata[id][this.currpos[pl]+2]  = this.tempexpart[i].body.position.z;
         this.pldata[id][this.currpos[pl]+3]  = this.tempexpart[i].body.id; 
         this.currpos[ pl ] += 4;   
 
-        console.log( this.pldata[id] );
     }
 
     // change to live
     if ( this.tempexpart.length ) {
-      debugger
       this.tempexpart = [];
       this.idexcl = [];
     }
+
 
       packet[this.id1] = {
         pldata: this.pldata[ this.id1 ].buffer,
         playerid: this.id1,
       }
       if ( this.id2 ) {
+
+
+
+
         packet[this.id2] = {
           pldata: this.pldata[ this.id2 ].buffer,
           playerid: this.id2,
@@ -378,8 +419,6 @@ var fs = require('fs');
           t:    this.server_time,
           fps: fps
         }
-        // var sockets = this.server.client.sockets;
-        // var socket = sockets[this.roomid];
 
        // console.log(packet);
 
@@ -398,16 +437,6 @@ var fs = require('fs');
           }
         }
       }
-
-      // if (this.x) {
-      //   if(!socket){
-      //     debugger
-      //     console.log( this.roomid )
-      //      console.log(packet);
-      //     this.x = 0;
-      //   }
-      // }
-
     }
      this.pdtfps = [];
 
@@ -433,6 +462,7 @@ var fs = require('fs');
       this.player_manifest[ game.player2 ].rot = [0,0,0,0];
       this.player_manifest[ game.player2 ].phaser = 0;
       this.player_manifest[ game.player2 ].numofdrone = 0;
+      this.player_manifest[ game.player2 ].ms1y =  { y: 0, t: 0 };
       this.id2 = game.player2;
 
       // start the server creating and sending packets to both the clients
@@ -451,30 +481,32 @@ var fs = require('fs');
     delete this.player_manifest[uuid];
   }
 
-  game_core.prototype.handle_server_input = function( input, drone, input_time, pl_uuid ) {
+  game_core.prototype.handle_server_input = function( input, ms1y, drone, input_time, pl_uuid ) { 
 
-    this.player_client = this.player_manifest[ pl_uuid ]; 
-
-    if ( this.player_client && this.player_client.inputs ) {
+    try {
       this.il = input.length;
       this.dronearr[pl_uuid] = [];
       while( this.il-- ) {
         input[ this.il ] = parseFloat( input[ this.il ] );
       }
       // Store the input on the player instance for processing in the physics loop
-      this.player_client.inputs.push({ pos: [input[0],input[1],input[2]], lv: [input[3],input[4],input[5]], rot: [input[6],input[7],input[8],input[9]], phaser: input[10], time: input_time });
+      this.player_manifest[ pl_uuid ].inputs.push({ pos: [input[0],input[1],input[2]], lv: [input[3],input[4],input[5]], rot: [input[6],input[7],input[8],input[9]], phaser: input[10], time: input_time });
+      this.player_manifest[ pl_uuid ].ms1y.y = ms1y;
+      if( ms1y ) {
+        this.t ++;
+      }
+      this.droneloop = drone.length / 7;
+      this.dlcurrps = 0;
+      while( this.droneloop-- ) {
+        this.dronearr[pl_uuid].push ( [ drone[this.dlcurrps], drone[ this.dlcurrps+1 ], drone[ this.dlcurrps+2 ], drone[ this.dlcurrps+3 ], drone[ this.dlcurrps+4 ], drone[ this.dlcurrps+5 ], drone[ this.dlcurrps+6 ] ]);
+        this.dlcurrps += 7;
+      }
     }
-    this.droneloop = drone.length / 7;
-    this.dlcurrps = 0;
-    while( this.droneloop-- ) {
-      this.dronearr[pl_uuid].push ( [ drone[this.dlcurrps], drone[ this.dlcurrps+1 ], drone[ this.dlcurrps+2 ], drone[ this.dlcurrps+3 ], drone[ this.dlcurrps+4 ], drone[ this.dlcurrps+5 ], drone[ this.dlcurrps+6 ] ]);
-      this.dlcurrps += 7;
+    catch (err) {
+      console.log(err);
     }
-
   }
-  // game_core.prototype.update_firststream = function( ) {
-  //   this.firststream -= 1;
-  // }
+
 
 
 module.exports = game_core

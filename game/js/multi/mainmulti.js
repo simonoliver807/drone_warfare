@@ -29,6 +29,7 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 
 					v3d = gameinit.getObj('v3d');
 					gameinit.createWorld(timestep);
+
 					gameinit.lgd(1);
 					phaser = false;
 
@@ -60,8 +61,8 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 			},
 
 			handleKeyDown: function( event ) {
-
-				event.preventDefault();
+				// change to live
+				//event.preventDefault();
 				if( event.keyCode === 80) {
 					var val = gameinit.gspause() ? 0: 1;
 				    gameinit.gspause(val);

@@ -241,8 +241,8 @@ module.exports = function () {
                var dpm = 0;
                var x,y,z =  0;
 
-               // change to live
-                if( x982y === 1 ) { var numofld = 4 }
+               // change to liv
+                if( x982y === 1 ) { var numofld = 9 }
                 else {
                     var numofld = Math.round(numofdrone / (numofms * 4));
                 }
@@ -297,12 +297,12 @@ module.exports = function () {
                                     numofdronepl2 ++;
                                     ship1_2 = 1;
                                 }
+                                numofld -= 1;
                             }
                             if ( !numofld ) {
                                 bodys[bodysNum].ld = 0;
                                 bodys[bodysNum].nrtm = 0;
                             }
-                            numofld -= 1;
                             bodysNum += 1;
                             dpm +=1;
 

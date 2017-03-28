@@ -49,9 +49,9 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 				    this.bincount = 0;
 				    this.retargetCnt = 0;
 
-				    // set to not target drones or ms
+				    // set to not target drones
 				    this.notDrone = 0;
-
+				    // set to not target ms
 				    this.notMS = 1;
 				    // set to not target ld drones for pl2
 				    this.notpl2 = 1;
@@ -59,7 +59,7 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 				    // have pl2 look at pl1
 				    this.pl2tpl1 = 0;
 
-				    this.setld = 1;
+				    this.setld = 0;
 
 				    this.setpl2rev = 1;
 
@@ -286,19 +286,13 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 					    			self.retargetCnt ++;
 
 				    			}
-			    				for ( var i = 0; i < v3d.scene.children.length; i++ ){
-
-			    					if ( v3d.scene.children[i].name == 'player2' && self.pl2tpl1 && self.host == 0 ) {
-
-			    						self.tarbody = v3d.scene.children[i]; 
-
-			    						// if ( self.host ) {
-			    						// 	self.player = v3d.scene.children[i]; 
-			    						// }
+				    			if ( self.pl2tpl1 && self.host === 0 ) {
+			    					for ( var i = 0; i < v3d.scene.children.length; i++ ){			    					
+			    						if ( v3d.scene.children[i].name == 'player2' ) {
+				    						self.tarbody = v3d.scene.children[i]; 
+				    						break;
+				    					}
 			    					}
-			    					// if ( v3d.scene.children[i].name == 'player2' && !self.host ) {
-			    					// 	self.player = v3d.scene.children[i];
-			    					// }
 			    				}
 			    				if ( !self.host ) {
 
@@ -306,7 +300,8 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 
 				    				self.notMS = 1;
 
-				    				self.notpl2 = 1;
+				    				self.notpl2 = 0;
+				    				self.pl2tpl1 = 0;
 
 				    				if ( self.setpl2rev ) {
 				    					self.lv = -200;
@@ -319,13 +314,13 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 
 				    				self.notMS = 1;
 
-				    				self.notpl2 = 1;
+				    				self.notpl2 = 0;
 
 			    				}
-				    			if ( self.tarbody == 0){
+				    			if ( self.tarbody === 0){
 									getTar();
 								}
-								if (self.retargetCnt == 100){
+								if (self.retargetCnt == 100 && !self.pl2tpl1){
 									getTar();
 									self.retargetCnt = 0;
 								}

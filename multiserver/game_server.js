@@ -77,7 +77,9 @@
     
       game_server.prototype.setgd = function( data ) {
 
+
         var b = data[0];
+        var ms1y = 0;
 
         var ab = b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength );
         var pldata = new Float32Array( ab );
@@ -91,14 +93,18 @@
             if ( i == 11 ) { 
               var input_time = pldata[i];
             }
-            if ( i > 11) {
+            if( i == 12 ) {
+              ms1y = pldata[i];
+            }
+            if ( i > 12) {
               droneData.push ( pldata[i] );
             }
         }
         var pl_uuid = data[1];
         var gid = data[2];
+
         try {
-          this.games[ gid ].handle_server_input( input_commands, droneData, input_time, pl_uuid );
+          this.games[ gid ].handle_server_input( input_commands, ms1y, droneData, input_time, pl_uuid );
         }
         catch (err) {
           debugger

@@ -76,17 +76,17 @@ V3D.View.prototype = {
         
         var insideship = document.getElementById('insideship');
         // change to live
-        if (String(window.location).indexOf('ply1') != -1) {
-            insideship.value = 'clicked inside';
-        }
-        else {
+        if (String(window.location).indexOf('outside') != -1) {
             insideship.value = 'clicked outside';
         }
+        else {
+            insideship.value = 'clicked inside';
+        }
         if(insideship.value == 'clicked outside'){
-            V3D.bincam = 0;
+            V3D.bincam = 1;
         }
         else {
-            V3D.bincam = 1;
+            V3D.bincam = 0;
         }
 
         if( V3D.bincam ) {
@@ -789,6 +789,7 @@ V3D.View.prototype = {
             }
             this.scene.children[ V3D.mesharrpos.shp1 ].quaternion.set(this.camera.quaternion.x,this.camera.quaternion.y,this.camera.quaternion.z, this.camera.quaternion.w); 
             this.scene.children[ V3D.mesharrpos.shp1 ].lookAt(this.sight.position);
+
 
             //this.tusv.subVectors(this.sight.position,this.containerMesh.position);
            // var m = this.lookAtFunc(this.tusv, this.up);

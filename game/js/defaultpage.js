@@ -1,7 +1,7 @@
 "use strict";
 
 
-var url = 'http://192.168.0.2:9000/';
+var url = 'http://192.168.1.75:9000/';
 //var url = 'http://www.dronewar1.com'
 var soundFX = 1; 
 // change to live 

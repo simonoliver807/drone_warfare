@@ -10,13 +10,6 @@
    *  MIT Licensed.
    */
 
-  // var EventEmitter = require('events').EventEmitter
-  //   , Controller = require('n3d-controller')
-  //   , domready = require('domready')
-  //   , util   = require('util')
-  //   , io     = require('socket.io-browserify')
-  //   , Player = require('../shared/Player.js')
-  //   , golden_ratio = 1.6180339887
 define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
 
 "use strict";
@@ -24,58 +17,55 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
 
    var Player = function() {
 
-    // Store the instance, if any
-   // this.instance = player_instance
-    //this.game = game_instance
-    this.index = Math.random() < 0.5 ? 0 : 1;
+      this.index = Math.random() < 0.5 ? 0 : 1;
 
-    // Set up initial values for our state information
-    this.pos = new OIMO.Vec3();
-    this.ghostpos = new OIMO.Vec3();
-    this.destpos  = new OIMO.Vec3();
-    this.state = 'new player'
-    // this.color = 'rgba(240,240,240,1.0)'
-    // this.color_2d = 'rgba(240,240,240,1.0)'
-    // this.info_color = 'rgba(220,240,220,0.8)'
+      // Set up initial values for our state information
+      this.pos = new OIMO.Vec3();
+      this.ghostpos = new OIMO.Vec3();
+      this.destpos  = new OIMO.Vec3();
+      this.state = 'new player'
 
-    // These are used in moving us around later
-    this.old_state = new OIMO.Vec3();
-    this.cur_state = new OIMO.Vec3(); // spawn here!
-    this.state_time = new Date().getTime()
+      // These are used in moving meshs around later
+      this.old_state = new OIMO.Vec3();
+      this.cur_state = new OIMO.Vec3(); // spawn here!
+      this.state_time = new Date().getTime()
 
-    // Our local history of inputs
-    this.inputs = []
+      // Our local history of inputs
+      this.inputs = []
   }
     
 
   function game_core() { 
 
-            // ********** mulit   change to live
-        this.socket = SOCKET_IO.connect(url);
-        this.startgame = 2;
-        this.player_self = new Player();    
-        this.player_set  = {};
-        this.playercount = 0;
-        this.server_updates = [];
-        // A local timer for precision on server and client
-        this.local_time = 0.016;               //The local timer
-        this.host = 0;
-        this.gameid;
+          // ********** mulit   change to live
+      this.socket = SOCKET_IO.connect(url);
+      this.startgame = 2;
+      this.player_self = new Player();    
+      this.player_set  = {};
+      this.playercount = 0;
+      this.server_updates = [];
+      // A local timer for precision on server and client
+      this.local_time = 0.016;               //The local timer
+      this.host = 0;
+      this.gameid;
 
-        this.tvec3 = new OIMO.Vec3();
-        this.pvec3 = new OIMO.Vec3();
-        this.tquat = new OIMO.Quaternion();
-        this.pquat = new OIMO.Quaternion();
+      this.tvec3 = new OIMO.Vec3();
+      this.pvec3 = new OIMO.Vec3();
+      this.tquat = new OIMO.Quaternion();
+      this.pquat = new OIMO.Quaternion();
 
-        this.bodys;
+      this.droneprev = new OIMO.Vec3();
+      this.dronetarget = new OIMO.Vec3();
+      this.bodys;
+      this.ms1y = {y: 0, t: 0};
 
-        this.firstStream = 1;
+      this.firstStream = 1;
 
-        // const
-        this.ply1;
-        this.ply2;
-        this.ply2mesh;
-        this.client_smooth = 8;     // amount of smoothing to apply to client update dest    
+      // const
+      this.ply1;
+      this.ply2;
+      this.ply2mesh;
+      this.client_smooth = 8;     // amount of smoothing to apply to client update dest    
 
 
 
@@ -90,13 +80,6 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
       return (p * (1 - _t) + n * _t);
     }
 
-    // game_core.prototype.lerpVectors = function ( v1, v2, alpha ) {
-
-    //   var retv = new OIMO.Vec3();
-    //   return retv.sub( v1, v2).multiplyScalar( alpha ).addEqual( v1 ); 
-
-    // },
-
     game_core.prototype.setply1ply2 = function( ply1, ply2, ply2mesh, bodys ) {
 
       this.ply1 = ply1;
@@ -106,13 +89,6 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
       this.add_player ( this.player_self.id, [ this.ply1.body.position.x, this.ply1.body.position.y, ply1.body.position.z ], 10 ) 
       this.bodys = bodys;
     }
-    game_core.prototype.getdata = function() {
-
-      var data = { ply1id: this.player_self.id, time: this.client_time };
-
-      return data;
-
-    }
 
     game_core.prototype.start = function( ) {
       var self  = this
@@ -120,35 +96,7 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
       this.client_create_configuration();
       this.client_connect_to_server();
       this.create_timer()
-     // this.client_create_ping_timer()
-
-      // var data = { vals: 
-      //                  { OVY4m6qvh1cTm0CFAAAA: 
-      //                     { pos: new OIMO.Vec3(),
-      //                       playerid: 'OVY4m6qvh1cTm0CFAAAA',
-      //                       idx: 0,
-      //                       isq: 0 } },
-      //                     t: 14.336,
-      //                     uuid: 'OVY4m6qvh1cTm0CFAAAA'
-      //                   }
-      // this.client_onserverupdate_received(data);
-      // this.player_self = data.vals.uuid;
-      //  var data = { vals: 
-      //                  { OVY4m6qvh1cTm0CFAAAb: 
-      //                     { pos: new OIMO.Vec3(100,0,100),
-      //                       playerid: 'OVY4m6qvh1cTm0CFAAAb',
-      //                       idx: 0,
-      //                       isq: 0 } },
-      //                     t: 14.336,
-      //                     uuid: 'OVY4m6qvh1cTm0CFAAAb' }
-      //this.client_onserverupdate_received(data);
-
-
-
-      //this.client_create_configuration()
-
-      //Connect to the socket.io server!
-       //this.client_create_ping_timer()
+      this.client_create_ping_timer()
 
       setTimeout(function() {
 
@@ -379,8 +327,7 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
 
 
 
-    game_core.prototype.update = function( pos, lv, rot, phaser, dronebodys, pl2dronesarr ) {
-
+    game_core.prototype.update = function( pos, lv, rot, phaser, dronebodys, pl2dronesarr, ms1y ) {
 
       this.pl2dronesarr = pl2dronesarr;
       // delta time
@@ -395,7 +342,7 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
       this.client_process_net_updates()
 
 
-      this.client_handle_input( pos, lv, rot, phaser, dronebodys );
+      this.client_handle_input( pos, lv, rot, phaser, dronebodys, ms1y );
   
       // Set actual player positions from the server update.
      
@@ -473,13 +420,14 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
         // Because we use the same target and previous in extreme cases
         // It is possible to get incorrect values due to division by 0 difference
         // and such. This is a safe guard and should probably not be here. lol.
-        if (isNaN(time_point)) time_point = 0
-        if (time_point == -Infinity) time_point = 0
-        if (time_point == Infinity) time_point = 0
+        // if (isNaN(time_point)) time_point = 0
+        // if (time_point == -Infinity) time_point = 0
+        // if (time_point == Infinity) time_point = 0
 
 
         // go update the drones
         this.updatedrones( target, previous, time_point );
+        this.updatems( target );
 
 
         if ( target.vals.playerid != this.player_self.id) {
@@ -549,24 +497,64 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
             if ( !this.pl2dronesarr[i].body.sleeping) {
               this.pl2dronesarr[i].body.sleep();
             }
-            this.pl2dronesarr[i].body.sleepPosition.set( target.vals.pldata[tpos-3], target.vals.pldata[tpos-2], target.vals.pldata[tpos-1] );
-            this.pl2dronesarr[i].body.position.set( target.vals.pldata[tpos-3], target.vals.pldata[tpos-2], target.vals.pldata[tpos-1] );
+
+  
+            this.droneprev.copy( this.pl2dronesarr[i].body.position );
+            this.dronetarget.set( target.vals.pldata[tpos-3], target.vals.pldata[tpos-2], target.vals.pldata[tpos-1]  );
+
+
+            var subvec = new OIMO.Vec3();
+            subvec.sub( this.dronetarget, this.droneprev );
+            //  if ( (subvec.x > 0.01 || subvec.x < -0.01) || ( subvec.y >  0.01 || subvec.y < -0.01 ) || ( subvec.z >  0.01 || subvec.z < -0.01) ) {
+            //    if ( (subvec.x < 1 && subvec.x > -1 ) || ( subvec.y >  1 || subvec.y < -1 ) || ( subvec.z < 1 && subvec.z > -1 ) ){ 
+            //       this.pl2dronesarr[i].body.sleepPosition.copy( this.v_lerp( this.droneprev, this.dronetarget, time_point) );
+            //       this.pl2dronesarr[i].body.position.copy( this.pl2dronesarr[i].body.sleepPosition )
+            //   }
+            // }
+
+            // set an array of ids of drones just expart then exluded from lerp
+            if ( (subvec.x > 0.01 || subvec.x < -0.01) || ( subvec.y >  0.01 || subvec.y < -0.01 ) || ( subvec.z >  0.01 || subvec.z < -0.01) ) {
+              this.pl2dronesarr[i].body.sleepPosition.copy( this.v_lerp( this.droneprev, this.dronetarget, time_point) );
+              this.pl2dronesarr[i].body.position.copy( this.pl2dronesarr[i].body.sleepPosition );
+            }
+
             tpos -= 4;
           }
-          if ( target.vals.pldata[tpos] == 9999 ) {
-            this.expartarr.push( {x: target.vals.pldata[tpos-3] * 100, y: target.vals.pldata[tpos-2] * 100, z: target.vals.pldata[tpos-1] * 100 })
+          var num = target.vals.pldata[tpos] + ''; 
+          if ( num.match('9999')) {
+            //  this.expartarr.push( {x: target.vals.pldata[tpos-3] * 100, y: target.vals.pldata[tpos-2] * 100, z: target.vals.pldata[tpos-1] * 100 })
+            this.expartarr.push( ~~num.substr( 0, num.length-4 ) )
             tpos -= 4;
           }
+      }
+      // update this so that it searches from end if id is greater than half drone or from start.
+      if ( this.expartarr.length ) {
+        var i = this.bodys.length;
+        while( i-- ) {
+
+          if( this.expartarr.indexOf( this.bodys[i].id ) !== -1  ) {
+
+            // only bodys sent from the server get set as tbd = 1
+            this.bodys[i].tbd = 1;
+
+          } 
+
         }
+        this.expartarr = [] ;
+      }
+    }
 
+    game_core.prototype.updatems = function ( target ) {
 
+      this.ms1y.y = target.vals.pldata[8];
+      this.ms1y.t = target.vals.pldata[9];
 
     }
 
-    game_core.prototype.client_handle_input = function(inptpos,inptlv,rot, phaser, dronebodys) {
+    game_core.prototype.client_handle_input = function ( inptpos, inptlv, rot, phaser, dronebodys, ms1y ) {
 
         if ( this.numofdrones != dronebodys.length ) {
-          this.pldata = new Float32Array( (dronebodys.length * 7) + 12);
+          this.pldata = new Float32Array( (dronebodys.length * 7) + 13);
           this.numofdrones = dronebodys.length;
         }
 
@@ -583,14 +571,14 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
         this.pldata[9]  = rot.w;
         this.pldata[10] = phaser;
         this.pldata[11] = this.local_time;
+        this.pldata[12] = ms1y.y;
 
         // drone data
         var i = dronebodys.length;
         var meshpos;
-        this.currpos = 12;
+        this.currpos = 13;
         while(i--){
-          // if( dronebodys[i].ld == 1 ) {
-            //meshpos = i + 1;
+         
             this.pldata[this.currpos]    = dronebodys[i].body.position.x;
             this.pldata[this.currpos+1]  = dronebodys[i].body.position.y;
             this.pldata[this.currpos+2]  = dronebodys[i].body.position.z;
@@ -598,8 +586,18 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
             this.pldata[this.currpos+4]  = dronebodys[i].body.linearVelocity.y;
             this.pldata[this.currpos+5]  = dronebodys[i].body.linearVelocity.z;
             this.pldata[this.currpos+6]  = dronebodys[i].id; 
+
+              // change to live
+              // var num = this.pldata[ this.currpos+6 ] + ''; 
+              // if ( num.substr(-4, num.length) == '9999' ) {
+              //    console.log( ' pos.x ' + dronebodys[i].body.position.x );
+              //    console.log( ' pos.y ' + dronebodys[i].body.position.y );
+              //    console.log( ' pos.z ' + dronebodys[i].body.position.z );
+              //    console.log(' id : ' + dronebodys[i].id );
+              // }
+
             this.currpos += 7;   
-         // }     
+
         }
 
 
@@ -609,135 +607,6 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
     }
 
 
-
-    game_core.prototype.client_process_net_prediction_correction = function() {
-      // No updates...
-      if (! this.server_updates.length) return
-
-      // The most recent server update
-      var latest_server_data = this.server_updates[this.server_updates.length - 1]
-
-      // Our latest server position
-      var my_server_pos = latest_server_data.vals[latest_server_data.uuid].pos
-
-      // here we handle our local input prediction,
-      // by correcting it with the server and reconciling its differences
-
-      var my_last_input_on_server = latest_server_data.vals[latest_server_data.uuid].isq
-      if (my_last_input_on_server) {
-        // The last input sequence index in my local input list
-        var lastinputseq_index = -1
-        // Find this input in the list, and store the index
-        for (var i=0, l=this.player_self.inputs.length; i<l; ++i) {
-          if (this.player_self.inputs[i].seq == my_last_input_on_server) {
-            lastinputseq_index = i
-            break
-          }
-        }
-
-        // Now we can crop the list of any updates we have already processed
-        if (lastinputseq_index != -1) {
-
-          // remove the rest of the inputs we have confirmed on the server
-          var number_to_clear = Math.abs(lastinputseq_index - (-1))
-          this.player_self.inputs.splice(0, number_to_clear)
-          // The player is now located at the new server position, authoritive server
-          this.player_self.cur_state.pos = this.pos(my_server_pos)
-          this.player_self.last_input_seq = lastinputseq_index
-          // Now we reapply all the inputs that we have locally that
-          // the server hasn't yet confirmed. This will 'keep' our position the same,
-          // but also confirm the server position at the same time.
-          //this.update_physics()
-          this.client_update_local_position()
-        }
-      }
-    }
-
-    // game_core.prototype.update_physics = function() {
-    //   if (this.client_predict) {
-    //     this.player_self.old_state.pos = this.pos(this.player_self.cur_state.pos)
-    //     var nd = this.process_input(this.player_self)
-    //     this.player_self.cur_state.pos = this.v_add(this.player_self.old_state.pos, nd)
-    //     this.player_self.state_time = this.local_time
-    //   }
-    // }
-
-    game_core.prototype.client_update_local_position = function() {
-      if (this.client_predict) {
-        // Work out the time we have since we updated the state
-        var t = (this.local_time - this.player_self.state_time) / this._pdt
-
-        // Then store the states for clarity,
-        var old_state = this.player_self.old_state.pos
-        var current_state = this.player_self.cur_state.pos
-
-        // Make sure the visual position matches the states we have stored
-        //this.player_self.pos = this.v_add(old_state, this.v_mul_scalar(this.v_sub(current_state,old_state), t))
-
-      // TODO this.player_self.pos = body.linearVelocity.addTime( old_state , 'this.timeStep or t'  );
-        this.player_self.pos = current_state
-
-        // TODO: collisions are not implemented yet !
-        // We handle collision on client if predicting.
-        //this.check_collision( this.player_self )
-      }
-    }
-
-    // game_core.prototype.client_update = function() {
-    //   // Check for client movement (if any).
-    //   // Values are transmitted to the server and also
-    //   // stored locally and get processed on next physics tick.
-
-    //   var input_coords = this.client_get_inputs()
-    //   if (input_coords) this.client_handle_input(input_coords)
-
-    //   // Set actual player positions from the server update.
-    //   this.client_update_local_position()
-
-    //   // if (this.show_3D) this.emit('render')
-
-    //   // if (this.show_2D) {
-    //   //   // need the client players current position to use
-    //   //   // when calculating relative positions on the map view.
-    //   //   var map_offset_pos = this.player_self.pos
-
-    //   //   // Clear 2D viewport (player map)
-    //   //   this.ctx.clearRect(0, 0, this.viewport.width, this.viewport.height)
-
-    //   //   for (var id in this.player_set) {
-
-    //   //     if (this.player_self.uuid != id || this.fake_lag > 0) {
-    //   //       // only showing _other_ players on the 2d map
-    //   //       // (rendering them in reverse opacity order)
-    //   //       //
-    //   //       // unless we are simulating network lag on client !!
-
-    //   //       // destination ghost?
-    //   //       if (this.show_dest_pos && !this.naive_approach) {
-    //   //         this.player_set[id].render_2d({ lerp: true, pos: map_offset_pos }, this)
-    //   //       }
-
-    //   //       // server ghost?
-    //   //       if (this.show_server_pos && ! this.naive_approach) {
-    //   //         this.player_set[id].render_2d({ ghost: true, pos: map_offset_pos }, this)
-    //   //       }
-
-    //   //       // player
-    //   //       this.player_set[id].render_2d({ player: true, pos: map_offset_pos }, this)
-
-    //   //     }
-    //   //   }
-    //   // }
-      
-    //   // Work out the fps average
-    //   this.client_refresh_fps()
-    // }
-
-
-    // game_core.prototype.client_onping = function(data) {
-    //   this.net_ping = new Date().getTime() - parseFloat(data)
-    //   this.net_latency = this.net_ping / 2
-    // }
 
     game_core.prototype.client_onnetmessage = function(data) {
       // var commands = data.split('.')
@@ -786,9 +655,6 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
 
       // need to override these values obtained from server.
       this.player_set[id].index = parseInt(idx)
-      // this.player_set[id].state = this.player_set[id].index ? 'orange' : 'lemon'
-      // this.player_set[id].color = this.player_set[id].index ? '#EE9000' : '#EEEE00'
-      // this.player_set[id].color_2d = this.player_set[id].index ? '#EE9000' : '#EEEE00'
 
       // if (id == this.player_self.uuid && this.colorcontrol != undefined) {
       //   this.colorcontrol.setValue(this.player_set[id].color)
@@ -800,10 +666,14 @@ define(['socket_io','OIMO'], function(SOCKET_IO,OIMO) {
 
       console.log('Player joined: ' + this.playercount + ' total')
     }
-    game_core.prototype.gethost = function() {
+    game_core.prototype.gcd = function( data ) {
 
-      return this.host;
-
+      if ( data == 'host' ) {
+        return this.host;
+      }
+      if ( data == 'ms1y') {
+        return this.ms1y;
+      }
     }
 
 
