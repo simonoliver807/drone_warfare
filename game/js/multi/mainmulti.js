@@ -197,19 +197,19 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 				var keys = gameinit.getObj('keys');
 		    	if( n.match(/iPhone/) ){
 		    		if(!V3D.bincam){
-		    			var pos = 0.1;
-		    			v3d.camdist = 0.09;}    
+		    			var pos = 0.1; }
+		    			// v3d.camdist = 0.09;}    
 		    		else {
-		    			var pos = 5;
-		    			v3d.camdist = 4.9;}
+		    			var pos = 13;}
+		    			//v3d.camdist = 4.9;}
 		    	}
 		    	if( n.match(/iPad/) ){
 		    		if(!V3D.bincam){
-		    			var pos = 0.1;
-		    			v3d.camdist = 0.09}    
+		    			var pos = 0.1;}
+		    			//v3d.camdist = 0.09}    
 		    		else {
-		    			var pos = 7;
-		    			v3d.camdist = 6.9;}
+		    			var pos = 16; }
+		    		//	v3d.camdist = 6.9;}
 		    	}
 		    	v3d.camera.position.z = pos;
 		    	//v3d.sight.position.z = pos * -1;

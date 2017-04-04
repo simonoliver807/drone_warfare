@@ -318,6 +318,9 @@ io.on('connection', (client) => {
    	client.on('dataload1', function( data ) {
    		gameserver.dataload1(data);
    	});
+   	client.on('levelgen', function( data ) {
+   		gameserver.levelgen( data );
+   	});
     client.on('disconnect', function( data ) {
     	console.log('disconnect');
     });
@@ -333,29 +336,6 @@ io.on('connection', (client) => {
 			gameserver.join_game( game );
 		});
  		app.locals.host = 1;
-
-		//client.emit('gamestart', { id: "58b9a0333a0d150b5274ec80", host: 0, playerid: client.id });
-
-		// for (var id in client.adapter.nsp.connected){
-		// 	var id = id;
-		// }
-
-		// var tempgame = { 
-		// player1: id,
-		// player2: client.id,
-	 // 	id: '58b9a0333a0d150b5274ec80' }
-		// var x = 1;
-		// for (var id in client.adapter.nsp.connected){
-		// 	if ( x ) {
-		// 	client.join(id);
-		// 	var tempgame = { 
-		// 	  player1: id,
-		// 	  player2: client.id,
-		// 	  id: '58b9a0333a0d150b5274ec80' }
-		// 	  x = 0;
-		// 	}
-		//  }
-		// gameserver.join_game( tempgame, client );
 		
 	}
 

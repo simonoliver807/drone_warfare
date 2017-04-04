@@ -90,7 +90,7 @@ V3D.View.prototype = {
         }
 
         if( V3D.bincam ) {
-            this.camera.position.z = 10;
+            this.camera.position.z = 20;
             // this.tmpVCPprev = new THREE.Vector3(0,0,10);
             // this.camdist = 9.9;
             // this.regulaterot = 0.1;

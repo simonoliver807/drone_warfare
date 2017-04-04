@@ -298,7 +298,7 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 
 		    					    self.notDrone = 0;
 
-				    				self.notMS = 1;
+				    				self.notMS = 0;
 
 				    				self.notpl2 = 0;
 				    				self.pl2tpl1 = 0;
@@ -310,11 +310,11 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 			    				}
 			    				if ( self.host ) {
 
-			    					self.notDrone = 0;
+			    					self.notDrone = 1;
 
-				    				self.notMS = 1;
+				    				self.notMS = 0;
 
-				    				self.notpl2 = 0;
+				    				self.notpl2 = 1;
 
 			    				}
 				    			if ( self.tarbody === 0){
