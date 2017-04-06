@@ -76,12 +76,12 @@ V3D.View.prototype = {
         
         var insideship = document.getElementById('insideship');
         // change to live
-        if (String(window.location).indexOf('outside') != -1) {
-            insideship.value = 'clicked outside';
-        }
-        else {
-            insideship.value = 'clicked inside';
-        }
+        // if (String(window.location).indexOf('outside') != -1) {
+        //     insideship.value = 'clicked outside';
+        // }
+        // else {
+        //     insideship.value = 'clicked inside';
+        // }
         if(insideship.value == 'clicked outside'){
             V3D.bincam = 1;
         }
