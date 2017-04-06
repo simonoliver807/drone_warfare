@@ -187,16 +187,16 @@ function runGame(numpl) {
 	game.style.display = 'block';
 
 	//******** minified change to live *************/////////
-	// var s = document.createElement("script");
-	// s.type = "text/javascript";
-	// s.src = "js_min/require.js";
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js_min/require.js";
 	// s.setAttribute('data-main', 'js_min/config.js')
 
 
 	//******** unminified *************/////////
-	var s = document.createElement("script");
-	s.type = "text/javascript";
-	s.src = "js/require.js";
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js/require.js";
 	// change to live multi
 	if( numpl ) {
 		s.setAttribute('data-main', 'js/configmulti.js');
@@ -269,7 +269,7 @@ function updateNav (event) {
 
 }) ();
 // change to live
-runGame(1);
+//runGame(1);
 //initgame();
 //var page = { target: { id: 'wanav' } };
 //navFunc(a);

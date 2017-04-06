@@ -1142,32 +1142,32 @@ V3D.View.prototype = {
     // change to live
     playDroneEx: function() {
 
-        // if ( soundFX) {
-        //    var dExpl = audiocntxt.createBufferSource();
-        //    dExpl.buffer = sourceObj['droneExpl'].buffer;
-        //    dExpl.connect(masterGain);
-        //     dExpl.start(0);
-        // }
+        if ( soundFX) {
+           var dExpl = audiocntxt.createBufferSource();
+           dExpl.buffer = sourceObj['droneExpl'].buffer;
+           dExpl.connect(masterGain);
+            dExpl.start(0);
+        }
 
     },
     playpdown: function() {
 
-        // if ( soundFX ) {
-        //     var pdown = audiocntxt.createBufferSource();
-        //     pdown.buffer = sourceObj['pdown'].buffer;
-        //     pdown.connect(masterGain);
-        //     pdown.start(0);
-        // }
+        if ( soundFX ) {
+            var pdown = audiocntxt.createBufferSource();
+            pdown.buffer = sourceObj['pdown'].buffer;
+            pdown.connect(masterGain);
+            pdown.start(0);
+        }
     },
     playThruster: function() {
 
-        // if ( soundFX ) {
-        //     this.thruster = audiocntxt.createBufferSource();
-        //     this.thruster.buffer = sourceObj['thruster'].buffer;
-        //     this.thruster.connect(masterGain);
-        //     this.thruster.loop = true;
-        //     this.thruster.start(0);
-        // }
+        if ( soundFX ) {
+            this.thruster = audiocntxt.createBufferSource();
+            this.thruster.buffer = sourceObj['thruster'].buffer;
+            this.thruster.connect(masterGain);
+            this.thruster.loop = true;
+            this.thruster.start(0);
+        }
     },
     updateDrones: function(dbody,drone,ms){
 

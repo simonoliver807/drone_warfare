@@ -48,6 +48,7 @@ var fs = require('fs');
     this.idexcl = [];
 
     this.levelloaded = 1;
+    this.lastlevelchange = 0;
 
     //this.pldata[ game_instance.player1 ] = new Float32Array( 8 );
 
@@ -106,8 +107,6 @@ var fs = require('fs');
 
   game_core.prototype.update_physics = function() {
 
-    var x = 1;
-
     for (var id in this.player_manifest) {
 
       if( this.player_manifest[id].inputs.length ) { 
@@ -125,9 +124,8 @@ var fs = require('fs');
 
         var pos = 0;
         var updatepos;
-        // loop through the drones lowest id first both in bodys array and dronearr
-        for( var i = 0; i < this.bodys.length; i++ ) {
-
+        var i = this.bodys.length;
+        while( i-- ) {
           try {
 
             if ( this.dronearr[id][pos] ) {
@@ -160,10 +158,7 @@ var fs = require('fs');
           }
         }
         // clear buffer
-      this.player_manifest[id].inputs = []
-
-
-      x++;
+      this.player_manifest[id].inputs = [];
 
       }
     }
@@ -187,20 +182,9 @@ var fs = require('fs');
     if ( this.firststream ) {
       //debugger
       if ( !this.levelloaded ){
-
-        // this.gi.levelGen( 1 );
-        // this.gi.populate();
-        // this.t = 1;
         this.reset_gd( 1 );
-
-        // this.levelloaded = 1;
       }
       if ( this.levelloaded == 2 ) {
-        // this.gi.levelGen( 0 );
-        // this.bodys = this.gi.populate();
-        // this.numofdrone = this.gi.gcd('nod');
-        // this.t = 1;
-        // this.levelloaded = 1;
         this.reset_gd( 0 );
       }
       if ( this.levelloaded === 1 ) {
@@ -250,6 +234,7 @@ var fs = require('fs');
           this.fsdata[ currpos +4 ]  = this.bodys[i].ld;
           currpos += 5;
       }
+
       // send first stream data to both ply
       for (var id in this.player_manifest) {
         packet[ id ] = {
@@ -265,6 +250,17 @@ var fs = require('fs');
       }
     }
   }
+  game_core.prototype.respawn = function ( id ) {
+
+        var data = 1;    
+        if( id == this.clients.player1.id ){
+          this.clients['player2'].emit('respawnply', data );
+        }
+        if( id == this.clients.player2.id ){
+          this.clients['player1'].emit('respawnply', data ); 
+        }    
+
+  }
 
   game_core.prototype.server_prepare_update = function() {
 
@@ -274,32 +270,8 @@ var fs = require('fs');
 
     var pl = 0;
 
-    // var ply1nod = 0;
-    // var ply2nod = 0;
-
-
-    // for ( var i = 0; i < this.bodys.length; i++ ) {
-
-    //   if ( this.bodys[i].ld == 1 && this.idexcl.indexOf( this.bodys[i].id ) === -1  ) {
-
-    //     ply1nod ++;
-
-    //   }
-    //   if ( this.bodys[i].ld == 2 && this.idexcl.indexOf( this.bodys[i].id ) === -1  ) {
-
-    //     ply2nod ++;
-
-    //   }  
-    // }
 
     for (var id in this.player_manifest) {
-     // var numofdrone = 0;
-
-      // for ( var i = 0; i < this.tempexpart.length; i++ ) {
-      //   if ( this.tempexpart[i].id == id ) {
-      //     numofdrone ++;
-      //   }
-      // }
 
       if ( this.player_manifest[id].name == 'player1' ) {
         this.pldata[id] = new Float32Array(  12 + ( this.dronearr[ id ].length * 4 ));
@@ -445,12 +417,6 @@ var fs = require('fs');
         t:    this.server_time,
         fps: fps
       }
-     //change to live
-     if ( x == 1) { 
-     // debugger
-     }
-     x ++;
-
       if( this.clients.player2 ) {
         if( id == this.clients.player1.id ){
           this.clients['player2'].emit('onserverupdate', this.last_state );

@@ -165,7 +165,6 @@ module.exports = function () {
                     z = 0;
                     y = 0;
                     w = h = d = 30 ;
-
                 var spheres = [];
                 var ms = [];
                 numofdrone = 0;
@@ -193,7 +192,7 @@ module.exports = function () {
                     }
                     if(obj == 'drone') {
                         numofdrone= this.levelobj[obj];
-                        if ( x982y == 1) { numofdrone --; }
+                       // if ( x982y == 1) { numofdrone --; }
                     }
                 }
                 var i = bodys.length;
@@ -252,24 +251,24 @@ module.exports = function () {
                     //     }   
                     // }
                     numofdrone -= numofdroneleft;
-                    var i = bodys.length;
-                    while(i--){                    
-                        if( bodys[i].name == 'drone' ) {
-                            // var pos = this.dronePos(ms[0]);
-                            // bodys[i].body.position.set(pos[0]/100,pos[1]/100,pos[2]/100);
+                    // var i = bodys.length;
+                    // while(i--){                    
+                    //     if( bodys[i].name == 'drone' ) {
+                    //         // var pos = this.dronePos(ms[0]);
+                    //         // bodys[i].body.position.set(pos[0]/100,pos[1]/100,pos[2]/100);
 
-                            bodys[i].ld = 0;
-                            bodys[i].nrtm = 0;
+                    //         bodys[i].ld = 0;
+                    //         bodys[i].nrtm = 0;
 
-                            // if ( !numofld ) {
-                            //     bodys[i].ld = 0;
-                            //     bodys[i].nrtm = 0;
-                            //  }
-                            //  if ( bodys[i].ld && !bodys[i].nrtm ) { bodys[i].ld = 0; }
-                            //  if ( bodys[i].ld && bodys[i].nrtm && numofld != 0 ) { numofld --; }
-                            //  bodys.push( bodys.splice(i,1)[0] );
-                        }
-                    }
+                    //         // if ( !numofld ) {
+                    //         //     bodys[i].ld = 0;
+                    //         //     bodys[i].nrtm = 0;
+                    //         //  }
+                    //         //  if ( bodys[i].ld && !bodys[i].nrtm ) { bodys[i].ld = 0; }
+                    //         //  if ( bodys[i].ld && bodys[i].nrtm && numofld != 0 ) { numofld --; }
+                    //         //  bodys.push( bodys.splice(i,1)[0] );
+                    //     }
+                    // }
                 }
                 var ship1_2 = 1;
                 for(var i=0;i<numofdrone;i++){
@@ -318,7 +317,7 @@ module.exports = function () {
                 }
                 var droneid = 1;
                 var ship1_2 = 1;
-                numofld = Math.round(numofdrone / (numofms * 4));
+               // numofld = Math.round(numofdrone / (numofms * 4));
                 var i = bodys.length;
                 while ( i-- ) {
 
@@ -342,14 +341,11 @@ module.exports = function () {
                             }
                             numofld-- ;
                         }
-
+                        bodys.push(bodys.splice(i,1)[0]);
+                        droneid++ ;
                     }
-                    droneid++ ;
 
                 }
-
-     
-
                 return bodys;
 
             },

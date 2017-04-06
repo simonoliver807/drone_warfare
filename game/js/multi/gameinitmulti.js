@@ -102,9 +102,7 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
     var self;
 
     // change to live
-    var consolecount = 0;
-    // 250 for health maybe to high
-    var health = 90; 
+    var health = 90;
     
     var dronelaunch = 0;
     var level1imgCnt = 0;
@@ -124,7 +122,7 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
 
 
     // change to live 
-    var changelevel;
+    // var changelevel;
 
 
 
@@ -149,7 +147,7 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
 
 
                 // change to live
-               perfcont = document.getElementById('perf');
+               // perfcont = document.getElementById('perf');
 
 
                 perf = 0;
@@ -158,7 +156,7 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                 self = this;
 
                 // change to live
-                changelevel = 2;
+                // changelevel = 2;
 
             },
 
@@ -203,6 +201,17 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                 //     endsequence = 100;
                 //     changelevel-- ;
                 // }
+                // if ( gamecore.startgame === 2 ) {
+                //     self.handlerespawn();
+                // }
+
+
+                    if ( gamecore.respawn && health > 0 ) {
+                        gamecore.respawn = 0;
+                        health = 0;
+                        self.handlerespawn();
+                        gamecore.respawning = 1;
+                    }
                    
                     // need to set gamecore.startgame = 2 at start of each level
                     if ( gamecore.startgame === 2 ) {
@@ -303,13 +312,13 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                                                     bodys[1].body.position.set(0,0,0);
                                                     bodys[1].body.sleepPosition.set(0,0,0);
                                                     meshs[1].position.set( 0, 0, 0 );
-
                                                     v3d.scene.children[i].children[matpos].material.map = texture;
                                                     v3d.scene.children[i].children[matpos].material.needsUpdate = true;
                                                 }
                                                 else {
                                                     shp2.children[matpos].material.map = texture;
                                                     shp2.children[matpos].material.needsUpdate = true;
+
                                                 }
                                             }
                                             if(bodys[b].name == 'ms1' || bodys[b].name == 'ms2'){
@@ -499,15 +508,12 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                                 //console.log('health' + health );
                                 health -= 1;
                                 if(health === 0){ 
-                                    endsequence = -200; 
+                                    gamecore.respawning = 1;
+                                    self.handlerespawn();
+                                    gamecore.levelGen(x982y);
+                                    // change to live
+                                    break;
 
-                                        document.getElementById('respawnImg').style.display = 'block';
-                                        if( V3D.ms1_1arrpos === 99 && endsequence < 0 ){
-                                            if ( V3D.ms2_1arrpos === 0 || V3D.ms2_1arrpos === 99) {
-                                                var currentLevel = x982y + 1;
-                                                document.getElementById('level'+currentLevel+'Img').style.display = 'none';
-                                            }
-                                        }
                                 }
                             } 
                             //  if((n1==name2 && n2==name5) || (n2==name2 && n1==name5)){
@@ -544,13 +550,10 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                     }
                     
                     // change to live
-                     perf = world.performance.show();
-                     perfcont.innerHTML = perf + 'player 1 <br/> x: ' + bodys[0].body.position.x.toFixed(2) + ', y: ' + bodys[0].body.position.y.toFixed(2) + ', z: ' + bodys[0].body.position.z.toFixed(2);
-                     perfcont.innerHTML += '<br/> player 2 <br/> x: ' + bodys[1].body.position.x.toFixed(2) + ', y: ' + bodys[1].body.position.y.toFixed(2) + ', z: ' + bodys[1].body.position.z.toFixed(2);
+                     // perf = world.performance.show();
+                     // perfcont.innerHTML = perf + 'player 1 <br/> x: ' + bodys[0].body.position.x.toFixed(2) + ', y: ' + bodys[0].body.position.y.toFixed(2) + ', z: ' + bodys[0].body.position.z.toFixed(2);
+                     // perfcont.innerHTML += '<br/> player 2 <br/> x: ' + bodys[1].body.position.x.toFixed(2) + ', y: ' + bodys[1].body.position.y.toFixed(2) + ', z: ' + bodys[1].body.position.z.toFixed(2);
                   
-
-                   // change to live
-                   consolecount ++;
 
                    var mesh, body;
 
@@ -868,6 +871,18 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                 requestAnimationFrame( self.threejsrender );
 
             },
+            handlerespawn: function() {
+
+                endsequence = -200; 
+                document.getElementById('respawnImg').style.display = 'block';
+                if( V3D.ms1_1arrpos === 99 && endsequence < 0 ){
+                    if ( V3D.ms2_1arrpos === 0 || V3D.ms2_1arrpos === 99) {
+                        var currentLevel = x982y + 1;
+                        document.getElementById('level'+currentLevel+'Img').style.display = 'none';
+                    }
+                }
+
+            },
             populate: function(data) {
 
                 /////////////*********************////////////////
@@ -908,7 +923,8 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                    v3d.addPlane( 'planetGlow' );
 
                 }
-                if( !startlevel && V3D.bincam ) {
+                // if( !startlevel && V3D.bincam ) {
+                if ( !startlevel ) {
                     V3D.startRender += 1;
                 }
                 // ms is only new before they are add to the global ms list
@@ -1328,7 +1344,10 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
             },
             levelGen: function( restart ) {
                 restart ? x982y = 1 : x982y += 1 ;
-                gamecore.levelGen(x982y);
+                if ( !gamecore.respawning ){
+                    gamecore.levelGen(x982y);
+                }
+                gamecore.respawning = 0;
                 V3D.x982y = x982y;
                 for(var i = 0; i < v3d.scene.children.length; i++){
                     if( v3d.scene.children[i].userData.msname ){
@@ -1406,7 +1425,6 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                 dronelaunchTime -= 10;
                 tmulti1 = 1;
                 tmulti2 = 1;
-
 
 
                 this.lgd(x982y);

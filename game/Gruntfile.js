@@ -22,10 +22,10 @@ module.exports = function(grunt) {
           compile: {
             options: {
               baseUrl: '/Users/simonoliver/Documents/dronewar1/drone_warfare/game/js',
-              mainConfigFile: '/Users/simonoliver/Documents/dronewar1/drone_warfare/game/js/config.js',
+              mainConfigFile: '/Users/simonoliver/Documents/dronewar1/drone_warfare/game/js/configmulti.js',
               modules:[
                 {
-                  name: 'config'
+                  name: 'configmulti'
                 }
               ],
               dir: 'target/',
@@ -36,7 +36,6 @@ module.exports = function(grunt) {
             }
           }
         }
-
   });
 
   grunt.event.on('watch', function(action, filepath, target) {
