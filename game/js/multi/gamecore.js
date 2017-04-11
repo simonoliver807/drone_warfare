@@ -37,7 +37,6 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
 
   function game_core() { 
 
-          // ********** mulit   change to live
       this.socket = SOCKET_IO.connect(url);
       this.startgame = 2;
       this.player_self = new Player();    

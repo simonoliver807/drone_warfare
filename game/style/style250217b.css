@@ -207,11 +207,6 @@ optgroup {
 }
 
 
-#perf {
-
-	color: white;
-    font-size: 11px;
-}
 
 #accel {
 	background-color:#2646ea;
@@ -227,7 +222,45 @@ optgroup {
 	position: absolute;
 	width:10%;
 }
-
+#arrowmargindown {
+	position: absolute;
+}
+#arrowmarginup {
+	position: absolute;
+}
+.badge {
+	  border-radius: .25rem;
+	color: #fff;
+	cursor: pointer;
+    display: inline-block;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    padding: .6em .8em;
+    pointer-events: none;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+}
+.badge-default {
+    background-color: #636c72;
+    transition: 0.25s background-color ease-out;
+}
+.badge-color {
+    background-color: #4CAF50;
+}
+#cl {
+	position: relative;
+}
+#cup {
+	position: relative;	
+}
+#cr {
+	position: relative;
+}
+#cd {
+	position: relative;
+}
 #container {
 	/*change to live*/
 	cursor: none;
@@ -264,7 +297,7 @@ optgroup {
     z-index: 2;
 }
 .mobconcaret {
-	font-size: 30px;
+	font-size: 20px;
 }
 #game-content{
 	display: none;
@@ -279,6 +312,179 @@ optgroup {
     position: relative;
     width: 50%;
 
+}
+#addforce {
+	display: none;
+	height: 35%;
+	width: 100%;
+}
+#addforcebut {
+	background-color: #FFFF00;
+    border-radius: 100%;
+    height: 50%;
+    width: 50%;
+    left: 50%;
+    top: 50%;
+    position: relative;
+    transform: translate(-50%, -50%);
+}
+.justify-content-between {
+    -webkit-box-pack: justify!important;
+    -webkit-justify-content: space-between!important;
+    -ms-flex-pack: justify!important;
+    justify-content: space-between!important;
+}
+#level1Img {
+	display: none;
+}
+#level2Img {
+	display: none;
+}
+#level3Img {
+	display: none;
+}
+#level4Img {
+	display: none;
+}
+#level5Img {
+	display: none;
+}
+#levelChng {
+	position: absolute;
+	margin-left: 0;
+	top: 50%;
+	width: 100%;
+}
+.levelChngImg {
+	margin: 0 auto;
+}
+.lform {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 45px 45px 0 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.lform input {
+  margin: 0 0 15px;
+  padding: 15px;
+}
+.lform button {
+  text-transform: uppercase;
+  outline: 0;
+  background: #4CAF50;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+.lform button:hover,.lform button:active,.lform button:focus {
+  background: #43A047;
+}
+.lform .hideemail {
+	display: block;
+	height: 0px;
+	margin: 0px;
+	opacity: 0;
+	padding: 0px;
+	transition: 0.25s padding ease-out, 0.25s margin ease-out, opacity ease-out 0.25s, visibility ease-out 0.25s ;
+	visibility: hidden;
+}
+.lform .showemail {
+	height: 41px;
+	margin: 0 0 15px;
+	opacity: 1;
+	padding: 15px;
+	transition:  padding 0.25s ease-out, margin ease-out 0.25s, opacity ease-out 0.25s, visibility ease-out 0.25s ;
+	visibility: visible;
+}
+.lform #message {
+  margin: 15px 0 0;
+  color: #b3b3b3;
+  font-size: 12px;
+}
+.lform #message a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+.list-group {
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 14px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+.list-group-item:first-child {
+    border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+}
+.list-group-item:last-child {
+    margin-bottom: 28px;
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+}
+.list-group-item {
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: .75rem 1.25rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.125);
+}
+.list-group-item:hover {
+	background-color: #007acc;
+}
+#loadingScreen {
+	background-color: #000000;
+	display: block;
+	height: 100%;
+	position: absolute;
+	width: 100%;
+	z-index: 1;
+}
+#loadingScreen #lscont {
+	color: #ffffff;
+	left: 50%;
+	margin: 0;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#login-page {
+  display: none;
+  right: 10%;
+  margin: auto;
+  position: absolute;
+  top: 6%;
+  width: 35%;
+}
+.ls {
+	display: inline-block;
 }
 .mapcircle {
 	border-radius: 100%;
@@ -306,73 +512,6 @@ optgroup {
 	width: 10%;
 
 }
-/*accellerator controls*/
-#tapaccel {
-	bottom: 0;
-	right: 0;
-	height:20%;
-	margin:3%;
-	position: absolute;
-	width:5%;
-}
-#addforce {
-	display: none;
-	height: 35%;
-	width: 100%;
-}
-#addforcebut {
-	background-color: #FFFF00;
-    border-radius: 100%;
-    height: 50%;
-    width: 50%;
-    left: 50%;
-    top: 50%;
-    position: relative;
-    transform: translate(-50%, -50%);
-}
-#loadingScreen {
-	background-color: #000000;
-	display: block;
-	height: 100%;
-	position: absolute;
-	width: 100%;
-	z-index: 1;
-}
-#loadingScreen #lscont {
-	color: #ffffff;
-	left: 50%;
-	margin: 0;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-.ls {
-	display: inline-block;
-}
-#level1Img {
-	display: none;
-}
-#level2Img {
-	display: none;
-}
-#level3Img {
-	display: none;
-}
-#level4Img {
-	display: none;
-}
-#level5Img {
-	display: none;
-}
-#levelChng {
-	position: absolute;
-	margin-left: 0;
-	top: 50%;
-	width: 100%;
-}
-.levelChngImg {
-	margin: 0 auto;
-}
 .menu-toggle.toggled-on {
     background-color: #1a1a1a;
     border-color: #1a1a1a;
@@ -394,10 +533,6 @@ optgroup {
     position: relative;
     transform: translate(-50%, -50%);
 }
-#spacertapaccel {
-	height: 30%;
-	width: 100%;
-}
 #mobcon {
 	bottom: 5%;
     background-color: #ffffff;
@@ -408,23 +543,6 @@ optgroup {
     width: 13%;
     border-radius: 18px;
 }
-#respawnImg {
-	display: none;
-}
-#sndfxbutton {
-	background: #00b300;
-	outline: none;
-	width: 76px; 
-}
-#sndfxbutton:hover {
-	background: #007acc;
-	width: 76px; 
-}
-#web_app {
-	display: none;
-}
-
-
  /* ios pop up */
  #popup {
   background:rgba(255,255,255,0.85);
@@ -443,19 +561,22 @@ optgroup {
   margin: 20px 10px 0 10px;
   padding: 0;
 }
-
+#perf {
+    color: white;
+	font-size: 11px;
+}
 #popup p {
   margin: 15px;
   padding: 0;
 }
 
 #popup .button-holder a {
-  color: #007AFF;
-  text-decoration: none;
-  line-height:45px;
-  font-weight:bold;
-  display: block;
-  border-top: 1px solid #BABABA;
+	color: #007AFF;
+	text-decoration: none;
+	line-height:45px;
+	font-weight:bold;
+	display: block;
+	border-top: 1px solid #BABABA;
 }
 
 #popup .two-button a{
@@ -467,70 +588,79 @@ optgroup {
 #popup .two-button a:first-child {
   border-right: 1px solid #BABABA
 }
- /*ipdad landscape*/
-@media only screen 
-and (min-device-width : 768px) 
-and (max-device-width : 1024px) 
-and (orientation : landscape) { 
-
-	#arrowmarginup {
-		margin-left: 18px;
-	    margin-top: -8px;
-	    position: absolute;
-	}
-	#arrowmargindown {
-		margin-left: 18px;
-	    margin-top: -6px;
-	    position: absolute;
-	}
-	#cl {
-    	position: relative;
-    	top: 35%;
-	}
-	#cup {
-		left: 35%;
-    	position: relative;	
-	}
-	#cr {
-		left: 69%;
-    	position: relative;
-    	top: 35%;
-	}
-	#cd {
-		left: 14%;
-    	position: relative;
-    	top: 73%;
-	}
-
+#respawnImg {
+	display: none;
+}
+#respawntxt {
+	color: #ffffff;
+	font-size: 115%;
+	height: 20px;
+	margin: 2% 2% 0 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 150px;
+}
+#settings {
+	display: none;
+}
+.settingsform button {
+  text-transform: uppercase;
+  outline: 0;
+  background: #4CAF50;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+.settingsform button:hover,.settingsform button:active,.settingsform button:focus {
+  background: #43A047;
+}
+#snav {
+	display: none;
+}
+#sndfxbutton {
+	background: #4CAF50;
+	outline: none;
+	width: 76px; 
+}
+#sndfxbutton:hover {
+	background: #43A047;
+}
+#spacertapaccel {
+	height: 30%;
+	width: 100%;
+}
+/*accellerator controls*/
+#tapaccel {
+	bottom: 0;
+	right: 0;
+	height:20%;
+	margin:3%;
+	position: absolute;
+	width:5%;
+}
+#valmess {
+	color: #ff0000;
+	font-size: 12px;
 
 }
-/*ipad portrait*/
-@media only screen 
-and (min-device-width : 768px) 
-and (max-device-width : 1024px) 
-and (orientation : portrait) { 
-
-	#addforcebut {
-		width: 40px;
-	}
-	#minusforcebut {
-		width: 40px;
-	}
-	#arrowmarginup {
-		margin-left: 13px;
-	    margin-top: -8px;
-	    position: absolute;
-	}
-	#arrowmargindown {
-		margin-left: 13px;
-	    margin-top: -6px;
-	    position: absolute;
-	}
-
-
+#web_app {
+	display: none;
 }
- /*iphone 6 plus*/
-@media only screen 
+
+ @media (max-width: 992px) {
+  	#login-page {
+   		width: 40%;
+   	}
+}
+
+/*iphone 6 plus*/
+ @media only screen 
 and (min-device-width : 414px) 
 and (max-device-width : 736px) 
 and (orientation : landscape) {
@@ -551,22 +681,18 @@ and (orientation : landscape) {
 	}
 	#cl {
 		left: 3%;
-    	position: relative;
     	top: 32%;
 	}
 	#cup {
 		left: 35%;
-    	position: relative;	
     	top: -6%;
 	}
 	#cr {
 		left: 69%;
-    	position: relative;
     	top: 32%;
 	}
 	#cd {
 		left: 14%;
-    	position: relative;
     	top: 66%;
 	}
 	#minusforcebut {
@@ -580,165 +706,8 @@ and (orientation : landscape) {
 }
 
 
- /*iphone 6 landscape*/
-@media only screen 
-and (min-device-width : 375px) 
-and (max-device-width : 667px)
-and (orientation : landscape) { 
-
-	#addforce {
-		display: none;
-    	height: 35%;
-    	width: 100%;
-	}
-	#addforcebut {
-		background-color: #FFFF00;
-		border-radius: 100%;
-		height: 40%;
-		width: 35%;
-		left: 50%;
-		top: 50%;
-		position: relative;
-		transform: translate(-50%, -50%);
-	}
-	#arrowmarginup {
-		margin-left: 26px;
-	    margin-top: -3px;
-	    position: absolute;
-	}
-	#arrowmargindown {
-		margin-left: 26px;
-	    margin-top: -1px;
-	    position: absolute;
-	}
-	#cr {
-		left: 66%;
-    	position: relative;
-    	top: 32%;
-	}
-	#cd {
-		left: 12%;
-    	position: relative;
-    	top: 63%;
-	}
-	#minusforcebut {
-		background-color: #00FF00;
-		border-radius: 100%;
-		height: 40%;
-		width: 35%;
-		left: 50%;
-		top: 50%;
-		position: relative;
-		transform: translate(-50%, -50%);
-	}
-	#spacertapaccel {
-    	height: 18%;
-    	width: 100%;
-	}
-	#tapaccel {
-		bottom: 0;
-	    height: 41%;
-	    margin: 3% 3% 0 3%;
-	    position: absolute;
-	    right: 0;
-	    width: 10%;
-	}
-}
-/*iphone 6 portrait*/
-@media only screen 
-and (min-device-width : 375px) 
-and (max-device-width : 667px)
-and (orientation : portrait) { 
-
-	#addforcebut {
-		height: 50%;
-	}
-	#minusforcebut {
-		height: 50%;
-	}
-	#arrowmarginup {
-		margin-left: 2px;
-	    margin-top: -8px;
-	    position: absolute;
-	}
-	#arrowmargindown {
-		margin-left: 2px;
-	    margin-top: -6px;
-	    position: absolute;
-	}
-	#tapaccel {
-		width: 10%;
-	}
-
-}
-/*iphone 5 landscape*/
-@media only screen 
-and (min-device-width : 320px) 
-and (max-device-width : 568px) 
-and (orientation : landscape) {
-
-	#arrowmarginup {
-		margin-left: 21px;
-	    margin-top: -3px;
-	    position: absolute;
-	}
-	#arrowmargindown {
-		margin-left: 21px;
-	    margin-top: -2px;
-	    position: absolute;
-	}
-	#cl {
-		left: 3%;
-    	position: relative;
-    	top: 24%;
-	}
-	#cup {
-		left: 32%;
-    	position: relative;	
-    	top: -10%;
-	}
-	#cr {
-		left: 61%;
-    	position: relative;
-    	top: 24%;
-	}
-	#cd {
-		left: 6%;
-    	position: relative;
-    	top: 57%;
-	}
-}
-/*iphone 5  portrait */
-@media only screen 
-and (min-device-width : 320px) 
-and (max-device-width : 568px) 
-and (orientation : portrait) {
 
 
-/*
-	#addforcebut {
-		height: 50%;
-		width: 85%;
-	}
-	#minusforcebut {
-		height: 50%;
-		width: 85%;
-	}*/
-	#arrowmarginup {
-		margin-left: 11px;
-	    margin-top: -7px;
-	    position: absolute;
-	}
-	#arrowmargindown {
-		margin-left: 11px;
-	    margin-top: -7px;
-	    position: absolute;
-	}
-	#tapaccel {
-		width: 12%;
-	}
-
-}
 /*iphone 4s landscape*/
 @media only screen 
 and (min-device-width : 320px) 
@@ -818,7 +787,6 @@ and (orientation: landscape) {
 
 
 }
-
 
 
 

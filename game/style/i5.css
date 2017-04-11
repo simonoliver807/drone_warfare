@@ -1,0 +1,91 @@
+
+
+/*iphone 5 landscape*/
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 568px) 
+and (orientation : landscape) {
+
+	#addforcebut {
+    	height: 78%;
+    	width: 75%;
+	}
+	#arrowmarginup {
+		margin-left: 23%;
+    	margin-top: -14px;
+	}
+	#arrowmargindown {
+		margin-left: 23%;
+    	margin-top: -45%;
+	}
+	#cl {
+		left: 3%;
+    	top: 24%;
+	}
+	#cup {
+		left: 32%;
+    	top: -15%;
+	}
+	#cr {
+		left: 61%;
+    	top: 24%;
+	}
+	#cd {
+		left: 6%;
+    	top: 57%;
+	}
+	#minusforcebut {
+    	height: 78%;
+    	width: 75%;
+	}
+}
+
+/*iphone 5  portrait */
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 568px) 
+and (orientation : portrait) {
+
+
+
+	#addforcebut {
+		height: 52%;
+		width: 51%;
+	}
+	#minusforcebut {
+		height: 52%;
+		width: 51%;
+	}
+	#arrowmarginup {
+		margin-left: 31%;
+	    margin-top: -19%;
+	}
+	#arrowmargindown {
+		margin-left: 30%;
+    	margin-top: -21%;
+	}
+	#cl {
+		left: 3%;
+    	top: 35%;
+	}
+	#cup {
+		left: 22%;
+    	top: -10%;
+	}
+	#cr {
+		left: 37%;
+    	top: 35%;
+	}
+	#cd {
+		left: -24%; 
+    	top: 76%;
+	}
+	#login-page {
+   		width: 80%;
+   		top: 11%;
+   	}
+	#tapaccel {
+		width: 12%;
+	}
+
+}

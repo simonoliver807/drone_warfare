@@ -803,7 +803,7 @@ a:active {
 	position: relative;
 }
 
-.main-navigation a {
+.main-navigation a, .main-navigation div {
 	color: #1a1a1a;
 	display: block;
 	line-height: 1.3125;
@@ -2981,7 +2981,7 @@ p > video {
 		float: left;
 	}
 
-	.main-navigation a {
+	.main-navigation a, .main-navigation div {
 		outline-offset: -8px;
 		padding: 0.65625em 0.875em;
 		white-space: nowrap;

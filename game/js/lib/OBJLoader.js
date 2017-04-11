@@ -739,7 +739,7 @@
 			}
 			var numimg = document.getElementById('numImg');
 			var num = parseInt(numimg.innerHTML) + 1;
-			numimg.innerHTML = num + ' object ' + object.name ;
+			numimg.innerHTML = num + ' object ';
 			console.timeEnd( 'OBJLoader' );
 
 			return container;

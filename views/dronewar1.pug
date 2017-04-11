@@ -3,7 +3,7 @@
     main#main.site-main(role='main')
       article#post-171.post-171.page.type-page.status-publish.hentry
         header.entry-header
-          h1.entry-title Drone War 1
+          h1#pagetitle.entry-title Drone War 1
         // .entry-header
         .entry-content
           .fw-page-builder-content
@@ -35,22 +35,22 @@
                         input(type='hidden', name='fw_ext_forms_form_id', value='6f91151150af7bca8c532047defd694a')
                         .wrap-forms
                           .fw-row
-                          .fw-row
+                          .fw-row#inoutss
                             .fw-col-xs-12.fw-col-sm-6.form-builder-item
                               .field-radio.input-styled
                                 label Select to play inside/outside space fighter
                                 .custom-radio.field-columns-1
                                   .options
-                                    input#rand-1(type='radio', name='radio_3698130', value='clicked inside')
+                                    input#rand-1(type='radio', name='radio_3698130', value='clicked inside', onclick='changeInOut( 0 )')
                                     label(for='rand-1') clicked inside
                                   .options
-                                    input#rand-2(type='radio', name='radio_3698130', value='clicked outside')
+                                    input#rand-2(type='radio', name='radio_3698130', value='clicked outside' onclick='changeInOut( 1 )')
                                     label(for='rand-2') clicked outside
                           .fw-row
                             .fw-col-xs-12
                               a#startGame(target='_self')
                                 img(src='images/websiteImg/controls.png', alt='images/websiteImg/controls.png')
-                          .fw-row
+                          .fw-row#usercont
                             .fw-col-xs-12
                               p 
                               p Mac/Pc controls :-
@@ -61,7 +61,7 @@
                                 li Mouse control sight
                                 li Press f to go full screen
                                 li Esc to pause
-                          .fw-row
+                          .fw-row#sndfxbutrow
                             .fw-col-xs-12
                               h3 Mute soud fx
                               input#sndfxbutton(type="button" value="on")

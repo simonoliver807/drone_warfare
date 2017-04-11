@@ -208,6 +208,9 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
 
                     if ( gamecore.respawn && health > 0 ) {
                         gamecore.respawn = 0;
+                        var msg;
+                        host ? msg = 'player 2 is toast' : msg = 'player 1 is toast'; 
+                        document.getElementById('respawntxt').innerHTML = msg;
                         health = 0;
                         self.handlerespawn();
                         gamecore.respawning = 1;
@@ -353,7 +356,6 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                                                 //         v3d.scene.children[n].quaternion.set( q.x,q.y,q.z,q.w); 
                                                 //     }
                                                 // }
-
 
 
                                                 if( bodys[b].name == 'ms1'){
@@ -511,8 +513,6 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                                     gamecore.respawning = 1;
                                     self.handlerespawn();
                                     gamecore.levelGen(x982y);
-                                    // change to live
-                                    break;
 
                                 }
                             } 
@@ -765,21 +765,21 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                      ///////////////////////
 
                     if (endsequence >= 0) {
-                        if(keys[38] && !keys[32]){
+                        if(keys[ settingsarr[1] ] && !keys[ settingsarr[0] ]){
                             v3d.addForce();
                         }
-                        if(keys[40] && !keys[32]){
+                        if(keys[ settingsarr[2] ] && !keys[ settingsarr[0] ]){
                             v3d.minusForce();
                         }
                         //if(keys[32] || false){
-                        if(keys[32] && !keys[38] && !keys[40]){
+                        if(keys[ settingsarr[0] ] && !keys[ settingsarr[1] ] && !keys[ settingsarr[2] ]){
                             v3d.phaser();
                         }
-                        if(keys[32] && keys[38]){
+                        if(keys[ settingsarr[0] ] && keys[ settingsarr[1] ]){
                             v3d.addForce();
                             v3d.phaser();
                         }
-                        if(keys[32] && keys[40]){
+                        if(keys[ settingsarr[0] ] && keys[ settingsarr[2] ]){
                             v3d.minusForce();
                             v3d.phaser();
                         }
@@ -1431,6 +1431,7 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                 endsequence = 100;
                 if ( restart ) {
                     document.getElementById('respawnImg').style.display = 'none';
+                    document.getElementById('respawntxt').innerHTML = '';
                     v3d.sight.material.transparent = false;
                     v3d.sight.material.opacity = 1;
                     dronelaunchTime = 60;

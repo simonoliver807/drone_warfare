@@ -686,21 +686,21 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
                      ///////////////////////
 
                     if (endsequence >= 0) {
-                        if(keys[38] && !keys[32]){
+                        if(keys[ settingsarr[1] ] && !keys[ settingsarr[0] ]){
                             v3d.addForce();
                         }
-                        if(keys[40] && !keys[32]){
+                        if(keys[ settingsarr[2] ] && !keys[ settingsarr[0] ]){
                             v3d.minusForce();
                         }
                         //if(keys[32] || false){
-                        if(keys[32] && !keys[38] && !keys[40]){
+                        if(keys[ settingsarr[0] ] && !keys[ settingsarr[1] ] && !keys[ settingsarr[2] ]){
                             v3d.phaser();
                         }
-                        if(keys[32] && keys[38]){
+                        if(keys[ settingsarr[0] ] && keys[ settingsarr[1] ]){
                             v3d.addForce();
                             v3d.phaser();
                         }
-                        if(keys[32] && keys[40]){
+                        if(keys[ settingsarr[0] ] && keys[ settingsarr[2] ]){
                             v3d.minusForce();
                             v3d.phaser();
                         }
@@ -722,7 +722,7 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
                                     drone.userData.ld = 1;
                                 }
                                 // change to live
-                                //v3d.updateDrones( dbody, drone, dbody.ms );
+                                v3d.updateDrones( dbody, drone, dbody.ms );
                             }
                             if ( !drone.userData.ld && !drone.userData.rtm) {
                                 pddist.sub(containerMesh.position,meshs[i].position);

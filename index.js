@@ -10,6 +10,7 @@ var reload = require('reload')
 var bodyParser = require('body-parser')
 var fs = require('fs')
 var mc = require('mongodb').MongoClient
+var ObjectId = require('mongodb').ObjectId
 var mongoose = require('mongoose')
 var uuid = require('node-uuid')
 var dateformat = require('dateformat')
@@ -48,10 +49,11 @@ var gameserver;
 // });
 // change to live
 var dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
-// var dburl = "mongodb://localhost:27017/test";
+//var dburl = "mongodb://localhost:27017/test";
 
 mongoose.connect(dburl);
 mongoose.Promise = global.Promise;
+var Schema = mongoose.Schema;
 
 
 // mongo ds145848.mlab.com:45848/gamedata -u nabooleo -p ax31zcm
@@ -116,30 +118,34 @@ app.get('/', function (req, res) {
 		    		if (err) throw err
 		    		app.locals.comments = result;
 		    		app.locals.cd = cp.gcd();
-		    		res.render( 'index', { 
-		    			title: 'Drone War 1',
-		    			laservs: app.locals.shaders.laservs,
-	        			laserfs: app.locals.shaders.laserfs,
-	        			planet1vs: app.locals.shaders.planet1vs,
-	        			planet1fs: app.locals.shaders.planet1fs,
-	        			planetGlowvs: app.locals.shaders.planetGlowvs,
-	        			planetGlowfs: app.locals.shaders.planetGlowfs,
-	        			starvs: app.locals.shaders.starvs,
-	        			starfs: app.locals.shaders.starfs,
-	        		})
-			  	  })
-				  db.close();
+		    		db.collection('players').findOne( { ip: req.ip }, function (err, result) {
+		    			var user = 0;
+		    			if ( result ) {  user = '{ "id": "' + result._id.toString() + '", "username": "' + result.username + '", "password": "' + result.password + '", "settings":"' + result.settings +'"}' }
+
+			    		res.render( 'index', { 
+			    			title: 'Drone War 1',
+			    			laservs: app.locals.shaders.laservs,
+		        			laserfs: app.locals.shaders.laserfs,
+		        			planet1vs: app.locals.shaders.planet1vs,
+		        			planet1fs: app.locals.shaders.planet1fs,
+		        			planetGlowvs: app.locals.shaders.planetGlowvs,
+		        			planetGlowfs: app.locals.shaders.planetGlowfs,
+		        			starvs: app.locals.shaders.starvs,
+		        			starfs: app.locals.shaders.starfs,
+		        			user: user
+		        		})
+				  	  })
+					  db.close();
+					});
 		    }
 		});
 
 })
 
-
 app.locals.levels = 0;
 app.post('/', function (req, res) {
 	//console.log('deal with post')
 	//console.log(req.body);
-	var now = new Date();
 	if(req.body.name && req.body.comment){
 		mc.connect(dburl, function(err, db) {
 			if(!err) {
@@ -180,6 +186,100 @@ app.post('/', function (req, res) {
 			}
 		})
 	}
+	if ( req.body.username && req.body.password && !req.body.email ) {
+
+		mc.connect(dburl, function(err, db) {
+			if ( err ) throw err
+			db.collection('players').findOne( { 
+				username: req.body.username,
+				password: req.body.password, }, 
+				function (err, result) {
+
+			    	if (err) throw err
+			    	if ( result ) {
+				    	db.collection('players').update(
+				    		{ _id: result.id },
+				    		{ $set:
+				    			{ last_login: new Date() }
+				    		}				    		
+				    	)
+				    	res.json( { id: result._id.toString(), username: req.body.username, password: req.body.password, settings: result.settings  } );
+				    }
+				    else {
+				    	res.send(' login details not found ')
+				    }
+					db.close();
+				}
+			);
+		});	
+
+	}
+	if ( req.body.username && req.body.password && req.body.email ) {
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if ( req.body.email.match( re ) ) {
+			mc.connect(dburl, function(err, db) {
+				if ( err ) throw err
+				db.collection('players').findOne(
+
+					{ $or: [ { username: req.body.username}, { email: req.body.email } ] },
+					function( err, plyresult) {
+
+						if ( !plyresult ) {
+							db.collection('players').insertOne({
+								username: req.body.username,
+								password: req.body.password,
+								email: req.body.email,
+								settings: req.body.settings,
+								ip: '',
+								last_login: new Date() }, 
+								function ( err, result ){
+									res.json( { id: result.insertedId.toString(), username: req.body.username, password: req.body.password, settings: req.body.settings  } );
+									db.close();
+								}
+							);
+						}
+						else {
+							var sent = 0;
+							if ( plyresult.username == req.body.username && plyresult.email == req.body.email ) { sent = 1; res.send(' The username and email address have already been used')};
+							if ( plyresult.email == req.body.email && !sent ) { sent = 1; res.send('The email address has already been used')};
+							if ( plyresult.username == req.body.username && !sent) { res.send(' The username has already been used')};
+						}
+					}
+				);
+
+			});
+		}
+		else {
+			res.send(' email is invalid ');
+		}
+	}
+	if ( req.body.id) {
+		mc.connect(dburl, function(err, db) {
+			if ( err ) throw err
+			if( req.body.settings.slice(-1) == 1 ) {
+				var ip = req.ip
+			}
+			else {
+				var ip = ''
+			}
+			db.collection('players').update( 
+				{ _id: ObjectId( req.body.id ) },
+	    		{ $set:
+	    			{ settings: req.body.settings, ip: ip }
+
+	    		},	
+				function (err, result) {
+					if ( err ) {
+						res.send( 'there has been a problem with the settings update' );
+					}
+					else {
+						res.json( { settings: req.body.settings } );
+					}
+					db.close();
+				}
+			);
+		});
+	}
 })
 app.on('error', function(err) {
  console.log('err'); 
@@ -188,7 +288,6 @@ app.on('error', function(err) {
 });
 
 
-var Schema = mongoose.Schema;
 var gameDataSchema = new Schema  ({ 
 									player1: String,
 									player2: String, 
@@ -255,15 +354,6 @@ io.on('connection', (client) => {
 				// send the game id to the client
 				client.emit('gamestart', { id: multi.id , host: 1, playerid: client.id });
 				gameserver.join_game( multi, client );
-
-				// client.emit('gamestart', { id: "58b9a0333a0d150b5274ec80" , host: 1, playerid: client.id });
-				// var tempMulti = { 
-				// 				  player1: client.id,
-				// 				  player2: 'player2',
-				// 				  id: '58b9a0333a0d150b5274ec80' 
-				// 				}
-				// gameserver.join_game( tempMulti, client );
-
 				
 			});
 			numberOfGame += 1;
@@ -276,28 +366,10 @@ io.on('connection', (client) => {
 			}
 			else {
 			
-
-				// change to live
 				game.player2 = client.id;
 				game.save();
-				//client.join(game.player1);
 				client.emit('gamestart', { id: game.id, host: 0, playerid: client.id });
 				gameserver.join_game( game, client );
-
-
-
-				//var x = 1;
-				// for (var id in client.adapter.nsp.connected){
-				// 	if ( x ) {
-				// 	//client.join(id);
-				// 	var tempgame = { 
-				// 	  player1: id,
-				// 	  player2: client.id,
-				// 	  id: '58b9a0333a0d150b5274ec80' }
-				// 	  x = 0;
-				// 	}
-				//  }
-				//gameserver.join_game( tempgame, client );
 			}
 		}
 		app.locals.host ? app.locals.host = 0 : app.locals.host = 1 ;
@@ -307,8 +379,13 @@ io.on('connection', (client) => {
 	});
 
     client.on('setgd', function ( data ) {
-
-    	gameserver.setgd( data );
+    	try {
+    		gameserver.setgd( data );
+    	}
+    	catch (err) {
+    		debugger
+    		console.log( err )
+    	}
 
     });
    	client.on('sendlatency', function( data ) {
@@ -344,8 +421,6 @@ io.on('connection', (client) => {
 
 
 });
-
-// reloadServer = reload(server, app);
  
 // // Reload code here 
 reload(server, app).reload();

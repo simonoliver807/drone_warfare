@@ -1,6 +1,6 @@
-// (lang='en-US', manifest='dronewar1_2602.appcache', type='text/cache-manifest')// change to live a
+// (lang='en-US', manifest='dronewar1_604.appcache', type='text/cache-manifest')// change to live a
 doctype html
-html(lang='en-US', manifest='dronewar1_604.appcache', type='text/cache-manifest')
+html
   head
     meta(charset='UTF-8')
     title= title
@@ -9,6 +9,7 @@ html(lang='en-US', manifest='dronewar1_604.appcache', type='text/cache-manifest'
     link(rel='stylesheet', type='text/css', href='style/frontend-grid.css')
     link(rel='stylesheet', type='text/css', href='style/font-awesome-4.7.0/css/font-awesome.min.css')
     link(rel='stylesheet', type='text/css', href='style/style250217b.css')
+    link#mobilecss(rel='stylesheet', type='text/css', href='')
     link(rel='icon', type='image/png', href='images/favicon.ico')
     link(rel="apple-touch-icon" href="touch-icon-iphone.png")
     link(rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad.png")
@@ -47,10 +48,15 @@ html(lang='en-US', manifest='dronewar1_604.appcache', type='text/cache-manifest'
               nav#site-navigation.main-navigation(role='navigation', aria-label='Primary Menu')
                 .menu-dw_nav-container
                   ul#menu-dw_nav.primary-menu
+                    li
+                      #navusr
                     li#dwli.current-menu-item
                       a#dwnav(href='#') Drone War 1
                     li#wali
                       a#wanav(href='#') Web App
+                    li#slli
+                      a#lnav(href='#') Login/Sign Up
+                      a#snav(href='#') Settings
               // .main-navigation
             // .site-header-menu
           // .site-header-main
@@ -64,6 +70,8 @@ html(lang='en-US', manifest='dronewar1_604.appcache', type='text/cache-manifest'
           // .site-header
           include dronewar1.pug
           include webApp.pug
+          include settings.pug
+          include login.pug
           footer.entry-footer
           // #post-##
           include game_comments.pug
@@ -76,6 +84,7 @@ html(lang='en-US', manifest='dronewar1_604.appcache', type='text/cache-manifest'
     include levelChng.pug
     include popup.pug
     input( id='consoleData',type='hidden',value=cd)
+    input( id='userdata',type='hidden',value=user)
 
 
     //    shaders
@@ -90,13 +99,13 @@ html(lang='en-US', manifest='dronewar1_604.appcache', type='text/cache-manifest'
 
     // change to live
     //script(type='text/Javascript', src='js/defaultpage.js')
-    //- script(type='text/Javascript', src='js/lib/dat.gui.js')
+    //script(type='text/Javascript', src='js/lib/dat.gui.js')
 
     script(type='text/Javascript', src='js_min/defaultpage.js')
     // change to live
     //script(src="/reload/reload.js")
     //script(src='//localhost:35729/livereload.js')
-    //script(src='//192.168.0.2:35729/livereload.js')
+    //script(src='//192.168.1.92:35729/livereload.js')
 
 
 

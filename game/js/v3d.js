@@ -75,14 +75,7 @@ V3D.View.prototype = {
 
         
         var insideship = document.getElementById('insideship');
-        // change to live
-        // if (String(window.location).indexOf('outside') != -1) {
-        //     insideship.value = 'clicked outside';
-        // }
-        // else {
-        //     insideship.value = 'clicked inside';
-        // }
-        if(insideship.value == 'clicked outside'){
+        if( settingsarr[3] ){
             V3D.bincam = 1;
         }
         else {
@@ -1142,7 +1135,7 @@ V3D.View.prototype = {
     // change to live
     playDroneEx: function() {
 
-        if ( soundFX) {
+        if ( settingsarr[4]) {
            var dExpl = audiocntxt.createBufferSource();
            dExpl.buffer = sourceObj['droneExpl'].buffer;
            dExpl.connect(masterGain);
@@ -1152,7 +1145,7 @@ V3D.View.prototype = {
     },
     playpdown: function() {
 
-        if ( soundFX ) {
+        if ( settingsarr[4] ) {
             var pdown = audiocntxt.createBufferSource();
             pdown.buffer = sourceObj['pdown'].buffer;
             pdown.connect(masterGain);
@@ -1161,7 +1154,7 @@ V3D.View.prototype = {
     },
     playThruster: function() {
 
-        if ( soundFX ) {
+        if ( settingsarr[4] ) {
             this.thruster = audiocntxt.createBufferSource();
             this.thruster.buffer = sourceObj['thruster'].buffer;
             this.thruster.connect(masterGain);

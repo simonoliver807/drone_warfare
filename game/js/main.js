@@ -41,6 +41,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 				    v3d.initPoints();	
 
 
+
 				    var n = navigator.userAgent;
 					this.isMobile = false;
 				    if (n.match(/Android/i) || n.match(/webOS/i) || n.match(/iPhone/i) || n.match(/iPad/i) || n.match(/iPod/i) || n.match(/BlackBerry/i) || n.match(/Windows Phone/i)) {
@@ -65,7 +66,8 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 			handleKeyDown: function( event ) {
 
-				//event.preventDefault();
+				// change to live
+				event.preventDefault();
 				if( event.keyCode === 80) {
 					var val = gameinit.gspause() ? 0: 1;
 				    gameinit.gspause(val);
@@ -77,7 +79,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 				if ( event.keyCode == 70) {
 					document.body.webkitRequestFullScreen();
 				}
-				else {
+				if ( settingsarr.indexOf( event.keyCode ) !== -1) {
 					var keys = gameinit.getObj('keys');
 					keys[event.which] = 1;
 				}
@@ -87,8 +89,8 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 					var keys = gameinit.getObj('keys');
 					keys[event.which] = 0;;
-					if( event.keyCode == 38 || event.keyCode == 40 ) {
-						if ( soundFX ) {
+					if( event.keyCode == settingsarr[1] || event.keyCode == settingsarr[2] ) {
+						if ( settingsarr[4] ) {
 							v3d.thruster.stop();
 							v3d.pThrust = 0;
 						}
@@ -232,18 +234,18 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		    		event.preventDefault();
 		    		for(var i = 0; i< event.changedTouches.length; i++) {
 		    			if(event.changedTouches[i].target.id == 'addforce' || event.changedTouches[i].target.id == 'addforcebut'){
-		    				keys[38] = 1;
+		    				keys[ settingsarr[1] ] = 1;
 		    			}
 		    			if(event.changedTouches[i].target.id == 'minusforce' || event.changedTouches[i].target.id == 'minusforcebut'){
-		    				keys[40] = 1;
+		    				keys[ settingsarr[2] ] = 1;
 		    			}
 		    			if(event.changedTouches[i].target.id == 'gamecanvas'){
 		    				if(!phaser){
-		    					keys[32] = 1;
+		    					keys[ settingsarr[0] ] = 1;
 		    					phaser = 1;
 		    				}
 		    				else {
-		    					keys[32] = 0;
+		    					keys[ settingsarr[0] ] = 0;
 		    					phaser = 0;
 		    				}	
 		    			}
@@ -255,15 +257,15 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		    		event.preventDefault();
 		    		for(var i = 0; i< event.changedTouches.length; i++) {
 		    			if(event.changedTouches[i].target.id == 'addforce' || event.changedTouches[i].target.id == 'addforcebut'){
-		    				keys[38] = 0;
-		    				if( soundFX ) {
+		    				keys[ settingsarr[1] ] = 0;
+		    				if( settingsarr[4] ) {
 			    				v3d.thruster.stop();
 								v3d.pThrust = 0;
 							}
 		    			}
 		    			if(event.changedTouches[i].target.id == 'minusforce' || event.changedTouches[i].target.id == 'minusforcebut'){
-		    				keys[40] = 0;
-		    				if( soundFX ) {
+		    				keys[ settingsarr[2] ] = 0;
+		    				if( settingsarr[4] ) {
 			    				v3d.thruster.stop();
 								v3d.pThrust = 0;
 							}
