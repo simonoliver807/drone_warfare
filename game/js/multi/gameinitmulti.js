@@ -147,7 +147,7 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
 
 
                 // change to live
-               perfcont = document.getElementById('perf');
+               //perfcont = document.getElementById('perf');
 
 
                 perf = 0;
