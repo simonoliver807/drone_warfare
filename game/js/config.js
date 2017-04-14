@@ -1,4 +1,4 @@
-requirejs(['autoGame','oimo','three','lib/objloader','lib/tgaloader','lib/mtlloader','lib/trackballcontrols','v3d','gameinit','main'],
+requirejs(['autoGame','oimo','three','lib/OBJLoader','lib/TGALoader','lib/MTLLoader','lib/trackballcontrols','v3d','gameinit','main'],
         function (AUTOGAME,OIMO,THREE, OBJLOADER,TGALoader, MTLLoader,TRACKBALLCONTROLS,V3D, GAMEINIT, MAIN) {
             	
 
