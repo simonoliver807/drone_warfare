@@ -217,37 +217,6 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
                     anibincnt == 5 ? anibincnt = 0 : anibincnt += 1;
 
 
-
-
-                    /// mulitplayer **********************
-                    // if(self.host) {
-                    //     console.log('host');
-                    // }
-                    // else{
-                    //     console.log('not host'); 
-                    // }
-                    // //pause = 1;
-                    // socket.emit('getgd', gameUUID);
-                    // socket.on('sgd', function(gdarr){ 
-
-                    //     prs = gdarr;
-
-                    // });
-                    // if( prs.length > 1 ) {
-                    //     for(var i=0;i<prs.length;i++){
-
-                    //         prs[i]['posx'] = 1;
-
-                    //     }
-                    //     socket.emit('setgd', prs);
-                    // }
-
-
-
-
-
-
-
                    if(!containerMesh){
                        firstRender = { ms1: 0, ms2: 0 };
                        var dist = v3d.tvec();
@@ -722,12 +691,11 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
                                     drone.userData.ld = 1;
                                 }
                                 // change to live
-                                //v3d.updateDrones( dbody, drone, dbody.ms );
+                                v3d.updateDrones( dbody, drone, dbody.ms );
                             }
                             if ( !drone.userData.ld && !drone.userData.rtm) {
                                 pddist.sub(containerMesh.position,meshs[i].position);
                                 if(pddist.length() < 4500) {
-                            //if(pddist.length() < 5000) {
                                     drone.userData.ld = 1;
                                 }
                                 else {

@@ -1,8 +1,8 @@
 "use strict";
 
 
-var url = 'http://192.168.1.92:9000/';
-//var url = 'http://www.dronewar1.com'
+// var url = 'http://192.168.1.92:9000/';
+var url = 'http://www.dronewar1.com'
 // change to live 
 
 var settingsarr = [ 32, 38, 40, 0, 1, 0];

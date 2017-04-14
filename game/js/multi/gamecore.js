@@ -580,16 +580,6 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
             this.pldata[this.currpos+5]  = dronebodys[i].body.linearVelocity.z;
             this.pldata[this.currpos+6]  = dronebodys[i].id; 
             this.pldata[this.currpos+7]  = dronebodys[i].ld; 
-
-              // change to live
-              // var num = this.pldata[ this.currpos+6 ] + ''; 
-              // if ( num.substr(-4, num.length) == '9999' ) {
-              //    console.log( ' pos.x ' + dronebodys[i].body.position.x );
-              //    console.log( ' pos.y ' + dronebodys[i].body.position.y );
-              //    console.log( ' pos.z ' + dronebodys[i].body.position.z );
-              //    console.log(' id : ' + dronebodys[i].id );
-              // }
-
             this.currpos += 8;   
 
         }

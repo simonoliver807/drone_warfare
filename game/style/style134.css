@@ -268,7 +268,7 @@ optgroup {
 }
 #container {
 	/*change to live*/
-	/*cursor: none;*/
+	cursor: none;
 	display: block;
 	height:100%;
 	width:100%; 
