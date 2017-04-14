@@ -1,12 +1,12 @@
 "use strict";
 
 
-//var url = 'http://192.168.1.92:9000/';
-var url = 'http://www.dronewar1.com'
+var url = 'http://192.168.1.92:9000/';
+//var url = 'http://www.dronewar1.com'
 // change to live 
 
 var settingsarr = [ 32, 38, 40, 0, 1, 0];
-var currply	= { username: 0, password: '' }
+var currply	= { username: 0, password: '' };
 
 
 function xhrSuccess () { 
@@ -91,6 +91,7 @@ var updatePages = (function () {
 	return {
 		navFunc: function (event) {
 
+			window.removeEventListener( 'keydown', glowBadge.updateBadge, false );
 			var target = event.target;
 			var hs_comm = 'block';
 			if ( target.id.match('dwnav') ){
@@ -111,16 +112,9 @@ var updatePages = (function () {
 				document.getElementById('lnav').style.display = 'none';
 				document.getElementById('snav').style.display = 'block';
 				disablePage( currentpage.pagetc, currentpage.classtc, 'settings', 'slli' );
-				var pagetitle = document.getElementById('pagetitle').innerHTML;
-				if ( pagetitle == 'Drone War 1') {
-					disablePage( 'dronewar1', 'dwli', 'settings', 'slli' );	
-				}
-				if ( pagetitle == 'Web App') {
-					disablePage( 'web_app', 'wali', 'settings', 'slli' );	
-				}
+				disablePage( 'dronewar1', 'dwli', 'settings', 'slli' );	
+				disablePage( 'web_app', 'wali', 'settings', 'slli' );	
 				hs_comm = 'none';
-				//
-				// on key press event
 				window.addEventListener( 'keydown', glowBadge.updateBadge, false );
 				currentpage = { pagetc: 'settings', classtc: 'slli' };
 
@@ -214,6 +208,11 @@ function setsettings(ev) {
 	var el = document.getElementsByClassName('list-group');
 	var tnum = t.substring( t.length, t.length - 1);
 	var childnode = el[ tnum ].children.length;
+	var udset = document.getElementById('udset');
+	if ( udset.style.display == 'none' ) {
+		udset.style.display = 'block';
+		document.getElementById('udsetoff').style.display = 'none';
+	}
 	while ( childnode-- ){
 		el[ tnum ].children[ childnode ].style.backgroundColor = '';
 	}
@@ -241,13 +240,13 @@ function setsettings(ev) {
 		ev.target.style.backgroundColor = '#007acc';
 		document.getElementById('ibut').className = 'badge badge-color';
 		document.getElementById('obut').className = 'badge badge-default';
-		settingsarr[3] = 1;
+		settingsarr[3] = 0;
 	}
 	if( t == 'poutside31') { 
 		ev.target.style.backgroundColor = '#007acc';
 		document.getElementById('obut').className = 'badge badge-color';
 		document.getElementById('ibut').className = 'badge badge-default';
-		settingsarr[3] = 0;
+		settingsarr[3] = 1;
 	}
 	if( t == 'sfxon42') { 
 		ev.target.style.backgroundColor = '#007acc';
@@ -332,18 +331,18 @@ var glowBadge = (function () {
 
 })();
 
-function signup_in () {
+function signup_in ( ev ) {
 
 		//updatePages.navFunc( { target: { id: 'snav' }} );
-
+	ev.preventDefault();
 	var usrname = document.getElementById('usrname').value;
 	var psswrd = document.getElementById('psswrd').value;
 	var emailinput = document.getElementById('emailinput').value;
 	var loginbutton = document.getElementById('loginbutton');
 	var this_post = 0;
-	if ( loginbutton.innerHTML == 'login' && usrname && psswrd) { this_post = 1; }
-	if ( loginbutton.innerHTML == 'create' && usrname && psswrd && emailinput) { this_post = 1; }
-	if ( this_post ) {
+	// if ( loginbutton.innerHTML == 'login' && usrname && psswrd) { this_post = 1; }
+	// if ( loginbutton.innerHTML == 'create' && usrname && psswrd && emailinput) { this_post = 1; }
+	// if ( this_post ) {
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 		    if (this.readyState == 4 && this.status == 200) {
@@ -358,14 +357,12 @@ function signup_in () {
 		    		document.getElementById('valmess').innerHTML = this.responseText;
 		    	}   
 		    }
-		    else {
-		    	//document.getElementById('valmess').innerHTML = 'Sorry this was a problem, please try again.'
-		    }
+
 		}
 		xhttp.open("POST", url, true);
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhttp.send( 'username='+usrname+'&password='+psswrd+'&email='+emailinput+'&settings='+settingsarr );
-	}
+	
 }
 function loadUser (data, initialload) {
 
@@ -404,11 +401,11 @@ function loadUser (data, initialload) {
 			el.innerHTML = String.fromCharCode( settingsarr[i] ).toLowerCase();
 		}
 	}
-	if ( settingsarr[ 3 ] ) {
+	if ( !settingsarr[ 3 ] ) {
 		document.getElementById('pinside31').style.backgroundColor = '#007acc';
 		document.getElementById('ibut').className = 'badge badge-color';
 	}
-	if ( !settingsarr[ 3 ] ) {
+	if ( settingsarr[ 3 ] ) {
 		document.getElementById('poutside31').style.backgroundColor = '#007acc';
 		document.getElementById('obut').className = 'badge badge-color';
 	}
@@ -435,8 +432,9 @@ function loadUser (data, initialload) {
 	}
 }
 
-function updateSettings () {
+function updateSettings (ev) {
 
+	ev.preventDefault();
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
@@ -447,7 +445,6 @@ function updateSettings () {
 
 		    		var data = JSON.parse( this.responseText );
 		    		settingsarr = data.settings.split(',').map( function( num ) { return ~~num; } );
-
 		    	}
 		    	else {
 		    		document.getElementById('valmess').innerHTML = this.responsetext;
@@ -463,7 +460,9 @@ function updateSettings () {
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	// xhttp.send( 'username='+currply.username+'&password='+currply.passwrd+'&settings='+settingsarr );
 	xhttp.send( 'id=' + currply.id + '&settings='+settingsarr );
-
+	var udset = document.getElementById('udset');
+	udset.style.display = 'none';
+	udsetoff.style.display = 'block';	
 
 }
 
@@ -544,27 +543,27 @@ function runGame(numpl) {
 	game.style.display = 'block';
 
 	//******** minified change to live *************/////////
-	var s = document.createElement("script");
-	s.type = "text/javascript";
-	s.src = "js_min/require.js";
-	if( numpl ) {
-		s.setAttribute('data-main', 'js_min/configmulti.js');
-	}
-	else {
-		s.setAttribute('data-main', 'js_min/config.js')
-	}
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js_min/require.js";
+	// if( numpl ) {
+	// 	s.setAttribute('data-main', 'js_min/configmulti.js');
+	// }
+	// else {
+	// 	s.setAttribute('data-main', 'js_min/config.js')
+	// }
 
 
 	//******** unminified *************/////////
-	// var s = document.createElement("script");
-	// s.type = "text/javascript";
-	// s.src = "js/require.js";
-	// 	if( numpl ) {
-	// 	s.setAttribute('data-main', 'js/configmulti.js');
-	// }
-	// else {
-	// 	s.setAttribute('data-main', 'js/config.js')
-	// }
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js/require.js";
+		if( numpl ) {
+		s.setAttribute('data-main', 'js/configmulti.js');
+	}
+	else {
+		s.setAttribute('data-main', 'js/config.js')
+	}
 	// change to live multi
 
 	if (window.screen.height < 768) {
@@ -629,7 +628,7 @@ function changeInOut ( val ) {
 
 }) ();
 // change to live
-//runGame(1);
+//runGame(0);
 //initgame();
 //var page = { target: { id: 'wanav' } };
 //navFunc(a);

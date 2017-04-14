@@ -133,19 +133,37 @@ var fs = require('fs');
 
                 this.bodys[i].body.position.set( this.dronearr[id][pos][0], this.dronearr[id][pos][1], this.dronearr[id][pos][2]  );
                 this.bodys[i].body.linearVelocity.set( this.dronearr[id][pos][3], this.dronearr[id][pos][4], this.dronearr[id][pos][5] );
-                this.bodys[i].ld = this.dronearr[id][pos][7];
+
+                if ( this.bodys[i].ld != this.dronearr[id][pos][7] ) {
+                //debugger
+                }
+                if ( !this.bodys[i].ld ) {
+                  this.bodys[i].ld = this.dronearr[id][pos][7] 
+                } 
+                if (this.bodys[i].ld != this.dronearr[id][pos][7] ) {
+                  this.dronearr[id].splice( pos, 1 );
+                }
+
+
                 updatepos = 1;
                 
               }
               var num = this.dronearr[id][pos][6] + ''; 
-              if ( num.substr(-4, num.length) == '9999' ) {        
-                this.idexcl.push( ~~num.substr(0 , num.length - 4) );
-                this.tempexpart.push ( { id: id, body: { position: { x: this.dronearr[id][pos][0], y: this.dronearr[id][pos][1], z: this.dronearr[id][pos][2] }, id: this.dronearr[id][pos][6] } } )
+              if ( num.substr(-4, num.length) == '8888' ) {      
 
+                this.bodys[i].ld =  0;
                 updatepos = 1;
-                //reload last drone again if ex drone
-                i-- 
+
               }
+              // var num = this.dronearr[id][pos][6] + ''; 
+              // if ( num.substr(-4, num.length) == '9999' ) {        
+              //   this.idexcl.push( ~~num.substr(0 , num.length - 4) );
+              //   this.tempexpart.push ( { id: id, body: { position: { x: this.dronearr[id][pos][0], y: this.dronearr[id][pos][1], z: this.dronearr[id][pos][2] }, id: this.dronearr[id][pos][6] } } )
+
+              //   updatepos = 1;
+              //   //reload last drone again if ex drone
+              //   i-- 
+              // }
               if ( updatepos ) { pos ++; updatepos = 0; };
             }
             else {
@@ -274,10 +292,10 @@ var fs = require('fs');
     for (var id in this.player_manifest) {
 
       if ( this.player_manifest[id].name == 'player1' ) {
-        this.pldata[id] = new Float32Array(  12 + ( this.dronearr[ id ].length * 4 ));
+        this.pldata[id] = new Float32Array(  12 + ( this.dronearr[ id ].length * 5 ));
       }
       if ( this.player_manifest[id].name == 'player2' ) {
-        this.pldata[id] = new Float32Array(  12 + ( this.dronearr[ id ].length * 4 ));
+        this.pldata[id] = new Float32Array(  12 + ( this.dronearr[ id ].length * 5 ));
       }
 
 
@@ -304,7 +322,8 @@ var fs = require('fs');
               this.pldata[ id ][this.currpos[pl]+1]  = this.dronearr[ id ][i][1];
               this.pldata[ id ][this.currpos[pl]+2]  = this.dronearr[ id ][i][2];
               this.pldata[ id ][this.currpos[pl]+3]  = this.dronearr[ id ][i][6]; 
-              this.currpos[ pl ] += 4;      
+              this.pldata[ id ][this.currpos[pl]+4]  = this.dronearr[ id ][i][7]; 
+              this.currpos[ pl ] += 5;      
         }
         pl ++;
 

@@ -61,7 +61,7 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 
 			handleKeyDown: function( event ) {
 				// change to live
-				event.preventDefault();
+				//event.preventDefault();
 				if( event.keyCode === 80) {
 					var val = gameinit.gspause() ? 0: 1;
 				    gameinit.gspause(val);
@@ -143,25 +143,25 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 				 	v3d.startRot = 0;
 				}
 			},
-			showPopup: function (type) {
+			// showPopup: function (type) {
 
-				var popup = document.getElementById('popup');
-				var orchng = 0;
-				if ( type == 'orchng' && popup.style.display == 'block') {
+			// 	var popup = document.getElementById('popup');
+			// 	var orchng = 0;
+			// 	if ( type == 'orchng' && popup.style.display == 'block') {
 
-					orchng = 1;
+			// 		orchng = 1;
 
-				}
-				if ( type == 'isShowPopup' || orchng ) {
-		    		var screen = document.body;
-		    		popup.style.display = 'block';
-		    		popup.style.top = Math.max(0, ((screen.clientHeight - popup.clientHeight) / 2) + screen.scrollTop) + "px";
-		    		popup.style.left = Math.max(0, ((screen.clientWidth - popup.clientWidth) / 2) + screen.scrollLeft) + "px";
-		    		document.getElementById('nothanks').addEventListener('click', this.showWebAppPage);
-		    		document.getElementById('yesplease').addEventListener('click', this.showWebAppPage);
-		    	}
+			// 	}
+			// 	if ( type == 'isShowPopup' || orchng ) {
+		 //    		var screen = document.body;
+		 //    		popup.style.display = 'block';
+		 //    		popup.style.top = Math.max(0, ((screen.clientHeight - popup.clientHeight) / 2) + screen.scrollTop) + "px";
+		 //    		popup.style.left = Math.max(0, ((screen.clientWidth - popup.clientWidth) / 2) + screen.scrollLeft) + "px";
+		 //    		document.getElementById('nothanks').addEventListener('click', this.showWebAppPage);
+		 //    		document.getElementById('yesplease').addEventListener('click', this.showWebAppPage);
+		 //    	}
 
-			},
+			// },
 			showWebAppPage: function (event) {
 				if ( event.target.id.match('yesplease') ){
 					
@@ -188,10 +188,10 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 			},
 			loadMobileEvents: function(n) {
 				self = this;
-				window.addEventListener('orientationchange', function() {
-					console.log(event);
-					self.showPopup('orchng');
-				});
+				// window.addEventListener('orientationchange', function() {
+				// 	console.log(event);
+				// 	self.showPopup('orchng');
+				// });
 				mobcon.style.display = 'block';
 				var keys = gameinit.getObj('keys');
 		    	if( n.match(/iPhone/) ){
@@ -228,6 +228,7 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 		    	var toucharr = [];
 		    	function handleStart() {
 		    		event.preventDefault();
+		    		// if controls stop working in chrome again. it is because of the game auto load in default.js
 		    		for(var i = 0; i< event.changedTouches.length; i++) {
 		    			if(event.changedTouches[i].target.id == 'addforce' || event.changedTouches[i].target.id == 'addforcebut'){
 		    				keys[ settingsarr[1] ] = 1;

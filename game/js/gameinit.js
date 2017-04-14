@@ -722,7 +722,7 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
                                     drone.userData.ld = 1;
                                 }
                                 // change to live
-                                v3d.updateDrones( dbody, drone, dbody.ms );
+                                //v3d.updateDrones( dbody, drone, dbody.ms );
                             }
                             if ( !drone.userData.ld && !drone.userData.rtm) {
                                 pddist.sub(containerMesh.position,meshs[i].position);

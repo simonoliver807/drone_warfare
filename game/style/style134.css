@@ -223,15 +223,16 @@ optgroup {
 	width:10%;
 }
 #arrowmargindown {
+	pointer-events: none;
 	position: absolute;
 }
 #arrowmarginup {
+	pointer-events: none;
 	position: absolute;
 }
 .badge {
-	  border-radius: .25rem;
+	 border-radius: .25rem;
 	color: #fff;
-	cursor: pointer;
     display: inline-block;
     font-size: 75%;
     font-weight: 700;
@@ -251,19 +252,23 @@ optgroup {
 }
 #cl {
 	position: relative;
+	pointer-events: none;
 }
 #cup {
 	position: relative;	
+	pointer-events: none;
 }
 #cr {
 	position: relative;
+	pointer-events: none;
 }
 #cd {
 	position: relative;
+	pointer-events: none;
 }
 #container {
 	/*change to live*/
-	cursor: none;
+	/*cursor: none;*/
 	display: block;
 	height:100%;
 	width:100%; 
@@ -564,6 +569,7 @@ optgroup {
 #perf {
     color: white;
 	font-size: 11px;
+	width: 300px;
 }
 #popup p {
   margin: 15px;
@@ -644,6 +650,11 @@ optgroup {
 	position: absolute;
 	width:5%;
 }
+#udsetoff {
+	background: #000000;
+	display: none;
+	pointer-events: none;
+} 
 #valmess {
 	color: #ff0000;
 	font-size: 12px;

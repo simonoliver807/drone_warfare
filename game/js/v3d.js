@@ -75,12 +75,7 @@ V3D.View.prototype = {
 
         
         var insideship = document.getElementById('insideship');
-        if( settingsarr[3] ){
-            V3D.bincam = 1;
-        }
-        else {
-            V3D.bincam = 0;
-        }
+        V3D.bincam = settingsarr[3];
 
         if( V3D.bincam ) {
             this.camera.position.z = 20;
@@ -245,8 +240,8 @@ V3D.View.prototype = {
         this.scene.add( dirlight1 );
         this.scene.add( dirlight2 );
 
-        // var light = new THREE.AmbientLight(0xFFFFFF);
-        // this.scene.add(light);
+        var light = new THREE.AmbientLight(0xFFFFFF);
+         this.scene.add(light);
 
     },
     initPoints: function() {

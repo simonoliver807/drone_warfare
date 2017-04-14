@@ -15,7 +15,7 @@ varying vec2 vUv;
 
 float random (in vec2 _st) { 
     return fract(sin(dot(_st.xy,
-                         vec2(12.9898,78.233)))* 
+                         vec2(32.9898,78.233)))* 
         43758.5453123);
 }
 
@@ -56,7 +56,7 @@ float fbm ( in vec2 _st) {
 }
 
 void main() {
-    vec2 st = 1.0 * vUv;
+    vec2 st = 3.0 * vUv;
     // st += st * abs(sin(u_time*0.1)*3.0);
     vec3 color = vec3(0.0);
 

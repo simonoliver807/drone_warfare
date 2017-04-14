@@ -1,14 +1,5 @@
 
-  // gamecore.js
-  // by joates (Sep-2013)
-
-  /**
-   *  Copyright (c) 2012 Sven "FuzzYspo0N" Bergström
-   *  written by:  http://underscorediscovery.com
-   *  written for: http://buildnewgames.com/real-time-multiplayer/
-   *
-   *  MIT Licensed.
-   */
+  // gamecore.js v.2
 
 define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
 
@@ -202,22 +193,24 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
     game_core.prototype.setdrone = function( data ) {
       
       if ( this.bodys && this.firstStream ){
-          var currpos = 0;
-          var ddata = new Float32Array( data[ this.player_self.id ].pldata );
-         
-          for (var i = this.bodys.length - 1; i >= 0; i--) {
-            if( this.bodys[i].name == 'drone' ) {
+        this.host ? document.getElementById( 'respawntxt' ).innerHTML = 'Player 2 Joined' : document.getElementById( 'respawntxt' ).innerHTML = 'loading game';
 
-              this.bodys[i].body.position.x = ddata[ currpos ];      
-              this.bodys[i].body.position.y = ddata[ currpos +1 ];   
-              this.bodys[i].body.position.z = ddata[ currpos +2 ];  
-              this.bodys[i].id  = ddata[ currpos +3 ];   
-              this.bodys[i].ld = ddata[ currpos +4 ]; 
-              if ( this.bodys[i].ld ) { this.bodys[i].nrtm = 1; }
-              currpos += 5;
+        var currpos = 0;
+        var ddata = new Float32Array( data[ this.player_self.id ].pldata );
+       
+        for (var i = this.bodys.length - 1; i >= 0; i--) {
+          if( this.bodys[i].name == 'drone' ) {
 
-            }
+            this.bodys[i].body.position.x = ddata[ currpos ];      
+            this.bodys[i].body.position.y = ddata[ currpos +1 ];   
+            this.bodys[i].body.position.z = ddata[ currpos +2 ];  
+            this.bodys[i].id  = ddata[ currpos +3 ];   
+            this.bodys[i].ld = ddata[ currpos +4 ]; 
+            if ( this.bodys[i].ld ) { this.bodys[i].nrtm = 1; }
+            currpos += 5;
+
           }
+        }
         this.socket.emit( 'dataload1', { id: this.player_self.id, gid: this.gameid });
         this.firstStream = 0;
         this.startgame = 1 ;
@@ -514,36 +507,27 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
                 this.bodys[i].body.position.copy( this.bodys[i].body.sleepPosition );
                 this.expartarr.splice( numpos, 1 );
             }
-
             updatepos = 1;
+            if ( this.bodys[i].ld != target.vals.pldata[tpos+1] ) {
+              this.bodys[i].ld = target.vals.pldata[tpos+1];
+            }
         }
         var num = target.vals.pldata[tpos] + ''; 
         var droneid = ~~num.substr( 0, num.length-4 );
         if ( num.match('9999') && droneid == this.bodys[i].id ) {
-          //  this.expartarr.push( {x: target.vals.pldata[tpos-3] * 100, y: target.vals.pldata[tpos-2] * 100, z: target.vals.pldata[tpos-1] * 100 })
           this.bodys[i].tbd = 1
           this.expartarr.push( ~~num.substr( 0, num.length-4 ) )
           updatepos = 1;
         }
-        if( updatepos ) { tpos += 4; ;updatepos = 0;  }
+        if ( num.match('8888') && droneid == this.bodys[i].id  && !this.bodys[i].rtm ) { 
+          this.bodys[i].rtm = 1;
+          this.host ? this.bodys[i].ld = 1 : this.bodys[i].ld = 2;
+          updatepos = 1;
+        }
+        if( updatepos ) { tpos += 5; ;updatepos = 0;  }
         if ( tpos > target.vals.pldata.length ) { break; }
 
       }
-      // update this so that it searches from end if id is greater than half drone or from start.
-      // if ( this.expartarr.length ) {
-      //   var i = this.bodys.length;
-      //   while( i-- ) {
-
-      //     if( this.expartarr.indexOf( this.bodys[i].id ) !== -1  ) {
-
-      //       // only bodys sent from the server get set as tbd = 1
-      //       this.bodys[i].tbd = 1;
-
-      //     } 
-
-      //   }
-      //   this.expartarr = [] ;
-      // }
     }
 
     game_core.prototype.updatems = function ( target ) {
@@ -585,7 +569,6 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
 
         // drone data
         var i = dronebodys.length;
-        var meshpos;
         this.currpos = 14;
         while(i--){
          
