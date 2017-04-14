@@ -240,8 +240,8 @@ V3D.View.prototype = {
         this.scene.add( dirlight1 );
         this.scene.add( dirlight2 );
 
-        var light = new THREE.AmbientLight(0xFFFFFF);
-         this.scene.add(light);
+        // var light = new THREE.AmbientLight(0xFFFFFF);
+        //  this.scene.add(light);
 
     },
     initPoints: function() {
