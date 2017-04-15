@@ -1,7 +1,7 @@
 "use strict";
 
 
-// var url = 'http://192.168.1.92:9000/';
+//var url = 'http://192.168.1.92:9000/';
 var url = 'http://www.dronewar1.com'
 // change to live 
 
@@ -184,6 +184,7 @@ function initgame( ev ) {
 	else {
 		audiocntxt = new webkitAudioContext();
 	}
+
 	masterGain = audiocntxt.createGain();
 	masterGain.connect(audiocntxt.destination);
 	sourceObj['droneExpl'] = audiocntxt.createBufferSource();
@@ -459,7 +460,7 @@ function updateSettings (ev) {
 	xhttp.open("POST", url, true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	// xhttp.send( 'username='+currply.username+'&password='+currply.passwrd+'&settings='+settingsarr );
-	xhttp.send( 'id=' + currply.id + '&settings='+settingsarr );
+	xhttp.send( 'id=' + currply.id + '&settings='+settingsarr + '&username='+ currply.username );
 	var udset = document.getElementById('udset');
 	udset.style.display = 'none';
 	udsetoff.style.display = 'block';	
@@ -543,27 +544,27 @@ function runGame(numpl) {
 	game.style.display = 'block';
 
 	//******** minified change to live *************/////////
-	// var s = document.createElement("script");
-	// s.type = "text/javascript";
-	// s.src = "js_min/require.js";
-	// if( numpl ) {
-	// 	s.setAttribute('data-main', 'js_min/configmulti.js');
-	// }
-	// else {
-	// 	s.setAttribute('data-main', 'js_min/config.js')
-	// }
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js_min/require.js";
+	if( numpl ) {
+		s.setAttribute('data-main', 'js_min/configmulti.js');
+	}
+	else {
+		s.setAttribute('data-main', 'js_min/config.js')
+	}
 
 
 	//******** unminified *************/////////
-	var s = document.createElement("script");
-	s.type = "text/javascript";
-	s.src = "js/require.js";
-		if( numpl ) {
-		s.setAttribute('data-main', 'js/configmulti.js');
-	}
-	else {
-		s.setAttribute('data-main', 'js/config.js')
-	}
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js/require.js";
+	// 	if( numpl ) {
+	// 	s.setAttribute('data-main', 'js/configmulti.js');
+	// }
+	// else {
+	// 	s.setAttribute('data-main', 'js/config.js')
+	// }
 	// change to live multi
 
 	if (window.screen.height < 768) {

@@ -655,23 +655,17 @@ define(['oimo', 'v3d'], function(OIMO,V3D) {
                      ///////////////////////
 
                     if (endsequence >= 0) {
-                        if(keys[ settingsarr[1] ] && !keys[ settingsarr[0] ]){
+                        if(keys[ settingsarr[1] ] ){
                             v3d.addForce();
                         }
-                        if(keys[ settingsarr[2] ] && !keys[ settingsarr[0] ]){
+                        if(keys[ settingsarr[2] ] ){
                             v3d.minusForce();
                         }
-                        //if(keys[32] || false){
-                        if(keys[ settingsarr[0] ] && !keys[ settingsarr[1] ] && !keys[ settingsarr[2] ]){
+                        if(keys[ settingsarr[0] ]){
                             v3d.phaser();
                         }
-                        if(keys[ settingsarr[0] ] && keys[ settingsarr[1] ]){
-                            v3d.addForce();
-                            v3d.phaser();
-                        }
-                        if(keys[ settingsarr[0] ] && keys[ settingsarr[2] ]){
-                            v3d.minusForce();
-                            v3d.phaser();
+                        if( !keys[ settingsarr[0] ] ) {
+                            v3d.phaseroff();
                         }
                         v3d.updateSightPos();
                     }

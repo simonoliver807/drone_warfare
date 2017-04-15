@@ -4,14 +4,13 @@
 // Author @patriciogv - 2015
 // http://patriciogonzalezvivo.com
 
-#ifdef GL_ES
-precision mediump float;
-#endif
-
-uniform sampler2D texture;
+precision highp float;
+precision highp int;
+uniform sampler2D textureMerc;
 uniform float u_time;
 
 varying vec2 vUv;
+varying vec3 color2;
 
 float random (in vec2 _st) { 
     return fract(sin(dot(_st.xy,
@@ -84,7 +83,7 @@ void main() {
 
     gl_FragColor = vec4((f*f*f+.6*f*f+.5*f)*color,1.);
 
-    gl_FragColor = gl_FragColor * texture2D( texture, vUv );
+    gl_FragColor = gl_FragColor * texture2D( textureMerc, vUv ) * vec4( color2, 1.0 );
 
 }
 

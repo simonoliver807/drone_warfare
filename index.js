@@ -118,9 +118,29 @@ app.get('/', function (req, res) {
 		    		if (err) throw err
 		    		app.locals.comments = result;
 		    		app.locals.cd = cp.gcd();
-		    		db.collection('players').findOne( { ip: req.ip }, function (err, result) {
+
+		    	//	debugger
+		    		var cookies = res.req.headers.cookie;
+		    		var username = 0;
+			    	var password = 0;
+		    		if ( cookies !== undefined ) {
+		    			cookies = cookies.split(';');
+			    		var i = cookies.length;
+			    		while( i-- ){
+
+			    			var currcookie = cookies[i].split('=');
+			    			if( currcookie[0].replace(/\s+/g, '') == 'username' ) {
+			    				username = currcookie[1];
+			    			}
+			    		}
+			    	}
+
+		    		db.collection('players').findOne( { username: username }, function (err, result) {
 		    			var user = 0;
 		    			if ( result ) {  user = '{ "id": "' + result._id.toString() + '", "username": "' + result.username + '", "password": "' + result.password + '", "settings":"' + result.settings +'"}' }
+
+		    		//	debugger
+		    			res.set( 'Cache-Control', 'no-cache' );
 
 			    		res.render( 'index', { 
 			    			title: 'Drone War 1',
@@ -203,6 +223,10 @@ app.post('/', function (req, res) {
 				    			{ last_login: new Date() }
 				    		}				    		
 				    	)
+				    	var settingsarr = result.settings.split(','); 
+				    	if ( ~~settingsarr[5]) {
+				    		res.set( 'Set-Cookie', 'username=' + req.body.username + ';max-age='+259200+';HttpOnly');
+						}
 				    	res.json( { id: result._id.toString(), username: req.body.username, password: req.body.password, settings: result.settings  } );
 				    }
 				    else {
@@ -230,7 +254,6 @@ app.post('/', function (req, res) {
 								password: req.body.password,
 								email: req.body.email,
 								settings: req.body.settings,
-								ip: '',
 								last_login: new Date() }, 
 								function ( err, result ){
 									res.json( { id: result.insertedId.toString(), username: req.body.username, password: req.body.password, settings: req.body.settings  } );
@@ -256,23 +279,30 @@ app.post('/', function (req, res) {
 	if ( req.body.id) {
 		mc.connect(dburl, function(err, db) {
 			if ( err ) throw err
-			if( req.body.settings.slice(-1) == 1 ) {
-				var ip = req.ip
-			}
-			else {
-				var ip = ''
-			}
+			// if( req.body.settings.slice(-1) == 1 ) {
+			// 	var ip = req.ip
+			// }
+			// else {
+			// 	var ip = ''
+			// }
 			db.collection('players').update( 
 				{ _id: ObjectId( req.body.id ) },
 	    		{ $set:
-	    			{ settings: req.body.settings, ip: ip }
-
+	    			{ settings: req.body.settings }
 	    		},	
 				function (err, result) {
 					if ( err ) {
 						res.send( 'there has been a problem with the settings update' );
 					}
 					else {
+						debugger
+						var settingsarr = req.body.settings.split(','); 
+				    	if ( ~~settingsarr[5]) {
+				    		res.set( 'Set-Cookie', 'username=' + req.body.username + ';max-age='+259200+';HttpOnly');
+						}
+						if( !~~settingsarr[5] ) {
+							res.clearCookie('username');
+						}
 						res.json( { settings: req.body.settings } );
 					}
 					db.close();
@@ -424,7 +454,7 @@ io.on('connection', (client) => {
  
 // // Reload code here 
 // change to live
-//reload(server, app).reload();
+reload(server, app).reload();
  
 server.listen(app.get('port'), function(){
   console.log("Web server listening on port " + app.get('port') + " Date: " + new Date())

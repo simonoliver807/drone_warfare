@@ -230,10 +230,10 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 		    		event.preventDefault();
 		    		// if controls stop working in chrome again. it is because of the game auto load in default.js
 		    		for(var i = 0; i< event.changedTouches.length; i++) {
-		    			if(event.changedTouches[i].target.id == 'addforce' || event.changedTouches[i].target.id == 'addforcebut'){
+		    			if( event.changedTouches[i].target.id == 'addforce' ){
 		    				keys[ settingsarr[1] ] = 1;
 		    			}
-		    			if(event.changedTouches[i].target.id == 'minusforce' || event.changedTouches[i].target.id == 'minusforcebut'){
+		    			if( event.changedTouches[i].target.id == 'minusforce' ){
 		    				keys[ settingsarr[2] ] = 1;
 		    			}
 		    			if(event.changedTouches[i].target.id == 'gamecanvas'){
@@ -253,21 +253,21 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 		    	function handleEnd() {
 		    		event.preventDefault();
 		    		for(var i = 0; i< event.changedTouches.length; i++) {
-		    			if(event.changedTouches[i].target.id == 'addforce' || event.changedTouches[i].target.id == 'addforcebut'){
+		    			if( event.changedTouches[i].target.id == 'addforce' ){
 		    				keys[ settingsarr[1] ] = 0;
 		    				if( settingsarr[4] ) {
 			    				v3d.thruster.stop();
 								v3d.pThrust = 0;
 							}
 		    			}
-		    			if(event.changedTouches[i].target.id == 'minusforce' || event.changedTouches[i].target.id == 'minusforcebut'){
+		    			if( event.changedTouches[i].target.id == 'minusforce' ){
 		    				keys[ settingsarr[2] ] = 0;
 		    				if( settingsarr[4] ) {
 			    				v3d.thruster.stop();
 								v3d.pThrust = 0;
 							}
 		    			}
-		    			if(event.changedTouches[i].target.id == 'mobcon'){
+		    			if( event.changedTouches[i].target.id == 'mobcon' ){
 		    				mobcon.style.opacity = '1';
 		    			}
 		    		}

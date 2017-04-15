@@ -1,8 +1,8 @@
 // planetGlowvs
 
 
-precision mediump float;
-precision mediump int;
+precision highp float;
+precision highp int;
 uniform mat4 modelViewMatrix; // optional
 uniform mat4 projectionMatrix; // optional
 attribute vec3 position;

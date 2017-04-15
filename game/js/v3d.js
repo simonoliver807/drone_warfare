@@ -420,13 +420,13 @@ V3D.View.prototype = {
             this.renderer.render( this.scene, this.camP );
         }
 
-        if(V3D.bincam) {
-            this.glowmesh.material.visible = false;
-        }
-        else {
-            this.sight.children[0].material.transparent = true;
-            this.sight.children[0].material.opacity = 0;
-        }
+        // if(V3D.bincam) {
+        //     this.glowmesh.material.visible = false;
+        // }
+        // else {
+        //     this.sight.children[0].material.transparent = true;
+        //     this.sight.children[0].material.opacity = 0;
+        // }
 
 
     },
@@ -560,20 +560,47 @@ V3D.View.prototype = {
                 var planet1fs = document.getElementById( 'planet1fs' ).textContent;
                 var planet1vs = document.getElementById( 'planet1vs' ).textContent;
                 geometry = this.geos['mercelec1'];
+                texture = { type: 't', value: texture };
+               var u_time = { type: 'f', value: 1.0 }
+
+                var uniforms = THREE.UniformsUtils.merge( [
+
+                    THREE.UniformsLib[ 'lights' ]
+
+
+                ])
+                // var uniforms =  THREE.UniformsLib[ 'lights' ];
+                uniforms.textureMerc = texture;
+                uniforms.u_time = u_time;
                 var material = new THREE.RawShaderMaterial({
-                    uniforms: {
-                        texture: { 
-                            value: texture
-                        },
-                        u_time: {
-                            value: 1.0
-                        } 
-                    },
+                    uniforms: uniforms,
                     vertexShader: planet1vs,
                     fragmentShader: planet1fs,
+                    lights: true,
                     transparent: false
 
-                })
+                 })
+                // var light = new THREE.PointLight(0xffffff, 1.0);
+                // // We want it to be very close to our character
+                // light.position.set(500.0,20.0,10000);
+                // this.scene.add(light);
+
+
+
+                // var material = new THREE.RawShaderMaterial({
+                //     uniforms: {
+                //         textureMerc: { 
+                //             value: texture
+                //         },
+                //         u_time: {
+                //             value: 1.0
+                //         } 
+                //     },
+                //     vertexShader: planet1vs,
+                //     fragmentShader: planet1fs,
+                //     transparent: false
+
+                // })
             }
             else {
                var material = new THREE.MeshBasicMaterial({map:texture}); 
@@ -967,6 +994,17 @@ V3D.View.prototype = {
         // if(this.velocity < 3){
            // this.velocity = 1 + rb.linearVelocity.length() / 10;
         //}
+    },
+    phaseroff: function() {
+
+        if(V3D.bincam) {
+            this.glowmesh.material.visible = false;
+        }
+        else {
+            this.sight.children[0].material.transparent = true;
+            this.sight.children[0].material.opacity = 0;
+        }
+
     },
     phaser: function() {
 

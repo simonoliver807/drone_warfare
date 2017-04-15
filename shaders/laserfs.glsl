@@ -1,8 +1,7 @@
 // laserfs
 
-#ifdef GL_ES
-precision mediump float;
-#endif
+precision highp float;
+precision highp int;
 
 #define pi 3.14159265359;
 
