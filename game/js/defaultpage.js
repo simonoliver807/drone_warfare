@@ -1,11 +1,11 @@
 "use strict";
 
 
-//var url = 'http://192.168.1.92:9000/';
-var url = 'http://www.dronewar1.com'
+var url = 'http://10.188.103.162:9000/';
+//var url = 'http://www.dronewar1.com'
 // change to live 
 
-var settingsarr = [ 32, 38, 40, 0, 1, 0];
+var settingsarr = [ 77, 38, 40, 0, 0, 0];
 var currply	= { username: 0, password: '' };
 
 
@@ -544,27 +544,27 @@ function runGame(numpl) {
 	game.style.display = 'block';
 
 	//******** minified change to live *************/////////
-	var s = document.createElement("script");
-	s.type = "text/javascript";
-	s.src = "js_min/require.js";
-	if( numpl ) {
-		s.setAttribute('data-main', 'js_min/configmulti.js');
-	}
-	else {
-		s.setAttribute('data-main', 'js_min/config.js')
-	}
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js_min/require.js";
+	// if( numpl ) {
+	// 	s.setAttribute('data-main', 'js_min/configmulti.js');
+	// }
+	// else {
+	// 	s.setAttribute('data-main', 'js_min/config.js')
+	// }
 
 
 	//******** unminified *************/////////
-	// var s = document.createElement("script");
-	// s.type = "text/javascript";
-	// s.src = "js/require.js";
-	// 	if( numpl ) {
-	// 	s.setAttribute('data-main', 'js/configmulti.js');
-	// }
-	// else {
-	// 	s.setAttribute('data-main', 'js/config.js')
-	// }
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js/require.js";
+		if( numpl ) {
+		s.setAttribute('data-main', 'js/configmulti.js');
+	}
+	else {
+		s.setAttribute('data-main', 'js/config.js')
+	}
 	// change to live multi
 
 	if (window.screen.height < 768) {
@@ -629,7 +629,7 @@ function changeInOut ( val ) {
 
 }) ();
 // change to live
-//runGame(0);
+runGame(0);
 //initgame();
 //var page = { target: { id: 'wanav' } };
 //navFunc(a);

@@ -17,6 +17,7 @@ V3D.mesharrpos = {phasers:0,dphasers:0,pl:0,planetGlow:0,shp1:0};
 V3D.grouppart = new THREE.Object3D();
 V3D.ms1phaser = new THREE.Group();
 V3D.ms2phaser = new THREE.Group();
+V3D.asteroids = new THREE.Group();
 V3D.percom = document.getElementById('perCom');
 // V3D.mspdown = new Audio('audio/pdown.mp3');
 // V3D.dronewav = new Audio('audio/droneExpl.wav');
@@ -420,6 +421,25 @@ V3D.View.prototype = {
             this.renderer.render( this.scene, this.camP );
         }
 
+        var camdir = this.camera.getWorldDirection();
+        for (var i = 0; i < this.scene.children.length; i++) {
+            if( this.scene.children[i].name.match( 'astgroup') ) {
+                var meteor = this.scene.children[i];
+                var matrix = new THREE.Matrix4();
+                var q = new THREE.Quaternion();
+                q.copy( meteor.quaternion );
+                matrix.makeRotationFromQuaternion( q.conjugate() );
+                var direction = new THREE.Vector3( 0, 0, 1 );
+                direction.applyMatrix4( matrix );
+               for (var numast = 0; numast < meteor.children.length; numast++) {
+                     meteor.children[ numast ].material.uniforms.camdir.value = camdir;
+                     meteor.children[ numast ].material.uniforms.camera.value = this.camera.position;
+                     meteor.children[ numast ].material.uniforms.lightdir.value.set( direction.x, direction.y, direction.z ) ;
+                    
+                }
+            }
+        }
+
         // if(V3D.bincam) {
         //     this.glowmesh.material.visible = false;
         // }
@@ -485,6 +505,16 @@ V3D.View.prototype = {
 
     },
     addCylinder: function(cylinder){
+
+        // ast wireframe for testing
+        // if( cylinder.name && cylinder.name.match('ast') ){ 
+
+        //     var geometry = new THREE.CylinderGeometry( 50, 60, 50 );
+        //     var material = new THREE.MeshBasicMaterial( { color: '#ff0000', wireframe: true, name: 'ast' } );
+        //     var mesh = new THREE.Mesh( geometry, material);
+        //     mesh.position.set( cylinder.pos[0] + 25, cylinder.pos[1] + 10, cylinder.pos[2] );
+        //     this.scene.add( mesh );
+        // }
 
         if(cylinder.length > 0){
           var texture = this.loadTGA('images/Free_Droid/Materials/BaseMaterial_normal.tga');
@@ -561,13 +591,10 @@ V3D.View.prototype = {
                 var planet1vs = document.getElementById( 'planet1vs' ).textContent;
                 geometry = this.geos['mercelec1'];
                 texture = { type: 't', value: texture };
-               var u_time = { type: 'f', value: 1.0 }
+                var u_time = { type: 'f', value: 1.0 }
 
                 var uniforms = THREE.UniformsUtils.merge( [
-
                     THREE.UniformsLib[ 'lights' ]
-
-
                 ])
                 // var uniforms =  THREE.UniformsLib[ 'lights' ];
                 uniforms.textureMerc = texture;
@@ -1068,6 +1095,22 @@ V3D.View.prototype = {
                     ms2 = i;
                     ms2len = intersects[i].distance;
                 }
+            }
+            if( intersects[i].object.name.match( 'astmesh' ) ) {
+
+                if( intersects[i].object.userData.t === 0 ) {
+                    if ( intersects[i].object.parent.type == 'Scene' ) {
+                        intersects[i].object.userData.atbd = 1;   
+                    }
+                    else {
+                        intersects[i].object.parent.userData.atbd = 1;   
+                    }
+                }
+                else {
+                    intersects[i].object.userData.t --;
+                    console.log( intersects[i].object.userData.t );
+                }            
+
             }
         }
         for(var i=0; i < intersects.length; i++) {

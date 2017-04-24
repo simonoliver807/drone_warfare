@@ -48,8 +48,8 @@ var gameserver;
 //   db.close();
 // });
 // change to live
-var dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
-// var dburl = "mongodb://localhost:27017/test";
+//var dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
+var dburl = "mongodb://localhost:27017/test";
 
 mongoose.connect(dburl);
 mongoose.Promise = global.Promise;
@@ -105,6 +105,12 @@ fs.readdir(__dirname + '/shaders/', function (err, filesPath) {
         	if ( results[i].match('starvs') ) {
         		app.locals.shaders.starvs = results[i];
         	}
+        	if ( results[i].match('mtrfs') ) {
+        		app.locals.shaders.mtrfs = results[i];
+        	}
+        	if ( results[i].match('mtrvs') ) {
+        		app.locals.shaders.mtrvs = results[i];
+        	}
         }
     })
 })
@@ -152,6 +158,8 @@ app.get('/', function (req, res) {
 		        			planetGlowfs: app.locals.shaders.planetGlowfs,
 		        			starvs: app.locals.shaders.starvs,
 		        			starfs: app.locals.shaders.starfs,
+		        			mtrvs: app.locals.shaders.mtrvs,
+		        			mtrfs: app.locals.shaders.mtrfs,
 		        			user: user
 		        		})
 				  	  })

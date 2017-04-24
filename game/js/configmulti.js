@@ -1,5 +1,5 @@
-requirejs(['multi/autoGameMulti','oimo','three','lib/OBJLoader','socket_io','lib/TGALoader','lib/MTLLoader','lib/trackballcontrols','v3d','multi/gamecore','multi/gameinitmulti','multi/mainmulti'],
-        function (AUTOGAMEMULTI,OIMO, THREE, OBJLOADER, SOCKET_IO,TGALoader, MTLLoader,TRACKBALLCONTROLS, V3D, GAMECORE, GAMEINITMULTI, MAINMULTI) {
+requirejs(['multi/autoGameMulti','asteroid','oimo','three','lib/OBJLoader','socket_io','lib/TGALoader','lib/MTLLoader','lib/trackballcontrols','v3d','multi/gamecore','multi/gameinitmulti','multi/mainmulti'],
+        function (AUTOGAMEMULTI, ASTEROID, OIMO, THREE, OBJLOADER, SOCKET_IO,TGALoader, MTLLoader,TRACKBALLCONTROLS, V3D, GAMECORE, GAMEINITMULTI, MAINMULTI) {
             	
 
             	var main = new MAINMULTI;

@@ -67,7 +67,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 			handleKeyDown: function( event ) {
 
 				// change to live
-				event.preventDefault();
+			//	event.preventDefault();
 				if( event.keyCode === 80) {
 					var val = gameinit.gspause() ? 0: 1;
 				    gameinit.gspause(val);

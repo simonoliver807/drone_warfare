@@ -7,8 +7,8 @@ uniform mat4 projectionMatrix; // optional
 attribute vec3 position;
 attribute vec2 uv;
 
-varying vec3 vecPos;
-varying vec3 vecNormal;
+//varying vec3 vecPos;
+//varying vec3 vecNormal;
 
 // #if NUM_DIR_LIGHTS > 0
 // 	struct DirectionalLight {
