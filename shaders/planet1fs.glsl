@@ -12,6 +12,8 @@ uniform float u_time;
 varying vec2 vUv;
 varying vec3 color2;
 
+#define SHADER_NAME mercury;
+
 float random (in vec2 _st) { 
     return fract(sin(dot(_st.xy,
                          vec2(32.9898,78.233)))* 

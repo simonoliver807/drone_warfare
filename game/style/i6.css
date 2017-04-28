@@ -105,7 +105,7 @@ and (orientation : portrait) {
 	}
 	#login-page {
    		width: 80%;
-   		top: 11%;
+   		top: 5%;
    	}
 	#minusforcebut {
 		background-color: #00FF00;
@@ -126,6 +126,10 @@ and (orientation : portrait) {
 	}
 	#tapaccel {
 		width: 10%;
+	}
+	.settingsform .fw-row {
+		margin-left: -40px;
+    	margin-right: -40px;
 	}
 
 }

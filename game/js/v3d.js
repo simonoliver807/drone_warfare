@@ -18,6 +18,7 @@ V3D.grouppart = new THREE.Object3D();
 V3D.ms1phaser = new THREE.Group();
 V3D.ms2phaser = new THREE.Group();
 V3D.asteroids = new THREE.Group();
+V3D.asteroids.name = 'asteroids';
 V3D.percom = document.getElementById('perCom');
 // V3D.mspdown = new Audio('audio/pdown.mp3');
 // V3D.dronewav = new Audio('audio/droneExpl.wav');
@@ -225,7 +226,8 @@ V3D.View.prototype = {
 
 
         this.tmpangle = 0;
-
+        // create a 3d box constant to check if asteroid is in world space
+        this.boxworld = new THREE.Box3( new THREE.Vector3(-15000, -15000, -15000), new THREE.Vector3(15000, 15000, 15000) );
 
 
     },
@@ -422,9 +424,9 @@ V3D.View.prototype = {
         }
 
         var camdir = this.camera.getWorldDirection();
-        for (var i = 0; i < this.scene.children.length; i++) {
-            if( this.scene.children[i].name.match( 'astgroup') ) {
-                var meteor = this.scene.children[i];
+        for (var i = 0; i < V3D.asteroids.children.length; i++) {
+            // if( this.scene.children[i].name.match( 'asteroids') ) {
+                var meteor = V3D.asteroids.children[i];
                 var matrix = new THREE.Matrix4();
                 var q = new THREE.Quaternion();
                 q.copy( meteor.quaternion );
@@ -437,7 +439,7 @@ V3D.View.prototype = {
                      meteor.children[ numast ].material.uniforms.lightdir.value.set( direction.x, direction.y, direction.z ) ;
                     
                 }
-            }
+       //     }
         }
 
         // if(V3D.bincam) {
@@ -1099,7 +1101,7 @@ V3D.View.prototype = {
             if( intersects[i].object.name.match( 'astmesh' ) ) {
 
                 if( intersects[i].object.userData.t === 0 ) {
-                    if ( intersects[i].object.parent.type == 'Scene' ) {
+                    if ( intersects[i].object.parent.name == 'asteroids' ) {
                         intersects[i].object.userData.atbd = 1;   
                     }
                     else {
@@ -1108,7 +1110,6 @@ V3D.View.prototype = {
                 }
                 else {
                     intersects[i].object.userData.t --;
-                    console.log( intersects[i].object.userData.t );
                 }            
 
             }

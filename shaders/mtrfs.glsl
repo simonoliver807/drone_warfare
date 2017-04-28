@@ -18,7 +18,6 @@
 precision highp float;
 precision highp int;
 uniform sampler2D texture1;
-uniform sampler2D texture2;
 uniform vec2 iResolution;
 uniform vec3 camera;
 uniform vec3 camdir;
@@ -28,19 +27,19 @@ uniform vec3 rockcolor;
 varying vec2 vUv;
 //varying vec3 vecNormal;
 varying vec3 vpos;
-//varying vec3 color2;
+varying vec3 color2;
 
 
 #define time .1
 #define FAR 30.
 #define ITR 60
 
-#define PRIMARY_INTENSITY 1.3
+#define PRIMARY_INTENSITY 2.3
 #define PRIMARY_CONCENTRATION 12.
 #define SECONDARY_INTENSITY 5.
 #define SECONDARY_CONCENTRATION .9
 
-#define SHADER_NAME Fakeglint
+//#define SHADER_NAME Fakeglint
 
 //The lack of reflcetions give it a different but still interesting look
 #define NO_REFLECTIONS
@@ -128,7 +127,7 @@ vec3 shade( vec3 pos, vec3 rd, vec3 normal, vec3 ligt )
     vec3 reflection = vec3(0);
     #else
    // vec3 reflection = texture(iChannel1,rf).rgb;
-    vec3 reflection = vec4( texture2D( texture2, rf.xy )).rgb;
+   // vec3 reflection = vec4( texture2D( texture2, rf.xy )).rgb;
     #endif
     float frnl = pow( 1.0+dot(normal,rd), 5.0 );
     frnl = mix( .0, .25, frnl );
@@ -195,7 +194,7 @@ void main( )
     col = shade( vpos, rd, n, ligt);
 
 
-    gl_FragColor = vec4( pow(col,vec3(.85)), 1.0) ;
+    gl_FragColor = vec4( pow(col,vec3(.85)) * color2, 1.0) ;
 
 
 
