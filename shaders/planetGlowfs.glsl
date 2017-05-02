@@ -19,7 +19,7 @@ float circle(in vec2 _st, in float _radius){
 
 void main() {
 
-	vec2 st = 1.0 * vUv;
+	  vec2 st = 1.0 * vUv;
 
     float pct = 0.0;
     pct = distance(st,vec2(0.5));

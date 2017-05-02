@@ -925,23 +925,21 @@ V3D.View.prototype = {
             var f;
             var u;
             var s;
+            var m = new THREE.Matrix4;
+            var te = m.elements;
+
+            this.f = currdir.normalize();
+
+            this.u.crossVectors( up, this.f ).normalize();
+
+            this.s.crossVectors( this.f, this.u ).normalize();
 
 
-                var m = new THREE.Matrix4;
-                var te = m.elements;
+            te[ 0 ] = this.u.x; te[ 4 ] = this.s.x; te[ 8 ] = this.f.x;
+            te[ 1 ] = this.u.y; te[ 5 ] = this.s.y; te[ 9 ] = this.f.y;
+            te[ 2 ] = this.u.z; te[ 6 ] = this.s.z; te[ 10 ] = this.f.z;
 
-                this.f = currdir.normalize();
-
-                this.u.crossVectors( up, this.f ).normalize();
-
-                this.s.crossVectors( this.f, this.u ).normalize();
-
-
-                te[ 0 ] = this.u.x; te[ 4 ] = this.s.x; te[ 8 ] = this.f.x;
-                te[ 1 ] = this.u.y; te[ 5 ] = this.s.y; te[ 9 ] = this.f.y;
-                te[ 2 ] = this.u.z; te[ 6 ] = this.s.z; te[ 10 ] = this.f.z;
-
-                return m;
+            return m;
     },
     addForce: function() {
 

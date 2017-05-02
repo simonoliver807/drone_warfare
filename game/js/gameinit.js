@@ -115,7 +115,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
     var start3render = 1;
 
     // asteroids
-    var numofast = 50;
+    var numofast = 200;
     var planetexarr = [];
     var rdir = [];
 
@@ -815,7 +815,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                                     drone.userData.ld = 1;
                                 }
                                 // change to live
-                                v3d.updateDrones( dbody, drone, dbody.ms );
+                            v3d.updateDrones( dbody, drone, dbody.ms );
                             }
                             if ( !drone.userData.ld && !drone.userData.rtm) {
                                 pddist.sub(containerMesh.position,meshs[i].position);
@@ -1416,7 +1416,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                     if( bodys[i].name == 'drone') {
                         numofdroneleft +=1;
                     }
-                    if( bodys[i].name == 'dphaser' || bodys[i].name.match('astgroup') || bodys[i].name.match('ms')   ) {
+                    if( bodys[i].name == 'dphaser' || bodys[i].name.match('ast') || bodys[i].name.match('ms')   ) {
                          world.removeRigidBody(bodys[i].body);
                          bodys.splice(i,1);
                          bodysNum -= 1;

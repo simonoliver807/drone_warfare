@@ -1,7 +1,7 @@
 "use strict";
 
 
-var url = 'http://10.188.103.165:9000/';
+var url = 'http://10.188.103.162:9000/';
 //var url = 'http://www.dronewar1.com'
 // change to live 
 
@@ -629,7 +629,7 @@ function changeInOut ( val ) {
 
 }) ();
 // change to live
-//runGame(0);
+runGame(0);
 //initgame();
 //var page = { target: { id: 'wanav' } };
 //navFunc(a);

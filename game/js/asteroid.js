@@ -13,7 +13,7 @@ define(['THREE','lib/improvedNoise'], function(THREE,IMPROVEDNOISE) {
 	    var newGroup;
 	    var obj;
 	    var radius;
-	    var t = 5;
+	    var t = 10;
   		var texture1;
   		var groupSplit;
   		var inoise = new IMPROVEDNOISE;
