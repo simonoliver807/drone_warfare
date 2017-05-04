@@ -332,11 +332,11 @@ V3D.View.prototype = {
     var starfs = document.getElementById( 'starfs' ).textContent;
     var starvs = document.getElementById( 'starvs' ).textContent;
     var material =  new THREE.ShaderMaterial({
-        uniforms: {
-            quat1: {
-                value: new THREE.Quaternion()
-            }
-        },
+        // uniforms: {
+        //     quat1: {
+        //         value: new THREE.Quaternion()
+        //     }
+        // },
         vertexShader: starvs,
         fragmentShader: starfs,
         transparent: true,
@@ -387,7 +387,7 @@ V3D.View.prototype = {
 
             this.controls.threemm( this.mseCords );
         }
-        this.applyRot();
+        // this.applyRot();
 
 
         // shader updates
@@ -404,10 +404,19 @@ V3D.View.prototype = {
             this.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value += time/1000000000;
         }
 
-        this.tmpangle += 0.1;
-        var q1 = new THREE.Quaternion();
-        q1.setFromAxisAngle( new THREE.Vector3(0,1,0), this.tmpangle);
-        this.starpoint.material.uniforms.quat1.value.set( q1.x, q1.y, q1.z, q1.w );
+        this.tmpangle += 0.01;
+        var planegeo = new THREE.PlaneGeometry(250, 250);
+        for ( var star = 0; star < this.starpoint.geometry.attributes.position.array.length; star+= 18 ) {
+             var pos = this.starpoint.geometry.attributes.position.array;
+            var v1 = new THREE.Vector3( pos[ star ], pos[ star+1], pos[ star+2 ]  );
+            var v2 = new THREE.Vector3().copy( v1 ).normalize();
+            v1.applyAxisAngle( new THREE.Vector3( v2.x, v2.y, v2.z ), this.tmpangle );
+            pos[ star ] = v1.x;
+            pos[ star + 1 ] = v1.y;
+            pos[ star + 2 ] = v1.z;
+         }
+         this.starpoint.geometry.attributes.position.needsUpdate = true;
+
 
 
         var helpercam = 0;
@@ -1248,6 +1257,7 @@ V3D.View.prototype = {
         ///////////////////////////////////
 
         var rb = dbody.body;
+        var adddphas = 0;
 
         if(!drone.userData.rtm){
             var rblv = rb.linearVelocity.length();
@@ -1355,6 +1365,7 @@ V3D.View.prototype = {
                 var rbdphaser = this.addPhaser(body, dphaser);
                 rbdphaser.body.linearVelocity.addTime(heading, this.world.timeStep);
                 drone.userData.dpcnt = this.randMinMax(0,1000);
+                adddphas = 1;
             }
             else {
                 drone.userData.dpcnt +=1;
@@ -1401,6 +1412,7 @@ V3D.View.prototype = {
 
         }
         drone.userData.bincount ? drone.userData.bincount = 0 : drone.userData.bincount = 1;
+        return adddphas;
 
     },
     dronedist: function(val, distms, rb) {

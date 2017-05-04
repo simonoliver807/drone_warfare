@@ -709,6 +709,8 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                                     }
                                     if(mesh.name = 'dphaser'){
                                         v3d.scene.children[V3D.mesharrpos.dphasers].remove(mesh);
+                                        bodysNum --;
+                                        meshNum --;
                                     }
                          
                                 }
@@ -815,7 +817,11 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                                     drone.userData.ld = 1;
                                 }
                                 // change to live
-                            v3d.updateDrones( dbody, drone, dbody.ms );
+                            var dphas = v3d.updateDrones( dbody, drone, dbody.ms );
+                            if ( dphas ) {
+                                bodysNum ++;
+                                meshNum ++;
+                            }
                             }
                             if ( !drone.userData.ld && !drone.userData.rtm) {
                                 pddist.sub(containerMesh.position,meshs[i].position);
@@ -1107,7 +1113,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                     }
                     V3D.asteroids.add( ast );
                 }
-                v3d.scene.add( V3D.asteroids );
+                if ( startlevel ) { v3d.scene.add( V3D.asteroids ); }
                 V3D.raycastarr.push( V3D.asteroids );
                 // var ast;
                 // var astposarr = [];
@@ -1381,7 +1387,6 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                     var meshnum = obj.children.length;
                     while( meshnum --) {
                         this.removegeomat(obj.children[ meshnum ]);
-                         console.log( ' remove group');
                          obj.remove( obj.children[ meshnum ] );
                     }
                 }
