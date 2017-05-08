@@ -1,4 +1,4 @@
-define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
+define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3D,GAMECORE,ASTEROID,PLANETEX) {
 
     "use strict";
       
@@ -15,6 +15,10 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
     var pause = 0;
     var v3d = new V3D.View();
     var gamecore = new GAMECORE;
+    var asteroid = new ASTEROID;
+    asteroid.initMat();
+    var planetex = new PLANETEX;
+    planetex.initMat();
 
 
     
@@ -120,6 +124,11 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
     var tmulti1 = 0;
     var tmulti2 = 0;
 
+    // asteroids
+    var numofast = 200;
+    var planetexarr = [];
+    var rdir = [];
+
 
     // change to live 
     // var changelevel;
@@ -157,6 +166,22 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
 
                 // change to live
                 // changelevel = 2;
+
+                                // random directions for the explosion
+
+                for ( var i = 0; i < 20; i++ ) {
+                    var dir = new OIMO.Vec3();
+                    if ( i % 2) {
+                        var minusarr = [1,1,1];
+                        var rand123 = this.randMinMax(0, 2);
+                        minusarr[rand123] = -1
+                        dir.set( Math.random() * 10 * minusarr[0], Math.random() * 10 * minusarr[1], Math.random() * 10 * minusarr[2] );
+                    }
+                    else {
+                        dir.set( Math.random() * 10, Math.random() * 10, Math.random() * 10 );
+                    }
+                    rdir.push(dir);
+                }
 
             },
 
@@ -268,7 +293,8 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
 
                    if(!containerMesh){
                        firstRender = { ms1: 0, ms2: 0 };
-                       var dist = v3d.tvec();                           
+                       var dist = v3d.tvec();
+                       var astcount = 0;                       
                        // make sure the two mesh and body array match
                            // container to hold three.js objects
                             for(var b = 0; b < bodys.length; b++){
@@ -401,7 +427,10 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                                             V3D.ms2_1arrpos = i;
                                         }
                                     }
-
+                                }
+                                if ( bodys[b].name.match( 'astgroup' ) ) {
+                                    meshs.push( V3D.asteroids.children[ astcount ] );
+                                    astcount ++;
                                 }
                             }
 
@@ -421,6 +450,9 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                             }
 
                             V3D.raycastarr.push(v3d.scene.children[v3d.dronenum]);
+                            for (var i = 0; i < V3D.asteroids.length; i++) {
+                                V3D.asteroids[i]
+                            }
                             for(var i = 1; i < v3d.scene.children[v3d.dronenum].children.length;i++){
                                 meshs.push(v3d.scene.children[v3d.dronenum].children[i]);
                             }
@@ -487,6 +519,8 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                             V3D.exdrone1.userData.active = false;
                         }
 
+
+
                     var n1, n2;
                     // var name1 = 'drone';
                     // var name2 = 'phaser';
@@ -546,6 +580,29 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                            V3D.grouppart.children[i].geometry.verticesNeedUpdate = true;
                         }
                     }
+
+                    var i = planetexarr.length;
+                    while( i --) {
+                        if( worldcount - planetexarr[i].userData.timecreated > 0.0008 ) {
+                            var exast = planetexarr[i].children;
+                            var numex = exast.length; 
+                            while( numex --) {
+                                exast[numex].material.dispose;
+                                exast[numex].geometry.dispose;
+                                planetexarr[i].remove(exast[numex])
+                            }  
+                            v3d.scene.remove(planetexarr[i]) 
+                            planetexarr.splice(i,1);
+                        }
+                        else {
+                            var exast = planetexarr[i].children;
+                            for(var numarr = 0; numarr< exast.length; numarr++){
+                                exast[numarr].position.x += rdir[numarr].x;
+                                exast[numarr].position.y += rdir[numarr].y;
+                                exast[numarr].position.z += rdir[numarr].z;
+                            }
+                        }
+                    }
                     
                     // change to live
                      // perf = world.performance.show();
@@ -567,6 +624,80 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                     while (i--){
                         body = bodys[i];
                         mesh = meshs[i];
+
+
+                         // check if asteroid needs breaking down, destroying, or respawning
+                        if ( mesh.name.match( 'ast' ) ) {
+                            if( mesh.userData.atbd ) {
+                                var m;
+                                mesh.type == 'Group' ? m = asteroid.breakDown( mesh, body ) : m = 0;
+                                if ( m ) {
+                                    for (var astarrnum = 0; astarrnum < m.length; astarrnum++) {
+                                        
+                                    
+                                       // v3d.scene.add(m[ astarrnum ]);
+                                        V3D.asteroids.add( m[ astarrnum ] );
+                                        bodys[ bodysNum ] = new OIMO.Body( { move: true, name: m[ astarrnum ].name, noSleep: true, size: [ 30, 30, 30 ], pos: [ m[ astarrnum ].position.x, m[ astarrnum ].position.y, m[ astarrnum ].position.z ], type: 'cylinder', world: world } );
+                                        bodysNum ++;
+                                        meshs.push( m[ astarrnum ] );
+                                        V3D.raycastarr.push( m[ astarrnum ] );
+                                        var rnum = Math.random();
+                                        if ( astarrnum ) { rnum *= -1; }
+                                        bodys[ bodysNum - 1].body.linearVelocity.set( rnum, rnum, rnum );
+                                        bodys[ bodysNum - 1].body.newRotation.set( rnum, rnum, rnum );
+                                        if( mesh.children.length === 1) {
+                                            var newmesh = mesh.children[0];
+                                            newmesh.position.set( mesh.x, mesh.y, mesh.z);
+                                            v3d.scene.add( newmesh );
+                                            v3d.scene.remove( mesh )
+                                            meshs[i] = newmesh;
+                                            body.name = mesh.name;
+                                            V3D.asteroids.add( meshs[i] );
+                                        }
+                                    }
+
+                                }
+                                if ( m === 0 ){
+
+                                    bodys.splice(i,1);
+                                    meshs.splice(i,1);
+                                    mesh.geometry.dispose();
+                                    mesh.material.dispose();
+                                    V3D.asteroids.remove( mesh );
+                                    for (var num = 0; num < V3D.raycastarr.length; num++) {
+                                        if ( V3D.raycastarr[num].name == mesh.name ) {
+                                            V3D.raycastarr.splice(num, 1);
+                                        }
+                                    }
+                                    bodysNum -= 1;
+                                    world.removeRigidBody(body.body);
+                                    var a123 = planetex.create( 10 );
+                                    a123.position.copy( mesh.position);
+                                    a123.name = 'pex';
+                                    a123.userData.timecreated = worldcount;
+                                    v3d.scene.add( a123 );
+                                    planetexarr.push( a123 );
+                                }
+
+                            }
+                            if( !v3d.boxworld.containsPoint( mesh.position ) ) {
+                                var bpos = body.body.position;
+                                bpos.multiplyScalar( -1 );
+                                var point = [ 'x', 'y', 'z' ];
+                                var pointnum = 3;
+                                while( pointnum --) {
+                                    
+                                    if( bpos[ point[ pointnum ] ] > 150 || bpos[ point[ pointnum ] ] < -150 ) {
+                                        bpos[ point[ pointnum ] ] < 0 ? bpos[ point[ pointnum ] ] = -149 : bpos[ point[ pointnum ] ] = 149 ;
+                                    }
+
+                                }
+
+                                mesh.position.copy( bpos ).multiplyScalar( 100 );
+                                console.log('outside world');
+                            }
+
+                       }
 
                         if( mesh.name == 'phaser' || mesh.name == 'dphaser' ) {
 
@@ -689,6 +820,8 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                                     }
                                     if(mesh.name = 'dphaser'){
                                         v3d.scene.children[V3D.mesharrpos.dphasers].remove(mesh);
+                                        bodysNum --;
+                                        meshNum --;
                                     }
                          
                                 }
@@ -812,7 +945,11 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                             if( drone.userData.ld ) {
                                 if ( ( host && dbody.ld != 2 ) || ( !host && dbody.ld != 1 ) ) {
                                     // change to live
-                                    v3d.updateDrones( dbody, drone, dbody.ms );
+                                    var dphas = v3d.updateDrones( dbody, drone, dbody.ms );
+                                    if ( dphas ) {
+                                        bodysNum ++;
+                                        meshNum ++;
+                                    }
                                     // reset the server rtm after drone has rtm'd
                                     if ( drone.userData.ld == 0 && drone.userData.rtm == 0 ) {
                                         dbody.rtm = 0;
@@ -1120,6 +1257,36 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                     bodysNum += 1;
                 }
 
+
+                // create asteroids
+                var count = 0;
+                var dir = [ v3d.planetpos, v3d.tvec( ms[ 0 ].pos[0], ms[ 0 ].pos[ 1 ], ms[ 0 ].pos[ 2 ] ), v3d.tvec(0,0,0) ]; 
+                var setastnum = [ 9, 7 , 5 , 3 , 2];
+                for (var j = 0; j < numofast; j++) {
+                    var ast = asteroid.create( setastnum[ count ] );
+                    ast.name = 'astgroup' + j;
+                    var x = this.randMinMax(-15000,15000);
+                    var y = this.randMinMax(-15000,15000);
+                    var z = this.randMinMax(-15000,15000);
+                    ast.position.set( x, y, z );
+                    v3d.scene.add( ast );
+                    bodys[ bodysNum ] = new OIMO.Body( { move: true, name: 'astgroup'+j, noSleep: true, size: [ 70, 50 ], pos: [ x, y, z ], type: 'cylinder', world: world, density: 1000 } );
+                    bodysNum ++;
+                    var astdir = v3d.tvec();
+                    var rot = Math.random();
+                    astdir.subVectors( ast.position, dir[ this.randMinMax( 0, 2 ) ] ).normalize();
+                    var magnitude = this.randMinMax( -20, -30);
+                    astdir.multiplyScalar(  magnitude  );
+                    bodys[ bodysNum -1 ].body.linearVelocity.addTime( astdir, world.timeStep);
+                    bodys[ bodysNum -1 ].body.angularVelocity.set( Math.random(), Math.random(), Math.random(), Math.random());
+                    if (  V3D.asteroids.children.length !== 0 && V3D.asteroids.children.length % 10 == 0 ){
+                        count++;
+                    }
+                    V3D.asteroids.add( ast );
+                }
+                if ( startlevel ) { v3d.scene.add( V3D.asteroids ); }
+                V3D.raycastarr.push( V3D.asteroids );
+
                var cylArr = [];
                var msnum = 0;
                var numofms = ms.length;
@@ -1266,7 +1433,7 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                 if(numofdroneleft) {
                     numofdrone += numofdroneleft;
                 }
-                numobj =  ms.length + 6;
+                numobj =  ms.length + 7;
 
                // removed so i can load player ship for ply2 if(!V3D.bincam){ numobj -= 1};
                 if(startlevel) {
@@ -1358,6 +1525,23 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                     return pause;
                 }
             },
+            removegeomat: function( obj ) {
+
+                if( obj.children.length !== 0 ) {
+                    var meshnum = obj.children.length;
+                    while( meshnum --) {
+                        this.removegeomat(obj.children[ meshnum ]);
+                         obj.remove( obj.children[ meshnum ] );
+                    }
+                }
+                else {
+                    if( obj.type == 'Mesh'){
+                        obj.geometry.dispose();
+                        obj.material.dispose();
+                    }
+                }
+                
+            },
             levelGen: function( restart ) {
                 restart ? x982y = 1 : x982y += 1 ;
                 if ( !gamecore.respawning ){
@@ -1385,19 +1569,20 @@ define(['oimo','v3d','multi/gamecore'], function(OIMO,V3D,GAMECORE) {
                     if( bodys[i].name == 'drone') {
                         numofdroneleft +=1;
                     }
-                    if( bodys[i].name == 'dphaser' ) {
+                    if( bodys[i].name == 'dphaser' || bodys[i].name.match('ast') || bodys[i].name.match('ms')   ) {
                          world.removeRigidBody(bodys[i].body);
                          bodys.splice(i,1);
                          bodysNum -= 1;
                     }
-                    if( bodys[i] ) {
-                        if( bodys[i].name.match('ms') ){
-                            world.removeRigidBody(bodys[i].body);
-                            bodys.splice(i,1);
-                            bodysNum -= 1;
-                        }
-                    }
+                    // if( bodys[i] ) {
+                    //     if( bodys[i].name.match('ms') ){
+                    //         world.removeRigidBody(bodys[i].body);
+                    //         bodys.splice(i,1);
+                    //         bodysNum -= 1;
+                    //     }
+                    // }
                 }
+                this.removegeomat( V3D.asteroids );
                 while(world.contacts!==null){
                     world.removeContact(world.contacts);
                 }

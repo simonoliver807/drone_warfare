@@ -13,11 +13,12 @@ V3D.exdrone2;
 V3D.exdrone3;
 V3D.phasers;
 V3D.dphasers;
-V3D.mesharrpos = {phasers:0,dphasers:0,pl:0,planetGlow:0,shp1:0};
+V3D.mesharrpos = {phasers:0,dphasers:0,pl:0,planetGlow:0,shp1:0,gs:0};
 V3D.grouppart = new THREE.Object3D();
 V3D.ms1phaser = new THREE.Group();
 V3D.ms2phaser = new THREE.Group();
 V3D.asteroids = new THREE.Group();
+V3D.stars = new THREE.Group();
 V3D.asteroids.name = 'asteroids';
 V3D.percom = document.getElementById('perCom');
 // V3D.mspdown = new Audio('audio/pdown.mp3');
@@ -229,6 +230,14 @@ V3D.View.prototype = {
         // create a 3d box constant to check if asteroid is in world space
         this.boxworld = new THREE.Box3( new THREE.Vector3(-15000, -15000, -15000), new THREE.Vector3(15000, 15000, 15000) );
 
+        this.numStars = 100;
+
+        this.loadOBJ('',this.scene, { image: 'planets/star.obj', name: 'greenstar', mtl: 'planets/star.mtl', pos: [ 0, 0, -10 ] } );
+        this.gsa = 0;
+        this.gsaxis = new THREE.Vector3( 0, 0, 1 );
+        // collision between stars and ship
+        this.distSpheres;
+        this.shp1radius;
 
     },
     initLight:function(){
@@ -249,102 +258,105 @@ V3D.View.prototype = {
     },
     initPoints: function() {
 
-      //   var particles = 1500;
-      //   var geometry = new THREE.BufferGeometry();
-      //   var positions = new Float32Array( particles * 3 );
 
-      //   for( var i = 0; i < positions.length; i++) {
-      //       var x = this.randMinMax(-35000,35000);
-      //       var y = this.randMinMax(-35000,35000);
-      //       var z = this.randMinMax(-35000,35000);
-      //       positions[ i ]     = x;
-      //       positions[ i + 1 ] = y;
-      //       positions[ i + 2 ] = z;
-      //   }
-      //   geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
-      // //  geometry.computeBoundingSphere();
-      //   var points = new THREE.Points( geometry, new THREE.PointsMaterial( { size: 15, color: '#ffffff' } ) );
+    // var sqg = new THREE.BufferGeometry();
 
-      //   points.name = 'points';
-      //   this.scene.add( points );
+    // // laser res ***************
+    // //var planegeo = new THREE.PlaneGeometry( window.innerWidth, window.innerHeight );
+    // // square res **************
+    // var planegeo = new THREE.PlaneGeometry(250, 250);
 
-    var sqg = new THREE.BufferGeometry();
 
-    // laser res ***************
-    //var planegeo = new THREE.PlaneGeometry( window.innerWidth, window.innerHeight );
-    // square res **************
+
+    // var squares = 300;
+    // var vertices = new Float32Array( squares * 3 * 6);
+    // var uv = new Float32Array ( squares * 2 * 6)
+    // var pos = 0;
+    // var centroid = new THREE.Vector3();
+    // for ( var i = 0; i < vertices.length ; i+=18) {
+    //     var sqg1 = new THREE.BufferGeometry();
+    //     sqg1.fromGeometry( planegeo );
+    //     centroid.set( 0, 0, 0 );
+
+    //     var x = this.randMinMax(-15000,15000);
+    //     var y = this.randMinMax(-15000,15000);
+    //     var z = this.randMinMax(-15000,15000);
+    //     sqg1.translate(x, y, z);
+
+    //     vertices[i] = sqg1.attributes.position.array[0];
+    //     vertices[i+ 1] = sqg1.attributes.position.array[1];
+    //     vertices[i+ 2] = sqg1.attributes.position.array[2];
+    //     vertices[i+ 3] = sqg1.attributes.position.array[3];
+    //     vertices[i+ 4] = sqg1.attributes.position.array[4];
+    //     vertices[i+ 5] = sqg1.attributes.position.array[5];
+    //     vertices[i+ 6] = sqg1.attributes.position.array[6];
+    //     vertices[i+ 7] = sqg1.attributes.position.array[7];
+    //     vertices[i+ 8] = sqg1.attributes.position.array[8];
+    //     vertices[i+ 9] = sqg1.attributes.position.array[9];
+    //     vertices[i+ 10] = sqg1.attributes.position.array[10];
+    //     vertices[i+ 11] = sqg1.attributes.position.array[11];
+    //     vertices[i+ 12] = sqg1.attributes.position.array[12];
+    //     vertices[i+ 13] = sqg1.attributes.position.array[13];
+    //     vertices[i+ 14] = sqg1.attributes.position.array[14];
+    //     vertices[i+ 15] = sqg1.attributes.position.array[15];
+    //     vertices[i+ 16] = sqg1.attributes.position.array[16];
+    //     vertices[i+ 17] = sqg1.attributes.position.array[17];
+
+    //     var p = i;
+    //     while( p < i + 18 ) {
+    //         centroid.add( new THREE.Vector3( vertices[ p ], vertices[ p + 1 ], vertices[ p + 2 ] ) );
+    //         p += 3;
+    //     }
+    //     var normcent = new THREE.Vector3();
+    //     normcent.copy( centroid.divideScalar( 6 ) );
+    //     this.centroidarr.push( normcent );
+
+    // }
+    // for( var uv_i = 0; uv_i < uv.length; uv_i += 12 ) {
+
+    //     uv[uv_i] = sqg1.attributes.uv.array[0];
+    //     uv[uv_i + 1] = sqg1.attributes.uv.array[1];
+    //     uv[uv_i + 2] = sqg1.attributes.uv.array[2];
+    //     uv[uv_i + 3] = sqg1.attributes.uv.array[3];
+    //     uv[uv_i + 4] = sqg1.attributes.uv.array[4];
+    //     uv[uv_i + 5] = sqg1.attributes.uv.array[5];
+    //     uv[uv_i + 6] = sqg1.attributes.uv.array[6];
+    //     uv[uv_i + 7] = sqg1.attributes.uv.array[7];
+    //     uv[uv_i + 8] = sqg1.attributes.uv.array[8];
+    //     uv[uv_i + 9] = sqg1.attributes.uv.array[9];
+    //     uv[uv_i + 10] = sqg1.attributes.uv.array[10];
+    //     uv[uv_i + 11] = sqg1.attributes.uv.array[11];
+    // }
+
+
+    // sqg.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+    // sqg.addAttribute( 'uv', new THREE.BufferAttribute( uv, 2 ) );
+
+
     var planegeo = new THREE.PlaneGeometry(250, 250);
-
-
-
-    var squares = 300;
-    var vertices = new Float32Array( squares * 3 * 6);
-    var uv = new Float32Array ( squares * 2 * 6)
-    var pos = 0;
-    for ( var i = 0; i < vertices.length ; i+=18) {
-        var sqg1 = new THREE.BufferGeometry();
-        sqg1.fromGeometry( planegeo );
-
-        var x = this.randMinMax(-15000,15000);
-        var y = this.randMinMax(-15000,15000);
-        var z = this.randMinMax(-15000,15000);
-        sqg1.translate(x, y, z);
-
-        vertices[i] = sqg1.attributes.position.array[0];
-        vertices[i+ 1] = sqg1.attributes.position.array[1];
-        vertices[i+ 2] = sqg1.attributes.position.array[2];
-        vertices[i+ 3] = sqg1.attributes.position.array[3];
-        vertices[i+ 4] = sqg1.attributes.position.array[4];
-        vertices[i+ 5] = sqg1.attributes.position.array[5];
-        vertices[i+ 6] = sqg1.attributes.position.array[6];
-        vertices[i+ 7] = sqg1.attributes.position.array[7];
-        vertices[i+ 8] = sqg1.attributes.position.array[8];
-        vertices[i+ 9] = sqg1.attributes.position.array[9];
-        vertices[i+ 10] = sqg1.attributes.position.array[10];
-        vertices[i+ 11] = sqg1.attributes.position.array[11];
-        vertices[i+ 12] = sqg1.attributes.position.array[12];
-        vertices[i+ 13] = sqg1.attributes.position.array[13];
-        vertices[i+ 14] = sqg1.attributes.position.array[14];
-        vertices[i+ 15] = sqg1.attributes.position.array[15];
-        vertices[i+ 16] = sqg1.attributes.position.array[16];
-        vertices[i+ 17] = sqg1.attributes.position.array[17];
-
-    }
-    for( var uv_i = 0; uv_i < uv.length; uv_i += 12 ) {
-
-        uv[uv_i] = sqg1.attributes.uv.array[0];
-        uv[uv_i + 1] = sqg1.attributes.uv.array[1];
-        uv[uv_i + 2] = sqg1.attributes.uv.array[2];
-        uv[uv_i + 3] = sqg1.attributes.uv.array[3];
-        uv[uv_i + 4] = sqg1.attributes.uv.array[4];
-        uv[uv_i + 5] = sqg1.attributes.uv.array[5];
-        uv[uv_i + 6] = sqg1.attributes.uv.array[6];
-        uv[uv_i + 7] = sqg1.attributes.uv.array[7];
-        uv[uv_i + 8] = sqg1.attributes.uv.array[8];
-        uv[uv_i + 9] = sqg1.attributes.uv.array[9];
-        uv[uv_i + 10] = sqg1.attributes.uv.array[10];
-        uv[uv_i + 11] = sqg1.attributes.uv.array[11];
-    }
-
-
-    sqg.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    sqg.addAttribute( 'uv', new THREE.BufferAttribute( uv, 2 ) );
     var starfs = document.getElementById( 'starfs' ).textContent;
     var starvs = document.getElementById( 'starvs' ).textContent;
     var material =  new THREE.ShaderMaterial({
-        // uniforms: {
-        //     quat1: {
-        //         value: new THREE.Quaternion()
-        //     }
-        // },
         vertexShader: starvs,
         fragmentShader: starfs,
         transparent: true,
         side: THREE.DoubleSide
     } );
-    this.starpoint = new THREE.Mesh( sqg, material );
-    this.starpoint.name = 'starpoints';
-    this.scene.add( this.starpoint );
+    for (var str = 0; str < this.numStars; str++) {
+     
+        var geo = planegeo.clone();
+        var mesh = new THREE.Mesh( geo, material );
+        var x = this.randMinMax(-15000,15000);
+        var y = this.randMinMax(-15000,15000);
+        var z = this.randMinMax(-15000,15000);
+        mesh.position.set( x, y, z );
+        mesh.name = 'star';
+        V3D.stars.add( mesh );
+
+    }
+
+
+    this.scene.add( V3D.stars);
 
 
 
@@ -394,28 +406,70 @@ V3D.View.prototype = {
         var planets = this.scene.children[ V3D.mesharrpos.pl ].children;
         for ( var i = 0; i < planets.length; i++ ){
             if( planets[i].name.match('mercury1' ) ){
-                var time = performance.now();
-                planets[0].material.uniforms.u_time.value = time/1000;
+                planets[0].material.uniforms.u_time.value = performance.now()/1000;
             }
         }
-        this.scene.children[V3D.mesharrpos.planetGlow].lookAt(this.camera.position);
         if( this.scene.children[V3D.mesharrpos.planetGlow].material.visible ){
-
-            this.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value += time/1000000000;
+            this.scene.children[V3D.mesharrpos.planetGlow].lookAt(this.camera.position);
+            this.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value += performance.now()/1000000000;
         }
 
-        this.tmpangle += 0.01;
-        var planegeo = new THREE.PlaneGeometry(250, 250);
-        for ( var star = 0; star < this.starpoint.geometry.attributes.position.array.length; star+= 18 ) {
-             var pos = this.starpoint.geometry.attributes.position.array;
-            var v1 = new THREE.Vector3( pos[ star ], pos[ star+1], pos[ star+2 ]  );
-            var v2 = new THREE.Vector3().copy( v1 ).normalize();
-            v1.applyAxisAngle( new THREE.Vector3( v2.x, v2.y, v2.z ), this.tmpangle );
-            pos[ star ] = v1.x;
-            pos[ star + 1 ] = v1.y;
-            pos[ star + 2 ] = v1.z;
-         }
-         this.starpoint.geometry.attributes.position.needsUpdate = true;
+        for( var star = 0; star < this.numStars; star++ ) {
+
+            V3D.stars.children[ star ].lookAt( this.camera.position );
+
+        }
+        if ( this.containerMesh !== 0 ) {
+            for( var gs = 0; gs < this.scene.children[V3D.mesharrpos.gs].children.length; gs ++ ) {
+
+                this.distSpheres = this.containerMesh.position.distanceTo( this.scene.children[V3D.mesharrpos.gs].children[gs].position );
+               if ( this.scene.children[V3D.mesharrpos.gs].children[gs].userData.timealive > 30 ||  this.distSpheres < 10 ) {
+                    this.scene.children[V3D.mesharrpos.gs].children[gs].material.dispose();
+                    this.scene.children[V3D.mesharrpos.gs].children[gs].geometry.dispose();
+                    this.scene.children[V3D.mesharrpos.gs].remove( this.scene.children[V3D.mesharrpos.gs].children[gs] );
+                    this.bodys[0].health += 10;
+               }
+               else {
+                   this.gsa > 6.28 ? this.gsa = 0 : this.gsa += 0.008;
+                   this.scene.children[V3D.mesharrpos.gs].children[gs].quaternion.setFromAxisAngle( this.gsaxis, this.gsa );
+                   this.scene.children[V3D.mesharrpos.gs].children[gs].userData.timealive += 0.01;
+                }
+
+            }
+        }
+           //  var axis = new THREE.Vector3();
+           //  var tmppos1 = new THREE.Vector3();
+           //  this.tmppos2.x += 1;
+           //  this.tmppos2.z += 2;
+           //  var tmppos2 = new THREE.Vector3();
+           //  tmppos2.copy( this.tmppos2 ).normalize(); 
+
+            
+           // // tmppos2.copy( this.camera.position ).normalize();
+           //  var q = new THREE.Quaternion();
+           //  this.starpoint.geometry.attributes.position.array = this.starpointvet.slice(0);
+           //  var pos = this.starpoint.geometry.attributes.position.array;
+           //  var c = -1;
+           //  for ( var star = 0; star < this.starpoint.geometry.attributes.position.array.length; star+= 3 ) {
+
+           //      if ( star % 18 === 0 ) {
+           //          c ++;
+           //          tmppos1.copy( this.centroidarr[c] ).normalize();
+           //          axis.crossVectors( tmppos1, tmppos2 );
+           //          var angle = tmppos1.dot( tmppos2 );
+           //          var q = new THREE.Quaternion().setFromAxisAngle( axis, angle);
+           //      }
+
+           //      var v1 = new THREE.Vector3( pos[ star ], pos[ star+1], pos[ star+2 ]  );
+           //      v1.applyQuaternion(q);
+           //     // v1.applyAxisAngle( this.centroidarr[ c ] , this.tmpangle );
+           //      pos[ star ] = Math.floor( v1.x );
+           //      pos[ star + 1 ] = Math.floor( v1.y );
+           //      pos[ star + 2 ] = Math.floor( v1.z );
+
+
+           //   }
+
 
 
 
@@ -1574,7 +1628,7 @@ V3D.View.prototype = {
         // };
 
         // if( obj[0] || obj.name.charAt(0) == 'e' || obj.name == 'phasers' || obj.name == 'dphasers' || obj.name == 'mothership') {
-        if( obj[0] || obj.name.charAt(0) == 'e' || obj.name == 'phasers' || obj.name == 'dphasers') {
+        if( obj[0] || obj.name.charAt(0) == 'e' || obj.name == 'phasers' || obj.name == 'dphasers' || obj.name == 'greenstar') {
             if(obj[0]){ var image = obj[0].image;}
             else {var image = obj.image;}
             var loader = new THREE.OBJLoader( );
@@ -1647,6 +1701,15 @@ V3D.View.prototype = {
                     V3D.dphasers.children[0].name = 'dphaser';
                     V3D.mesharrpos.dphasers = scene.children.length;
                     scene.add(V3D.dphasers);
+                }
+                if ( object.name == 'greenstar' ) {
+                    V3D.mesharrpos.gs = scene.children.length;
+                    object.children[0].material = new THREE.MeshPhongMaterial( { color: new THREE.Color( 0, 1, 0) } );
+                    object.children[0].material.side = THREE.DoubleSide;
+                    object.children[0].visible = true;
+                    object.children[0].position.set( 10000, 10000, 10000)
+                    scene.add( object );
+                    //scene.add(new THREE.FaceNormalsHelper(object.children[0], 2, 0x00ff00, 1));
                 }
                 V3D.startRender +=1;
             }, V3D.View.prototype.onProgress, V3D.View.prototype.onError);
