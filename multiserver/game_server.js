@@ -162,7 +162,7 @@ function game_server ( levels ) {
       this.games[data.gid].firststream = 2;
       if ( data.x982y == 1 ) {
         this.games[data.gid].levelloaded = 0;
-        this.games[data.gid].respawn( data.id );
+        this.games[data.gid].respawn( data );
       }
       if ( data.x982y != 1 ) {
         this.games[data.gid].levelloaded = 2;

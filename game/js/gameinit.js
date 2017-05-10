@@ -114,6 +114,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
     var numofast = 200;
     var planetexarr = [];
     var rdir = [];
+    var planetexname;
 
 
         return {
@@ -146,7 +147,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
 
                 // random directions for the explosion
 
-                for ( var i = 0; i < 20; i++ ) {
+                for ( var i = 0; i <= 400; i++ ) {
                     var dir = new OIMO.Vec3();
                     if ( i % 2) {
                         var minusarr = [1,1,1];
@@ -254,6 +255,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
 
                                                var q = v3d.msla(bodys[b].body);
                                                bodys[b].body.setQuaternion(q);
+
 
                                                 // if ( bodys[b].name == 'ms2'){
                                                 //     var q = v3d.tquat();
@@ -439,9 +441,9 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                               // }
                             //}
                             if((n1==name3 && n2==name4) || (n2==name3 && n1==name4)){
-                                //console.log('health' + health );
-                                bodys[0].health -= 1;
-                                if( bodys[0].health === 0){ 
+                                //console.log('r1' + r1 );
+                                bodys[0].r1 -= 1;
+                                if( bodys[0].r1 === 0){ 
                                     endsequence = -200; 
 
                                         document.getElementById('respawnImg').style.display = 'block';
@@ -517,26 +519,33 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
 
                    var mesh, body;
 
+                    bodys[2].body.position.x += 0.1;
+                    var tempx = 4.0 * bodys[2].body.position.x * ( 1.0 - bodys[2].body.position.x);
+                    bodys[2].body.position.y = tempx;
+
                     var i = bodys.length;
                     while (i--){
                         body = bodys[i];
                         mesh = meshs[i];
 
                         // check if asteroid needs breaking down, destroying, or respawning
-                        if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > 0.65 ){
+                        if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > 1.5 && endsequence > 0 ){
 
-                            var a123 = planetex.create( 100 );
-                            a123.position.set( 500, 10, 10000);
+                            // radius is set in the module
+                            var a123 = planetex.create( true, 250 );
+                            a123.name = 'pex';
+                            a123.userData.timecreated = worldcount + 0.001;
                             var planets = v3d.scene.children[ V3D.mesharrpos.pl ].children;
                             for ( var i = 0; i < planets.length; i++ ){
-                                if( planets[i].name.match('mercury1' ) ){
-                                    planets[0].visible = false;
+                                if( planets[i].name == planetexname ){
+                                    planets[i].material.visible = false;
+                                    a123.position.copy( planets[i].position);
                                 }
                             }
+                            document.getElementById('respawnImg').style.display = 'block';
                             endsequence = -200;
                             planetexarr.push( a123 );
                             v3d.scene.add( a123 );
-                            v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value = 0.59;
 
                         }
                         if ( mesh.name.match( 'ast' ) ) {
@@ -583,7 +592,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                                     }
                                     bodysNum -= 1;
                                     world.removeRigidBody(body.body);
-                                    var a123 = planetex.create( 10 );
+                                    var a123 = planetex.create();
                                     a123.position.copy( mesh.position);
                                     a123.name = 'pex';
                                     a123.userData.timecreated = worldcount;
@@ -937,7 +946,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                 }
                 this.levelobj = data;
 
-
+                numofast = this.levelobj.numofast;
 
                 pdown = this.levelobj.dow;
                 v3d.pglowt = this.levelobj.pglowt;
@@ -984,6 +993,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                         if( spheres[i].class == 'planet' && spheres[i].name.match('1') ){
 
                             v3d.scene.children[V3D.mesharrpos.planetGlow].position.set( spheres[i].pos[0], spheres[i].pos[1], spheres[i].pos[2] );
+                            planetexname = spheres[i].name;
 
                         }
                         spheres[i].world = world;
@@ -1004,7 +1014,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                             }
                         }
                         if( bodys[bodysNum].name == 'shp1' ){
-                            bodys[ bodysNum ].health = 90;
+                            bodys[ bodysNum ].r1 = 90;
                             v3d.setBodys(bodys[bodysNum]);
                         }
                         bodysNum += 1;
@@ -1427,7 +1437,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                 bodys[0].body.position.set(0,0,0);
                 // change to live
                 if ( restart ) {
-                    bodys[0].health = 90; 
+                    bodys[0].r1 = 90; 
                 }
                 startlevel = 0;
                 v3d.ms1y.t = 0;

@@ -5,6 +5,7 @@ define(['THREE','lib/improvedNoise'], function(THREE,IMPROVEDNOISE) {
 
 		var geo;
 		var geometry;
+		var geometry2;
 		var material;
 		var mesh;
 	    var mtrfs;
@@ -14,29 +15,43 @@ define(['THREE','lib/improvedNoise'], function(THREE,IMPROVEDNOISE) {
   		var inoise = new IMPROVEDNOISE;
 
 
+  		 var createGeo = function ( radius ) {
 
+			geo = new THREE.DodecahedronGeometry( radius, 0);
+			for (var i = 0; i < geo.vertices.length; i++) {
+				var data = inoise.noise( geo.vertices[i].x, geo.vertices[i].y, geo.vertices[i].z );
+				geo.vertices[i].x += ( data * 5 ); 
+				geo.vertices[i].y += ( data * 5 ); 
+				geo.vertices[i].z += ( data * 5 ); 
+			}
+			geo.verticesNeedUpdate = true;
+			return geo;
+
+		}
 
 		return {
 
 			initMat: function( texture ) {
 
-			    material = new THREE.MeshStandardMaterial();
-			    geometry = new THREE.DodecahedronGeometry( Math.random()*5, 0);
-			    for (var i = 0; i < geometry.vertices.length; i++) {
-			    	var data = inoise.noise( geometry.vertices[i].x, geometry.vertices[i].y, geometry.vertices[i].z );
-			    	geometry.vertices[i].x += ( data * 5 ); 
-			    	geometry.vertices[i].y += ( data * 5 ); 
-			    	geometry.vertices[i].z += ( data * 5 ); 
-			    }
-			    geometry.verticesNeedUpdate = true;
+			    material = new THREE.MeshPhongMaterial( { reflectivity: 1 });
+			    material.emissiveIntensity = 10;
+			    geometry = createGeo( Math.random()*5 );
+			    geometry2 = createGeo( 40 );
+			    // geometry = new THREE.DodecahedronGeometry( Math.random()*5, 0);
+			    // for (var i = 0; i < geometry.vertices.length; i++) {
+			    // 	var data = inoise.noise( geometry.vertices[i].x, geometry.vertices[i].y, geometry.vertices[i].z );
+			    // 	geometry.vertices[i].x += ( data * 5 ); 
+			    // 	geometry.vertices[i].y += ( data * 5 ); 
+			    // 	geometry.vertices[i].z += ( data * 5 ); 
+			    // }
+			    // geometry.verticesNeedUpdate = true;p
 
 			},
-
-			create: function( radius ) {
+			create: function( radius, numofrocks ) {
 
 
 		    	var group = new THREE.Group();
-		    	var numofrocks = 20;
+		    	var numofrocks = numofrocks || 20;
 			    var col = 1;
 		    	while ( numofrocks-- ) {
 			    	var mat = material.clone();
@@ -50,8 +65,7 @@ define(['THREE','lib/improvedNoise'], function(THREE,IMPROVEDNOISE) {
 
 			    	mat.color.set( colora );
 			    	mat.emissive.set( colora );
-			    	mat.emissiveIntensity = 10;
-			    	obj =  new THREE.Mesh( geometry, mat );
+			    	radius ? obj =  new THREE.Mesh( geometry2, mat ) : obj =  new THREE.Mesh( geometry, mat );
 			    	var x = THREE.Math.randInt(1,10);
 			    	var y = THREE.Math.randInt(1,10);
 			    	var z = THREE.Math.randInt(1,10);

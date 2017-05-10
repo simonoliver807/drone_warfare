@@ -51,7 +51,7 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
       this.ms2y = { y: 0, t: 0 };
 
       this.firstStream = 1;
-      this.respawn = 0;
+      this.respawn = { restart: 0, firepx: 0 };
       this.respawning = 0;
       this.subvec = new OIMO.Vec3();
 
@@ -59,7 +59,8 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
       this.ply1;
       this.ply2;
       this.ply2mesh;
-      this.client_smooth = 8;     // amount of smoothing to apply to client update dest    
+      this.client_smooth = 20;     // amount of smoothing to apply to client update dest    smooth out drones and ship
+   //   this.firepx = 0;
 
 
     }
@@ -174,7 +175,8 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
     game_core.prototype.respawnply = function(data) {
 
         if ( !this.respawning ) {
-          this.respawn = data;
+          this.respawn.restart = 1;
+          this.respawn.firepx = data.firepx;
         }
     }
 
@@ -194,7 +196,6 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
       
       if ( this.bodys && this.firstStream ){
         this.host ? document.getElementById( 'respawntxt' ).innerHTML = 'Player 2 Joined' : document.getElementById( 'respawntxt' ).innerHTML = 'loading game';
-
         var currpos = 0;
         var ddata = new Float32Array( data[ this.player_self.id ].pldata );
        
@@ -552,6 +553,7 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
         }
 
 
+        //this.pldata[0]  = inptpos.x;
         this.pldata[0]  = inptpos.x;
         this.pldata[1]  = inptpos.y;
         this.pldata[2]  = inptpos.z;
@@ -592,7 +594,7 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
 
     game_core.prototype.levelGen = function( data ) {
 
-      this.socket.emit( 'levelgen', { x982y: data, gid: this.gameid, id: this.player_self.id } );
+      this.socket.emit( 'levelgen', { x982y: data, gid: this.gameid, id: this.player_self.id, firepx: this.respawn.firepx } );
 
     }
 

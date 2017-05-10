@@ -49,6 +49,8 @@ var fs = require('fs');
 
     this.levelloaded = 1;
     this.lastlevelchange = 0;
+    this.valshp1 = 0;
+    this.valdrone = 0;
 
     //this.pldata[ game_instance.player1 ] = new Float32Array( 8 );
 
@@ -111,15 +113,16 @@ var fs = require('fs');
 
       if( this.player_manifest[id].inputs.length ) { 
 
-        // if( this.player_manifest[id].inputs[10] < 0.000001 ){
-        //   console.log(this.player_manifest[id].inputs);
-        //    debugger; 
-        // }
+       
 
-        this.player_manifest[id].body.position.set( this.player_manifest[id].inputs[0].pos[0], this.player_manifest[id].inputs[0].pos[1], this.player_manifest[id].inputs[0].pos[2] );
-        this.player_manifest[id].body.linearVelocity.set( this.player_manifest[id].inputs[0].lv[0], this.player_manifest[id].inputs[0].lv[1], this.player_manifest[id].inputs[0].lv[2] );
-        this.player_manifest[id].rot = this.player_manifest[id].inputs[0].rot;
-        this.player_manifest[id].phaser = this.player_manifest[id].inputs[0].phaser;
+
+        this.validateInput( id );
+        if ( this.valshp1 ) {
+          this.player_manifest[id].body.position.set( this.player_manifest[id].inputs[0].pos[0], this.player_manifest[id].inputs[0].pos[1], this.player_manifest[id].inputs[0].pos[2] );
+          this.player_manifest[id].body.linearVelocity.set( this.player_manifest[id].inputs[0].lv[0], this.player_manifest[id].inputs[0].lv[1], this.player_manifest[id].inputs[0].lv[2] );
+          this.player_manifest[id].rot = this.player_manifest[id].inputs[0].rot;
+          this.player_manifest[id].phaser = this.player_manifest[id].inputs[0].phaser;
+        }
 
 
         var pos = 0;
@@ -128,11 +131,19 @@ var fs = require('fs');
         while( i-- ) {
           try {
 
-            if ( this.dronearr[id][pos] ) {
+            if ( this.dronearr[id][pos] && this.valshp1 ) {
               if ( this.bodys[i].name == 'drone' && this.bodys[i].id == this.dronearr[id][pos][6]){
 
+
+
+                // if ( drone pos - body pos > 10 ) 
+
                 this.bodys[i].body.position.set( this.dronearr[id][pos][0], this.dronearr[id][pos][1], this.dronearr[id][pos][2]  );
+
                 this.bodys[i].body.linearVelocity.set( this.dronearr[id][pos][3], this.dronearr[id][pos][4], this.dronearr[id][pos][5] );
+
+
+
 
                 if ( this.bodys[i].ld != this.dronearr[id][pos][7] ) {
                 //debugger
@@ -155,15 +166,6 @@ var fs = require('fs');
                 updatepos = 1;
 
               }
-              // var num = this.dronearr[id][pos][6] + ''; 
-              // if ( num.substr(-4, num.length) == '9999' ) {        
-              //   this.idexcl.push( ~~num.substr(0 , num.length - 4) );
-              //   this.tempexpart.push ( { id: id, body: { position: { x: this.dronearr[id][pos][0], y: this.dronearr[id][pos][1], z: this.dronearr[id][pos][2] }, id: this.dronearr[id][pos][6] } } )
-
-              //   updatepos = 1;
-              //   //reload last drone again if ex drone
-              //   i-- 
-              // }
               if ( updatepos ) { pos ++; updatepos = 0; };
             }
             else {
@@ -182,7 +184,36 @@ var fs = require('fs');
     }
   }
 
-  //
+  game_core.prototype.validateInput = function ( id ) {
+
+     this.valshp1 = 1;
+     for ( var obj in this.player_manifest[id].inputs[0] ) {
+      for( var val = 0; val < this.player_manifest[id].inputs[0][obj].length; val++ ) {
+        if( typeof this.player_manifest[id].inputs[0][obj][val] != 'number' ) {
+          this.valshp1 = 0;
+        }
+      }
+     } 
+
+     if ( this.valshp1 && ( this.player_manifest[id].body.position.x - this.player_manifest[id].inputs[0].pos[0] > 10 ) || ( this.player_manifest[id].body.position.x - this.player_manifest[id].inputs[0].pos[0] < -10 ) ) {
+      this.valshp1 = 0
+     }
+     if ( this.valshp1 && ( this.player_manifest[id].body.position.y - this.player_manifest[id].inputs[0].pos[1] > 10 ) || ( this.player_manifest[id].body.position.y - this.player_manifest[id].inputs[0].pos[1] < -10 ) ) {
+      this.valshp1 = 0
+     }  
+     if ( this.valshp1 && ( this.player_manifest[id].body.position.z - this.player_manifest[id].inputs[0].pos[2] > 10 ) || ( this.player_manifest[id].body.position.z - this.player_manifest[id].inputs[0].pos[2] < -10 ) ) {
+      this.valshp1 = 0
+     }  
+
+    for ( var obj in this.dronearr[id] ) {
+      for( var val = 0; val < this.dronearr[id][obj].length; val++ ) {
+        if( typeof this.dronearr[id][obj][val] != 'number' ) {
+          this.valshp1 = 0;
+        }
+      }
+     } 
+
+  }
 
   game_core.prototype.server_update = function() {
 
@@ -268,13 +299,12 @@ var fs = require('fs');
       }
     }
   }
-  game_core.prototype.respawn = function ( id ) {
-
-        var data = 1;    
-        if( id == this.clients.player1.id ){
+  game_core.prototype.respawn = function ( data ) {
+  
+        if( data.id == this.clients.player1.id ){
           this.clients['player2'].emit('respawnply', data );
         }
-        if( id == this.clients.player2.id ){
+        if( data.id == this.clients.player2.id ){
           this.clients['player1'].emit('respawnply', data ); 
         }    
 
@@ -335,74 +365,6 @@ var fs = require('fs');
       }
 
     }
-
-    // prepare drone data
-
-    // if ( this.ms1y.y ) {
-    // console.log(this.ms1y)
-    // console.log('y: ' + this.pldata[id][8]);
-    // console.log('t: ' + this.pldata[id][9]);
-    // }
-
-    // prepare drone drone data
-    // offset currpos so the pos matches the player id
-    // this.currpos = [ 0, 10, 10 ];
-    // var id;
-    // var i = this.bodys.length;
-    // var pl;
-
-    // use this loop for first stream so all drone positions can set at first
-    // for (var i = this.bodys.length - 1; i >= (this.bodys.length - this.numofdrone); i--) {
-    //     this.bodys[i].ld == 1 ? id = this.id1 : id = this.id2;
-    //     pl = this.bodys[i].ld;
-    //     if ( id && this.idexcl.indexOf( this.bodys[i].id ) === -1 ) {
-    //       this.pldata[id][this.currpos[pl]]    = this.bodys[i].body.position.x;
-    //       this.pldata[id][this.currpos[pl]+1]  = this.bodys[i].body.position.y;
-    //       this.pldata[id][this.currpos[pl]+2]  = this.bodys[i].body.position.z;
-    //       // this.pldata[id][this.currpos[pl]+3]  = this.bodys[i].body.linearVelocity.x;
-    //       // this.pldata[id][this.currpos[pl]+4]  = this.bodys[i].body.linearVelocity.y;
-    //       // this.pldata[id][this.currpos[pl]+5]  = this.bodys[i].body.linearVelocity.z;
-    //       this.pldata[id][this.currpos[pl]+3]  = this.bodys[i].id; 
-    //       this.currpos[ pl ] += 4;      
-    //     }
-    //     id = 0;
-    // }
-
-
-    // seperate first stream in seperate function
-
-    // if drones are within certain distance then calculate whether viewed by the camera for the ply then send to client.
-
-    // then use
-    // for ( var i = 0; i < this.bodys.length; i++){
-
-    //   if ( this.bodys[i].ld == 1) {
-
-    //   }
-    //   if ( this.bodys[i]. =)
-    //   pl = this.bodys[i].ld;
-
-
-    // }
-
-    // for ( var i = 0; i < this.tempexpart.length; i++ ) {
-
-    //     var id = this.tempexpart[i].id;
-    //     this.player_manifest[id].name == 'player1' ? pl = 1 : pl = 2; 
-    //     this.pldata[id][this.currpos[pl]]    = this.tempexpart[i].body.position.x;
-    //     this.pldata[id][this.currpos[pl]+1]  = this.tempexpart[i].body.position.y;
-    //     this.pldata[id][this.currpos[pl]+2]  = this.tempexpart[i].body.position.z;
-    //     this.pldata[id][this.currpos[pl]+3]  = this.tempexpart[i].body.id; 
-    //     this.currpos[ pl ] += 4;   
-
-    // }
-
-    // change to live
-    // if ( this.tempexpart.length ) {
-    //   this.tempexpart = [];
-    //   this.idexcl = [];
-    // }
-
 
       packet[this.id1] = {
         pldata: this.pldata[ this.id1 ].buffer,

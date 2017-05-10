@@ -30,6 +30,13 @@ CACHE:
  images/ms/ms2_3.obj
  images/ms/ms2_4.obj
  images/phasers/bluefire.png
+ images/planets/star.obj
+ images/planets/earth.jpg
+ images/planets/electric.jpg
+ images/planets/ice.jpg
+ images/planets/mercury.jpg
+ images/planets/molten.jpg
+ images/planets/moon.jpg
  images/websiteImg/cropped-banner-web_1280-768x179.jpg
  images/websiteImg/dt1.png
  images/websiteImg/dt2.png

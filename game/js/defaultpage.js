@@ -2,7 +2,7 @@
 
 
 // var url = 'http://localhost:9000/';
-var url = 'http://192.168.1.68:9000/';
+var url = 'http://10.188.103.165:9000/';
 
 //var url = 'http://www.dronewar1.com'
 // change to live 

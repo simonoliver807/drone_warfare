@@ -420,14 +420,14 @@ V3D.View.prototype = {
 
         }
         if ( this.containerMesh !== 0 ) {
-            for( var gs = 0; gs < this.scene.children[V3D.mesharrpos.gs].children.length; gs ++ ) {
+            for( var gs = 1; gs < this.scene.children[V3D.mesharrpos.gs].children.length; gs ++ ) {
 
                 this.distSpheres = this.containerMesh.position.distanceTo( this.scene.children[V3D.mesharrpos.gs].children[gs].position );
                if ( this.scene.children[V3D.mesharrpos.gs].children[gs].userData.timealive > 30 ||  this.distSpheres < 10 ) {
                     this.scene.children[V3D.mesharrpos.gs].children[gs].material.dispose();
                     this.scene.children[V3D.mesharrpos.gs].children[gs].geometry.dispose();
                     this.scene.children[V3D.mesharrpos.gs].remove( this.scene.children[V3D.mesharrpos.gs].children[gs] );
-                    this.bodys[0].health += 10;
+                    this.bodys[0].r1 += 10;
                }
                else {
                    this.gsa > 6.28 ? this.gsa = 0 : this.gsa += 0.008;
@@ -1704,7 +1704,7 @@ V3D.View.prototype = {
                 }
                 if ( object.name == 'greenstar' ) {
                     V3D.mesharrpos.gs = scene.children.length;
-                    object.children[0].material = new THREE.MeshPhongMaterial( { color: new THREE.Color( 0, 1, 0) } );
+                    object.children[0].material = new THREE.MeshPhongMaterial( { color: new THREE.Color( 0, 1, 0), reflectivity: 1 } );
                     object.children[0].material.side = THREE.DoubleSide;
                     object.children[0].visible = true;
                     object.children[0].position.set( 10000, 10000, 10000)

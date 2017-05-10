@@ -242,14 +242,14 @@ module.exports = function () {
                 }
 
                 if( numofdroneleft != 0){
-                    // var i = bodys.length -1;
-                    // while(i-- && numofdroneleft > numofdrone) {
-                    //     if(bodys[i].name == 'drone') {
-                    //         bodys.splice(i,1);
-                    //         bodysNum --;
-                    //         numofdroneleft --;
-                    //     }   
-                    // }
+                    var i = bodys.length -1;
+                    while(i-- && numofdroneleft > numofdrone) {
+                        if(bodys[i].name == 'drone') {
+                            bodys.splice(i,1);
+                            bodysNum --;
+                            numofdroneleft --;
+                        }   
+                    }
                     numofdrone -= numofdroneleft;
                     // var i = bodys.length;
                     // while(i--){                    
@@ -325,6 +325,10 @@ module.exports = function () {
                         bodys[ i ].id = droneid;
                         bodys[ i ].ld = 0;
                         bodys[ i ].nrtm = 0;
+                        if ( ms.length === 1 && bodys[i].ms == 'ms2' ) {
+                            bodys[i].ms = 'ms1';
+                        }
+
                         var msnum = ~~bodys[i].ms.slice(-1);
                         var pos = this.dronePos(ms[ msnum -1 ]);
                         bodys[i].body.position.set( pos[0]/100,pos[1]/100,pos[2]/100 );  
@@ -355,11 +359,16 @@ module.exports = function () {
                 var x = this.randMinMax(-1000,1000);
                 var y = this.randMinMax(-1000,1000);
                 var z = this.randMinMax(-1000,1000);
+                try {
+                    x += ms.pos[0];
+                    y += ms.pos[1];
+                    z += ms.pos[2]; 
+                    return [x,y,z];
+                }
+                catch ( err ) {
 
-                x += ms.pos[0];
-                y += ms.pos[1];
-                z += ms.pos[2]; 
-                return [x,y,z];
+                    console.log( err );
+                }
             },
             randMinMax: function(min, max) {
                 return Math.floor(Math.random() * (max - min + 1)) + min;
