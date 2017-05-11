@@ -111,6 +111,12 @@ fs.readdir(__dirname + '/shaders/', function (err, filesPath) {
         	if ( results[i].match('mtrvs') ) {
         		app.locals.shaders.mtrvs = results[i];
         	}
+        	if ( results[i].match('engineGlowfs') ) {
+        		app.locals.shaders.engineGlowfs = results[i];
+        	}
+        	if ( results[i].match('engineGlowvs') ) {
+        		app.locals.shaders.engineGlowvs = results[i];
+        	}
         }
     })
 })
@@ -160,6 +166,8 @@ app.get('/', function (req, res) {
 		        			starfs: app.locals.shaders.starfs,
 		        			mtrvs: app.locals.shaders.mtrvs,
 		        			mtrfs: app.locals.shaders.mtrfs,
+		        			engineGlowvs: app.locals.shaders.engineGlowvs,
+		        			engineGlowfs: app.locals.shaders.engineGlowfs,
 		        			user: user
 		        		})
 				  	  })

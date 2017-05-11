@@ -410,8 +410,20 @@ V3D.View.prototype = {
             }
         }
         if( this.scene.children[V3D.mesharrpos.planetGlow].material.visible ){
-            this.scene.children[V3D.mesharrpos.planetGlow].lookAt(this.camera.position);
+            this.scene.children[V3D.mesharrpos.planetGlow].lookAt( this.camera.position );
             this.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value += performance.now()/1000000000;
+        }
+        if(  this.scene.children[ 18 ] ) {
+             // this.camdir.subVectors(this.camera.position, this.scene.children[ this.ms1arrpos ].position).normalize();
+             // this.q.setFromAxisAngle( this.camdir, Math.PI/2 );
+             // this.scene.children[ this.ms1arrpos ].children[1].up.set(this.q.x, this.q.y, this.q.z);
+             // this.scene.children[ this.ms1arrpos ].children[1].quaternion.set(this.camera.quaternion.x,this.camera.quaternion.y,this.camera.quaternion.z, this.camera.quaternion.w);           
+            
+                this.camdir.subVectors(this.containerMesh.position, this.scene.children[18].position).normalize();
+                this.q.setFromAxisAngle( this.camdir, Math.PI/2 );
+                this.scene.children[18].up.set(this.q.x, this.q.y, this.q.z);
+                this.scene.children[18].lookAt( this.containerMesh.position );
+
         }
 
         for( var star = 0; star < this.numStars; star++ ) {
@@ -793,6 +805,33 @@ V3D.View.prototype = {
             V3D.mesharrpos.planetGlow = this.scene.children.length;
             this.scene.add(circle);
         }
+        if ( plane == 'engineGlow' ) {
+
+            var engineGlowfs = document.getElementById( 'engineGlowfs' ).textContent;
+            var engineGlowvs = document.getElementById( 'engineGlowvs' ).textContent;
+
+            var geometry = new THREE.PlaneGeometry(1000, 500);
+            var trianglegeo = new THREE.BufferGeometry();
+            trianglegeo.fromGeometry(geometry);
+            // trianglegeo.applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
+            // trianglegeo.applyMatrix( new THREE.Matrix4().makeRotationY( THREE.Math.degToRad( 90 ) ) );
+            var material = new THREE.RawShaderMaterial({
+                uniforms: {
+                    glowFloat: {
+                        value: 0.59
+                    }
+                },
+                vertexShader: engineGlowvs,
+                fragmentShader: engineGlowfs,
+                transparent: true,
+                visible: true
+            })
+            material.side = THREE.DoubleSide;
+            var triangle = new THREE.Mesh( trianglegeo, material );
+            triangle.name = 'engineGlow';
+            V3D.mesharrpos.triangleGlow = this.scene.children.length;
+            return triangle;
+        }
 
 
 
@@ -1139,7 +1178,7 @@ V3D.View.prototype = {
         }
         var intersects = this.lraycaster.intersectObjects( V3D.raycastarr, true );
         for(var i=0; i < intersects.length; i++) {
-            if( intersects[i].object.name == 'ms_Object007.001'){
+            if( intersects[i].object.parent.name == 'ms1'){
                 if(!ms1len){
                     ms1 = i;
                     ms1len = intersects[i].distance;
@@ -1176,7 +1215,7 @@ V3D.View.prototype = {
             }
         }
         for(var i=0; i < intersects.length; i++) {
-            if( intersects[i].object.name == 'ms_Object007.001' && this.ms1y.y == 0) {
+            if( intersects[i].object.parent.name == 'ms1' && this.ms1y.y == 0) {
                  this.ms1y.y = 1;
                  this.ms1y.t += 1;
             }
@@ -1503,6 +1542,7 @@ V3D.View.prototype = {
         phaser.children[0].geometry.dispose();
         phaser.children[0].material.dispose();
         phaser.remove( phaser.children[0] );
+        V3D.raycastarr[ V3D.raycastarr.indexOf( this.scene.children[currarrpos] ) ] = this.scene.children[nextarrpos];
         this.scene.children[currarrpos].children[0].material.transparent = true;
         this.scene.children[currarrpos].children[0].material.opacity = 0;
         this.scene.children[nextarrpos].children[0].material.transparent = false;
@@ -1510,6 +1550,11 @@ V3D.View.prototype = {
         this.scene.children[nextarrpos].quaternion.copy( this.scene.children[this.ms1arrpos].quaternion );
         this.scene.children[currarrpos].name = this.scene.children[nextarrpos].name;
         this.scene.children[nextarrpos].name = name;
+        this.scene.children[nextarrpos].position.copy ( this.scene.children[currarrpos].position );
+        this.scene.children[nextarrpos].quaternion.copy ( this.scene.children[currarrpos].quaternion );
+        // change phasers to new ms
+        this.scene.children[nextarrpos].children[0].add( phaser );
+
         currarrpos = nextarrpos;
         if( name == 'ms1'){ 
             this.ms1arrpos = nextarrpos;
