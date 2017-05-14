@@ -376,10 +376,6 @@ V3D.View.prototype = {
 
     },
 
-
-
-
-
     render : function(){
 
        // if( this.startRot.rot !== 0 && this.containerMesh != 0){ this.applyRot() };
@@ -413,18 +409,19 @@ V3D.View.prototype = {
             this.scene.children[V3D.mesharrpos.planetGlow].lookAt( this.camera.position );
             this.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value += performance.now()/1000000000;
         }
+
+
         if(  this.scene.children[ 18 ] ) {
-             // this.camdir.subVectors(this.camera.position, this.scene.children[ this.ms1arrpos ].position).normalize();
-             // this.q.setFromAxisAngle( this.camdir, Math.PI/2 );
-             // this.scene.children[ this.ms1arrpos ].children[1].up.set(this.q.x, this.q.y, this.q.z);
-             // this.scene.children[ this.ms1arrpos ].children[1].quaternion.set(this.camera.quaternion.x,this.camera.quaternion.y,this.camera.quaternion.z, this.camera.quaternion.w);           
             
-                this.camdir.subVectors(this.containerMesh.position, this.scene.children[18].position).normalize();
-                this.q.setFromAxisAngle( this.camdir, Math.PI/2 );
-                this.scene.children[18].up.set(this.q.x, this.q.y, this.q.z);
-                this.scene.children[18].lookAt( this.containerMesh.position );
+          
+            this.scene.children[ 18 ].quaternion.copy( this.camera.quaternion ); 
+
+
 
         }
+
+
+
 
         for( var star = 0; star < this.numStars; star++ ) {
 
@@ -786,7 +783,7 @@ V3D.View.prototype = {
             var circlefs = document.getElementById( 'planetGlowfs' ).textContent;
             var circlevs = document.getElementById( 'planetGlowvs' ).textContent;
 
-            var geometry = new THREE.PlaneGeometry(5000, 5000);
+            var geometry = new THREE.PlaneGeometry(500, 500, 500);
             var circlegeo = new THREE.BufferGeometry();
             circlegeo.fromGeometry(geometry);
             var material = new THREE.RawShaderMaterial({
@@ -810,28 +807,54 @@ V3D.View.prototype = {
             var engineGlowfs = document.getElementById( 'engineGlowfs' ).textContent;
             var engineGlowvs = document.getElementById( 'engineGlowvs' ).textContent;
 
-            var geometry = new THREE.PlaneGeometry(1000, 500);
-            var trianglegeo = new THREE.BufferGeometry();
-            trianglegeo.fromGeometry(geometry);
-            // trianglegeo.applyMatrix( new THREE.Matrix4().makeRotationX( THREE.Math.degToRad( 90 ) ) );
-            // trianglegeo.applyMatrix( new THREE.Matrix4().makeRotationY( THREE.Math.degToRad( 90 ) ) );
-            var material = new THREE.RawShaderMaterial({
-                uniforms: {
-                    glowFloat: {
-                        value: 0.59
-                    }
-                },
-                vertexShader: engineGlowvs,
-                fragmentShader: engineGlowfs,
-                transparent: true,
-                visible: true
-            })
+            var planegeo = new THREE.PlaneGeometry(500, 500);
+            // var material = new THREE.RawShaderMaterial({
+            //     uniforms: {
+            //         glowFloat: {
+            //             value: 0.1
+            //         }
+            //     },
+            //     vertexShader: engineGlowvs,
+            //     fragmentShader: engineGlowfs,
+            //     transparent: true,
+            //     visible: true
+            // })
+            var material = new THREE.MeshBasicMaterial( { color: 0x0000ff})
             material.side = THREE.DoubleSide;
-            var triangle = new THREE.Mesh( trianglegeo, material );
-            triangle.name = 'engineGlow';
-            V3D.mesharrpos.triangleGlow = this.scene.children.length;
-            return triangle;
+            var engineGlow  = new THREE.Mesh( planegeo, material );
+            engineGlow.name = 'engineGlow';
+            V3D.mesharrpos.engineGlow = this.scene.children.length;
+            return engineGlow;
         }
+
+           //  var topBottom = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide });
+           //  while( nummat-- ) {
+                
+           //          if ( nummat > 1 ) {
+           //              var thismat = material.clone();
+           //              matarr.push( thismat );
+           //          }
+           //          if ( nummat === 1 ){
+
+           //               matarr.push( topBottom.clone() );
+
+           //          }
+           //          if ( nummat === 0 ) {
+
+           //              matarr.push( topBottom.clone() );
+
+           //          }
+           //  } 
+           //  matarr[2].uniforms.glowFloat = 0.9;
+           //  matarr[3].uniforms.glowFloat = 0.9;
+           //  matarr[0].uniforms.invertGrad = 0.9;
+           //  matarr[3].uniforms.invertGrad = 0.9;
+           //  matarr[5].transparent = true;
+           //  matarr[5].opacity = 0;
+           //  var engineGlow  = new THREE.Mesh( boxgeo, new THREE.MeshFaceMaterial( matarr ) );
+           //  engineGlow.name = 'engineGlow';
+           //  V3D.mesharrpos.engineGlow = this.scene.children.length;
+           //  return engineGlow;
 
 
 
@@ -1146,17 +1169,6 @@ V3D.View.prototype = {
         if(V3D.bincam){
 
           this.glowmesh.material.visible = true;  
-
-                // var x = V3D.msePos.x;
-                // var y = V3D.msePos.y;
-
-                // var angle = Math.atan2(x,y);
-
-                // var q1 = new THREE.Quaternion();
-                // q1.setFromAxisAngle( new THREE.Vector3( 0,0,1 ), angle );
-                // console.log(angle);
-                // this.glowmesh.quaternion.copy( q1 );
-                // console.log(angle);
 
         }
         else {

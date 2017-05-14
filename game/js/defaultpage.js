@@ -2,12 +2,12 @@
 
 
 // var url = 'http://localhost:9000/';
-var url = 'http://10.188.103.165:9000/';
+var url = 'http://192.168.1.74:9000/';
 
 //var url = 'http://www.dronewar1.com'
 // change to live 
 
-var settingsarr = [ 32, 38, 40, 1, 0, 0];
+var settingsarr = [ 32, 38, 40, 0, 0, 0];
 var currply	= { username: 0, password: '' };
 
 

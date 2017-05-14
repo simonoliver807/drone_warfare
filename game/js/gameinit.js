@@ -258,12 +258,12 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                                                 var q = v3d.msla(bodys[b].body);
                                                 bodys[b].body.setQuaternion(q);
                                                 if ( startlevel ) {
-                                                    // meshs[ meshs.length - 1 ].add( v3d.addPlane( 'engineGlow' ) )
-                                                    // meshs[ meshs.length - 1 ].children[1].position.z = -500;
 
                                                     v3d.scene.add( v3d.addPlane( 'engineGlow' ));
                                                     v3d.scene.children[ v3d.scene.children.length - 1 ].position.copy( meshs[ meshs.length - 1 ].position);
                                                     v3d.scene.children[18].position.z = -500;
+                                                   //  v3d.scene.children[18].position.x = -500;
+                                                   // meshs[b].children[1].position.set( 0, 0, -400);
                                                 } 
 
                                                 // if ( bodys[b].name == 'ms2'){
@@ -533,7 +533,9 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                         mesh = meshs[i];
 
                         // check if asteroid needs breaking down, destroying, or respawning
-                        if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > 1.5 && endsequence > 0 ){
+                        // change to live 
+                         if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > 5.5 && endsequence > 0 ){
+                       // if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > 1.5 && endsequence > 0 ){
 
                             // radius is set in the module
                             var a123 = planetex.create( true, 250 );
