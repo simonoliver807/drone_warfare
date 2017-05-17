@@ -764,15 +764,22 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                                     ms1len = dist.subVectors(v3d.planetpos, v3d.scene.children[v3d.ms1arrpos].position ).length();
                                     ms1len -= halfdiamplanet; 
                                     ms1diff.subVectors( ms1prev, body.body.position );
-                                    
-                                while( p-- && V3D.ms1phaser.children[p] ) {
-                                    if( V3D.ms1phaser.children[p].scale.z * 20 < ms1len){
-                                        V3D.ms1phaser.children[p].scale.z += 0.5;
-                                        V3D.ms1phaser.children[p].position.z += 5;
-                                    }
-                                    if( V3D.ms1phaser.children[p].scale.z * 20 > ms1len){
-                                        V3D.ms1phaser.children[p].scale.z -= 0.5;
-                                        V3D.ms1phaser.children[p].position.z -= 5;
+                                    v3d.ms1pos.copy( mesh.position );
+
+
+                                while( p-- ) {
+                                    if ( V3D.ms1phaser.children[p] ) {            
+                                        if( V3D.ms1phaser.children[p].scale.z * 20 < ms1len){
+                                            V3D.ms1phaser.children[p].scale.z += 0.5;
+                                            V3D.ms1phaser.children[p].position.z += 5;
+                                        }
+                                        else {
+                                            v3d.scene.children[V3D.mesharrpos.planetGlow].material.visible = true;
+                                        }
+                                        if( V3D.ms1phaser.children[p].scale.z * 20 > ms1len){
+                                            V3D.ms1phaser.children[p].scale.z -= 0.5;
+                                            V3D.ms1phaser.children[p].position.z -= 5;
+                                        }
                                     }
 
                                 }
@@ -896,23 +903,25 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                         }
                     }
                     // update ms phasers
-                    var p = 4;
-                    while(p--){
-                        if(V3D.ms1phaser.children[p])
-                            if( V3D.ms1phaser.children[p].scale.z * 20 < ms1len){
-                                V3D.ms1phaser.children[p].scale.z += 0.5;
-                                V3D.ms1phaser.children[p].position.z += 5;
-                            }
-                            else {
-                                v3d.scene.children[V3D.mesharrpos.planetGlow].material.visible = true;
-                            }
-                        if(V3D.ms2phaser.children[p]){
-                            if( V3D.ms2phaser.children[p].scale.z * 20 < ms2len ){
-                                V3D.ms2phaser.children[p].scale.z += 0.5;
-                                V3D.ms2phaser.children[p].position.z += 5; 
-                            }
-                            else {
-                                v3d.scene.children[V3D.mesharrpos.planetGlow].material.visible = true;
+                    if ( x982y !== 3 ) {
+                        var p = 4;
+                        while(p--){
+                            if(V3D.ms1phaser.children[p])
+                                if( V3D.ms1phaser.children[p].scale.z * 20 < ms1len){
+                                    V3D.ms1phaser.children[p].scale.z += 0.5;
+                                    V3D.ms1phaser.children[p].position.z += 5;
+                                }
+                                else {
+                                    v3d.scene.children[V3D.mesharrpos.planetGlow].material.visible = true;
+                                }
+                            if(V3D.ms2phaser.children[p]){
+                                if( V3D.ms2phaser.children[p].scale.z * 20 < ms2len ){
+                                    V3D.ms2phaser.children[p].scale.z += 0.5;
+                                    V3D.ms2phaser.children[p].position.z += 5; 
+                                }
+                                else {
+                                    v3d.scene.children[V3D.mesharrpos.planetGlow].material.visible = true;
+                                }
                             }
                         }
                     }
@@ -1435,8 +1444,9 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                         }
                     }
                 } 
-                v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value = 0.59;
-                if( x982y === 3 ){ v3d.eg.material.visible = true;}
+                x982y === 3 ? v3d.eg.material.visible = true : v3d.eg.material.visible = false;
+                v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.visible = false;
+                x982y === 2 || x982y === 3 ? v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.uniforms.glowFloat.value = 1 : v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.uniforms.glowFloat.value = 0.59;
                 // if(x982y === 2){
                 //     x982y = 3;
                 // }

@@ -202,14 +202,12 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                     }
                 }
                 if( endsequence == 0 ){                            
-                    console.log('end of level');
                     self.levelGen(0);
                 }
                 if ( endsequence < 0 ) {
                     endsequence ++;
                 }
                 if( endsequence == -1 ){                            
-                    console.log('reset level');
                     self.levelGen(1);
                 }
 
@@ -767,7 +765,6 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                                     bodys[newld].nrtm = 1;
                                     newld = 0;
                                     dronelaunch = 0;
-                                    console.log('launch drone')
                                 }
                                 if ( newld == bodys.length - 1 ) {
                                     newld = 0;
@@ -885,17 +882,19 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                                     ms1len = dist.subVectors(v3d.planetpos, v3d.scene.children[v3d.ms1arrpos].position ).length();
                                     ms1len -= halfdiamplanet; 
                                     ms1diff.subVectors( ms1prev, body.body.position );
+                                    v3d.ms1pos.copy( mesh.position );
                                     
-                                while( p-- && V3D.ms1phaser.children[p] ) {
-                                    if( V3D.ms1phaser.children[p].scale.z * 20 < ms1len){
-                                        V3D.ms1phaser.children[p].scale.z += 0.5;
-                                        V3D.ms1phaser.children[p].position.z += 5;
+                                while( p-- ) {
+                                    if ( V3D.ms1phaser.children[p] ) {
+                                        if( V3D.ms1phaser.children[p].scale.z * 20 < ms1len){
+                                            V3D.ms1phaser.children[p].scale.z += 0.5;
+                                            V3D.ms1phaser.children[p].position.z += 5;
+                                        }
+                                        if( V3D.ms1phaser.children[p].scale.z * 20 > ms1len){
+                                            V3D.ms1phaser.children[p].scale.z -= 0.5;
+                                            V3D.ms1phaser.children[p].position.z -= 5;
+                                        }
                                     }
-                                    if( V3D.ms1phaser.children[p].scale.z * 20 > ms1len){
-                                        V3D.ms1phaser.children[p].scale.z -= 0.5;
-                                        V3D.ms1phaser.children[p].position.z -= 5;
-                                    }
-
                                 }
                             }
 
@@ -1005,11 +1004,11 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                             if( drone.userData.ld ) {
                                 if ( ( host && dbody.ld != 2 ) || ( !host && dbody.ld != 1 ) ) {
                                     // change to live
-                                    var dphas = v3d.updateDrones( dbody, drone, dbody.ms );
-                                    if ( dphas ) {
-                                        bodysNum ++;
-                                        meshNum ++;
-                                    }
+                                    // var dphas = v3d.updateDrones( dbody, drone, dbody.ms );
+                                    // if ( dphas ) {
+                                    //     bodysNum ++;
+                                    //     meshNum ++;
+                                    // }
                                     // reset the server rtm after drone has rtm'd
                                     if ( drone.userData.ld == 0 && drone.userData.rtm == 0 ) {
                                         dbody.rtm = 0;
@@ -1051,23 +1050,25 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                         }
                     }
                     // update ms phasers
-                    var p = 4;
-                    while(p--){
-                        if(V3D.ms1phaser.children[p])
-                            if( V3D.ms1phaser.children[p].scale.z * 20 < ms1len){
-                                V3D.ms1phaser.children[p].scale.z += 0.5;
-                                V3D.ms1phaser.children[p].position.z += 5;
-                            }
-                            else {
-                                v3d.scene.children[V3D.mesharrpos.planetGlow].material.visible = true;
-                            }
-                        if(V3D.ms2phaser.children[p]){
-                            if( V3D.ms2phaser.children[p].scale.z * 20 < ms2len ){
-                                V3D.ms2phaser.children[p].scale.z += 0.5;
-                                V3D.ms2phaser.children[p].position.z += 5; 
-                            }
-                            else {
-                                v3d.scene.children[V3D.mesharrpos.planetGlow].material.visible = true;
+                    if ( x982y !== 3 ) {
+                        var p = 4;
+                        while(p--){
+                            if(V3D.ms1phaser.children[p])
+                                if( V3D.ms1phaser.children[p].scale.z * 20 < ms1len){
+                                    V3D.ms1phaser.children[p].scale.z += 0.5;
+                                    V3D.ms1phaser.children[p].position.z += 5;
+                                }
+                                else {
+                                    v3d.scene.children[V3D.mesharrpos.planetGlow].material.visible = true;
+                                }
+                            if(V3D.ms2phaser.children[p]){
+                                if( V3D.ms2phaser.children[p].scale.z * 20 < ms2len ){
+                                    V3D.ms2phaser.children[p].scale.z += 0.5;
+                                    V3D.ms2phaser.children[p].position.z += 5; 
+                                }
+                                else {
+                                    v3d.scene.children[V3D.mesharrpos.planetGlow].material.visible = true;
+                                }
                             }
                         }
                     }
@@ -1115,9 +1116,6 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                 document.getElementById('respawnImg').style.display = 'block';
                 planetexarr.push( a123 );
                 v3d.scene.add( a123 );
-                // change to live
-                //v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value = 0;
-                v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value = 0.59;
 
             },
             populate: function(data) {
@@ -1648,7 +1646,9 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                         }
                     }
                 } 
-                if( x982y === 3 ){ v3d.eg.material.visible = true;}
+                x982y === 3 ? v3d.eg.material.visible = true : v3d.eg.material.visible = false;
+                v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.visible = false;
+                x982y === 2 || x982y === 3 ? v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.uniforms.glowFloat.value = 1 : v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.uniforms.glowFloat.value = 0.59;
                 // if(x982y === 2){
                 //     x982y = 3;
                 // }
