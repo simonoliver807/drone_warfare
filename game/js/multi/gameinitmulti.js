@@ -87,6 +87,8 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
     var gmap = document.getElementById('gmap');
     var anglems1 = 1;
     var anglems2 = 1;
+    var ms1prev = v3d.tvec( 0, 0, 0);
+    var ms1diff = v3d.tvec( 0, 0, 0);
 
     var ms1len = 0;
     var ms2len = 0;
@@ -362,6 +364,10 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
 
                                                var q = v3d.msla(bodys[b].body);
                                                bodys[b].body.setQuaternion(q);
+                                                if ( startlevel ) {
+                                                    v3d.scene.add( v3d.addPlane( 'engineGlow' ));
+                                                    v3d.eg = v3d.scene.children[ v3d.scene.children.length - 1 ]; 
+                                                } 
 
                                                 // if ( bodys[b].name == 'ms2'){
                                                 //     var q = v3d.tquat();
@@ -857,6 +863,42 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                                 mesh.userData.color = 0;
                         }
                         if(mesh.name == 'ms1' || mesh.name == 'ms2') {
+
+                            if ( x982y === 3 ){ 
+                                if ( body.body.position.x > 50 ) {
+                                       msrotpct = -0.05;
+                                       grad = -0.1;
+
+                                   }
+                                   if ( body.body.position.x < -50 ) {
+                                        msrotpct = 0.05;
+                                        grad = -0.1;
+                                   }
+                                    ms1prev.copy( body.body.position );
+                                    body.body.position.x += msrotpct;
+                                    body.body.position.y = 0;
+                                    body.body.position.z = (grad * Math.pow( body.body.position.x, 2 ) + 50) /2;
+                                    var q = v3d.msla(body.body);
+                                    body.body.setQuaternion(q);
+                                    var p = 4;
+                                    var dist = v3d.tvec();
+                                    ms1len = dist.subVectors(v3d.planetpos, v3d.scene.children[v3d.ms1arrpos].position ).length();
+                                    ms1len -= halfdiamplanet; 
+                                    ms1diff.subVectors( ms1prev, body.body.position );
+                                    
+                                while( p-- && V3D.ms1phaser.children[p] ) {
+                                    if( V3D.ms1phaser.children[p].scale.z * 20 < ms1len){
+                                        V3D.ms1phaser.children[p].scale.z += 0.5;
+                                        V3D.ms1phaser.children[p].position.z += 5;
+                                    }
+                                    if( V3D.ms1phaser.children[p].scale.z * 20 > ms1len){
+                                        V3D.ms1phaser.children[p].scale.z -= 0.5;
+                                        V3D.ms1phaser.children[p].position.z -= 5;
+                                    }
+
+                                }
+                            }
+
                             var ms1y = gamecore.gcd( 'ms1y' );
                             if ( ms1y.y ) { v3d.ms1y.y = 1; };
                             tmulti1 = ms1y.t;
@@ -1001,6 +1043,9 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                                 else {
                                     dbody.body.linearVelocity.set(0,0,0);
                                     dbody.body.angularVelocity.set(0,0,0);
+                                    if( x982y == 3 ) {
+                                         dbody.body.position.subEqual( ms1diff );
+                                    }
                                 }
                             }
                         }
@@ -1603,6 +1648,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                         }
                     }
                 } 
+                if( x982y === 3 ){ v3d.eg.material.visible = true;}
                 // if(x982y === 2){
                 //     x982y = 3;
                 // }

@@ -259,12 +259,8 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                                                 var q = v3d.msla(bodys[b].body);
                                                 bodys[b].body.setQuaternion(q);
                                                 if ( startlevel ) {
-
                                                     v3d.scene.add( v3d.addPlane( 'engineGlow' ));
                                                     v3d.eg = v3d.scene.children[ v3d.scene.children.length - 1 ]; 
-                                                   // v3d.eg.position.z = -500;
-                                                    // v3d.scene.children[ v3d.scene.children.length - 1 ].position.copy( meshs[ meshs.length - 1 ].position);
-                                                    // v3d.scene.children[ v3d.scene.children.length - 1 ].z = -500;
                                                 } 
 
                                                 // if ( bodys[b].name == 'ms2'){
@@ -535,7 +531,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
 
                         // check if asteroid needs breaking down, destroying, or respawning
                         // change to live 
-                        if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > 5.5 && endsequence > 0 ){
+                        if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > 1.5 && endsequence > 0 ){
                         //if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > 0.6 && endsequence > 0 ){
 
                             // radius is set in the module
