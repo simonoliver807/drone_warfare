@@ -890,6 +890,9 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                                             V3D.ms1phaser.children[p].scale.z += 0.5;
                                             V3D.ms1phaser.children[p].position.z += 5;
                                         }
+                                        else {
+                                            v3d.scene.children[V3D.mesharrpos.planetGlow].material.visible = true;
+                                        }
                                         if( V3D.ms1phaser.children[p].scale.z * 20 > ms1len){
                                             V3D.ms1phaser.children[p].scale.z -= 0.5;
                                             V3D.ms1phaser.children[p].position.z -= 5;

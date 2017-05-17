@@ -631,7 +631,7 @@ function changeInOut ( val ) {
 
 }) ();
 // change to live
-runGame(0);
+runGame(1);
 //initgame();
 //var page = { target: { id: 'wanav' } };
 //navFunc(a);
