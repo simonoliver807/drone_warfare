@@ -7,6 +7,8 @@ uniform mat4 projectionMatrix; // optional
 attribute vec3 position;
 attribute vec2 uv;
 
+#define SHADER_NAME Mercury
+
 //varying vec3 vecPos;
 //varying vec3 vecNormal;
 

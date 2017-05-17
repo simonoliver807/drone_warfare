@@ -85,6 +85,8 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
     var gmap = document.getElementById('gmap');
     var anglems1 = 1;
     var anglems2 = 1;
+    var ms1prev = v3d.tvec( 0, 0, 0);
+    var ms1diff = v3d.tvec( 0, 0, 0);
 
     var ms1len = 0;
     var ms2len = 0;
@@ -117,7 +119,6 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
     var planetexname;
     var msrotpct = 0.05;
     var grad = -0.1;
-
 
         return {
 
@@ -217,8 +218,8 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
 
 
                     if(firstRender != 0){
-                        if( firstRender.ms1 ) {
-                            bodys[firstRender.ms1].body.setupMass(0x2);
+                        if( firstRender.ms1 && x982y !== 3 ) {                         
+                           bodys[firstRender.ms1].body.setupMass(0x2);
                         }
                         if( firstRender.ms2  ) {
                             bodys[firstRender.ms2].body.setupMass(0x2);
@@ -260,10 +261,10 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                                                 if ( startlevel ) {
 
                                                     v3d.scene.add( v3d.addPlane( 'engineGlow' ));
-                                                    v3d.scene.children[ v3d.scene.children.length - 1 ].position.copy( meshs[ meshs.length - 1 ].position);
-                                                    v3d.scene.children[18].position.z = -500;
-                                                   //  v3d.scene.children[18].position.x = -500;
-                                                   // meshs[b].children[1].position.set( 0, 0, -400);
+                                                    v3d.eg = v3d.scene.children[ v3d.scene.children.length - 1 ]; 
+                                                   // v3d.eg.position.z = -500;
+                                                    // v3d.scene.children[ v3d.scene.children.length - 1 ].position.copy( meshs[ meshs.length - 1 ].position);
+                                                    // v3d.scene.children[ v3d.scene.children.length - 1 ].z = -500;
                                                 } 
 
                                                 // if ( bodys[b].name == 'ms2'){
@@ -534,8 +535,8 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
 
                         // check if asteroid needs breaking down, destroying, or respawning
                         // change to live 
-                         if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > 5.5 && endsequence > 0 ){
-                       // if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > 1.5 && endsequence > 0 ){
+                        if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > 5.5 && endsequence > 0 ){
+                        //if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > 0.6 && endsequence > 0 ){
 
                             // radius is set in the module
                             var a123 = planetex.create( true, 250 );
@@ -746,19 +747,41 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                         }
                         if(mesh.name == 'ms1' || mesh.name == 'ms2') {
 
-                            // if ( body.body.position.x > 50 ) {
-                            //        msrotpct = -0.05;
-                            //        grad = -0.1;
+                            if ( x982y === 3 ){ 
+                                if ( body.body.position.x > 50 ) {
+                                       msrotpct = -0.05;
+                                       grad = -0.1;
 
-                            //    }
-                            //    if ( body.body.position.x < -50 ) {
-                            //         msrotpct = 0.05;
-                            //         grad = -0.1;
-                            //    }
-                            //     body.body.position.x += msrotpct;
-                            //     body.body.position.y = 0;
-                            //     body.body.position.z = (grad * Math.pow( body.body.position.x, 2 ) + 50) /2;
-                            //     mesh.lookAt( v3d.scene.children[ V3D.mesharrpos.planetGlow ].position );
+                                   }
+                                   if ( body.body.position.x < -50 ) {
+                                        msrotpct = 0.05;
+                                        grad = -0.1;
+                                   }
+                                    ms1prev.copy( body.body.position );
+                                    body.body.position.x += msrotpct;
+                                    body.body.position.y = 0;
+                                    body.body.position.z = (grad * Math.pow( body.body.position.x, 2 ) + 50) /2;
+                                    var q = v3d.msla(body.body);
+                                    body.body.setQuaternion(q);
+                                    var p = 4;
+                                    var dist = v3d.tvec();
+                                    ms1len = dist.subVectors(v3d.planetpos, v3d.scene.children[v3d.ms1arrpos].position ).length();
+                                    ms1len -= halfdiamplanet; 
+                                    ms1diff.subVectors( ms1prev, body.body.position );
+                                    
+                                while( p-- && V3D.ms1phaser.children[p] ) {
+                                    if( V3D.ms1phaser.children[p].scale.z * 20 < ms1len){
+                                        V3D.ms1phaser.children[p].scale.z += 0.5;
+                                        V3D.ms1phaser.children[p].position.z += 5;
+                                    }
+                                    if( V3D.ms1phaser.children[p].scale.z * 20 > ms1len){
+                                        V3D.ms1phaser.children[p].scale.z -= 0.5;
+                                        V3D.ms1phaser.children[p].position.z -= 5;
+                                    }
+
+                                }
+                            }
+                            
 
                             if ( body.name == 'ms1' ) {
                                 if( mesh.userData.msname != 'ms1_4'){
@@ -786,6 +809,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                                     }
                                 }
                             }
+
                             mapcm.set(containerMesh.position.x, containerMesh.position.y, containerMesh.position.z);
                             mapms.set(mesh.position.x,mesh.position.y,mesh.position.z);
                                 var percx = mapms.x - mapcm.x;
@@ -868,6 +892,9 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                                 else {
                                     dbody.body.linearVelocity.set(0,0,0);
                                     dbody.body.angularVelocity.set(0,0,0);
+                                    if( x982y == 3 ) {
+                                        dbody.body.position.subEqual( ms1diff );
+                                    }
                                 }
                             }
                         }
@@ -1122,6 +1149,9 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                 }
                 for(var numms=0; numms < ms.length; numms++ ){
                     ms[numms].world = world;
+
+                    ms[numms].noSleep = true;
+
                     bodys[bodysNum] = new OIMO.Body(ms[numms]);
                     bodys[bodysNum].name = ms[numms].msname;
                     bodysNum += 1;
@@ -1410,6 +1440,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                     }
                 } 
                 v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value = 0.59;
+                if( x982y === 3 ){ v3d.eg.material.visible = true;}
                 // if(x982y === 2){
                 //     x982y = 3;
                 // }

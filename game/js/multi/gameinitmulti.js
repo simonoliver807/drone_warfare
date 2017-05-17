@@ -126,6 +126,8 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
     var planetexarr = [];
     var rdir = [];
     var planetexname;
+    var msrotpct = 0.05;
+    var grad = -0.1;
 
 
     // change to live 
@@ -269,7 +271,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
 
 
                     if(firstRender != 0 ){
-                        if( firstRender.ms1 ) {
+                         if( firstRender.ms1 && x982y !== 3 ) {    
                             bodys[firstRender.ms1].body.setupMass(0x2);
                         }
                         if( firstRender.ms2  ) {

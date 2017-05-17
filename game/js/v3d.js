@@ -13,7 +13,7 @@ V3D.exdrone2;
 V3D.exdrone3;
 V3D.phasers;
 V3D.dphasers;
-V3D.mesharrpos = {phasers:0,dphasers:0,pl:0,planetGlow:0,shp1:0,gs:0};
+V3D.mesharrpos = {phasers:0,dphasers:0,pl:0,planetGlow:0,shp1:0,gs:0,ms1:0};
 V3D.grouppart = new THREE.Object3D();
 V3D.ms1phaser = new THREE.Group();
 V3D.ms2phaser = new THREE.Group();
@@ -238,6 +238,7 @@ V3D.View.prototype = {
         // collision between stars and ship
         this.distSpheres;
         this.shp1radius;
+        this.eg;
 
     },
     initLight:function(){
@@ -376,9 +377,84 @@ V3D.View.prototype = {
 
     },
 
+        // rotatePlane: function() {
+
+    //     var _moveCurr = new THREE.Vector3();
+    //     _moveCurr.set(
+    //             ( ( V3D.clientx - this.w * 0.5 - _this.screen.left ) / ( this.w * 0.5 ) ),
+    //             ( ( this.h + 2 * ( _this.screen.top - V3D>clienty) ) / this.w) // screen.width intentional
+    //     );
+
+
+    //     var _eye = new THREE.Vector3().subVectors( this.eg, this.containerMesh.position );
+    //     var axis = new THREE.Vector3(),
+    //         quaternion = new THREE.Quaternion(),
+    //         eyeDirection = new THREE.Vector3(),
+    //         objectUpDirection = new THREE.Vector3(),
+    //         objectSidewaysDirection = new THREE.Vector3(),
+    //         moveDirection = new THREE.Vector3(),
+    //         angle;
+
+    //         moveDirection.set( _moveCurr.x - _movePrev.x, _moveCurr.y - _movePrev.y, 0 );
+    //         angle = moveDirection.length();
+
+    //         if ( angle ) {
+
+    //             _eye.copy( _this.object.position ).sub( _this.target );
+
+    //             eyeDirection.copy( _eye ).normalize();
+    //             objectUpDirection.copy( _this.object.up ).normalize();
+    //             objectSidewaysDirection.crossVectors( objectUpDirection, eyeDirection ).normalize();
+
+    //             objectUpDirection.setLength( _moveCurr.y - _movePrev.y );
+    //             objectSidewaysDirection.setLength( _moveCurr.x - _movePrev.x );
+
+    //             moveDirection.copy( objectUpDirection.add( objectSidewaysDirection ) );
+
+    //             axis.crossVectors( moveDirection, _eye ).normalize();
+
+    //             angle *= _this.rotateSpeed;
+    //             quaternion.setFromAxisAngle( axis, angle );
+
+    //             _eye.applyQuaternion( quaternion );
+    //             _this.object.up.applyQuaternion( quaternion );
+
+    //             _lastAxis.copy( axis );
+    //             _lastAngle = angle;
+
+    //         } 
+    //         _movePrev.copy( _moveCurr );
+
+    //         _this.object.position.addVectors( _this.target, _eye );
+
+
+    //     if(  this.eg && this.eg.material.visible ) {
+            
+    //         var endpoint_roundness = 0.6;
+    //         var midpoint_roundness = 3.0;
+
+            
+
+    //         if ( this.eg.material.uniforms.glowFloat.value > 0.5) {
+    //             this.eg.material.uniforms.glowFloat.value = 0.0;
+    //         }
+    //         this.eg.material.uniforms.glowFloat.value = 0.1;
+    //         this.eg.quaternion.copy( this.camera.quaternion ); 
+    //         this.eg.material.uniforms.endpoint_roundness.value = endpoint_roundness;
+    //         var m = (this.camera.quaternion.w - 0.72) / ( 1-0.72 ) * ( 3.0 - 0.5 ) + 0.5;
+    //         this.eg.material.uniforms.midpoint_roundness.value = m;
+    //         this.eg.position.copy( this.scene.children[ V3D.ms1_1arrpos ].position );
+    //         this.eg.position.z += 500;
+
+    //     }
+
+
+    // },
+
+
     render : function(){
 
-       // if( this.startRot.rot !== 0 && this.containerMesh != 0){ this.applyRot() };
+        // change to live
         if( this.startRot !== 0 && this.containerMesh != 0){ 
             var rotVec2 = new THREE.Vector2( V3D.pageX, V3D.pageY );
             rotVec2.x = THREE.Math.mapLinear( rotVec2.x, 0, this.w, -1, 1 );
@@ -395,8 +471,6 @@ V3D.View.prototype = {
 
             this.controls.threemm( this.mseCords );
         }
-        // this.applyRot();
-
 
         // shader updates
         var planets = this.scene.children[ V3D.mesharrpos.pl ].children;
@@ -410,13 +484,52 @@ V3D.View.prototype = {
             this.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value += performance.now()/1000000000;
         }
 
-
-        if(  this.scene.children[ 18 ] ) {
+        if(  this.eg && this.eg.material.visible ) {
             
-          
-            this.scene.children[ 18 ].quaternion.copy( this.camera.quaternion ); 
+            var endpoint_roundness = 0.6;
+            var midpoint_roundness = 3.0;
+
+            var v1 = new THREE.Vector3( 0, 1, 0 );
+            var v2 = new THREE.Vector3().subVectors( this.eg.position, new THREE.Vector3( this.containerMesh.position.x, this.containerMesh.position.y, this.eg.position.z ) );
+            var a1 = Math.acos( v2.dot( v1 ) / ( Math.sqrt( v2.lengthSq() * v1.lengthSq() ) ) );
+            if( isNaN( a1 ) ) {
+                a1 = 0.01;
+            }
+           
+            v1.set( 0 , 0, -1);
+            var v3 = new THREE.Vector3().subVectors( this.eg.position, new THREE.Vector3( this.containerMesh.position.x, this.eg.position.y, this.containerMesh.position.z) );
+            var a2 = Math.acos( v3.dot( v1 ) / ( Math.sqrt( v3.lengthSq() * v1.lengthSq() ) ) );
+            
+            if ( this.eg.material.uniforms.glowFloat.value > 0.5) {
+                this.eg.material.uniforms.glowFloat.value = 0.0;
+            }
+            this.eg.material.uniforms.glowFloat.value += 0.1;
+            this.eg.quaternion.copy( this.camera.quaternion ); 
+            this.eg.material.uniforms.endpoint_roundness.value = endpoint_roundness;
+            if ( a2 > 1.57 ) { 
+                var m = (a2 - 1.57 ) / ( 3.14 - 1.57 ) * ( 3.0 - 0.5 ) + 0.5;
+            }
+            else {
+                var m = (a2 - 1.57 ) / ( 0 - 1.57 ) * ( 3.0 - 0.5 ) + 0.5;
+            }
+            if ( a1 > 1.57 ) { 
+                var m1 = (a1 - 1.57 ) / ( 3.14 - 1.57 ) * ( 3.0 - 0.5 ) + 0.5;
+            }
+            else {
+                var m1 = (a1 - 1.57 ) / ( 0 - 1.57 ) * ( 3.0 - 0.5 ) + 0.5;
+            }
+            m += m1;
 
 
+            this.eg.material.uniforms.midpoint_roundness.value = m;
+            this.eg.position.copy( this.scene.children[ this.ms1arrpos ].position );
+           
+            var matrix = new THREE.Matrix4();
+            matrix.makeRotationFromQuaternion( this.scene.children[ this.ms1arrpos ].quaternion );
+            var direction = new THREE.Vector3( 0, 0, 1 );
+            direction.applyMatrix4( matrix );
+            direction.multiplyScalar( -500 );
+            this.eg.position.add( direction );
 
         }
 
@@ -783,7 +896,7 @@ V3D.View.prototype = {
             var circlefs = document.getElementById( 'planetGlowfs' ).textContent;
             var circlevs = document.getElementById( 'planetGlowvs' ).textContent;
 
-            var geometry = new THREE.PlaneGeometry(500, 500, 500);
+            var geometry = new THREE.PlaneGeometry(5000, 5000);
             var circlegeo = new THREE.BufferGeometry();
             circlegeo.fromGeometry(geometry);
             var material = new THREE.RawShaderMaterial({
@@ -802,24 +915,42 @@ V3D.View.prototype = {
             V3D.mesharrpos.planetGlow = this.scene.children.length;
             this.scene.add(circle);
         }
+
+
+
+
+
+
+
         if ( plane == 'engineGlow' ) {
 
             var engineGlowfs = document.getElementById( 'engineGlowfs' ).textContent;
             var engineGlowvs = document.getElementById( 'engineGlowvs' ).textContent;
 
             var planegeo = new THREE.PlaneGeometry(500, 500);
-            // var material = new THREE.RawShaderMaterial({
-            //     uniforms: {
-            //         glowFloat: {
-            //             value: 0.1
-            //         }
-            //     },
-            //     vertexShader: engineGlowvs,
-            //     fragmentShader: engineGlowfs,
-            //     transparent: true,
-            //     visible: true
-            // })
-            var material = new THREE.MeshBasicMaterial( { color: 0x0000ff})
+
+
+            planegeo.applyMatrix( new THREE.Matrix4().makeRotationZ( THREE.Math.degToRad( 90 ) ) );
+            var material = new THREE.RawShaderMaterial({
+                uniforms: {
+                    glowFloat: {
+                        value: 0.1
+                    },
+                    endpoint_roundness: {
+                        value: 0.6
+                    },
+                    midpoint_roundness: {
+                        value: 3.0
+                    }
+                },
+                vertexShader: engineGlowvs,
+                fragmentShader: engineGlowfs,
+                transparent: true,
+                visible: false
+            })
+
+
+           // var material = new THREE.MeshBasicMaterial( { color: 0x0000ff})
             material.side = THREE.DoubleSide;
             var engineGlow  = new THREE.Mesh( planegeo, material );
             engineGlow.name = 'engineGlow';
@@ -827,34 +958,9 @@ V3D.View.prototype = {
             return engineGlow;
         }
 
-           //  var topBottom = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide });
-           //  while( nummat-- ) {
-                
-           //          if ( nummat > 1 ) {
-           //              var thismat = material.clone();
-           //              matarr.push( thismat );
-           //          }
-           //          if ( nummat === 1 ){
 
-           //               matarr.push( topBottom.clone() );
 
-           //          }
-           //          if ( nummat === 0 ) {
 
-           //              matarr.push( topBottom.clone() );
-
-           //          }
-           //  } 
-           //  matarr[2].uniforms.glowFloat = 0.9;
-           //  matarr[3].uniforms.glowFloat = 0.9;
-           //  matarr[0].uniforms.invertGrad = 0.9;
-           //  matarr[3].uniforms.invertGrad = 0.9;
-           //  matarr[5].transparent = true;
-           //  matarr[5].opacity = 0;
-           //  var engineGlow  = new THREE.Mesh( boxgeo, new THREE.MeshFaceMaterial( matarr ) );
-           //  engineGlow.name = 'engineGlow';
-           //  V3D.mesharrpos.engineGlow = this.scene.children.length;
-           //  return engineGlow;
 
 
 
@@ -1573,6 +1679,7 @@ V3D.View.prototype = {
             this.ms1y.t = 0;
             if ( phaser.children.length == 0) {
                 V3D.ms1_1arrpos = 99;
+                this.eg.material.visible = false;
             }
         };
         if( name == 'ms2'){ 
