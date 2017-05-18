@@ -69,6 +69,8 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 				    var self = this;
 				    this.host = 0;
 				    this.player = 0;
+				    this.ms1d = 0;
+				    this.ms2d = 0;
 
 
 
@@ -141,13 +143,14 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 								if( bodys[i].name.match('ms')){
 									var msnum = v3d.scene.children.length;
 									while(msnum--){
-										if(v3d.scene.children[msnum].userData.msname == bodys[i].name){
-											if ( v3d.scene.children[msnum].children[0].children[0].children === undefined ) {
+										if(v3d.scene.children[msnum].name == bodys[i].name){
+											if ( v3d.scene.children[msnum].children[0].children[0].children.length === 0 ) {
 												msyn = 0;
 												console.log('ms undefined in autogame'); 
 											}
 											else {
-												var msyn = v3d.scene.children[msnum].children[0].children[0].children.length;
+												//var msyn = v3d.scene.children[msnum].children[0].children[0].children.length;
+												var msyn = 1;
 											}
 										}
 									}
@@ -180,7 +183,7 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 										if( bodys[i].name.match('ms') && !self.notMS ) {
 											for(var k=0; k< v3d.scene.children.length; k++){
 												var ms = v3d.scene.children[k];
-												if ( ms.userData.msname == bodys[i].name ){
+												if ( ms.name == bodys[i].name ){
 													self.tarbody = ms;
 												}
 											}
@@ -269,9 +272,17 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 					    				for(var i = 0; i < v3d.scene.children.length; i++ ){
 
 					    					if( self.tarbody.userData.msname == v3d.scene.children[i].userData.msname){
-
-					    						var msyn = v3d.scene.children[i].children[0].children[0].children.length;
-					    						if( msyn ){ target = 1};
+					    						if( v3d.scene.children[i].children[0].children[0] ){
+				    								var msyn = v3d.scene.children[i].children[0].children[0].children.length;
+				    							}
+				    							if( msyn ){ target = 1};
+					    						// }
+					    			// 			var msyn = 0;
+					    			// 			var t = 0;
+												// v3d.scene.children[i].userData.msname.match('ms1') ? t = v3d.ms1y.t : t = v3d.ms2y.t;
+												// if ( t < 201 ){
+												// 	target = 1;
+												// }
 
 					    					}
 
@@ -346,6 +357,14 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 
 
 							if ( self.tarbody != 0 ){
+
+								if ( self.tarbody.name.match('ms1') && V3D.x982y === 3) {
+									for (var i = 0; i < v3d.scene.children.length; i++) {
+										if( v3d.scene.children[i].name == 'ms1') {
+											self.tarbody.position.copy( v3d.scene.children[i].position );
+										}
+									}
+								}
 
 								v2.subVectors(self.tarbody.position, v3d.containerMesh.position).normalize();
 								var dp = v1.dot(v2);

@@ -203,11 +203,12 @@ V3D.View.prototype = {
         this.tmpsightz = 0;
         this.pThrust = 0;
         this.thruster;
+        this.astex;
 
         // shaders
         this.starpoint;
         this.glowmesh;
-        this.pglowt = 1000000000;
+        // this.pglowt = 1000000000;
 
 
         this.controls = new THREE.TrackballControls( this.camera );
@@ -786,6 +787,9 @@ V3D.View.prototype = {
                 // var uniforms =  THREE.UniformsLib[ 'lights' ];
                 uniforms.textureMerc = texture;
                 uniforms.u_time = u_time;
+                uniforms.colvar1 = { type: 'f', value: 0.164706 };
+                uniforms.colvar2 = { type: 'f', value: 0.666667 };
+
                 var material = new THREE.RawShaderMaterial({
                     uniforms: uniforms,
                     vertexShader: planet1vs,
@@ -1456,6 +1460,16 @@ V3D.View.prototype = {
             this.thruster.loop = true;
             this.thruster.start(0);
         }
+    },
+    playastex: function() {
+
+        if ( settingsarr[4] ) {
+            this.astex = audiocntxt.createBufferSource();
+            this.astex.buffer = sourceObj['astex'].buffer;
+            this.astex.connect(masterGain);
+            this.astex.start(0);
+        }
+
     },
     updateDrones: function(dbody,drone,ms){
 

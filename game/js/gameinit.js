@@ -553,13 +553,11 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                         }
                         if ( mesh.name.match( 'ast' ) ) {
                             if( mesh.userData.atbd ) {
+                                v3d.playastex();
                                 var m;
                                 mesh.type == 'Group' ? m = asteroid.breakDown( mesh, body ) : m = 0;
                                 if ( m ) {
                                     for (var astarrnum = 0; astarrnum < m.length; astarrnum++) {
-                                        
-                                    
-                                       // v3d.scene.add(m[ astarrnum ]);
                                         V3D.asteroids.add( m[ astarrnum ] );
                                         bodys[ bodysNum ] = new OIMO.Body( { move: true, name: m[ astarrnum ].name, noSleep: true, size: [ 30, 30, 30 ], pos: [ m[ astarrnum ].position.x, m[ astarrnum ].position.y, m[ astarrnum ].position.z ], type: 'cylinder', world: world } );
                                         bodysNum ++;
@@ -743,7 +741,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                         }
                         if(mesh.name == 'ms1' || mesh.name == 'ms2') {
 
-                            if ( x982y === 3 ){ 
+                            if ( (x982y === 3 || x982y === 6) && mesh.name == 'ms1' ){ 
                                 if ( body.body.position.x > 50 ) {
                                        msrotpct = -0.05;
                                        grad = -0.1;
@@ -881,11 +879,11 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                                     drone.userData.ld = 1;
                                 }
                                 // change to live
-                                // var dphas = v3d.updateDrones( dbody, drone, dbody.ms );
-                                // if ( dphas ) {
-                                //     bodysNum ++;
-                                //     meshNum ++;
-                                // }
+                                var dphas = v3d.updateDrones( dbody, drone, dbody.ms );
+                                if ( dphas ) {
+                                    bodysNum ++;
+                                    meshNum ++;
+                                }
                             }
                             if ( !drone.userData.ld && !drone.userData.rtm) {
                                 pddist.sub(containerMesh.position,meshs[i].position);
@@ -895,7 +893,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                                 else {
                                     dbody.body.linearVelocity.set(0,0,0);
                                     dbody.body.angularVelocity.set(0,0,0);
-                                    if( x982y == 3 ) {
+                                    if( x982y == 3 || x982y == 6 ) {
                                         dbody.body.position.subEqual( ms1diff );
                                     }
                                 }
@@ -906,14 +904,17 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                     if ( x982y !== 3 ) {
                         var p = 4;
                         while(p--){
-                            if(V3D.ms1phaser.children[p])
-                                if( V3D.ms1phaser.children[p].scale.z * 20 < ms1len){
-                                    V3D.ms1phaser.children[p].scale.z += 0.5;
-                                    V3D.ms1phaser.children[p].position.z += 5;
+                            if ( x982y != 6 ) {
+                                if(V3D.ms1phaser.children[p]){
+                                    if( V3D.ms1phaser.children[p].scale.z * 20 < ms1len){
+                                        V3D.ms1phaser.children[p].scale.z += 0.5;
+                                        V3D.ms1phaser.children[p].position.z += 5;
+                                    }
+                                    else {
+                                        v3d.scene.children[V3D.mesharrpos.planetGlow].material.visible = true;
+                                    }
                                 }
-                                else {
-                                    v3d.scene.children[V3D.mesharrpos.planetGlow].material.visible = true;
-                                }
+                            }
                             if(V3D.ms2phaser.children[p]){
                                 if( V3D.ms2phaser.children[p].scale.z * 20 < ms2len ){
                                     V3D.ms2phaser.children[p].scale.z += 0.5;
@@ -1050,6 +1051,11 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                             // planet.material.opacity = 1;
                             planet.material.visible = true;
                             planet.position.set( spheres[i].pos[0], spheres[i].pos[1], spheres[i].pos[2] );
+                            if( planet.material.type == 'RawShaderMaterial') {
+                                planet.material.uniforms.colvar1.value = Math.random();
+                                planet.material.uniforms.colvar2.value = Math.random();
+                                planet.material.needsUpdate = true;
+                            }
 
                         }
                         if ( planetlist.indexOf( spheres[i].name ) == -1) {
@@ -1444,7 +1450,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                         }
                     }
                 } 
-                x982y === 3 ? v3d.eg.material.visible = true : v3d.eg.material.visible = false;
+                x982y === 3 || x982y === 6 ? v3d.eg.material.visible = true : v3d.eg.material.visible = false;
                 v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.visible = false;
                 x982y === 2 || x982y === 3 ? v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.uniforms.glowFloat.value = 1 : v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.uniforms.glowFloat.value = 0.59;
                 // if(x982y === 2){

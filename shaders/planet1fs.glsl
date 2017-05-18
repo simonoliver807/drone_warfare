@@ -8,7 +8,8 @@ precision highp float;
 precision highp int;
 uniform sampler2D textureMerc;
 uniform float u_time;
-
+uniform float colvar1;
+uniform float colvar2;
 varying vec2 vUv;
 varying vec3 color2;
 
@@ -77,11 +78,11 @@ void main() {
                 clamp((f*f)*4.0,0.0,1.0));
 
     color = mix(color,
-                vec3(0,0,0.164706),
+                vec3(0,0, colvar1),
                 clamp(length(q),0.0,1.0));
 
     color = mix(color,
-                vec3(0.666667,1,1),
+                vec3( colvar2,1,1),
                 clamp(length(r.x),0.0,1.0));
 
     gl_FragColor = vec4((f*f*f+.6*f*f+.5*f)*color,1.);
@@ -92,7 +93,13 @@ void main() {
 
 
 
+    // color = mix(color,
+    //             vec3(0,0,0.164706),
+    //             clamp(length(q),0.0,1.0));
 
+    // color = mix(color,
+    //             vec3(0.666667,1,1),
+    //             clamp(length(r.x),0.0,1.0));
 
 
 

@@ -350,7 +350,7 @@ mc.connect(dburl, function(err, db) {
 //	console.log(db);
 	if( !app.locals.levels ) {
 
-		db.collection('levels').find({}).toArray( function(err, result) {
+		db.collection('levels').find({}).sort({ level: 1 }).toArray( function(err, result) {
 		
 			if (err) throw err
 			app.locals.levels = result;

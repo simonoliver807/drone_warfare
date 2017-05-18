@@ -7,7 +7,7 @@ var url = 'http://192.168.1.74:9000/';
 //var url = 'http://www.dronewar1.com'
 // change to live 
 
-var settingsarr = [ 32, 38, 40, 0, 0, 0];
+var settingsarr = [ 32, 38, 40, 0, 1, 0];
 var currply	= { username: 0, password: '' };
 
 
@@ -52,17 +52,20 @@ function bufferSound(msg) {
 	var msg1 = msg;
 	audiocntxt.decodeAudioData( this.response, function(data) {
 
-	 	if ( data.duration > 3 && data.duration < 3.1) {
-	 		var name = 'thruster';
+		if ( data.duration > 2.0 && data.duration < 2.5) {
+	 		var name = 'astex';
 	 	}
 	 	if ( data.duration > 9.1 && data.duration < 9.15) {
 	 		var name = 'droneExpl';
 	 	}
-		if ( data.duration > 14.1 && data.duration < 14.15) {
-	 		var name = 'pdown';
-	 	}
 	 	if ( data.duration > 81.86 && data.duration < 81.88) {
 	 		var name = 'droneAudio';
+	 	}
+	 	if ( data.duration > 14.1 && data.duration < 14.15) {
+	 		var name = 'pdown';
+	 	}
+	 	if ( data.duration > 3 && data.duration < 3.1) {
+	 		var name = 'thruster';
 	 	}
 
 		sourceObj[name].buffer = data;
@@ -189,10 +192,12 @@ function initgame( ev ) {
 
 	masterGain = audiocntxt.createGain();
 	masterGain.connect(audiocntxt.destination);
+	sourceObj['astex'] = audiocntxt.createBufferSource();
 	sourceObj['droneExpl'] = audiocntxt.createBufferSource();
 	sourceObj['droneAudio'] = audiocntxt.createBufferSource();
 	sourceObj['pdown'] = audiocntxt.createBufferSource();
 	sourceObj['thruster'] = audiocntxt.createBufferSource();
+	loadFile("audio/astex.wav", bufferSound, "loaded astex\n\n");
 	loadFile("audio/droneExpl.wav", bufferSound, "loaded droneExpl\n\n");
 	loadFile("audio/droneAudio.mp3", bufferSound, "loaded droneAudio\n\n");
 	loadFile("audio/pdown.mp3", bufferSound, "loaded pdown\n\n");
@@ -631,7 +636,7 @@ function changeInOut ( val ) {
 
 }) ();
 // change to live
-runGame(1);
+//runGame(0);
 //initgame();
 //var page = { target: { id: 'wanav' } };
 //navFunc(a);

@@ -1007,11 +1007,11 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                             if( drone.userData.ld ) {
                                 if ( ( host && dbody.ld != 2 ) || ( !host && dbody.ld != 1 ) ) {
                                     // change to live
-                                    // var dphas = v3d.updateDrones( dbody, drone, dbody.ms );
-                                    // if ( dphas ) {
-                                    //     bodysNum ++;
-                                    //     meshNum ++;
-                                    // }
+                                    var dphas = v3d.updateDrones( dbody, drone, dbody.ms );
+                                    if ( dphas ) {
+                                        bodysNum ++;
+                                        meshNum ++;
+                                    }
                                     // reset the server rtm after drone has rtm'd
                                     if ( drone.userData.ld == 0 && drone.userData.rtm == 0 ) {
                                         dbody.rtm = 0;
@@ -1179,7 +1179,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
 
                 pdown = this.levelobj.dow;
                 tpdown = pdown;
-                v3d.pglowt = this.levelobj.pglowt;
+                // v3d.pglowt = this.levelobj.pglowt;
                 for( obj in  this.levelobj){
                     if( obj.charAt(0) == 'p' && obj != 'pglowt' ){
                         if(obj == 'planet1'){
@@ -1652,9 +1652,6 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                 x982y === 3 ? v3d.eg.material.visible = true : v3d.eg.material.visible = false;
                 v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.visible = false;
                 x982y === 2 || x982y === 3 ? v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.uniforms.glowFloat.value = 1 : v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.uniforms.glowFloat.value = 0.59;
-                // if(x982y === 2){
-                //     x982y = 3;
-                // }
                 numofdroneleft = 0;
                 var i = bodys.length;
                 while(i--){

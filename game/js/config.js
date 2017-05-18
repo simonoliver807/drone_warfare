@@ -5,7 +5,7 @@ requirejs(['autoGame','asteroid','oimo','planetex','three','lib/improvedNoise','
             	var main = new MAIN;
             	main.init();
 
-            	// change to live
+            	//change to live
             	// var autoGame = new AUTOGAME;
             	// autoGame.init();
 

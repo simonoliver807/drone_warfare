@@ -119,13 +119,21 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 								if( bodys[i].name.match('ms')){
 									var msnum = v3d.scene.children.length;
 									while(msnum--){
-										if(v3d.scene.children[msnum].userData.msname == bodys[i].name){
-											if ( v3d.scene.children[msnum].children[0].children[0].children === undefined ) {
+										// if(v3d.scene.children[msnum].userData.msname == bodys[i].name){
+										// 	if ( v3d.scene.children[msnum].children[0].children[0].children === undefined ) {
+										// 		msyn = 0;
+										// 		console.log('ms undefined in autogame'); 
+										// 	}
+										// 	else {
+										// 		var msyn = v3d.scene.children[msnum].children[0].children[0].children.length;
+										// 	}
+										// }
+										if(v3d.scene.children[msnum].name == bodys[i].name){
+											if ( v3d.scene.children[msnum].children[0].children[0].children.length === 0 ) {
 												msyn = 0;
-												console.log('ms undefined in autogame'); 
 											}
 											else {
-												var msyn = v3d.scene.children[msnum].children[0].children[0].children.length;
+												var msyn = 1;
 											}
 										}
 									}
@@ -239,8 +247,13 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 					    					if( self.tarbody.userData.msname == v3d.scene.children[i].userData.msname){
 
-					    						var msyn = v3d.scene.children[i].children[0].children[0].children.length;
-					    						if( msyn ){ target = 1};
+					    						// var msyn = v3d.scene.children[i].children[0].children[0].children.length;
+					    						// if( msyn ){ target = 1};
+
+					    						if( v3d.scene.children[i].children[0].children[0] ){
+				    								var msyn = v3d.scene.children[i].children[0].children[0].children.length;
+				    							}
+				    							if( msyn ){ target = 1};
 
 					    					}
 
