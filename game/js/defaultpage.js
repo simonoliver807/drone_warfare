@@ -7,7 +7,7 @@ var url = 'http://192.168.1.74:9000/';
 //var url = 'http://www.dronewar1.com'
 // change to live 
 
-var settingsarr = [ 32, 38, 40, 0, 1, 0];
+var settingsarr = [ 32, 38, 40, 0, 0, 0];
 var currply	= { username: 0, password: '' };
 
 
@@ -649,7 +649,7 @@ function changeInOut ( val ) {
 
 }) ();
 // change to live
-//runGame(1);
+runGame(1);
 //initgame();
 //var page = { target: { id: 'wanav' } };
 //navFunc(a);

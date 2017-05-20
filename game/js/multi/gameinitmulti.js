@@ -19,6 +19,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
     asteroid.initMat();
     var planetex = new PLANETEX;
     planetex.initMat();
+    var pex_t = 0;
 
 
     
@@ -209,6 +210,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                 }
                 if( endsequence == -1 ){                            
                     self.levelGen(1);
+                    gamecore.startgame = 0;
                 }
 
                 worldcount += 0.00001;
@@ -637,7 +639,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
 
                         // change to live glowFloat.value
                         // check if asteroid needs breaking down, destroying, or respawning
-                        if ( ( host && v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > 1.5 && endsequence > 0 ) ){
+                         if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > pex_t && endsequence > 0 ){
 
                             gamecore.respawn.firepx = 1;
                             self.planetex();
@@ -646,13 +648,12 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                         }
                         if ( mesh.name.match( 'ast' ) ) {
                             if( mesh.userData.atbd ) {
+                                v3d.playastex();
                                 var m;
                                 mesh.type == 'Group' ? m = asteroid.breakDown( mesh, body ) : m = 0;
                                 if ( m ) {
                                     for (var astarrnum = 0; astarrnum < m.length; astarrnum++) {
-                                        
-                                    
-                                       // v3d.scene.add(m[ astarrnum ]);
+
                                         V3D.asteroids.add( m[ astarrnum ] );
                                         bodys[ bodysNum ] = new OIMO.Body( { move: true, name: m[ astarrnum ].name, noSleep: true, size: [ 30, 30, 30 ], pos: [ m[ astarrnum ].position.x, m[ astarrnum ].position.y, m[ astarrnum ].position.z ], type: 'cylinder', world: world } );
                                         bodysNum ++;
@@ -861,7 +862,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                         }
                         if(mesh.name == 'ms1' || mesh.name == 'ms2') {
 
-                            if ( x982y === 3 ){ 
+                            if ( (x982y === 3 || x982y === 6) && mesh.name == 'ms1' ){ 
                                 if ( body.body.position.x > 50 ) {
                                        msrotpct = -0.05;
                                        grad = -0.1;
@@ -1045,7 +1046,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                                 else {
                                     dbody.body.linearVelocity.set(0,0,0);
                                     dbody.body.angularVelocity.set(0,0,0);
-                                    if( x982y == 3 ) {
+                                    if( x982y == 3 || x982y == 6 ) {
                                          dbody.body.position.subEqual( ms1diff );
                                     }
                                 }
@@ -1056,14 +1057,16 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                     if ( x982y !== 3 ) {
                         var p = 4;
                         while(p--){
-                            if(V3D.ms1phaser.children[p])
-                                if( V3D.ms1phaser.children[p].scale.z * 20 < ms1len){
-                                    V3D.ms1phaser.children[p].scale.z += 0.5;
-                                    V3D.ms1phaser.children[p].position.z += 5;
+                            if ( x982y != 6 ) {
+                                if(V3D.ms1phaser.children[p])
+                                    if( V3D.ms1phaser.children[p].scale.z * 20 < ms1len){
+                                        V3D.ms1phaser.children[p].scale.z += 0.5;
+                                        V3D.ms1phaser.children[p].position.z += 5;
+                                    }
+                                    else {
+                                        v3d.scene.children[V3D.mesharrpos.planetGlow].material.visible = true;
                                 }
-                                else {
-                                    v3d.scene.children[V3D.mesharrpos.planetGlow].material.visible = true;
-                                }
+                            }
                             if(V3D.ms2phaser.children[p]){
                                 if( V3D.ms2phaser.children[p].scale.z * 20 < ms2len ){
                                     V3D.ms2phaser.children[p].scale.z += 0.5;
@@ -1092,7 +1095,8 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
             },
             handlerespawn: function() {
 
-                endsequence = -200; 
+                endsequence = -200;
+                gamecore.startgame = 0; 
                 document.getElementById('respawnImg').style.display = 'block';
 
                 if( V3D.ms1_1arrpos === 99 && endsequence < 0 ){
@@ -1175,13 +1179,14 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                 }
                 this.levelobj = data;
                 numofast = this.levelobj.numofast;
+                pex_t = this.levelobj.pex_t;
 
 
                 pdown = this.levelobj.dow;
                 tpdown = pdown;
                 // v3d.pglowt = this.levelobj.pglowt;
                 for( obj in  this.levelobj){
-                    if( obj.charAt(0) == 'p' && obj != 'pglowt' ){
+                    if( obj.charAt(0) == 'p' && obj != 'pglowt' && obj != 'pex_t'  ){
                         if(obj == 'planet1'){
                            halfdiamplanet = this.levelobj[obj].size[0]/2;
                            var pos = this.levelobj[obj].pos;
@@ -1236,6 +1241,11 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                             // planet.material.opacity = 1;
                             planet.material.visible = true;
                             planet.position.set( spheres[i].pos[0], spheres[i].pos[1], spheres[i].pos[2] );
+                            if( planet.material.type == 'RawShaderMaterial') {
+                                planet.material.uniforms.colvar1.value = Math.random();
+                                planet.material.uniforms.colvar2.value = Math.random();
+                                planet.material.needsUpdate = true;
+                            }
 
                         }
                         if ( planetlist.indexOf( spheres[i].name ) == -1) {
@@ -1649,7 +1659,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                         }
                     }
                 } 
-                x982y === 3 ? v3d.eg.material.visible = true : v3d.eg.material.visible = false;
+                x982y === 3 || x982y === 6 ? v3d.eg.material.visible = true : v3d.eg.material.visible = false;
                 v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.visible = false;
                 x982y === 2 || x982y === 3 ? v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.uniforms.glowFloat.value = 1 : v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.uniforms.glowFloat.value = 0.59;
                 numofdroneleft = 0;

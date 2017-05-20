@@ -214,7 +214,6 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
         }
         this.socket.emit( 'dataload1', { id: this.player_self.id, gid: this.gameid });
         this.firstStream = 0;
-        this.startgame = 1 ;
       }
 
 
@@ -222,8 +221,9 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
     }
     game_core.prototype.client_onserverupdate_received = function(data) {
 
-      if( this.startgame === 1) {
-
+     // if( this.startgame === 1) {
+      if ( this.firstStream == 0 ){
+          this.startgame = 1;
           data.vals.pldata = new Float32Array( data.vals.pldata );
 
           this.server_time = data.t;
