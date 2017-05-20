@@ -254,6 +254,9 @@ optgroup {
 	position: relative;
 	pointer-events: none;
 }
+#cntrl {
+	margin-left: 3%;
+}
 #cup {
 	position: relative;	
 	pointer-events: none;
@@ -641,6 +644,16 @@ optgroup {
 }
 #sndfxbutton:hover {
 	background: #43A047;
+}
+#sndlevel1 {
+	background-color: #ddd;
+	height: 10%;
+	width: 100%;
+}
+#sndlevel2 {
+	width: 50%;
+  	height: 41px;
+  	background-color: #4CAF50;
 }
 #spacertapaccel {
 	height: 30%;

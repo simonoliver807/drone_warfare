@@ -52,9 +52,9 @@
                                 img(src='images/websiteImg/controls.png', alt='images/websiteImg/controls.png')
                           .fw-row#usercont
                             .fw-col-xs-12
-                              p 
-                              p Mac/Pc controls :-
-                              ul
+                              p
+                              label Mac/Pc controls
+                              ul#cntrl
                                 li Up Arrow forward
                                 li Down Arrow backwards
                                 li Space fire laser
@@ -63,5 +63,11 @@
                                 li Esc to pause
                           .fw-row#sndfxbutrow
                             .fw-col-xs-12
-                              h3 Mute soud fx
+                              label Mute soud fx
                               input#sndfxbutton(type="button" value="on")
+                          .fw-row
+                            .fw-col-xs-12 
+                              p
+                              label Adjust in-game volume
+                              #sndlevel1 
+                                #sndlevel2 

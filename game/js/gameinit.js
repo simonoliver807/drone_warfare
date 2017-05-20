@@ -18,6 +18,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
     asteroid.initMat();
     var planetex = new PLANETEX;
     planetex.initMat();
+    var pex_t = 0;
     
     //////////////////////////
     //****Oimo Variables****//
@@ -531,7 +532,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
 
                         // check if asteroid needs breaking down, destroying, or respawning
                         // change to live 
-                        if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > 1.5 && endsequence > 0 ){
+                        if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > pex_t && endsequence > 0 ){
                         //if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > 0.6 && endsequence > 0 ){
 
                             // radius is set in the module
@@ -993,11 +994,12 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                 this.levelobj = data;
 
                 numofast = this.levelobj.numofast;
+                pex_t = this.levelobj.pex_t;
 
                 pdown = this.levelobj.dow;
                 v3d.pglowt = this.levelobj.pglowt;
                 for( obj in  this.levelobj){
-                    if( obj.charAt(0) == 'p' && obj != 'pglowt' ){
+                    if( obj.charAt(0) == 'p' && obj != 'pglowt' && obj != 'pex_t' ) {
                         if(obj == 'planet1'){
                            halfdiamplanet = this.levelobj[obj].size[0]/2;
                            var pos = this.levelobj[obj].pos;
@@ -1452,7 +1454,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                 } 
                 x982y === 3 || x982y === 6 ? v3d.eg.material.visible = true : v3d.eg.material.visible = false;
                 v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.visible = false;
-                x982y === 2 || x982y === 3 ? v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.uniforms.glowFloat.value = 1 : v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.uniforms.glowFloat.value = 0.59;
+                v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.uniforms.glowFloat.value = 0.59;
                 // if(x982y === 2){
                 //     x982y = 3;
                 // }

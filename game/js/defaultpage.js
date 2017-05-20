@@ -33,6 +33,8 @@ var audiocntxt;
 var masterGain;
 var sourceObj = {};
 var sourcenum2 = 0;
+var sndval = 50;
+var sndValclientX = 0;
 loadmobstyle();
 
 function decodeSucc(data) {
@@ -159,6 +161,8 @@ document.getElementById('sfxoff42').addEventListener('click', setsettings);
 document.getElementById('slin53').addEventListener('click', setsettings);
 document.getElementById('slout53').addEventListener('click', setsettings);
 document.getElementById('udset').addEventListener('click', updateSettings);
+document.getElementById('sndlevel1').addEventListener('mousemove', volumeSettings);
+document.getElementById('sndlevel1').addEventListener('mouseover', function( ev ) { sndValclientX = ev.clientX; });
 
 
 function loadmobstyle() {
@@ -192,6 +196,7 @@ function initgame( ev ) {
 
 	masterGain = audiocntxt.createGain();
 	masterGain.connect(audiocntxt.destination);
+	masterGain.gain.value = sndval/100;
 	sourceObj['astex'] = audiocntxt.createBufferSource();
 	sourceObj['droneExpl'] = audiocntxt.createBufferSource();
 	sourceObj['droneAudio'] = audiocntxt.createBufferSource();
@@ -532,6 +537,14 @@ function setSoundFx(event) {
 	}
 }
 
+function volumeSettings( ev ) {
+
+	sndval += ( ev.clientX - sndValclientX)/ 100;
+	if( sndval > 100 ) { sndval = 100 ;}
+	if( sndval < 0 ) { sndval = 0 ;}
+	document.getElementById('sndlevel2').style.width = sndval + '%';
+}
+
 function runGame(numpl) {
 
 	var radios = document.getElementsByName('radio_3698130');
@@ -636,7 +649,7 @@ function changeInOut ( val ) {
 
 }) ();
 // change to live
-//runGame(0);
+//runGame(1);
 //initgame();
 //var page = { target: { id: 'wanav' } };
 //navFunc(a);

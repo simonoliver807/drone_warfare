@@ -180,7 +180,7 @@ module.exports = function () {
                 // bodysNum += 1;
 
                 for( obj in  this.levelobj){
-                    if( obj.charAt(0) == 'p' && obj != 'pglowt' ){
+                    if( obj.charAt(0) == 'p' && obj != 'pglowt' && obj != 'pex_t' ){
                         if(obj == 'planet1'){
                            halfdiamplanet = this.levelobj[obj].size[0]/2;
                            var pos = this.levelobj[obj].pos;
