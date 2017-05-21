@@ -47,7 +47,9 @@ mc.connect(dburl1, function(err, db) {
 
 			for (var i = 0; i < result.length; i++) {
 				var planet2 = 0;
+				var ms2 = 0;
 				if ( result[i].planet2 ) { var planet2 = result[i].planet2; }
+				if ( result[i].ms2 ) { var ms2 = result[i].ms2; }
 				debugger
 				db.collection('levels').update(
 					{ level: result[i].level },

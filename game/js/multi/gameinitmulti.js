@@ -1192,10 +1192,14 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                            var pos = this.levelobj[obj].pos;
                            v3d.planetpos.set( pos[0], pos[1], pos[2] );
                         }
-                        spheres.push(this.levelobj[obj]);
+                         if ( this.levelobj[obj] !== 0 ) {
+                            spheres.push(this.levelobj[obj]);
+                        }
                     }
                     if(obj.charAt(0) == 'm'){
-                        ms.push(this.levelobj[obj]);
+                        if ( this.levelobj[obj] !== 0 ) {
+                            ms.push(this.levelobj[obj]);
+                        }
                        // this.levelobj[obj].new = 0;
                     }
                     if(obj == 'drone') {

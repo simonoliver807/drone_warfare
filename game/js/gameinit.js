@@ -1010,7 +1010,9 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                         }
                     }
                     if(obj.charAt(0) == 'm'){
-                        ms.push(this.levelobj[obj]);
+                        if ( this.levelobj[obj] !== 0 ) {
+                            ms.push(this.levelobj[obj]);
+                        }
                        // this.levelobj[obj].new = 0;
                     }
                     if(obj == 'drone') {
