@@ -7,7 +7,7 @@
 var url = 'http://www.dronewar1.com'
 // change to live 
 
-var settingsarr = [ 32, 38, 40, 0, 0, 0];
+var settingsarr = [ 32, 38, 40, 1, 1, 0];
 var currply	= { username: 0, password: '' };
 
 
