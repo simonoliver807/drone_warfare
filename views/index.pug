@@ -1,6 +1,6 @@
 // (lang='en-US', manifest='dronewar1_154.appcache', type='text/cache-manifest')// change to live
 doctype html
-html
+html(lang='en-US', manifest='dronewar1_215.appcache', type='text/cache-manifest')
   head
     meta(charset='UTF-8')
     title= title
@@ -8,7 +8,8 @@ html
     link(rel='stylesheet', type='text/css', href='style/frontend.css')
     link(rel='stylesheet', type='text/css', href='style/frontend-grid.css')
     link(rel='stylesheet', type='text/css', href='style/font-awesome-4.7.0/css/font-awesome.min.css')
-    link(rel='stylesheet', type='text/css', href='style/style154.css')
+    // change to live
+    link(rel='stylesheet', type='text/css', href='style/style215.css')
     link#mobilecss(rel='stylesheet', type='text/css', href='')
     link(rel='icon', type='image/png', href='images/favicon.ico')
     link(rel="apple-touch-icon" href="touch-icon-iphone.png")
@@ -22,12 +23,12 @@ html
     meta(name="robots" content='3d, space game, first person shooter,  mobile game')
     meta(name="googlebot" content='3d, space game, first person shooter, mobile game')
     // change to live script.
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-91047098-1', 'auto');
-      ga('send', 'pageview');
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-91047098-1', 'auto');
+    ga('send', 'pageview');
   body.no-sidebar
     #page.site
       .site-inner
@@ -102,13 +103,13 @@ html
     script(type='x-shader/x-vertex', id='engineGlowvs')!= engineGlowvs
 
     // change to live
-    script(type='text/Javascript', src='js/defaultpage.js')
+    //script(type='text/Javascript', src='js/defaultpage.js')
     //script(type='text/Javascript', src='js/lib/dat.gui.js')
-    //script(type='text/Javascript', src='js_min/defaultpage.js')
+    script(type='text/Javascript', src='js_min/defaultpage.js')
 
     // change to live
-    script(src="/reload/reload.js")
-    script(src='//localhost:35729/livereload.js')
+    //script(src="/reload/reload.js")
+    //script(src='//localhost:35729/livereload.js')
     //script(src='//192.168.1.92:35729/livereload.js')
 
 

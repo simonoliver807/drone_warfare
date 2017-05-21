@@ -97,7 +97,7 @@ module.exports = function () {
 
     // change to live
     // 250 for health maybe to high
-    var health = 90; 
+    var health = 10; 
     
     var dronelaunch = 0;
     var level1imgCnt = 0;

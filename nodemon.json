@@ -12,7 +12,7 @@
     "restart": ""
   },
   "watch": [
-    "index.js", "views/", "shaders/", "game/js/", "multiserver/"
+    "index.js", "views/", "shaders/", "game/js/", "multiserver/", "db_local_live.js"
   ],
   "env": {
     "NODE_ENV": "development"

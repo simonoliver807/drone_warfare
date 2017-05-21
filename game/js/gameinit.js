@@ -142,7 +142,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
 
 
                 // change to live
-                perfcont = document.getElementById('perf');
+                // perfcont = document.getElementById('perf');
 
 
                 perf = 0;
@@ -518,8 +518,8 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                     }
                     
                     // change to live
-                    perf = world.performance.show();
-                    perfcont.innerHTML = perf;
+                    // perf = world.performance.show();
+                    // perfcont.innerHTML = perf;
                   
 
                    // var x, y, z, mesh, body;
@@ -845,7 +845,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                         }
 
                     }
-                    // change to live: remove
+                    // change to live
                      //v3d.phaser();
                      ///////////////////////
 
@@ -1067,7 +1067,8 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                             }
                         }
                         if( bodys[bodysNum].name == 'shp1' ){
-                            bodys[ bodysNum ].r1 = 90;
+                            // change to live
+                            if ( startlevel ) { bodys[ bodysNum ].r1 = 10; } 
                             v3d.setBodys(bodys[bodysNum]);
                         }
                         bodysNum += 1;
@@ -1495,7 +1496,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                 bodys[0].body.position.set(0,0,0);
                 // change to live
                 if ( restart ) {
-                    bodys[0].r1 = 90; 
+                    bodys[0].r1 = 10; 
                 }
                 startlevel = 0;
                 v3d.ms1y.t = 0;

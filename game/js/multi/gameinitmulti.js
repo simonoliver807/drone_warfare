@@ -1256,7 +1256,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                         }
                         if( bodys[bodysNum].name == 'shp1' ){
                             // change to live
-                            bodys[ bodysNum ].r1 = 10;
+                            if ( startlevel ) { bodys[ bodysNum ].r1 = 10; } 
                             v3d.setBodys(bodys[bodysNum]);
                         }
                         bodysNum += 1;

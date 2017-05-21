@@ -45,7 +45,9 @@ CACHE:
  images/websiteImg/lvlchngimg/level3.png
  images/websiteImg/lvlchngimg/level4.png
  images/websiteImg/lvlchngimg/level5.png
+ images/websiteImg/lvlchngimg/level6.png
  images/websiteImg/lvlchngimg/respawn.png
+ audio/astex.wav
  audio/pdown.mp3
  audio/droneExpl.wav
  audio/thrusters.wav
