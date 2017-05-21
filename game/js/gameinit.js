@@ -1005,7 +1005,9 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                            var pos = this.levelobj[obj].pos;
                            v3d.planetpos.set( pos[0], pos[1], pos[2] );
                         }
-                        spheres.push(this.levelobj[obj]);
+                        if ( this.levelobj[obj] !== 0 ) {
+                            spheres.push(this.levelobj[obj]);
+                        }
                     }
                     if(obj.charAt(0) == 'm'){
                         ms.push(this.levelobj[obj]);
