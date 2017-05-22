@@ -1096,7 +1096,6 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
             handlerespawn: function() {
 
                 endsequence = -200;
-                gamecore.startgame = 0; 
                 document.getElementById('respawnImg').style.display = 'block';
 
                 if( V3D.ms1_1arrpos === 99 && endsequence < 0 ){
@@ -1232,6 +1231,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                         if( spheres[i].class == 'planet' && spheres[i].name.match('1') ){
 
                             v3d.scene.children[V3D.mesharrpos.planetGlow].position.set( spheres[i].pos[0], spheres[i].pos[1], spheres[i].pos[2] );
+                            v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.uniforms.glowFloat.value = this.levelobj.pglowt;
                             planetexname = spheres[i].name;
 
                         }
@@ -1665,7 +1665,6 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                 } 
                 x982y === 3 || x982y === 6 ? v3d.eg.material.visible = true : v3d.eg.material.visible = false;
                 v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.visible = false;
-                x982y === 2 || x982y === 3 ? v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.uniforms.glowFloat.value = 1 : v3d.scene.children[ V3D.mesharrpos.planetGlow ].material.uniforms.glowFloat.value = 0.59;
                 numofdroneleft = 0;
                 var i = bodys.length;
                 while(i--){

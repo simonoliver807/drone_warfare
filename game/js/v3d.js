@@ -1261,12 +1261,17 @@ V3D.View.prototype = {
 
             }
         }
+
+        if ( ms2len > 26814) {
+            console.log('gt');
+        }
+
         for(var i=0; i < intersects.length; i++) {
-            if( intersects[i].object.parent.name == 'ms1' && this.ms1y.y == 0) {
+            if( intersects[i].object.parent.name == 'ms1' && this.ms1y.y == 0 && ms1len < 26814) {
                  this.ms1y.y = 1;
                  this.ms1y.t += 1;
             }
-            if( intersects[i].object.name == "DestroyerR_Destroyer_Untitled.000" && this.ms2y.y == 0) {
+            if( intersects[i].object.name == "DestroyerR_Destroyer_Untitled.000" && this.ms2y.y == 0 && ms2len < 26814) {
                  this.ms2y.y = 1;
                  this.ms2y.t += 1;
             }
