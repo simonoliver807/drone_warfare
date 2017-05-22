@@ -1261,11 +1261,6 @@ V3D.View.prototype = {
 
             }
         }
-
-        if ( ms2len > 26814) {
-            console.log('gt');
-        }
-
         for(var i=0; i < intersects.length; i++) {
             if( intersects[i].object.parent.name == 'ms1' && this.ms1y.y == 0 && ms1len < 26814) {
                  this.ms1y.y = 1;

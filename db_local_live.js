@@ -61,7 +61,7 @@ mc.connect(dburl1, function(err, db) {
 						drone: result[i].drone,
 						dow: result[i].dow,
 						ms1: result[i].ms1,
-						ms2: result[i].ms2,
+						ms2: ms2,
 						pglowt: result[i].pglowt,
 						numofast: result[i].numofast,
 						pex_t: result[i].pex_t
