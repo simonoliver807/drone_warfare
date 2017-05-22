@@ -185,10 +185,14 @@ module.exports = function () {
                            halfdiamplanet = this.levelobj[obj].size[0]/2;
                            var pos = this.levelobj[obj].pos;
                         }
-                        spheres.push(this.levelobj[obj]);
+                        if ( this.levelobj[obj] !== 0 ) {
+                            spheres.push(this.levelobj[obj]);
+                        }
                     }
                     if(obj.charAt(0) == 'm'){
-                        ms.push(this.levelobj[obj]);
+                        if ( this.levelobj[obj] !== 0 ) {
+                            ms.push(this.levelobj[obj]);
+                        }
                     }
                     if(obj == 'drone') {
                         numofdrone= this.levelobj[obj];
