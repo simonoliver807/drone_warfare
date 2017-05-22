@@ -568,7 +568,7 @@ function runGame(numpl) {
 	s.type = "text/javascript";
 	s.src = "js_min/require.js";
 	if( numpl ) {
-		s.setAttribute('data-main', 'js_min/configMulti.js');
+		s.setAttribute('data-main', 'js_min/configmulti.js');
 	}
 	else {
 		s.setAttribute('data-main', 'js_min/config.js')
