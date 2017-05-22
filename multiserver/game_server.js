@@ -155,20 +155,26 @@ function game_server ( levels ) {
 
  game_server.prototype.levelgen = function( data ) {
 
-  if ( this.games[data.gid].lastlevelchange === 0 || ( this.games[data.gid].local_time - this.games[data.gid].lastlevelchange ) > 5 ) {
-    this.games[data.gid].lastlevelchange = this.games[data.gid].local_time;
-    if ( !this.games[data.gid].firststream ) {
+  console.log( this.games[data.gid].lastlevelchange + ' lastlevelchange' )
+  if( typeof this.games[data.gid].lastlevelchange != 'undefined' ) {
+    if ( this.games[data.gid].lastlevelchange === 0 || ( this.games[data.gid].local_time - this.games[data.gid].lastlevelchange ) > 5 ) {
+      this.games[data.gid].lastlevelchange = this.games[data.gid].local_time;
+      if ( !this.games[data.gid].firststream ) {
 
-      this.games[data.gid].firststream = 2;
-      if ( data.x982y == 1 ) {
-        this.games[data.gid].levelloaded = 0;
-        this.games[data.gid].respawn( data );
-      }
-      if ( data.x982y != 1 ) {
-        this.games[data.gid].levelloaded = 2;
-      }
+        this.games[data.gid].firststream = 2;
+        if ( data.x982y == 1 ) {
+          this.games[data.gid].levelloaded = 0;
+          this.games[data.gid].respawn( data );
+        }
+        if ( data.x982y != 1 ) {
+          this.games[data.gid].levelloaded = 2;
+        }
 
+      }
     }
+  }
+  else {
+    console.log('lastlevelchange ' + this.games[data.gid].lastlevelchange)
   }
  }
 

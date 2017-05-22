@@ -59,7 +59,7 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
       this.ply1;
       this.ply2;
       this.ply2mesh;
-      this.client_smooth = 20;     // amount of smoothing to apply to client update dest    smooth out drones and ship
+      //this.client_smooth = 20;     // amount of smoothing to apply to client update dest    smooth out drones and ship
    //   this.firepx = 0;
 
 
@@ -455,7 +455,7 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
             //apply smoothing from current pos to the new destination pos
             if (this.client_smooth) {
               //this.player_set[id].pos = this.lerpVectors(this.player_set[id].pos, this.player_set[id].destpos, this.pdt * this.client_smooth);
-              this.player_set[id].pos = this.v_lerp(this.player_set[id].pos, this.player_set[id].destpos,  this.pdt * this.client_smooth );
+              this.player_set[id].pos = this.v_lerp(this.player_set[id].pos, this.player_set[id].destpos,  this.pdt );
               var subvec = new OIMO.Vec3();
               subvec.sub( this.ply2.body.position , this.player_set[id].pos );
               if ( (subvec.x > 0.01 || subvec.x < -0.01) || ( subvec.y >  0.01 || subvec.y < -0.01 ) || ( subvec.z >  0.01 || subvec.z < -0.01) ) {
