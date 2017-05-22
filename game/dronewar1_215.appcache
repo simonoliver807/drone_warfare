@@ -5,7 +5,7 @@ CACHE:
  style/style215.css
  js_min/require.js
  js_min/config.js
- js_min/configMulti.js
+ js_min/configmulti.js
  images/cpv/cpv.mtl
  images/Free_Droid/Materials/BaseMaterial_normal.tga
  images/Free_Droid/bake.obj
