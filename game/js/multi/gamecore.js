@@ -59,7 +59,7 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
       this.ply1;
       this.ply2;
       this.ply2mesh;
-      //this.client_smooth = 20;     // amount of smoothing to apply to client update dest    smooth out drones and ship
+      this.client_smooth = 1;     // amount of smoothing to apply to client update dest    smooth out drones and ship
    //   this.firepx = 0;
 
 
@@ -149,6 +149,8 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
         this.dronebodys;
         this.pl2dronesarr = [];
         this.expartarr = [];
+        this.exrtmarr = [];
+        this.exrtm_t = [];
     }
 
     game_core.prototype.client_connect_to_server = function() {
@@ -381,19 +383,58 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
       // end (list.length-1 for example). This will be expensive only when
       // our time is not found on the timeline, since it will run all samples.
       // Usually this iterates very little before breaking out with a target.
+      // for (var i=0; i<count; i++) {
+      //   //
+
+      //   var point = this.server_updates[i]
+      //   var next_point = this.server_updates[i + 1]
+
+      //   // Compare our point in time with the server times we have
+      //   if (current_time > point.t && current_time < next_point.t) {
+      //     target = next_point
+      //     previous = point
+      //     break
+      //   }
+      // }
+
+      // 34.99600000000109
+
+      this.exrtmarr = [];
       for (var i=0; i<count; i++) {
+        //
 
         var point = this.server_updates[i]
         var next_point = this.server_updates[i + 1]
 
         // Compare our point in time with the server times we have
-        if (current_time > point.t && current_time < next_point.t) {
+        if (current_time > point.t && current_time < next_point.t ) {
           target = next_point
           previous = point
+
+          // if ( this.exrtm_t.indexOf( next_point.t ) == -1 ) {
+          //   var ud = this.server_updates[i].vals.pldata.length -2;
+          //   while ( ud > 14 ) {
+          //     var num = this.server_updates[i].vals.pldata[ud] + ''; 
+          //     if( num.match('8888') || num.match('9999') ) {
+          //       this.exrtmarr.push( num.slice( num.length - 4, num.length ) );
+          //       this.exrtmarr.push( ~~num.substr( 0, num.length-4 ) )
+          //       this.server_updates[i].vals.pldata[ud - 3] = 0;
+          //       this.server_updates[i].vals.pldata[ud - 2] = 0;
+          //       this.server_updates[i].vals.pldata[ud - 1] = 0;
+          //       this.server_updates[i].vals.pldata[ud] = 0;
+          //       this.server_updates[i].vals.pldata[ud + 1] = 0;
+          //    }
+          //    ud -= 5;
+          //   }
+          //   this.exrtm_t.push( next_point.t );
+          //   if( this.exrtm_t.length > 10 ) {
+          //     this.exrtm_t = this.exrtm_t.splice( 1, this.exrtm_t.length -1 );
+          //   }
+          // }
+
           break
         }
       }
-
       // With no target we store the last known
       // server position and move to that instead
       if (! target) {
@@ -454,8 +495,8 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
             
             //apply smoothing from current pos to the new destination pos
             if (this.client_smooth) {
-              //this.player_set[id].pos = this.lerpVectors(this.player_set[id].pos, this.player_set[id].destpos, this.pdt * this.client_smooth);
-              this.player_set[id].pos = this.v_lerp(this.player_set[id].pos, this.player_set[id].destpos,  this.pdt );
+            this.player_set[id].pos = this.v_lerp(this.player_set[id].pos, this.player_set[id].destpos, this.pdt * this.client_smooth);
+             // this.player_set[id].pos = this.v_lerp(this.player_set[id].pos, this.player_set[id].destpos,  this.pdt );
               var subvec = new OIMO.Vec3();
               subvec.sub( this.ply2.body.position , this.player_set[id].pos );
               if ( (subvec.x > 0.01 || subvec.x < -0.01) || ( subvec.y >  0.01 || subvec.y < -0.01 ) || ( subvec.z >  0.01 || subvec.z < -0.01) ) {
@@ -499,7 +540,8 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
             var numpos = this.expartarr.indexOf( this.bodys[i].id );
             if ( numpos == -1) {
               if ( (this.subvec.x > 0.01 || this.subvec.x < -0.01) || ( this.subvec.y >  0.01 || this.subvec.y < -0.01 ) || ( this.subvec.z >  0.01 || this.subvec.z < -0.01) ) {
-                this.bodys[i].body.sleepPosition.copy( this.v_lerp( this.droneprev, this.dronetarget, time_point) );
+               // this.bodys[i].body.sleepPosition.copy( this.v_lerp( this.droneprev, this.dronetarget, time_point) );
+                this.bodys[i].body.sleepPosition.copy( this.v_lerp( this.droneprev, this.dronetarget, this.pdt * this.client_smooth ) );
                 this.bodys[i].body.position.copy( this.bodys[i].body.sleepPosition );
               }
             }
@@ -513,6 +555,24 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
               this.bodys[i].ld = target.vals.pldata[tpos+1];
             }
         }
+
+        // var num = target.vals.pldata[tpos] + ''; 
+        // var droneid = ~~num.substr( 0, num.length-4 );
+        // if ( ( num.match('9999') && droneid == this.bodys[i].id ) || ( this.exrtmarr.indexOf( this.bodys[i].id ) != - 1 ) )  {
+        //   this.bodys[i].tbd = 1
+        //   //this.expartarr.push( ~~num.substr( 0, num.length-4 ) )
+        //   this.expartarr.push( this.bodys[i].id );
+        //   updatepos = 1;
+        // }
+        // if ( num.match('8888') && droneid == this.bodys[i].id  && !this.bodys[i].rtm ) { 
+        //   this.bodys[i].rtm = 1;
+        //   this.host ? this.bodys[i].ld = 1 : this.bodys[i].ld = 2;
+        //   updatepos = 1;
+        // }
+        // if( updatepos ) { tpos += 5; ;updatepos = 0;  }
+        // if ( tpos > target.vals.pldata.length ) { break; }
+
+
         var num = target.vals.pldata[tpos] + ''; 
         var droneid = ~~num.substr( 0, num.length-4 );
         if ( num.match('9999') && droneid == this.bodys[i].id ) {

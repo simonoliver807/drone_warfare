@@ -1260,7 +1260,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                         }
                         if( bodys[bodysNum].name == 'shp1' ){
                             // change to live
-                            if ( startlevel ) { bodys[ bodysNum ].r1 = 10; } 
+                            if ( startlevel ) { bodys[ bodysNum ].r1 = 1000000000; } 
                             v3d.setBodys(bodys[bodysNum]);
                         }
                         bodysNum += 1;
@@ -1716,7 +1716,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                 dronelaunch = 0;
                 // change to live
                 if ( restart ) {
-                    bodys[0].r1 = 10; 
+                    bodys[0].r1 = 10000000000; 
                 }
 
                 V3D.startRender = 0;

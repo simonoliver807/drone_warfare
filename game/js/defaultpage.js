@@ -4,10 +4,10 @@
 // var url = 'http://localhost:9000/';
 //var url = 'http://192.168.1.74:9000/';
 
-var url = 'http://www.dronewar1.com'
+var url = 'https://www.dronewar1.com'
 // change to live 
 
-var settingsarr = [ 32, 38, 40, 1, 1, 0];
+var settingsarr = [ 32, 38, 40, 0, 0, 0];
 var currply	= { username: 0, password: '' };
 
 
@@ -163,6 +163,8 @@ document.getElementById('slout53').addEventListener('click', setsettings);
 document.getElementById('udset').addEventListener('click', updateSettings);
 document.getElementById('sndlevel1').addEventListener('mousemove', volumeSettings);
 document.getElementById('sndlevel1').addEventListener('mouseover', function( ev ) { sndValclientX = ev.clientX; });
+document.getElementById('sndlevel1').addEventListener('touchmove', volumeSettings);
+document.getElementById('sndlevel1').addEventListener('touchstart', function( ev ) { sndValclientX = ev.pageX; });
 
 
 function loadmobstyle() {
@@ -210,8 +212,6 @@ function initgame( ev ) {
 
 	var numpl;
 	ev.target.id.match('loadMultiGame') ? numpl = 1 : numpl = 0;
-
-	//change to live
 	runGame(numpl);
 }
 
@@ -539,7 +539,7 @@ function setSoundFx(event) {
 
 function volumeSettings( ev ) {
 
-	sndval += ( ev.clientX - sndValclientX)/ 100;
+	ev.clientX ? sndval += ( ev.clientX - sndValclientX)/ 100 : sndval += ( ev.pageX - sndValclientX)/ 100;  
 	if( sndval > 100 ) { sndval = 100 ;}
 	if( sndval < 0 ) { sndval = 0 ;}
 	document.getElementById('sndlevel2').style.width = sndval + '%';
