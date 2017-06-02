@@ -149,6 +149,8 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
         this.dronebodys;
         this.pl2dronesarr = [];
         this.expartarr = [];
+
+
         this.exrtmarr = [];
         this.exrtm_t = [];
     }
@@ -224,7 +226,7 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
     game_core.prototype.client_onserverupdate_received = function(data) {
 
      // if( this.startgame === 1) {
-      if ( this.firstStream == 0 ){
+      if ( !this.firstStream ){
           this.startgame = 1;
           data.vals.pldata = new Float32Array( data.vals.pldata );
 
@@ -249,6 +251,28 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
             this.server_updates.splice(0, 1);
           }
 
+
+
+
+
+          var ud = this.server_updates[ this.server_updates.length - 1 ].vals.pldata.length -2;
+          while ( ud > 14 ) {
+            var num = this.server_updates[ this.server_updates.length - 1 ].vals.pldata[ud] + ''; 
+            if( num.match('8888') || num.match('9999') ) {
+              this.exrtmarr = this.exrtmarr.concat( ~~num.substr( 0, num.length-4 ), this.server_updates[ this.server_updates.length - 1 ].t,  num.slice( num.length - 4, num.length ) );
+              this.server_updates[ this.server_updates.length - 1 ].vals.pldata[ ud - 3 ] = 0;
+              this.server_updates[ this.server_updates.length - 1 ].vals.pldata[ ud - 2 ] = 0;
+              this.server_updates[ this.server_updates.length - 1 ].vals.pldata[ ud - 1 ] = 0;
+              this.server_updates[ this.server_updates.length - 1 ].vals.pldata[ ud ] = 0;
+              this.server_updates[ this.server_updates.length - 1 ].vals.pldata[ ud + 1 ] = 0;
+
+              ud -= 5;
+            }
+            else {
+              break;
+            }
+            ud -= 5;
+          }
           this.oldest_tick = this.server_updates[0].t;
       }
       else {
@@ -399,7 +423,6 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
 
       // 34.99600000000109
 
-      this.exrtmarr = [];
       for (var i=0; i<count; i++) {
         //
 
@@ -410,28 +433,6 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
         if (current_time > point.t && current_time < next_point.t ) {
           target = next_point
           previous = point
-
-          // if ( this.exrtm_t.indexOf( next_point.t ) == -1 ) {
-          //   var ud = this.server_updates[i].vals.pldata.length -2;
-          //   while ( ud > 14 ) {
-          //     var num = this.server_updates[i].vals.pldata[ud] + ''; 
-          //     if( num.match('8888') || num.match('9999') ) {
-          //       this.exrtmarr.push( num.slice( num.length - 4, num.length ) );
-          //       this.exrtmarr.push( ~~num.substr( 0, num.length-4 ) )
-          //       this.server_updates[i].vals.pldata[ud - 3] = 0;
-          //       this.server_updates[i].vals.pldata[ud - 2] = 0;
-          //       this.server_updates[i].vals.pldata[ud - 1] = 0;
-          //       this.server_updates[i].vals.pldata[ud] = 0;
-          //       this.server_updates[i].vals.pldata[ud + 1] = 0;
-          //    }
-          //    ud -= 5;
-          //   }
-          //   this.exrtm_t.push( next_point.t );
-          //   if( this.exrtm_t.length > 10 ) {
-          //     this.exrtm_t = this.exrtm_t.splice( 1, this.exrtm_t.length -1 );
-          //   }
-          // }
-
           break
         }
       }
@@ -464,7 +465,7 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
 
 
         // go update the drones and the ms
-        this.updatedrones( target, previous, time_point );
+        this.updatedrones( target.vals.pldata, previous, target.t );
         this.updatems( target );
 
 
@@ -517,22 +518,22 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
       }
     }
     
-    game_core.prototype.updatedrones = function( target, previous, time_point  ) {
+    game_core.prototype.updatedrones = function( pldata, previous, time_point  ) {
 
       var updatepos = 0;
-      //var tpos = 13;
       // update if change to player and ms data
       var tpos = 15;
-      // var i = this.bodys.length;
-      for ( var i = 0; i < this.bodys.length; i++) {
-        if ( this.bodys[i].id === target.vals.pldata[tpos] ) {
+      var stopupdate = 0;
+      var target = pldata.slice(); 
+      for ( var i = 4; i < this.bodys.length; i++) {
+        if ( this.bodys[i].id === target[tpos] && !stopupdate ) {
             if ( !this.bodys[i].body.sleeping) {
               this.bodys[i].body.sleep();
             }
 
   
             this.droneprev.copy( this.bodys[i].body.position );
-            this.dronetarget.set( target.vals.pldata[ tpos -3 ], target.vals.pldata[ tpos -2 ], target.vals.pldata[ tpos-1 ]  );
+            this.dronetarget.set( target[ tpos -3 ], target[ tpos -2 ], target[ tpos-1 ]  );
 
             this.subvec.sub( this.dronetarget, this.droneprev );
 
@@ -551,17 +552,35 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
                 this.expartarr.splice( numpos, 1 );
             }
             updatepos = 1;
-            if ( this.bodys[i].ld != target.vals.pldata[tpos+1] ) {
-              this.bodys[i].ld = target.vals.pldata[tpos+1];
+            if ( this.bodys[i].ld != target[ tpos + 1 ] ) {
+              this.bodys[i].ld = target[ tpos + 1 ];
             }
         }
 
+        var indexpos = this.exrtmarr.indexOf( this.bodys[i].id );
+        if (  indexpos != - 1 && this.exrtmarr[ indexpos + 1 ]  < time_point )    {
+          if ( this.exrtmarr[ indexpos + 2 ].match('9999') && !this.bodys[i].rtm ) { 
+            this.bodys[i].tbd = 1
+            this.expartarr.push( this.bodys[i].id );
+          }
+          if ( this.exrtmarr[ indexpos + 2 ].match('8888') && !this.bodys[i].rtm ) { 
+            this.bodys[i].rtm = 1;
+            this.host ? this.bodys[i].ld = 1 : this.bodys[i].ld = 2;
+          }
+          this.exrtmarr.splice( indexpos, 3 );
+        }
+        if( updatepos ) { tpos += 5; ;updatepos = 0;  }
+        if ( tpos > ( target.length - 2 ) ) { 
+          stopupdate = 1; 
+        }
+        if ( stopupdate && !this.exrtmarr.length ) { break;}
+
+
         // var num = target.vals.pldata[tpos] + ''; 
         // var droneid = ~~num.substr( 0, num.length-4 );
-        // if ( ( num.match('9999') && droneid == this.bodys[i].id ) || ( this.exrtmarr.indexOf( this.bodys[i].id ) != - 1 ) )  {
+        // if ( num.match('9999') && droneid == this.bodys[i].id ) {
         //   this.bodys[i].tbd = 1
-        //   //this.expartarr.push( ~~num.substr( 0, num.length-4 ) )
-        //   this.expartarr.push( this.bodys[i].id );
+        //   this.expartarr.push( ~~num.substr( 0, num.length-4 ) )
         //   updatepos = 1;
         // }
         // if ( num.match('8888') && droneid == this.bodys[i].id  && !this.bodys[i].rtm ) { 
@@ -571,22 +590,6 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
         // }
         // if( updatepos ) { tpos += 5; ;updatepos = 0;  }
         // if ( tpos > target.vals.pldata.length ) { break; }
-
-
-        var num = target.vals.pldata[tpos] + ''; 
-        var droneid = ~~num.substr( 0, num.length-4 );
-        if ( num.match('9999') && droneid == this.bodys[i].id ) {
-          this.bodys[i].tbd = 1
-          this.expartarr.push( ~~num.substr( 0, num.length-4 ) )
-          updatepos = 1;
-        }
-        if ( num.match('8888') && droneid == this.bodys[i].id  && !this.bodys[i].rtm ) { 
-          this.bodys[i].rtm = 1;
-          this.host ? this.bodys[i].ld = 1 : this.bodys[i].ld = 2;
-          updatepos = 1;
-        }
-        if( updatepos ) { tpos += 5; ;updatepos = 0;  }
-        if ( tpos > target.vals.pldata.length ) { break; }
 
       }
     }
@@ -612,6 +615,7 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
           this.numofdrones = dronebodys.length;
         }
 
+        var tempArr = [];
 
         //this.pldata[0]  = inptpos.x;
         this.pldata[0]  = inptpos.x;
@@ -630,10 +634,16 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
         this.pldata[13] = ms2y.y;
 
         // drone data
-        var i = dronebodys.length;
+    //    var i = dronebodys.length;
         this.currpos = 14;
-        while(i--){
+     //   while(i--){
+      for ( var i = 0; i < dronebodys.length; i++ ) {
          
+          var num = dronebodys[i].id + '';  
+          if( num.match('9999') || num.match('8888') ) {
+            tempArr = tempArr.concat( dronebodys[i].body.position.x, dronebodys[i].body.position.y, dronebodys[i].body.position.z, dronebodys[i].body.linearVelocity.x, dronebodys[i].body.linearVelocity.y, dronebodys[i].body.linearVelocity.z, dronebodys[i].id, dronebodys[i].ld )
+          }
+          else {
             this.pldata[this.currpos]    = dronebodys[i].body.position.x;
             this.pldata[this.currpos+1]  = dronebodys[i].body.position.y;
             this.pldata[this.currpos+2]  = dronebodys[i].body.position.z;
@@ -642,8 +652,15 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
             this.pldata[this.currpos+5]  = dronebodys[i].body.linearVelocity.z;
             this.pldata[this.currpos+6]  = dronebodys[i].id; 
             this.pldata[this.currpos+7]  = dronebodys[i].ld; 
-            this.currpos += 8;   
+            this.currpos += 8;  
+          }
 
+        }
+        if ( tempArr.length ) {
+          for (var i = 0; i < tempArr.length; i++) {
+            this.pldata[this.currpos] = tempArr[i];
+            this.currpos ++;
+          }
         }
 
 

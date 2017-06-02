@@ -135,19 +135,10 @@ var fs = require('fs');
               if ( this.bodys[i].name == 'drone' && this.bodys[i].id == this.dronearr[id][pos][6]){
 
 
-
-                // if ( drone pos - body pos > 10 ) 
-
                 this.bodys[i].body.position.set( this.dronearr[id][pos][0], this.dronearr[id][pos][1], this.dronearr[id][pos][2]  );
 
                 this.bodys[i].body.linearVelocity.set( this.dronearr[id][pos][3], this.dronearr[id][pos][4], this.dronearr[id][pos][5] );
 
-
-
-
-                if ( this.bodys[i].ld != this.dronearr[id][pos][7] ) {
-                //debugger
-                }
                 if ( !this.bodys[i].ld ) {
                   this.bodys[i].ld = this.dronearr[id][pos][7] 
                 } 
@@ -166,6 +157,13 @@ var fs = require('fs');
                 updatepos = 1;
 
               }
+
+              if ( num.substr(-4, num.length) == '9999' ) {      
+
+                console.log('9999');
+
+              }
+
               if ( updatepos ) { pos ++; updatepos = 0; };
             }
             else {
@@ -344,10 +342,8 @@ var fs = require('fs');
         this.pldata[id][10] = this.player_manifest[id].ms2y.y;
         this.pldata[id][11] = this.t2;
 
-
-        var i = this.dronearr[ id ].length;
         this.currpos = [ 12, 12 ];
-        while( i-- ){
+        for (var i = 0; i < this.dronearr[id].length; i++) {
               this.pldata[ id ][this.currpos[pl]]    = this.dronearr[ id ][i][0];
               this.pldata[ id ][this.currpos[pl]+1]  = this.dronearr[ id ][i][1];
               this.pldata[ id ][this.currpos[pl]+2]  = this.dronearr[ id ][i][2];

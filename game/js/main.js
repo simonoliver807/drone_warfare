@@ -68,14 +68,16 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 				// change to live
 			    event.preventDefault();
-				if( event.keyCode === 80) {
-					var val = gameinit.gspause() ? 0: 1;
-				    gameinit.gspause(val);
-				}
-				if ( event.keyCode == 83) {
-					var bodys = gameinit.getObj('bodys');
-					bodys[0].body.linearVelocity.init();
-				}
+			    // change to live
+				// if( event.keyCode === 80) {
+				// 	var val = gameinit.gspause() ? 0: 1;
+				//     gameinit.gspause(val);
+				// }
+				// change to live
+				// if ( event.keyCode == 83) {
+				// 	var bodys = gameinit.getObj('bodys');
+				// 	bodys[0].body.linearVelocity.init();
+				// }
 				if ( event.keyCode == 70) {
 					document.body.webkitRequestFullScreen();
 				}

@@ -7,6 +7,7 @@
 var url = 'https://www.dronewar1.com'
 // change to live 
 
+//var settingsarr = [ 32, 38, 40, 0, 0, 0];
 var settingsarr = [ 32, 38, 40, 1, 1, 0];
 var currply	= { username: 0, password: '' };
 
@@ -585,7 +586,6 @@ function runGame(numpl) {
 	// else {
 	// 	s.setAttribute('data-main', 'js/config.js')
 	// }
-	// change to live multi
 
 	if (window.screen.height < 768) {
 		document.getElementById('arrowmarginup').className += ' fa-1';
@@ -649,7 +649,7 @@ function changeInOut ( val ) {
 
 }) ();
 // change to live
-//runGame(1);
+//runGame(0);
 //initgame();
 //var page = { target: { id: 'wanav' } };
 //navFunc(a);

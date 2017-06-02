@@ -118,7 +118,6 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
     var phsr
     var dronesarr = [];
     // var dronesmesharr = [];
-    // var pl2dronesarr = [];
     var host;
     var start3render = 1;
     var tmulti1 = 0;
@@ -297,7 +296,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                     }
 
 
-                    anibincnt == 5 ? anibincnt = 0 : anibincnt += 1;
+                    anibincnt == 10 ? anibincnt = 0 : anibincnt += 1;
 
                    if(!containerMesh){
                        firstRender = { ms1: 0, ms2: 0 };
@@ -807,15 +806,10 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                                 }
                                 else {
                                     self.loadExdrone( mesh );
-                                    // so a loop is not created only pass locally shot drones to server
-                                    // if( !body.tbd ) {
-                                    //     dronesarr.push( { id: body.id + '' + 9999, body: { position: { x: body.body.position.x, y: body.body.position.y, z: body.body.position.z }, linearVelocity: { x: 0, y: 0, z: 0  } } } );
-                                    // } 
-                                    // else {
-                                    //     body.tbd = 0;
-                                    // }
                                     body.body.position.set(20000, 10000, 10000);
-                                    mesh.userData.tbd = - 2;
+                                    // was expart 2 times because pos was updateing before the expart was being fired by other player
+                                    // was increase from -2 to -8
+                                    mesh.userData.tbd = - 8;
 
                                 }
                             }
@@ -997,14 +991,25 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                     // update drones 
                     var db = {body:[],drone:[]};
                      // drone multiplayer data
-                    // pl2dronesarr = [];
                     for(var i=0;i<bodys.length;i++){
                         var dbody = bodys[i];
                         var drone = meshs[i];
                         if(dbody.name == 'drone') {
+
+                            //if ( ( dbody.prevpos.x === dbody.body.position.x && dbody.prevpos.y === dbody.body.position.y && dbody.prevpos.z === dbody.body.position.z) && dbody.ld !== 0 && anibincnt === 10 && !dbody.nrtm && dbody.rtm == 2 ) {
+                             if ( ( dbody.prevpos.x === dbody.body.position.x && dbody.prevpos.y === dbody.body.position.y && dbody.prevpos.z === dbody.body.position.z) && dbody.ld !== 0 && anibincnt === 10 ) {
+                                dbody.rtm = 1;
+                                host ? dbody.ld = 1 : dbody.ld = 2;
+                            }
+                            if ( anibincnt === 0 ) {
+                                dbody.prevpos.set( dbody.body.position.x, dbody.body.position.y, dbody.body.position.z);
+                            }
+
                             if ( dbody.ld ) { drone.userData.ld = dbody.ld; }
                             if ( drone.userData.ld ) { dbody.ld = drone.userData.ld; }
-                            if ( dbody.rtm ) { drone.userData.rtm = 1; dbody.rtm = 2;}
+                            if ( dbody.rtm ) { 
+                                drone.userData.rtm = 1; dbody.rtm = 2;
+                            }
                             if( drone.userData.ld ) {
                                 if ( ( host && dbody.ld != 2 ) || ( !host && dbody.ld != 1 ) ) {
                                     // change to live
@@ -1082,7 +1087,6 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                     keys[32] ? phsr = 1 : phsr = 0;
 
 
-                   // setTimeout(gamecore.update( bodys[0].body.position, bodys[0].body.linearVelocity, meshs[0].quaternion, phsr, dronesarr, pl2dronesarr, v3d.ms1y ),0);
                     setTimeout(gamecore.update( bodys[0].body.position, bodys[0].body.linearVelocity, meshs[0].quaternion, phsr, dronesarr, v3d.ms1y, v3d.ms2y ),0);
                 }
             },
@@ -1260,7 +1264,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                         }
                         if( bodys[bodysNum].name == 'shp1' ){
                             // change to live
-                            if ( startlevel ) { bodys[ bodysNum ].r1 = 1000000000; } 
+                            if ( startlevel ) { bodys[ bodysNum ].r1 = 10; } 
                             v3d.setBodys(bodys[bodysNum]);
                         }
                         bodysNum += 1;
@@ -1460,6 +1464,8 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                             bodys[i].rtm = 0;
                             bodys[bodysNum].ms = ms[msnum].msname;
                             bodys[bodysNum].tbd = 0;
+
+                            bodys[bodysNum].prevpos = new OIMO.Vec3( bodys[bodysNum].body.position.x, bodys[bodysNum].body.position.y, bodys[bodysNum].body.position.z );
                             // nrtm : never return to ms
                             if ( numofld ) {
                                 bodys[bodysNum].ld = 0;
@@ -1716,7 +1722,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                 dronelaunch = 0;
                 // change to live
                 if ( restart ) {
-                    bodys[0].r1 = 10000000000; 
+                    bodys[0].r1 = 10; 
                 }
 
                 V3D.startRender = 0;

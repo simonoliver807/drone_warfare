@@ -467,9 +467,8 @@ io.on('connection', (client) => {
 
 });
  
-// // Reload code here 
 // change to live
-// reload(server, app).reload();
+//reload(server, app).reload();
  
 server.listen(app.get('port'), function(){
   console.log("Web server listening on port " + app.get('port') + " Date: " + new Date())

@@ -1211,9 +1211,10 @@ V3D.View.prototype = {
             this.sight.children[0].material.opacity = 1;
         }       
         
-        var ms1, ms2, ms1len, ms2len;
+        var ms1, ms2, ms1len, ms2len, ms1behinddrone, ms2behinddrone;
         ms1 = ms2 = -1;
         ms1len = ms2len = 0;
+        ms1behinddrone = ms2behinddrone = 0;
         if( !V3D.bincam ) {
             // this.mouse.x = ( V3D.clientx / this.w ) * 2 - 1;
             // this.mouse.y = - ( V3D.clienty / this.h ) * 2 + 1;
@@ -1262,23 +1263,19 @@ V3D.View.prototype = {
             }
         }
         for(var i=0; i < intersects.length; i++) {
-            if( intersects[i].object.parent.name == 'ms1' && this.ms1y.y == 0 && ms1len < 26814) {
-                 this.ms1y.y = 1;
-                 this.ms1y.t += 1;
-            }
-            if( intersects[i].object.name == "DestroyerR_Destroyer_Untitled.000" && this.ms2y.y == 0 && ms2len < 26814) {
-                 this.ms2y.y = 1;
-                 this.ms2y.t += 1;
-            }
+
             if( intersects[i].object.name == 'drone' && intersects[i].object.userData.tbd == 0  ) {
                 if( ms1 != -1) {
                     if ( intersects[ms1].distance > intersects[i].distance ) {
                         intersects[i].object.userData.tbd = 1;
+                        ms1behinddrone = 1;
+
                     }
                 }
                 if( ms2 != -1 ) {
                     if ( intersects[ms2].distance > intersects[i].distance ) {
                         intersects[i].object.userData.tbd = 1;
+                        ms2behinddrone = 1;
                     }
                 }
                 if( ms1 === -1 && ms2 === -1) {
@@ -1286,6 +1283,17 @@ V3D.View.prototype = {
                 }
                this.playDroneEx();
             }
+
+            if( intersects[i].object.parent.name == 'ms1' && this.ms1y.y == 0 && ms1len < 26814 && !ms1behinddrone ) {
+                 this.ms1y.y = 1;
+                 this.ms1y.t += 1;
+            }
+            if( intersects[i].object.name == "DestroyerR_Destroyer_Untitled.000" && this.ms2y.y == 0 && ms2len < 26814 && !ms2behinddrone ) {
+                 this.ms2y.y = 1;
+                 this.ms2y.t += 1;
+            }
+            ms1behinddrone = 0;
+            ms2behinddrone = 0;
         }
 
         // var heading = this.getPlayerDir('forward', this.containerMesh.position);
