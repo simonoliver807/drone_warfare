@@ -7,36 +7,36 @@ and (max-device-width : 568px)
 and (orientation : landscape) {
 
 	#addforcebut {
-    	height: 78%;
-    	width: 75%;
+    	height: 50%;
+    	width: 50%;
 	}
 	#arrowmarginup {
-		margin-left: 23%;
-    	margin-top: -14px;
+		margin-left: 38%;
+    	margin-top: -9px;
 	}
 	#arrowmargindown {
-		margin-left: 23%;
-    	margin-top: -45%;
+		margin-left: 38%;
+    	margin-top: -9%;
 	}
 	#cl {
 		left: 3%;
-    	top: 24%;
+    	top: 22%;
 	}
 	#cup {
-		left: 32%;
-    	top: -15%;
+		left: 37%;
+    	top: -20%;
 	}
 	#cr {
-		left: 61%;
-    	top: 24%;
+		left: 69%;
+    	top: 22%;
 	}
 	#cd {
-		left: 6%;
+		left: 15%;
     	top: 57%;
 	}
 	#minusforcebut {
-    	height: 78%;
-    	width: 75%;
+    	height: 50%;
+    	width: 50%;
 	}
 }
 
