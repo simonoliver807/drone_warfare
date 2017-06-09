@@ -143,6 +143,7 @@ V3D.View.prototype = {
         this.containerMesh = 0;
         this.camrot = new THREE.Vector3();
         this.pbrot = new THREE.Vector3();
+        this.tmpvecmse = new THREE.Vector3();
         this.newsightpos = new THREE.Vector3();
         this.dir = new THREE.Vector3();
         this.bodys = [];
@@ -976,11 +977,21 @@ V3D.View.prototype = {
             this.cpn.normalize()
             this.matrixWorld.setPosition(this.cpn);
             this.matrix2.multiplyMatrices( this.matrixWorld, this.matrix2.getInverse( this.camera.projectionMatrix ) );
-            var tmpvecmse = new THREE.Vector3(V3D.msePos.x, V3D.msePos.y, 0.5);
-            tmpvecmse.applyProjection(this.matrix2);
-            this.dir.copy(tmpvecmse.sub(this.cpn).normalize());
+
+
+            this.tmpvecmse.set(V3D.msePos.x, V3D.msePos.y, 0.5);
+            this.tmpvecmse.applyProjection(this.matrix2);
+            this.dir.copy( this.tmpvecmse.sub(this.cpn).normalize());
             this.newsightpos.addVectors ( this.camera.position, this.dir.multiplyScalar( 100 ));
             this.sight.position.set(this.newsightpos.x, this.newsightpos.y, this.newsightpos.z);
+            // if ( settingsarr[6] == 2 ) { 
+            //     this.sight.position.set(this.newsightpos.x, this.newsightpos.y, this.newsightpos.z);
+            // }
+            // if ( settingsarr[6] == 1 ) { 
+            //     var movedir = new THREE.Vector3();
+            //     movedir.subVectors( this.sight.position, this.newsightpos ).multiplyScalar(0.1);
+            //     this.sight.position.add( movedir );
+            // }
         
 
             this.camdir.subVectors(this.camera.position, this.containerMesh.position).normalize();
@@ -992,17 +1003,7 @@ V3D.View.prototype = {
                 this.scene.children[ V3D.mesharrpos.shp1 ].up.set(this.q.x, this.q.y, this.q.z);
             }
             this.scene.children[ V3D.mesharrpos.shp1 ].quaternion.set(this.camera.quaternion.x,this.camera.quaternion.y,this.camera.quaternion.z, this.camera.quaternion.w); 
-            this.scene.children[ V3D.mesharrpos.shp1 ].lookAt(this.sight.position);
-
-
-            //this.tusv.subVectors(this.sight.position,this.containerMesh.position);
-           // var m = this.lookAtFunc(this.tusv, this.up);
-            // for (var i = 0; i < this.scene.children.length; i++) {
-            //     this.scene.children[i].quaternion.setFromRotationMatrix( m );
-            // }
-           // this.containerMesh.quaternion.setFromRotationMatrix( m );    
-
-            
+            this.scene.children[ V3D.mesharrpos.shp1 ].lookAt(this.sight.position);            
 
     },
     applyRot: function () {

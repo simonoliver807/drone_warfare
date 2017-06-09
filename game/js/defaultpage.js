@@ -2,14 +2,15 @@
 
 
 // var url = 'http://localhost:9000/';
-//var url = 'http://192.168.1.74:9000/';
+var url = 'http://192.168.1.74:9000/';
 
-var url = 'https://www.dronewar1.com'
+//var url = 'https://www.dronewar1.com'
 // change to live 
-
-//var settingsarr = [ 32, 38, 40, 0, 0, 0];
-var settingsarr = [ 32, 38, 40, 1, 1, 0];
+// setting 0: accel, 1: deccel, 2: shoot, 3: in/out, 4: sfx, 5: ???, 6: look sensitivity 
+var settingsarr = [ 32, 38, 40, 0, 0, 0, 1];
+//var settingsarr = [ 32, 38, 40, 1, 1, 0];
 var currply	= { username: 0, password: '' };
+document.getElementById('')
 
 
 function xhrSuccess () { 
@@ -48,10 +49,6 @@ function decodeErr() {
 
 function bufferSound(msg) {
 
-	// console.log(msg);
-	// responseArr.push( this.response );
-
-	console.log(' load sounds ');
 	var msg1 = msg;
 	audiocntxt.decodeAudioData( this.response, function(data) {
 
@@ -142,7 +139,9 @@ var updatePages = (function () {
 document.getElementById('loadGame').addEventListener( 'click', initgame);
 document.getElementById('loadMultiGame').addEventListener( 'click', initgame);
 document.getElementById('startGame').addEventListener( 'click', initgame);
-document.getElementById('sndfxbutton').addEventListener( 'click', setSoundFx);
+document.getElementById('sndfxbutton').addEventListener( 'click', setButton);
+document.getElementById('insidesf').addEventListener( 'click', setButton);
+document.getElementById('outsidesf').addEventListener( 'click', setButton);
 document.getElementById('dwnav').addEventListener( 'click', updatePages.navFunc);
 document.getElementById('wanav').addEventListener( 'click', updatePages.navFunc);
 document.getElementById('lnav').addEventListener( 'click', updatePages.navFunc);
@@ -162,10 +161,14 @@ document.getElementById('sfxoff42').addEventListener('click', setsettings);
 document.getElementById('slin53').addEventListener('click', setsettings);
 document.getElementById('slout53').addEventListener('click', setsettings);
 document.getElementById('udset').addEventListener('click', updateSettings);
+document.getElementById('looklevel1').addEventListener('mousemove', lookSettings);
+document.getElementById('looklevel1').addEventListener('mouseover', lookSettings);
+document.getElementById('looklevel1').addEventListener('touchmove', lookSettings);
+document.getElementById('looklevel1').addEventListener('touchstart', lookSettings);
 document.getElementById('sndlevel1').addEventListener('mousemove', volumeSettings);
-document.getElementById('sndlevel1').addEventListener('mouseover', function( ev ) { sndValclientX = ev.clientX; });
+document.getElementById('sndlevel1').addEventListener('mouseover', volumeSettings);
 document.getElementById('sndlevel1').addEventListener('touchmove', volumeSettings);
-document.getElementById('sndlevel1').addEventListener('touchstart', function( ev ) { sndValclientX = ev.pageX; });
+document.getElementById('sndlevel1').addEventListener('touchstart', volumeSettings);
 
 
 function loadmobstyle() {
@@ -387,6 +390,8 @@ function loadUser (data, initialload) {
 	document.getElementById('inoutss').style.display = 'none';
 	document.getElementById('usercont').style.display = 'none';
 	document.getElementById('sndfxbutrow').style.display = 'none';
+	document.getElementById('adjgamevol').style.display = 'none';
+	document.getElementById('adjlooksen').style.display = 'none';
 
 	for ( var i = 0; i < 3; i++ ){
 		key = '';
@@ -523,26 +528,76 @@ document.getElementById('commentsubmit').addEventListener( 'submit', function(ev
 	document.getElementsByClassName('comment-list')[0].appendChild(commentitem);
 
  });
-function setSoundFx(event) {
+function setButton(event) {
 	var el = event.currentTarget;
-	if ( el.value == 'on' ) {
-		 el.value = 'off';
-		 el.style.background = '#000000';
-		 settingsarr[4] = 0; 
-
+	if ( el.id == 'insidesf' ) {
+		settingsarr[ 3 ] = 0;
+		document.getElementById('outsidesf').style.background = '#000000';
+		el.style.background = '#4CAF50';
 	}
-	else {
-		el.value = 'on';
-		el.style.background = '';
-		settingsarr[4] = 1; 
+	if (  el.id == 'outsidesf' ) {
+		settingsarr[ 3 ] = 1;
+		document.getElementById('insidesf').style.background = '#000000';
+		el.style.background = '#4CAF50';
+	}
+	if ( el.id == 'sndfxbutton') {
+		if ( el.value == 'on' ) {
+			 el.value = 'off';
+			 el.style.background = '#000000';
+			 settingsarr[4] = 0; 
+
+		}
+		else {
+			el.value = 'on';
+			el.style.background = '';
+			settingsarr[4] = 1; 
+		}
 	}
 }
 
-function volumeSettings( ev ) {
+function lookSettings( ev ) {
 
-	ev.clientX ? sndval += ( ev.clientX - sndValclientX)/ 100 : sndval += ( ev.pageX - sndValclientX)/ 100;  
-	if( sndval > 100 ) { sndval = 100 ;}
-	if( sndval < 0 ) { sndval = 0 ;}
+	ev.preventDefault();
+	var t = document.getElementById('looklevel1');
+	var x;
+	if ( ev.type == 'mousemove' || ev.type == 'mouseover' ) {
+		x = ev.offsetX;
+	}
+	else {
+		var rect = ev.touches[0].target.getBoundingClientRect();
+		x = ev.touches[0].pageX - rect.left;
+	}
+	if( x < ( t.clientWidth * 0.1 ) ) {
+		document.getElementById('looklevel2').style.width = 0;
+		settingsarr[6] = 0;
+	}
+	else if( x > ( t.clientWidth * 0.4 ) && x < ( t.clientWidth * 0.6 )  ) {
+		document.getElementById('looklevel2').style.width = '50%';
+		settingsarr[6] = 1;
+	}
+	else if( x > ( t.clientWidth * 0.9 ) ) {
+		document.getElementById('looklevel2').style.width = '100%';
+		settingsarr[6] = 2;
+	}
+}
+
+
+function volumeSettings( ev ) {
+	ev.preventDefault();
+	var sndval = 0;
+	var t = document.getElementById('sndlevel1');
+	var x = 0;
+	if ( ev.type == 'mousemove' || ev.type == 'mouseover' ) {
+		x = ev.offsetX;
+	}
+	else {
+		var rect = ev.touches[0].target.getBoundingClientRect();
+		x = ev.touches[0].pageX - rect.left;
+	}
+	sndval = ( ( x / t.clientWidth)* 100 );
+	sndval ? sndval = Math.ceil(sndval) : sndval;
+	if ( sndval < 0 ) { sndval = 0 ;}
+	if ( sndval > 100 ) { sndval = 100 ;}
 	document.getElementById('sndlevel2').style.width = sndval + '%';
 }
 
@@ -565,27 +620,27 @@ function runGame(numpl) {
 	game.style.display = 'block';
 
 	//******** minified change to live *************/////////
-	var s = document.createElement("script");
-	s.type = "text/javascript";
-	s.src = "js_min/require.js";
-	if( numpl ) {
-		s.setAttribute('data-main', 'js_min/configmulti.js');
-	}
-	else {
-		s.setAttribute('data-main', 'js_min/config.js')
-	}
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js_min/require.js";
+	// if( numpl ) {
+	// 	s.setAttribute('data-main', 'js_min/configmulti.js');
+	// }
+	// else {
+	// 	s.setAttribute('data-main', 'js_min/config.js')
+	// }
 
 
 	//******** unminified *************//////////
-	// var s = document.createElement("script");
-	// s.type = "text/javascript";
-	// s.src = "js/require.js";
-	// 	if( numpl ) {
-	// 	s.setAttribute('data-main', 'js/configmulti.js');
-	// }
-	// else {
-	// 	s.setAttribute('data-main', 'js/config.js')
-	// }
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js/require.js";
+		if( numpl ) {
+		s.setAttribute('data-main', 'js/configmulti.js');
+	}
+	else {
+		s.setAttribute('data-main', 'js/config.js')
+	}
 
 	if (window.screen.height < 768) {
 		document.getElementById('arrowmarginup').className += ' fa-1';
@@ -632,12 +687,7 @@ function loginAni () {
 	}
 
 }
-function changeInOut ( val ) {
-
-	settingsarr[ 3 ] = val;
-
-}
-(function() {
+window.onload = function() {
 	var data = document.getElementById('consoleData');
 	data = JSON.parse(data.value);
 	for( var i = 0; i < data.length; i++ ) {
@@ -646,10 +696,15 @@ function changeInOut ( val ) {
 	}
 	var userdata = document.getElementById('userdata').value;
 	if ( userdata !== '0' ) { loadUser( JSON.parse( userdata ), 1 ); }
+	else {
+		document.getElementById('outsidesf').style.background = '#000000';
+	}
 
-}) ();
+}
+
+	
 // change to live
-//runGame(0);
+runGame(0);
 //initgame();
 //var page = { target: { id: 'wanav' } };
 //navFunc(a);

@@ -8,9 +8,27 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		var accel;
 		var timestep = 1/60;
 		var render;
-		var v3d;
+		var v3d = gameinit.getObj('v3d');
 		var phaser;
+
+		// mousemove variables
+		var x = 0;
+		var y = 0; 
+		var clientX = 0;
+		var clientY = 0;
+		var	perw = (v3d.w / 100) * 5;
+		var	perh = (v3d.h / 100) * 5;
+		var	perwr = v3d.w - perw;
+		var	perwl = perw;
+		var	perhu = v3d.h - perh;
+		var	perhd = perh
+		var newx = 0;
+		var newy = 0;
+		var xdir = 0;
+		var ydir = 0;
 		var self;
+
+
 
 
 
@@ -30,7 +48,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 					// accel.style.right = acw + 'px';
 					var mobcon = document.getElementById('mobcon')
 
-					v3d = gameinit.getObj('v3d');
+					//v3d = gameinit.getObj('v3d');
 					gameinit.createWorld(timestep);
 					//gameinit.populate();
 					gameinit.lgd(1);
@@ -40,7 +58,13 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 				    v3d.initLight();
 				    v3d.initPoints();	
 
-
+				    if ( settingsarr[6] !== 2 ) {
+				    	clientX = v3d.w / 2;
+				    	clientY = v3d.h / 2;
+				    	newx = v3d.w / 2;
+				    	newy = v3d.h / 2;
+		    			setInterval( this.updateLookSen, 16 );
+		    		}
 
 				    var n = navigator.userAgent;
 					this.isMobile = false;
@@ -103,53 +127,95 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 				if(V3D.mm === 0) { V3D.mm = 1 };
 
-				if( event.target.id == 'mobcon') {
-		    		var x = ((event.pageX - mobcon.offsetLeft)/13)*100 ;
-		    		var y = ((event.pageY - mobcon.offsetTop )/13)*100 ; 
-					var clientX = x;
-					var clientY = y;
-					V3D.clientx = x;
-					V3D.clienty = y;
+				if ( settingsarr[6] === 2 ) {				
+					if( event.target.id == 'mobcon') {
+			    		x = ((event.pageX - mobcon.offsetLeft)/13)*100;
+			    		y = ((event.pageY - mobcon.offsetTop )/13)*100; 
+						clientX = x;
+						clientY = y;
+						V3D.clientx = x;
+						V3D.clienty = y;
+					}
+					else {
+						x = event.clientX;
+						y = event.clientY;
+						clientX = event.clientX;
+						clientY = event.clientY;
+						V3D.clientx = event.clientX;
+						V3D.clienty = event.clientY;
+					}
+					
+
+					V3D.msePos.set( ( x / v3d.w ) * 2 - 1, - ( y / v3d.h ) * 2 + 1, 0.5 )
+
+
+					// perw = (v3d.w / 100) * 5;
+					// perh = (v3d.h / 100) * 5;
+					// perwr = v3d.w - perw;
+					// perwl = perw;
+					// perhu = v3d.h - perh;
+					// perhd = perh
+
+
+					V3D.pageX = x;
+					V3D.pageY = y;
+
+					if ( clientX > perwr ){
+						v3d.startRot = 1;
+					}
+					else if ( clientX < perwl ) {
+						v3d.startRot = 1;
+					}
+					else if ( clientY > perhu ) {
+						v3d.startRot = 1;
+					}
+					else if ( clientY < perhd ) {
+					 	v3d.startRot = 1;
+					}
+					else {
+					 	v3d.startRot = 0;
+					}
 				}
 				else {
-					var x = event.clientX;
-					var y = event.clientY;
-					var clientX = event.clientX;
-					var clientY = event.clientY;
-					V3D.clientx = event.clientX;
-					V3D.clienty = event.clientY;
+
+					if( event.target.id == 'mobcon') {
+			    		newx = ((event.pageX - mobcon.offsetLeft)/13)*100;
+			    		newy = ((event.pageY - mobcon.offsetTop )/13)*100; 
+					}
+					else {
+						newx = event.clientX;
+						newy = event.clientY;
+					}
+
 				}
-				
-
-				V3D.msePos.set( ( x / v3d.w ) * 2 - 1, - ( y / v3d.h ) * 2 + 1, 0.5 )
-
-
-				var perw = (v3d.w / 100) * 5;
-				var perh = (v3d.h / 100) * 5;
-				var perwr = v3d.w - perw;
-				var perwl = perw;
-				var perhu = v3d.h - perh;
-				var perhd = perh
+			},
+			updateLookSen: function() {
 
 
-				V3D.pageX = x;
-				V3D.pageY = y;
+						xdir = ( newx / v3d.w ) * 2 - 1;
+						ydir = - ( newy / v3d.h ) * 2 + 1;
+						if ( clientX < v3d.w - 100 && clientX > 0 ) { clientX += 2.5 * xdir; }
+						if ( clientY < v3d.h - 100 && clientY > 0 ) { clientY += -2.5 * ydir; }
+			    		V3D.msePos.set( ( clientX / v3d.w ) * 2 - 1, - ( clientY / v3d.h ) * 2 + 1, 0.5 );
+						V3D.pageX = x;
+						V3D.pageY = y;
 
-				if ( clientX > perwr ){
-					v3d.startRot = 1;
-				}
-				else if ( clientX < perwl ) {
-					v3d.startRot = 1;
-				}
-				else if ( clientY > perhu ) {
-					v3d.startRot = 1;
-				}
-				else if ( clientY < perhd ) {
-				 	v3d.startRot = 1;
-				}
-				else {
-				 	v3d.startRot = 0;
-				}
+						if ( clientX > perwr ){
+							v3d.startRot = 1;
+						}
+						else if ( clientX < perwl ) {
+							v3d.startRot = 1;
+						}
+						else if ( clientY > perhu ) {
+							v3d.startRot = 1;
+						}
+						else if ( clientY < perhd ) {
+						 	v3d.startRot = 1;
+						}
+						else {
+						 	v3d.startRot = 0;
+						}
+		
 			},
 			// showPopup: function (type) {
 
@@ -230,7 +296,6 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		    	container.addEventListener('touchstart', handleStart, false);
 		    	container.addEventListener('touchend', handleEnd, false);
 		    	container.addEventListener('touchmove', handleMove, false);
-
 		    	var toucharr = [];
 		    	function handleStart() {
 		    		event.preventDefault();

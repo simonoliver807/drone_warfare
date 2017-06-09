@@ -271,7 +271,7 @@ optgroup {
 }
 #container {
 	/*change to live*/
-	cursor: none;
+	/*cursor: none;*/
 	display: block;
 	height:100%;
 	width:100%; 
@@ -495,6 +495,16 @@ optgroup {
   top: 6%;
   width: 35%;
 }
+#looklevel1 {
+	background-color: #ddd;
+	height: 10%;
+	width: 100%;
+}
+#looklevel2 {
+	width: 50%;
+  	height: 41px;
+  	background-color: #4CAF50;
+}
 .ls {
 	display: inline-block;
 }
@@ -638,13 +648,21 @@ optgroup {
 	display: none;
 }
 #sndfxbutton {
-	background: #4CAF50;
-	outline: none;
 	width: 76px; 
 }
-#sndfxbutton:hover {
-	background: #43A047;
+#insidesf {
+	width: 96px;
 }
+#outsidesf {
+	width: 96px;
+}
+/*.buttonpage {
+	background: #4CAF50;
+	outline: none;	
+}
+.buttonpage:hover {
+	background: #43A047;
+}*/
 #sndlevel1 {
 	background-color: #ddd;
 	height: 10%;

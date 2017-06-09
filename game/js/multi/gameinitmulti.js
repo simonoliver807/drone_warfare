@@ -1264,7 +1264,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                         }
                         if( bodys[bodysNum].name == 'shp1' ){
                             // change to live
-                            if ( startlevel ) { bodys[ bodysNum ].r1 = 10; } 
+                            if ( startlevel ) { bodys[ bodysNum ].r1 = 1000000; } 
                             v3d.setBodys(bodys[bodysNum]);
                         }
                         bodysNum += 1;
@@ -1493,6 +1493,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                         bodys[bodysNum].id = 0;
                         bodys[bodysNum].ms = ms[msnum].msname;
                         bodys[bodysNum].tbd = 0;
+                        bodys[bodysNum].prevpos = new OIMO.Vec3( bodys[bodysNum].body.position.x, bodys[bodysNum].body.position.y, bodys[bodysNum].body.position.z );
                         bodysNum += 1;
                         cylArr.push(droneobj);
                     }
@@ -1653,6 +1654,9 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
             },
             levelGen: function( restart ) {
                 restart ? x982y = 1 : x982y += 1 ;
+                gamecore.server_updates = [];
+                gamecore.ms1y = { y: 0, t: 1 };
+                gamecore.ms2y = { y: 0, t: 1 };
                 if ( !gamecore.respawning ){
                     gamecore.levelGen(x982y);
                 }
@@ -1722,7 +1726,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                 dronelaunch = 0;
                 // change to live
                 if ( restart ) {
-                    bodys[0].r1 = 10; 
+                    bodys[0].r1 = 10000000; 
                 }
 
                 V3D.startRender = 0;

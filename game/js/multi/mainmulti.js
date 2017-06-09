@@ -10,6 +10,17 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 		var render;
 		var v3d;
 		var phaser;
+				// mousemove variables
+		var x = 0;
+		var y = 0; 
+		var clientX = 0;
+		var clientY = 0;
+		var perw = 0; 
+		var perh = 0; 
+		var perwr = 0;
+		var perwl = 0;
+		var perhu = 0;
+		var perhd = 0;
 		var self;
 
 
@@ -61,17 +72,17 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 
 			handleKeyDown: function( event ) {
 				// change to live
-				event.preventDefault();
+				//event.preventDefault();
 				//change to live
-				// if( event.keyCode === 80) {
-				// 	var val = gameinit.gspause() ? 0: 1;
-				//     gameinit.gspause(val);
-				// }
+				if( event.keyCode === 80) {
+					var val = gameinit.gspause() ? 0: 1;
+				    gameinit.gspause(val);
+				}
 				//change to live
-				// if ( event.keyCode == 83) {
-				// 	var bodys = gameinit.getObj('bodys');
-				// 	bodys[0].body.linearVelocity.init();
-				// }
+				if ( event.keyCode == 83) {
+					var bodys = gameinit.getObj('bodys');
+					bodys[0].body.linearVelocity.init();
+				}
 				if ( event.keyCode == 70) {
 					document.body.webkitRequestFullScreen();
 				}
@@ -98,18 +109,18 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 				if(V3D.mm === 0) { V3D.mm = 1 };
 
 				if( event.target.id == 'mobcon') {
-		    		var x = ((event.pageX - mobcon.offsetLeft)/13)*100 ;
-		    		var y = ((event.pageY - mobcon.offsetTop )/13)*100 ; 
-					var clientX = x;
-					var clientY = y;
+		    		x = ((event.pageX - mobcon.offsetLeft)/13)*100 ;
+		    		y = ((event.pageY - mobcon.offsetTop )/13)*100 ; 
+					clientX = x;
+					clientY = y;
 					V3D.clientx = x;
 					V3D.clienty = y;
 				}
 				else {
-					var x = event.clientX;
-					var y = event.clientY;
-					var clientX = event.clientX;
-					var clientY = event.clientY;
+					x = event.clientX;
+					y = event.clientY;
+					clientX = event.clientX;
+					clientY = event.clientY;
 					V3D.clientx = event.clientX;
 					V3D.clienty = event.clientY;
 				}
@@ -118,12 +129,12 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 				V3D.msePos.set( ( x / v3d.w ) * 2 - 1, - ( y / v3d.h ) * 2 + 1, 0.5 )
 
 
-				var perw = (v3d.w / 100) * 5;
-				var perh = (v3d.h / 100) * 5;
-				var perwr = v3d.w - perw;
-				var perwl = perw;
-				var perhu = v3d.h - perh;
-				var perhd = perh
+				perw = (v3d.w / 100) * 5;
+				perh = (v3d.h / 100) * 5;
+				perwr = v3d.w - perw;
+				perwl = perw;
+				perhu = v3d.h - perh;
+				perhd = perh
 
 
 				V3D.pageX = x;
