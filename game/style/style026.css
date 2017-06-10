@@ -644,6 +644,18 @@ optgroup {
 .settingsform button:hover,.settingsform button:active,.settingsform button:focus {
   background: #43A047;
 }
+.sliderVal {
+	color: #fff;
+	float: right;
+	font: 14px;
+	font-weight: 700;
+	height: 100%;
+	letter-spacing: 0.046875em;
+    line-height: 1;
+    margin-top: 1%;
+	pointer-events: none;
+	text-align: center;
+}
 #snav {
 	display: none;
 }

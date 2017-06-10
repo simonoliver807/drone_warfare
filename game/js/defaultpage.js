@@ -7,8 +7,8 @@ var url = 'http://192.168.1.74:9000/';
 //var url = 'https://www.dronewar1.com'
 // change to live 
 // setting 0: accel, 1: deccel, 2: shoot, 3: in/out, 4: sfx, 5: ???, 6: look sensitivity 
-var settingsarr = [ 32, 38, 40, 0, 0, 0, 1];
-//var settingsarr = [ 32, 38, 40, 1, 1, 0];
+//var settingsarr = [ 32, 38, 40, 0, 0, 0, 2.5];
+var settingsarr = [ 32, 38, 40, 1, 1, 0, 2.5];
 var currply	= { username: 0, password: '' };
 document.getElementById('')
 
@@ -560,6 +560,7 @@ function lookSettings( ev ) {
 	ev.preventDefault();
 	var t = document.getElementById('looklevel1');
 	var x;
+	var val = 0;
 	if ( ev.type == 'mousemove' || ev.type == 'mouseover' ) {
 		x = ev.offsetX;
 	}
@@ -568,17 +569,38 @@ function lookSettings( ev ) {
 		x = ev.touches[0].pageX - rect.left;
 	}
 	if( x < ( t.clientWidth * 0.1 ) ) {
-		document.getElementById('looklevel2').style.width = 0;
-		settingsarr[6] = 0;
+		val = 1;
 	}
-	else if( x > ( t.clientWidth * 0.4 ) && x < ( t.clientWidth * 0.6 )  ) {
-		document.getElementById('looklevel2').style.width = '50%';
-		settingsarr[6] = 1;
+	if( x > ( t.clientWidth * 0.1 ) && x < ( t.clientWidth * 0.2 )  ) {
+		val = 2;
 	}
-	else if( x > ( t.clientWidth * 0.9 ) ) {
-		document.getElementById('looklevel2').style.width = '100%';
-		settingsarr[6] = 2;
+	if( x > ( t.clientWidth * 0.2 ) && x < ( t.clientWidth * 0.3 )  ) {
+		val = 3;
 	}
+	if( x > ( t.clientWidth * 0.3 ) && x < ( t.clientWidth * 0.4 )  ) {
+		val = 4;
+	}
+	if( x > ( t.clientWidth * 0.4 ) && x < ( t.clientWidth * 0.5 )  ) {
+		val = 5;
+	}
+	if( x > ( t.clientWidth * 0.5 ) && x < ( t.clientWidth * 0.6 )  ) {
+		val = 6;
+	}
+	if( x > ( t.clientWidth * 0.6 ) && x < ( t.clientWidth * 0.7 )  ) {
+		val = 7;
+	}
+	if( x > ( t.clientWidth * 0.7 ) && x < ( t.clientWidth * 0.8 )  ) {
+		val = 8;
+	}
+	if( x > ( t.clientWidth * 0.8 ) && x < ( t.clientWidth * 0.9 )  ) {
+		val = 9;
+	}
+	if( x > ( t.clientWidth * 0.9 ) ) {
+		val = 10;
+	}
+	document.getElementById( 'looklevel2' ).style.width = val + '0%';
+	document.getElementById( 'looksensval' ).innerHTML = val;
+	val < 10 ? settingsarr[6] = val : settingsarr[6] = val;
 }
 
 
@@ -699,12 +721,16 @@ window.onload = function() {
 	else {
 		document.getElementById('outsidesf').style.background = '#000000';
 	}
-
+	var sliderW = document.getElementById('sndlevel1').offsetWidth;
+	sliderW = sliderW * .05;
+	document.getElementById( 'sndfxval' ).style.width = sliderW + 'px';
+	document.getElementById( 'looksensval' ).style.width = sliderW + 'px';
 }
+
 
 	
 // change to live
-runGame(0);
+//runGame(0);
 //initgame();
 //var page = { target: { id: 'wanav' } };
 //navFunc(a);

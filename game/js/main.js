@@ -26,6 +26,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		var newy = 0;
 		var xdir = 0;
 		var ydir = 0;
+		var looksens = 0;
 		var self;
 
 
@@ -58,7 +59,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 				    v3d.initLight();
 				    v3d.initPoints();	
 
-				    if ( settingsarr[6] !== 2 ) {
+				    if ( settingsarr[6] !== 10 ) {
 				    	clientX = v3d.w / 2;
 				    	clientY = v3d.h / 2;
 				    	newx = v3d.w / 2;
@@ -127,7 +128,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 				if(V3D.mm === 0) { V3D.mm = 1 };
 
-				if ( settingsarr[6] === 2 ) {				
+				if ( settingsarr[6] === 10 ) {				
 					if( event.target.id == 'mobcon') {
 			    		x = ((event.pageX - mobcon.offsetLeft)/13)*100;
 			    		y = ((event.pageY - mobcon.offsetTop )/13)*100; 
@@ -194,11 +195,15 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 						xdir = ( newx / v3d.w ) * 2 - 1;
 						ydir = - ( newy / v3d.h ) * 2 + 1;
-						if ( clientX < v3d.w - 100 && clientX > 0 ) { clientX += 2.5 * xdir; }
-						if ( clientY < v3d.h - 100 && clientY > 0 ) { clientY += -2.5 * ydir; }
+						if ( clientX < v3d.w && clientX > 0 ) { clientX += settingsarr[6] * xdir; }
+						if ( clientY < v3d.h && clientY > 0 ) { clientY += -settingsarr[6] * ydir; }
+						if ( clientX >= v3d.w ) { clientX = v3d.w - 1; }
+						if ( clientX <= 0 ) { clientX = 1; }
+						if ( clientY >= v3d.h ) { clientY = v3d.h - 1; }
+						if ( clientY <= 0 ) { clientY = 1; }
 			    		V3D.msePos.set( ( clientX / v3d.w ) * 2 - 1, - ( clientY / v3d.h ) * 2 + 1, 0.5 );
-						V3D.pageX = x;
-						V3D.pageY = y;
+						V3D.pageX = clientX;
+						V3D.pageY = clientY;
 
 						if ( clientX > perwr ){
 							v3d.startRot = 1;
