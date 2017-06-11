@@ -35,8 +35,8 @@ var audiocntxt;
 var masterGain;
 var sourceObj = {};
 var sourcenum2 = 0;
-var sndval = 50;
-var sndValclientX = 0;
+var sndval = 5;
+var self = this;
 loadmobstyle();
 
 function decodeSucc(data) {
@@ -161,15 +161,22 @@ document.getElementById('sfxoff42').addEventListener('click', setsettings);
 document.getElementById('slin53').addEventListener('click', setsettings);
 document.getElementById('slout53').addEventListener('click', setsettings);
 document.getElementById('udset').addEventListener('click', updateSettings);
-document.getElementById('looklevel1').addEventListener('mousemove', lookSettings);
-document.getElementById('looklevel1').addEventListener('mouseover', lookSettings);
-document.getElementById('looklevel1').addEventListener('touchmove', lookSettings);
-document.getElementById('looklevel1').addEventListener('touchstart', lookSettings);
-document.getElementById('sndlevel1').addEventListener('mousemove', volumeSettings);
-document.getElementById('sndlevel1').addEventListener('mouseover', volumeSettings);
-document.getElementById('sndlevel1').addEventListener('touchmove', volumeSettings);
-document.getElementById('sndlevel1').addEventListener('touchstart', volumeSettings);
-
+document.getElementById('looklevel1a').addEventListener('mousemove', lookSettings);
+document.getElementById('looklevel1a').addEventListener('mouseover', lookSettings);
+document.getElementById('looklevel1a').addEventListener('touchmove', lookSettings);
+document.getElementById('looklevel1a').addEventListener('touchstart', lookSettings);
+document.getElementById('looklevel1b').addEventListener('mousemove', lookSettings);
+document.getElementById('looklevel1b').addEventListener('mouseover', lookSettings);
+document.getElementById('looklevel1b').addEventListener('touchmove', lookSettings);
+document.getElementById('looklevel1b').addEventListener('touchstart', lookSettings);
+document.getElementById('sndlevel1a').addEventListener('mousemove', volumeSettings);
+document.getElementById('sndlevel1a').addEventListener('mouseover', volumeSettings);
+document.getElementById('sndlevel1a').addEventListener('touchmove', volumeSettings);
+document.getElementById('sndlevel1a').addEventListener('touchstart', volumeSettings);
+document.getElementById('sndlevel1b').addEventListener('mousemove', volumeSettings);
+document.getElementById('sndlevel1b').addEventListener('mouseover', volumeSettings);
+document.getElementById('sndlevel1b').addEventListener('touchmove', volumeSettings);
+document.getElementById('sndlevel1b').addEventListener('touchstart', volumeSettings);
 
 function loadmobstyle() {
 
@@ -202,7 +209,7 @@ function initgame( ev ) {
 
 	masterGain = audiocntxt.createGain();
 	masterGain.connect(audiocntxt.destination);
-	masterGain.gain.value = sndval/100;
+	masterGain.gain.value = sndval/3;
 	sourceObj['astex'] = audiocntxt.createBufferSource();
 	sourceObj['droneExpl'] = audiocntxt.createBufferSource();
 	sourceObj['droneAudio'] = audiocntxt.createBufferSource();
@@ -350,7 +357,6 @@ var glowBadge = (function () {
 
 function signup_in ( ev ) {
 
-		//updatePages.navFunc( { target: { id: 'snav' }} );
 	ev.preventDefault();
 	var usrname = document.getElementById('usrname').value;
 	var psswrd = document.getElementById('psswrd').value;
@@ -541,16 +547,27 @@ function setButton(event) {
 		el.style.background = '#4CAF50';
 	}
 	if ( el.id == 'sndfxbutton') {
+
+		if ( currply.username === 0 ) {
+			var sl2 = document.getElementById('sndlevel2a');
+		} 
+		else {
+			var sl2 = document.getElementById('sndlevel2b');
+		}
+
 		if ( el.value == 'on' ) {
 			 el.value = 'off';
 			 el.style.background = '#000000';
-			 settingsarr[4] = 0; 
+			 settingsarr[4] = 0;
+			 sl2.style.width = '0%'; 
 
 		}
 		else {
 			el.value = 'on';
 			el.style.background = '';
 			settingsarr[4] = 1; 
+			sl2.style.width = sndval + '0%'; 
+			document.getElementById('sndfxval').innerHTML = sndval;
 		}
 	}
 }
@@ -558,9 +575,15 @@ function setButton(event) {
 function lookSettings( ev ) {
 
 	ev.preventDefault();
-	var t = document.getElementById('looklevel1');
-	var x;
-	var val = 0;
+	var t, x, ll2, val = 0;
+	if ( currply.username === 0 ) {
+		t = document.getElementById('looklevel1a');
+		ll2 = document.getElementById('looklevel2a');
+	} 
+	else {
+		t = document.getElementById('looklevel1b');
+		ll2 = document.getElementById('looklevel2b');
+	}
 	if ( ev.type == 'mousemove' || ev.type == 'mouseover' ) {
 		x = ev.offsetX;
 	}
@@ -568,37 +591,38 @@ function lookSettings( ev ) {
 		var rect = ev.touches[0].target.getBoundingClientRect();
 		x = ev.touches[0].pageX - rect.left;
 	}
-	if( x < ( t.clientWidth * 0.1 ) ) {
-		val = 1;
-	}
-	if( x > ( t.clientWidth * 0.1 ) && x < ( t.clientWidth * 0.2 )  ) {
-		val = 2;
-	}
-	if( x > ( t.clientWidth * 0.2 ) && x < ( t.clientWidth * 0.3 )  ) {
-		val = 3;
-	}
-	if( x > ( t.clientWidth * 0.3 ) && x < ( t.clientWidth * 0.4 )  ) {
-		val = 4;
-	}
-	if( x > ( t.clientWidth * 0.4 ) && x < ( t.clientWidth * 0.5 )  ) {
-		val = 5;
-	}
-	if( x > ( t.clientWidth * 0.5 ) && x < ( t.clientWidth * 0.6 )  ) {
-		val = 6;
-	}
-	if( x > ( t.clientWidth * 0.6 ) && x < ( t.clientWidth * 0.7 )  ) {
-		val = 7;
-	}
-	if( x > ( t.clientWidth * 0.7 ) && x < ( t.clientWidth * 0.8 )  ) {
-		val = 8;
-	}
-	if( x > ( t.clientWidth * 0.8 ) && x < ( t.clientWidth * 0.9 )  ) {
-		val = 9;
-	}
-	if( x > ( t.clientWidth * 0.9 ) ) {
-		val = 10;
-	}
-	document.getElementById( 'looklevel2' ).style.width = val + '0%';
+	val = calcSliderVal( x, t.clientWidth, 0 );
+	// if( x < ( t.clientWidth * 0.1 ) ) {
+	// 	val = 1;
+	// }
+	// if( x > ( t.clientWidth * 0.1 ) && x < ( t.clientWidth * 0.2 )  ) {
+	// 	val = 2;
+	// }
+	// if( x > ( t.clientWidth * 0.2 ) && x < ( t.clientWidth * 0.3 )  ) {
+	// 	val = 3;
+	// }
+	// if( x > ( t.clientWidth * 0.3 ) && x < ( t.clientWidth * 0.4 )  ) {
+	// 	val = 4;
+	// }
+	// if( x > ( t.clientWidth * 0.4 ) && x < ( t.clientWidth * 0.5 )  ) {
+	// 	val = 5;
+	// }
+	// if( x > ( t.clientWidth * 0.5 ) && x < ( t.clientWidth * 0.6 )  ) {
+	// 	val = 6;
+	// }
+	// if( x > ( t.clientWidth * 0.6 ) && x < ( t.clientWidth * 0.7 )  ) {
+	// 	val = 7;
+	// }
+	// if( x > ( t.clientWidth * 0.7 ) && x < ( t.clientWidth * 0.8 )  ) {
+	// 	val = 8;
+	// }
+	// if( x > ( t.clientWidth * 0.8 ) && x < ( t.clientWidth * 0.9 )  ) {
+	// 	val = 9;
+	// }
+	// if( x > ( t.clientWidth * 0.9 ) ) {
+	// 	val = 10;
+	// }
+	ll2.style.width = val + '0%';
 	document.getElementById( 'looksensval' ).innerHTML = val;
 	val < 10 ? settingsarr[6] = val : settingsarr[6] = val;
 }
@@ -606,9 +630,15 @@ function lookSettings( ev ) {
 
 function volumeSettings( ev ) {
 	ev.preventDefault();
-	var sndval = 0;
-	var t = document.getElementById('sndlevel1');
-	var x = 0;
+	var t, x, sl2, val = 0;
+	if ( currply.username === 0 ) {
+		t = document.getElementById('sndlevel1a');
+		sl2 = document.getElementById('sndlevel2a');
+	} 
+	else {
+		t = document.getElementById('sndlevel1b');
+		sl2 = document.getElementById('sndlevel2b');
+	}
 	if ( ev.type == 'mousemove' || ev.type == 'mouseover' ) {
 		x = ev.offsetX;
 	}
@@ -616,12 +646,67 @@ function volumeSettings( ev ) {
 		var rect = ev.touches[0].target.getBoundingClientRect();
 		x = ev.touches[0].pageX - rect.left;
 	}
-	sndval = ( ( x / t.clientWidth)* 100 );
-	sndval ? sndval = Math.ceil(sndval) : sndval;
-	if ( sndval < 0 ) { sndval = 0 ;}
-	if ( sndval > 100 ) { sndval = 100 ;}
-	document.getElementById('sndlevel2').style.width = sndval + '%';
+
+	//sndval = ( ( x / t.clientWidth)* 100 );
+	if ( settingsarr[4] ){
+		sndval = calcSliderVal( x, t.clientWidth, 1 );
+		sl2.style.width = sndval + '0%';
+		document.getElementById('sndfxval').innerHTML = sndval;
+	}
+
+	//sndval ? sndval = Math.ceil(sndval) : sndval;
+	// if ( sndval < 0 ) { sndval = 0 ;}
+	// if ( sndval > 100 ) { sndval = 100 ;}
+
 }
+
+function calcSliderVal( x, w , zero) {
+
+	var val = 0
+	if ( zero ) {
+		if( x <= ( w * 0.03 ) ) {
+			val = 0;
+		}
+		if( x > ( w * 0.03 ) && x < ( w * 0.1 ) ) {
+			val = 1;
+		}
+	}
+	else {
+		if( x <= ( w * 0.1 ) ) {
+			val = 1;
+		}
+	}
+	if( x > ( w * 0.1 ) && x < ( w * 0.2 )  ) {
+		val = 2;
+	}
+	if( x > ( w * 0.2 ) && x < ( w * 0.3 )  ) {
+		val = 3;
+	}
+	if( x > ( w * 0.3 ) && x < ( w * 0.4 )  ) {
+		val = 4;
+	}
+	if( x > ( w * 0.4 ) && x < ( w * 0.5 )  ) {
+		val = 5;
+	}
+	if( x > ( w * 0.5 ) && x < ( w * 0.6 )  ) {
+		val = 6;
+	}
+	if( x > ( w * 0.6 ) && x < ( w * 0.7 )  ) {
+		val = 7;
+	}
+	if( x > ( w * 0.7 ) && x < ( w * 0.8 )  ) {
+		val = 8;
+	}
+	if( x > ( w * 0.8 ) && x < ( w * 0.9 )  ) {
+		val = 9;
+	}
+	if( x > ( w * 0.9 ) ) {
+		val = 10;
+	}
+	return val;
+
+}
+
 
 function runGame(numpl) {
 
@@ -721,10 +806,16 @@ window.onload = function() {
 	else {
 		document.getElementById('outsidesf').style.background = '#000000';
 	}
+	if ( userdata !== 0 ){
+		document.getElementById( 'sndlevel2' ).style.backgroundColor = 'red' 	
+	}
 	var sliderW = document.getElementById('sndlevel1').offsetWidth;
 	sliderW = sliderW * .05;
 	document.getElementById( 'sndfxval' ).style.width = sliderW + 'px';
 	document.getElementById( 'looksensval' ).style.width = sliderW + 'px';
+
+	// change to live
+	//updatePages.navFunc( { target: { id: 'snav' }} );
 }
 
 

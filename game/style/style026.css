@@ -497,13 +497,15 @@ optgroup {
 }
 #looklevel1 {
 	background-color: #ddd;
-	height: 10%;
+	border-radius: .25rem;
+	height: 50px;
 	width: 100%;
 }
 #looklevel2 {
-	width: 50%;
-  	height: 41px;
-  	background-color: #4CAF50;
+	border-radius: .25rem;
+	background-color: #4CAF50;
+	height: 50px;
+	width: 50%;  	
 }
 .ls {
 	display: inline-block;
@@ -533,6 +535,9 @@ optgroup {
 	transform: translate(-50%, -50%);
 	width: 10%;
 
+}
+.mb28 {
+	margin-bottom: 28px;
 }
 .menu-toggle.toggled-on {
     background-color: #1a1a1a;
@@ -647,12 +652,12 @@ optgroup {
 .sliderVal {
 	color: #fff;
 	float: right;
-	font: 14px;
+	font-size: 17px;
 	font-weight: 700;
 	height: 100%;
 	letter-spacing: 0.046875em;
     line-height: 1;
-    margin-top: 1%;
+    padding: 13px 13px 0 0;
 	pointer-events: none;
 	text-align: center;
 }
@@ -668,22 +673,17 @@ optgroup {
 #outsidesf {
 	width: 96px;
 }
-/*.buttonpage {
-	background: #4CAF50;
-	outline: none;	
-}
-.buttonpage:hover {
-	background: #43A047;
-}*/
-#sndlevel1 {
+.sliderstylea {
 	background-color: #ddd;
-	height: 10%;
+	border-radius: .25rem;
+	height: 50px;
 	width: 100%;
 }
-#sndlevel2 {
+.sliderstyleb {
+	background-color: #4CAF50;
+	border-radius: .25rem;
+	height: 50px;
 	width: 50%;
-  	height: 41px;
-  	background-color: #4CAF50;
 }
 #spacertapaccel {
 	height: 30%;

@@ -52,13 +52,11 @@
                           .fw-row#inoutss
                             .fw-col-12
                               label Select to play inside/outside space fighter
-                                .fw-row
-                                  .fw-col-sm-6.fw-col-md-6.fw-col-lg-6
-                                    //input#rand-1(type='radio', name='radio_3698130', value='clicked inside', onclick='changeInOut( 0 )')
-                                    input#insidesf(type="button" value="Inside")
-                                  .fw-col-sm-6.fw-col-md-6.fw-col-lg-6
-                                    //input#rand-2(type='radio', name='radio_3698130', value='clicked outside' onclick='changeInOut( 1 )')
-                                    input#outsidesf(type="button" value="Outside")
+                              .fw-row.mb28
+                                .fw-col-xs-6.fw-col-sm-6.fw-col-md-6.fw-col-lg-6
+                                  input#insidesf(type="button" value="Inside")
+                                .fw-col-xs-6.fw-col-sm-6.fw-col-md-6.fw-col-lg-6
+                                  input#outsidesf(type="button" value="Outside")
                           .fw-row#sndfxbutrow
                             .fw-col-12
                               label Mute soud fx
@@ -67,13 +65,13 @@
                             .fw-col-12 
                               p
                               label Adjust sound fx volume
-                              #sndlevel1
-                                #sndlevel2 
+                              #sndlevel1a.sliderstylea
+                                #sndlevel2a.sliderstyleb
                                  #sndfxval.sliderVal 5
                           .fw-row#adjlooksen
                             .fw-col-12 
                               p
                               label Adjust look sensitivity
-                              #looklevel1
-                                #looklevel2 
+                              #looklevel1a.sliderstylea
+                                #looklevel2a.sliderstyleb
                                   #looksensval.sliderVal 5
