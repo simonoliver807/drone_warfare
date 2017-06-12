@@ -6,6 +6,10 @@ and (min-device-width : 320px)
 and (max-device-width : 568px) 
 and (orientation : landscape) {
 
+	ul {
+		margin: 0;
+	}
+
 	#addforcebut {
     	height: 50%;
     	width: 50%;
@@ -47,6 +51,9 @@ and (max-device-width : 568px)
 and (orientation : portrait) {
 
 
+	ul {
+		margin: 0;
+	}
 
 	#addforcebut {
 		height: 52%;

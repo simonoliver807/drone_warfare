@@ -5,6 +5,10 @@ and (min-device-width : 375px)
 and (max-device-width : 667px)
 and (orientation : landscape) { 
 
+	ul {
+		margin: 0;
+	}
+
 	#addforce {
 		display: none;
     	height: 35%;
@@ -74,6 +78,10 @@ and (orientation : landscape) {
 and (min-device-width : 375px) 
 and (max-device-width : 667px)
 and (orientation : portrait) { 
+
+	ul {
+		margin: 0;
+	}
 
 	#addforcebut {
 	    height: 51%;

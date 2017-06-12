@@ -27,6 +27,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		var xdir = 0;
 		var ydir = 0;
 		var looksens = 0;
+		var setintcontrols = 0;
 		var self;
 
 
@@ -64,11 +65,9 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 				    	clientY = v3d.h / 2;
 				    	newx = v3d.w / 2;
 				    	newy = v3d.h / 2;
-		    			setInterval( this.updateLookSen, 16 );
 		    		}
 
 				    var n = navigator.userAgent;
-					this.isMobile = false;
 				    if (n.match(/Android/i) || n.match(/webOS/i) || n.match(/iPhone/i) || n.match(/iPad/i) || n.match(/iPod/i) || n.match(/BlackBerry/i) || n.match(/Windows Phone/i)) {
 				    	v3d.ismobile = true;
 				    	this.loadMobileEvents(n);
@@ -128,7 +127,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 
 				if(V3D.mm === 0) { V3D.mm = 1 };
 
-				if ( settingsarr[6] === 10 ) {				
+				if ( settingsarr[6] === 10 || event.target.id != 'mobcon'  ) {				
 					if( event.target.id == 'mobcon') {
 			    		x = ((event.pageX - mobcon.offsetLeft)/13)*100;
 			    		y = ((event.pageY - mobcon.offsetTop )/13)*100; 
@@ -179,13 +178,10 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 				}
 				else {
 
-					if( event.target.id == 'mobcon') {
-			    		newx = ((event.pageX - mobcon.offsetLeft)/13)*100;
-			    		newy = ((event.pageY - mobcon.offsetTop )/13)*100; 
-					}
-					else {
-						newx = event.clientX;
-						newy = event.clientY;
+		    		newx = ((event.pageX - mobcon.offsetLeft)/13)*100;
+		    		newy = ((event.pageY - mobcon.offsetTop )/13)*100; 
+		    		if ( !setintcontrols ) {
+						setintcontrols =  setInterval( this.updateLookSen, 16 );
 					}
 
 				}
@@ -301,6 +297,7 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		    	container.addEventListener('touchstart', handleStart, false);
 		    	container.addEventListener('touchend', handleEnd, false);
 		    	container.addEventListener('touchmove', handleMove, false);
+		    	container.addEventListener('touchend', handleOut, false);
 		    	var toucharr = [];
 		    	function handleStart() {
 		    		event.preventDefault();
@@ -356,6 +353,14 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		    				mobcon.style.opacity = '0.1';
 		    			}
 		    		}
+		    	}
+		    	function handleOut() {
+		    		event.preventDefault();
+		    		if( setintcontrols ) {
+		    			clearInterval( setintcontrols );
+		    			setintcontrols = 0;
+		    		}
+
 
 		    	}
 			},
