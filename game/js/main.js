@@ -149,14 +149,6 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 					V3D.msePos.set( ( x / v3d.w ) * 2 - 1, - ( y / v3d.h ) * 2 + 1, 0.5 )
 
 
-					// perw = (v3d.w / 100) * 5;
-					// perh = (v3d.h / 100) * 5;
-					// perwr = v3d.w - perw;
-					// perwl = perw;
-					// perhu = v3d.h - perh;
-					// perhd = perh
-
-
 					V3D.pageX = x;
 					V3D.pageY = y;
 
@@ -360,8 +352,6 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		    			clearInterval( setintcontrols );
 		    			setintcontrols = 0;
 		    		}
-
-
 		    	}
 			},
 			onWindowResize: function(){

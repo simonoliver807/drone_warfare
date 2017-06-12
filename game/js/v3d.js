@@ -472,7 +472,7 @@ V3D.View.prototype = {
             for( var gs = 1; gs < this.scene.children[V3D.mesharrpos.gs].children.length; gs ++ ) {
 
                 this.distSpheres = this.containerMesh.position.distanceTo( this.scene.children[V3D.mesharrpos.gs].children[gs].position );
-               if ( this.scene.children[V3D.mesharrpos.gs].children[gs].userData.timealive > 30 ||  this.distSpheres < 10 ) {
+               if ( this.scene.children[V3D.mesharrpos.gs].children[gs].userData.timealive > 30 ||  this.distSpheres < 15 ) {
                     this.scene.children[V3D.mesharrpos.gs].children[gs].material.dispose();
                     this.scene.children[V3D.mesharrpos.gs].children[gs].geometry.dispose();
                     this.scene.children[V3D.mesharrpos.gs].remove( this.scene.children[V3D.mesharrpos.gs].children[gs] );
