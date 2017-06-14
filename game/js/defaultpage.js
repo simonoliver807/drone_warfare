@@ -734,7 +734,7 @@ function runGame(numpl) {
 	}
 
 
-	//******** unminified *************//////////
+	//******** unminified *************///////////
 	// var s = document.createElement("script");
 	// s.type = "text/javascript";
 	// s.src = "js/require.js";
