@@ -4,7 +4,7 @@
 //var url = 'http://localhost:9000/';
 //var url = 'http://192.168.1.107:9000/';
 
-var url = 'https://www.dronewar1.com'
+var url = window.location.href;
 // change to live 
 // setting 0: accel, 1: deccel, 2: shoot, 3: in/out, 4: sfx, 5: stay logged in, 6: look sensitivity, 7: snd volume
 var settingsarr = [ 32, 38, 40, 0, 1, 0, 2.5, 5];
