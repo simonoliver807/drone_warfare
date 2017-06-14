@@ -36,19 +36,19 @@ and (orientation : landscape) {
 	}
 	#cl {
 		left: 3%;
-    	top: 28%;
+    	top: 25%;
 	}
 	#cr {
-		left: 66%;
-    	top: 28%;
+		left: 75%;
+    	top: 23%;
 	}
 	#cd {
-		left: 12%;
+		left: 21%;
     	top: 63%;
 	}
 	#cup {
-		left: 35%;
-    	top: -9%;
+		left: 37%;
+    	top: -18%;
 	}
 	#minusforcebut {
 		background-color: #00FF00;

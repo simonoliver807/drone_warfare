@@ -1,40 +1,69 @@
 "use strict";
 
 //multiplayer
-var express = require('express')
-var http = require('http')
-var lc = require('./logtoclient');
-var logger = require('morgan')
-var path = require('path')
-var reload = require('reload')
-var bodyParser = require('body-parser')
-var fs = require('fs')
-var mc = require('mongodb').MongoClient
-var ObjectId = require('mongodb').ObjectId
-var mongoose = require('mongoose')
-var uuid = require('node-uuid')
-var dateformat = require('dateformat')
+const express = require('express')
+const http = require('http')
+const lc = require('./logtoclient');
+const nodemailer = require('nodemailer');
+const logger = require('morgan')
+const path = require('path')
+const reload = require('reload')
+const bodyParser = require('body-parser')
+const fs = require('fs')
+const mc = require('mongodb').MongoClient
+const ObjectId = require('mongodb').ObjectId
+const mongoose = require('mongoose')
+const uuid = require('node-uuid')
+const dateformat = require('dateformat')
 const async = require('async')
 const game_server = require('./multiserver/game_server')
+const EventEmitter = require('events');
 
 
-
-
-var event = require('events');
-var eventEmitter = new event.EventEmitter;
-
+class MyEmitter extends EventEmitter {};
+const myEmitter = new MyEmitter();
 
 // pass comment to the client
-var cp = new lc();
-
-var watch = require('node-watch');
- 
+let cp = new lc();
  // set up ws and monitor
-var app = express();
-var server = http.createServer(app);
+let app = express();
+let server = http.createServer(app);
 const io = require('socket.io')(server);
-var gameserver;
-//var monitorio = require('monitor.io');
+let gameserver;
+
+let email_prev_client = 0;
+let email_prev_server = 0;
+let email_prev_DB = 0;
+let sendTimeClient = 0;
+let sendTimeServer = 0;
+let sendTimeDB = 0;
+
+
+myEmitter.on('error', (err) => {
+  	var htmlString = '<b>error message: ' + err + '</b>';
+	var textString = 'error message: ' + err;
+  	sendEmail( 'server error', htmlString, textString );
+});
+process.on('uncaughtException', function ( err ) {
+	var htmlString = '<b>error message: ' + err + '<br> error stack: ' + err.stack + '</b>';
+	var textString = 'error message: ' + err + 'error stack: ' + err.stack ;
+	sendEmail( 'server error', htmlString, textString );
+	process.exit(1);
+});
+
+
+
+let transporter = nodemailer.createTransport({
+    host: 'smtp.mailtrap.io',
+    port: 465,
+    secure: false, // secure:true for port 465, secure:false for port 587
+    auth: {
+        user: '5edbb6bbda70a2',
+        pass: '6627be1dd9a82c'
+    }
+});
+
+//let monitorio = require('monitor.io');
 
 
 
@@ -48,19 +77,19 @@ var gameserver;
 //   db.close();
 // });
 // change to live
-//var dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
-var dburl = "mongodb://localhost:27017/test";
+let dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
+//let dburl = "mongodb://localhost:27017/test";
 
 mongoose.connect(dburl);
 mongoose.Promise = global.Promise;
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
 
 // mongo ds145848.mlab.com:45848/gamedata -u nabooleo -p ax31zcm
 
 
  
-// var publicDir = path.join(__dirname, 'game')
+// let publicDir = path.join(__dirname, 'game')
  
 app.set('port', process.env.PORT || 9000);
 app.set('views', __dirname + '/views');
@@ -80,7 +109,7 @@ fs.readdir(__dirname + '/shaders/', function (err, filesPath) {
     async.map(filesPath, function(filePath, cb){ //reading files or dir
         fs.readFile(filePath, 'utf8', cb);
     }, function(err, results) {
-        for ( var i in results) {
+        for ( let i in results) {
         	if ( results[i].match('laservs') ) {
         		app.locals.shaders.laservs = results[i];
         	}
@@ -132,15 +161,15 @@ app.get('/', function (req, res) {
 		    		app.locals.cd = cp.gcd();
 
 		    	//	debugger
-		    		var cookies = res.req.headers.cookie;
-		    		var username = 0;
-			    	var password = 0;
+		    		let cookies = res.req.headers.cookie;
+		    		let username = 0;
+			    	let password = 0;
 		    		if ( cookies !== undefined ) {
 		    			cookies = cookies.split(';');
-			    		var i = cookies.length;
+			    		let i = cookies.length;
 			    		while( i-- ){
 
-			    			var currcookie = cookies[i].split('=');
+			    			let currcookie = cookies[i].split('=');
 			    			if( currcookie[0].replace(/\s+/g, '') == 'username' ) {
 			    				username = currcookie[1];
 			    			}
@@ -148,7 +177,7 @@ app.get('/', function (req, res) {
 			    	}
 
 		    		db.collection('players').findOne( { username: username }, function (err, result) {
-		    			var user = 0;
+		    			let user = 0;
 		    			if ( result ) {  user = '{ "id": "' + result._id.toString() + '", "username": "' + result.username + '", "password": "' + result.password + '", "settings":"' + result.settings +'"}' }
 
 		    		//	debugger
@@ -239,7 +268,7 @@ app.post('/', function (req, res) {
 				    			{ last_login: new Date() }
 				    		}				    		
 				    	)
-				    	var settingsarr = result.settings.split(','); 
+				    	let settingsarr = result.settings.split(','); 
 				    	if ( ~~settingsarr[5]) {
 				    		res.set( 'Set-Cookie', 'username=' + req.body.username + ';max-age='+259200+';HttpOnly');
 						}
@@ -255,7 +284,7 @@ app.post('/', function (req, res) {
 
 	}
 	if ( req.body.username && req.body.password && req.body.email ) {
-		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		if ( req.body.email.match( re ) ) {
 			mc.connect(dburl, function(err, db) {
 				if ( err ) throw err
@@ -278,7 +307,7 @@ app.post('/', function (req, res) {
 							);
 						}
 						else {
-							var sent = 0;
+							let sent = 0;
 							if ( plyresult.username == req.body.username && plyresult.email == req.body.email ) { sent = 1; res.send(' The username and email address have already been used')};
 							if ( plyresult.email == req.body.email && !sent ) { sent = 1; res.send('The email address has already been used')};
 							if ( plyresult.username == req.body.username && !sent) { res.send(' The username has already been used')};
@@ -296,10 +325,10 @@ app.post('/', function (req, res) {
 		mc.connect(dburl, function(err, db) {
 			if ( err ) throw err
 			// if( req.body.settings.slice(-1) == 1 ) {
-			// 	var ip = req.ip
+			// 	let ip = req.ip
 			// }
 			// else {
-			// 	var ip = ''
+			// 	let ip = ''
 			// }
 			db.collection('players').update( 
 				{ _id: ObjectId( req.body.id ) },
@@ -312,7 +341,7 @@ app.post('/', function (req, res) {
 					}
 					else {
 						debugger
-						var settingsarr = req.body.settings.split(','); 
+						let settingsarr = req.body.settings.split(','); 
 				    	if ( ~~settingsarr[5]) {
 				    		res.set( 'Set-Cookie', 'username=' + req.body.username + ';max-age='+259200+';HttpOnly');
 						}
@@ -326,6 +355,11 @@ app.post('/', function (req, res) {
 			);
 		});
 	}
+	if ( req.body.errormsg ) {
+		 var htmlString = '<b>error message: ' + req.body.errormsg + '<br> url: ' + req.body.url_e + '<br> line number: ' + req.body.l_no + '<br> user data: ' + req.body.userdata + '</b>';  // html body
+		 var textString = 'error message: ' + req.body.errormsg + ' url: ' + req.body.url_e + ' line number: ' + req.body.l_no + ' user data: ' + req.body.userdata; // plain text body
+		 sendEmail( 'client error', htmlString, textString );
+	}
 })
 app.on('error', function(err) {
  console.log('err'); 
@@ -334,7 +368,7 @@ app.on('error', function(err) {
 });
 
 
-var gameDataSchema = new Schema  ({ 
+let gameDataSchema = new Schema  ({ 
 									player1: String,
 									player2: String, 
 									bodys: { Buffer },
@@ -343,7 +377,7 @@ var gameDataSchema = new Schema  ({
 								  {
 									timestamps: { createdAt: 'created_at' }	 
 								  });
-var Multi = mongoose.model('Multi', gameDataSchema);
+let Multi = mongoose.model('Multi', gameDataSchema);
 
 mc.connect(dburl, function(err, db) {
 
@@ -366,7 +400,7 @@ mc.connect(dburl, function(err, db) {
 //io.use( monitorio({ port: undefined }) );
 io.use(function(socket, next) {
 
-  var handshakeData = socket.request;
+  let handshakeData = socket.request;
   ///cp.scd(handshakeData);
 
   // make sure the handshake data looks good as before
@@ -377,7 +411,7 @@ io.use(function(socket, next) {
 });
 
 app.locals.host = 1;
-var numberOfGame = 0;
+let numberOfGame = 0;
 io.on('connection', (client) => {
 
 	console.log( 'connection ');
@@ -396,7 +430,11 @@ io.on('connection', (client) => {
 
 		if ( app.locals.host ) {
 			Multi.create( { player1: client.id, player2: 'player2', bodys: {} }, ( err, multi ) => {
-				if( err ) console.log('error starting game');
+				if( err ) {
+					var htmlString = '<b>error message: ' + err + '<br> error stack: ' + err.stack + '</b>';
+					var textString = 'error message: ' + err + 'error stack: ' + err.stack ;
+					sendEmail( 'DB error', htmlString, textString );
+				}
 				// send the game id to the client
 				client.emit('gamestart', { id: multi.id , host: 1, playerid: client.id });
 				gameserver.join_game( multi, client );
@@ -422,6 +460,9 @@ io.on('connection', (client) => {
 	}).catch( (err) => {
 		console.log('there is a db error');
 		console.log(err);
+		var htmlString = '<b>error message: ' + err + '<br> error stack: ' + err.stack + '</b>';
+		var textString = 'error message: ' + err + 'error stack: ' + err.stack ;
+		sendEmail( 'DB error', htmlString, textString );
 	});
 
     client.on('setgd', function ( data ) {
@@ -435,7 +476,6 @@ io.on('connection', (client) => {
 
     });
    	client.on('sendlatency', function( data ) {
-	
 		client.emit('setlatency', { latency: data.latency });
 	});
    	client.on('dataload1', function( data ) {
@@ -460,12 +500,67 @@ io.on('connection', (client) => {
  		app.locals.host = 1;
 		
 	}
-
-
-
-
-
 });
+
+function sendEmail( sub, htmlString, textString){
+
+	var sendTime, email_prev;
+	if ( sub == 'client error' ) {
+		sendTime = sendTimeClient;
+		email_prev = email_prev_client;
+	}
+	if ( sub == 'server error' ) {
+		sendTime = sendTimeServer;
+		email_prev = email_prev_server;	
+	}
+	if ( sub == 'DB error' ) {
+		sendTime = sendTimeDB;
+		email_prev = email_prev_DB;	
+	}
+
+	let mailOptions = {
+	    from: '<5122715109-1d5d4b@inbox.mailtrap.io>', // sender address
+	    to: '5122715109-1d5d4b@inbox.mailtrap.io', // list of receivers
+	    subject: sub, // Subject line
+	    text: textString, // plain text body
+	    html: htmlString // html body
+	};
+	var time_now = new Date();
+	if ( (time_now - email_prev)/1000 < 1 ) {
+
+		sendTime += 1000;
+
+	}
+	else {
+		sendTime = 0;
+	}
+	email_prev = time_now; 
+	setTimeout( function () {
+
+		transporter.sendMail(mailOptions, (error, info) => {
+
+			debugger;
+
+		    if (error) {
+		        return console.log(error);
+		    }
+		    console.log('Message %s sent: %s', info.messageId, info.response);
+		});
+
+	}, sendTime )
+	if ( sub == 'client error' ) {
+		sendTimeClient = sendTime;
+		email_prev_client = email_prev;
+	}
+	if ( sub == 'server error' ) {
+		sendTimeServer = sendTime;
+		email_prev_server = email_prev;
+	}
+	if ( sub == 'DB error' ) {
+		sendTimeDB = sendTime;
+		email_prev_DB = email_prev;	}
+
+}
  
 // change to live
 reload(server, app).reload();

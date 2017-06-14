@@ -1,15 +1,16 @@
 "use strict";
 
 
-// var url = 'http://localhost:9000/';
-var url = 'http://192.168.1.107:9000/';
+//var url = 'http://localhost:9000/';
+//var url = 'http://192.168.1.107:9000/';
 
-//var url = 'https://www.dronewar1.com'
+var url = 'https://www.dronewar1.com'
 // change to live 
 // setting 0: accel, 1: deccel, 2: shoot, 3: in/out, 4: sfx, 5: stay logged in, 6: look sensitivity, 7: snd volume
-//var settingsarr = [ 32, 38, 40, 0, 0, 0, 2.5];
-var settingsarr = [ 32, 38, 40, 1, 1, 0, 2.5, 5];
+var settingsarr = [ 32, 38, 40, 0, 0, 0, 2.5, 5];
+//var settingsarr = [ 32, 38, 40, 1, 1, 0, 2.5, 5];
 var currply	= { username: 0, password: '' };
+var num_emails = 1;
 document.getElementById('')
 
 
@@ -451,10 +452,26 @@ function loadUser (data, initialload) {
 		document.getElementById('slout53').style.backgroundColor = '#007acc';
 		document.getElementById('sloutbut').className = 'badge badge-color';
 	}
-	document.getElementById('looklevel2b').style.width = settingsarr[6] + '0%';
+	var ll2b = document.getElementById('looklevel2b');
+	var sl2b = document.getElementById('sndlevel2b');
+	ll2b.style.width = settingsarr[6] + '0%';
 	document.getElementById('looksensvalb').innerHTML = settingsarr[6];
-	document.getElementById('sndlevel2b').style.width = settingsarr[7] + '0%';
+	sl2b.style.width = settingsarr[7] + '0%';
 	document.getElementById('sndfxvalb').innerHTML = settingsarr[7];
+	document.getElementById( 'looklevel1b' ).style.marginBottom = '28px'; 
+	document.getElementById( 'sndlevel1b' ).style.marginBottom = '28px'; 
+	ll2b.style.backgroundColor = 'rgb(0, 122, 204)'; 
+	sl2b.style.backgroundColor = 'rgb(0, 122, 204)'; 
+	if( ismobile ) { 		
+		document.getElementById( 'conset' ).style.display = 'none';
+		document.getElementById( 'consethead' ).style.display = 'none';
+	}
+	else {
+		document.getElementById( 'adjlooksenb' ).style.display = 'none';
+		document.getElementById( 'adjlookhead' ).style.display = 'none';
+		looksen = settingsarr[7];
+		settingsarr[7] = 10;
+	}
 
 	currply = { id: data.id, username: data.username, password: data.password };
 	updatePages.navFunc({ target: { id: 'snav'}});
@@ -706,32 +723,32 @@ function runGame(numpl) {
 	game.style.display = 'block';
 
 	//******** minified change to live *************/////////
-	// var s = document.createElement("script");
-	// s.type = "text/javascript";
-	// s.src = "js_min/require.js";
-	// if( numpl ) {
-	// 	s.setAttribute('data-main', 'js_min/configmulti.js');
-	// }
-	// else {
-	// 	s.setAttribute('data-main', 'js_min/config.js')
-	// }
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js_min/require.js";
+	if( numpl ) {
+		s.setAttribute('data-main', 'js_min/configmulti.js');
+	}
+	else {
+		s.setAttribute('data-main', 'js_min/config.js')
+	}
 
 
 	//******** unminified *************//////////
-	var s = document.createElement("script");
-	s.type = "text/javascript";
-	s.src = "js/require.js";
-		if( numpl ) {
-		s.setAttribute('data-main', 'js/configmulti.js');
-	}
-	else {
-		s.setAttribute('data-main', 'js/config.js')
-	}
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js/require.js";
+	// 	if( numpl ) {
+	// 	s.setAttribute('data-main', 'js/configmulti.js');
+	// }
+	// else {
+	// 	s.setAttribute('data-main', 'js/config.js')
+	// }
 
-	if (window.screen.height < 768) {
-		document.getElementById('arrowmarginup').className += ' fa-1';
-		document.getElementById('arrowmargindown').className += ' fa-1';
-	}
+	// if (window.screen.height < 768) {
+	// 	document.getElementById('arrowmarginup').className += ' fa-1';
+	// 	document.getElementById('arrowmargindown').className += ' fa-1';
+	// }
 
 	var head = document.getElementsByTagName("head")[0];
 	head.appendChild(s);
@@ -775,6 +792,15 @@ function loginAni () {
 }
 	
 window.onload = function() {
+	var ios = parseFloat(
+	('' + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent) || [0,''])[1])
+	.replace('undefined', '3_2').replace('_', '.').replace('_', '')
+	) || 0;
+	if ( ios && ios <= 10 ) {
+		document.getElementById('loadMultiGame').className += ' disablea';
+		document.getElementById('ios10dis').style.display = 'block';
+	}
+
 	var data = document.getElementById('consoleData');
 	data = JSON.parse(data.value);
 	for( var i = 0; i < data.length; i++ ) {
@@ -810,12 +836,25 @@ window.onload = function() {
 			looksen = settingsarr[7];
 			settingsarr[7] = 10;
 		}
-		
 	}
 
 
 	// change to live
 	//updatePages.navFunc( { target: { id: 'snav' }} );
+}
+window.onerror = function myErrorHandler(errormsg, url_e, l_no) {
+	if ( num_emails <= 3) {
+	    document.getElementById('container').style.display = 'none';
+		var errscreen = document.getElementById('errScreen')
+		errscreen.style.display = 'block';
+		errscreen.innerHTML = '<div id="errdiv">Sorry drone war 1 is not available at this time </div>';
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", url, true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send( 'errormsg=' + errormsg + '&url_e='+url_e + '&l_no='+ l_no + '&userdata=' + document.getElementById('userdata').value );
+		num_emails ++;
+	    return false;
+	}
 }
 
 

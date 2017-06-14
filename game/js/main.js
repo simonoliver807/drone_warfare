@@ -16,8 +16,8 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		var y = 0; 
 		var clientX = 0;
 		var clientY = 0;
-		var	perw = (v3d.w / 100) * 5;
-		var	perh = (v3d.h / 100) * 5;
+		var	perw = v3d.w * 0.01;
+		var	perh = v3d.h * 0.01;
 		var	perwr = v3d.w - perw;
 		var	perwl = perw;
 		var	perhu = v3d.h - perh;
