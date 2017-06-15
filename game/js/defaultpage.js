@@ -723,27 +723,27 @@ function runGame(numpl) {
 	game.style.display = 'block';
 
 	//******** minified change to live *************/////////
-	// var s = document.createElement("script");
-	// s.type = "text/javascript";
-	// s.src = "js_min/require.js";
-	// if( numpl ) {
-	// 	s.setAttribute('data-main', 'js_min/configmulti.js');
-	// }
-	// else {
-	// 	s.setAttribute('data-main', 'js_min/config.js')
-	// }
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js_min/require.js";
+	if( numpl ) {
+		s.setAttribute('data-main', 'js_min/configmulti.js');
+	}
+	else {
+		s.setAttribute('data-main', 'js_min/config.js')
+	}
 
 
 	//******** unminified *************///////////
-	var s = document.createElement("script");
-	s.type = "text/javascript";
-	s.src = "js/require.js";
-		if( numpl ) {
-		s.setAttribute('data-main', 'js/configmulti.js');
-	}
-	else {
-		s.setAttribute('data-main', 'js/config.js')
-	}
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js/require.js";
+	// 	if( numpl ) {
+	// 	s.setAttribute('data-main', 'js/configmulti.js');
+	// }
+	// else {
+	// 	s.setAttribute('data-main', 'js/config.js')
+	// }
 
 	if (window.screen.height < 768) {
 		document.getElementById('arrowmarginup').className += ' fa-1';
