@@ -7,7 +7,7 @@
 var url = window.location.href;
 // change to live 
 // setting 0: accel, 1: deccel, 2: shoot, 3: in/out, 4: sfx, 5: stay logged in, 6: look sensitivity, 7: snd volume
-var settingsarr = [ 32, 38, 40, 0, 1, 0, 2.5, 5];
+var settingsarr = [ 32, 38, 40, 0, 1, 0, 5, 5];
 //var settingsarr = [ 32, 38, 40, 1, 1, 0, 2.5, 5];
 var currply	= { username: 0, password: '' };
 var num_emails = 1;
@@ -723,32 +723,32 @@ function runGame(numpl) {
 	game.style.display = 'block';
 
 	//******** minified change to live *************/////////
-	var s = document.createElement("script");
-	s.type = "text/javascript";
-	s.src = "js_min/require.js";
-	if( numpl ) {
-		s.setAttribute('data-main', 'js_min/configmulti.js');
-	}
-	else {
-		s.setAttribute('data-main', 'js_min/config.js')
-	}
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js_min/require.js";
+	// if( numpl ) {
+	// 	s.setAttribute('data-main', 'js_min/configmulti.js');
+	// }
+	// else {
+	// 	s.setAttribute('data-main', 'js_min/config.js')
+	// }
 
 
 	//******** unminified *************///////////
-	// var s = document.createElement("script");
-	// s.type = "text/javascript";
-	// s.src = "js/require.js";
-	// 	if( numpl ) {
-	// 	s.setAttribute('data-main', 'js/configmulti.js');
-	// }
-	// else {
-	// 	s.setAttribute('data-main', 'js/config.js')
-	// }
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js/require.js";
+		if( numpl ) {
+		s.setAttribute('data-main', 'js/configmulti.js');
+	}
+	else {
+		s.setAttribute('data-main', 'js/config.js')
+	}
 
-	// if (window.screen.height < 768) {
-	// 	document.getElementById('arrowmarginup').className += ' fa-1';
-	// 	document.getElementById('arrowmargindown').className += ' fa-1';
-	// }
+	if (window.screen.height < 768) {
+		document.getElementById('arrowmarginup').className += ' fa-1';
+		document.getElementById('arrowmargindown').className += ' fa-1';
+	}
 
 	var head = document.getElementsByTagName("head")[0];
 	head.appendChild(s);

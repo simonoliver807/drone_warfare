@@ -153,6 +153,8 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
 
         this.exrtmarr = [];
         this.exrtm_t = [];
+        this.tbdnum = 0;
+        this.ud;
     }
 
     game_core.prototype.client_connect_to_server = function() {
@@ -251,9 +253,9 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
             this.server_updates.splice(0, 1);
           }
 
-          var ud = this.server_updates[ this.server_updates.length - 1 ].vals.pldata.length -2;
-          while ( ud > 14 ) {
-            var num = this.server_updates[ this.server_updates.length - 1 ].vals.pldata[ud] + ''; 
+          this.ud = this.server_updates[ this.server_updates.length - 1 ].vals.pldata.length -2;
+          while ( this.ud > 14 ) {
+            this.tbdnum = this.server_updates[ this.server_updates.length - 1 ].vals.pldata[ud] + ''; 
             if( num.match('8888') || num.match('9999') ) {
               this.exrtmarr = this.exrtmarr.concat( ~~num.substr( 0, num.length-4 ), this.server_updates[ this.server_updates.length - 1 ].t,  num.slice( num.length - 4, num.length ) );
               this.server_updates[ this.server_updates.length - 1 ].vals.pldata[ ud - 3 ] = 0;
@@ -262,12 +264,12 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
               this.server_updates[ this.server_updates.length - 1 ].vals.pldata[ ud ] = 0;
               this.server_updates[ this.server_updates.length - 1 ].vals.pldata[ ud + 1 ] = 0;
 
-              ud -= 5;
+              this.ud -= 5;
             }
             else {
               break;
             }
-            ud -= 5;
+            this.ud -= 5;
           }
           this.oldest_tick = this.server_updates[0].t;
       }

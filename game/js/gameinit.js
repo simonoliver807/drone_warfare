@@ -1501,7 +1501,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                 bodys[0].body.position.set(0,0,0);
                 // change to live
                 if ( restart ) {
-                    bodys[0].r1 = 15; 
+                    bodys[0].r1 = 15000000000; 
                 }
                 startlevel = 0;
                 v3d.ms1y.t = 0;
