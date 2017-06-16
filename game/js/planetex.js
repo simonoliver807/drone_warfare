@@ -1,4 +1,4 @@
-define(['THREE','lib/improvedNoise'], function(THREE,IMPROVEDNOISE) {
+define(['three','lib/improvedNoise'], function(THREE,IMPROVEDNOISE) {
 
 
 	return function () {
