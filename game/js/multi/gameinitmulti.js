@@ -1726,7 +1726,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                 dronelaunch = 0;
                 // change to live
                 if ( restart ) {
-                    bodys[0].r1 = 15; 
+                    bodys[0].r1 = 15000000000; 
                 }
 
                 V3D.startRender = 0;
