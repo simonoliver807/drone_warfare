@@ -241,6 +241,10 @@ V3D.View.prototype = {
         this.distSpheres;
         this.shp1radius;
         this.eg;
+        this.udrb = 0;
+        this.adddphas = 0;
+        this.correctvec = 0;
+        this.udq = new THREE.Quaternion();
 
     },
     initLight:function(){
@@ -1282,7 +1286,6 @@ V3D.View.prototype = {
                 if( ms1 === -1 && ms2 === -1) {
                     intersects[i].object.userData.tbd = 1;
                 }
-               this.playDroneEx();
             }
 
             if( intersects[i].object.parent.name == 'ms1' && this.ms1y.y == 0 && ms1len < 26814 && !ms1behinddrone ) {
@@ -1365,13 +1368,21 @@ V3D.View.prototype = {
     raycastloop: function() {
 
     },
-    playDroneEx: function() {
+    playDroneEx: function( vol ) {
 
         if ( settingsarr[4]) {
-           var dExpl = audiocntxt.createBufferSource();
-           dExpl.buffer = sourceObj['droneExpl'].buffer;
-           dExpl.connect(masterGain);
+            if ( vol ){
+                var volume = masterGain.gain.value;
+                masterGain.gain.value = masterGain.gain.value / 2;
+            }
+            var dExpl = audiocntxt.createBufferSource();
+            dExpl.buffer = sourceObj['droneExpl'].buffer;
+            dExpl.connect(masterGain);
             dExpl.start(0);
+
+            if ( vol ) {
+                masterGain.gain.value = volume ;
+            }
         }
 
     },
@@ -1414,15 +1425,15 @@ V3D.View.prototype = {
         /// and adjust heading of drone ///
         ///////////////////////////////////
 
-        var rb = dbody.body;
-        var adddphas = 0;
+        this.udrb = dbody.body;
+        this.adddphas = 0;
 
         if(!drone.userData.rtm){
-            var rblv = rb.linearVelocity.length();
+            //var rblv = this.udrb .linearVelocity.length();
         //   console.log('velocity ' + rblv); 
 
 
-            var correctvec = new THREE.Vector3(this.ldh.x,this.ldh.y,this.ldh.z).normalize();
+            this.correctvec = new THREE.Vector3(this.ldh.x,this.ldh.y,this.ldh.z).normalize();
 
             this.ldh.subVectors( this.containerMesh.position, drone.position );
             var dist = Math.round(this.ldh.length());
@@ -1431,11 +1442,11 @@ V3D.View.prototype = {
             // }
             this.ldh.normalize()
             this.m = this.lookAtFunc(this.ldh, this.up);
-            var q = new THREE.Quaternion();
-            q.setFromRotationMatrix( this.m );
-            rb.setQuaternion(q);
+            //this.udq = new THREE.Quaternion();
+            this.udq.setFromRotationMatrix( this.m );
+            this.udrb .setQuaternion( this.udq );
 
-            this.angle = 2 * Math.acos(q.w);
+            this.angle = 2 * Math.acos( this.udq.w );
 
             if( drone.userData.bincount === 0) {
 
@@ -1459,8 +1470,8 @@ V3D.View.prototype = {
                     }
                  //   console.log('mag ' + mag); 
 
-                    correctvec.multiplyScalar(-mag);
-                    rb.linearVelocity.addTime(correctvec, this.world.timeStep);
+                    this.correctvec.multiplyScalar(-mag);
+                    this.udrb .linearVelocity.addTime( this.correctvec, this.world.timeStep );
                     this.drota = this.angle;
                     //console.log(rb.linearVelocity); 
                   //  console.log('anglediff' + anglediff);
@@ -1471,22 +1482,22 @@ V3D.View.prototype = {
 
                     if ( dist <= 1500 ) {
 
-                        this.normalizelv( rb,3,this.ldh );
+                        this.normalizelv( this.udrb ,3,this.ldh );
 
                     }
                     if (dist > 1500 && dist <= 4000) { 
 
-                        this.normalizelv( rb,8,this.ldh );
+                        this.normalizelv( this.udrb ,8,this.ldh );
                     
                     }
                     if (dist > 4000 && dist <= 10000 ) {
 
-                        this.normalizelv( rb,11,this.ldh );
+                        this.normalizelv( this.udrb ,11,this.ldh );
 
                     }
                     if (dist > 10000 ) {
                         this.ldh.multiplyScalar(15);
-                        rb.linearVelocity.addTime(this.ldh, this.world.timeStep);  
+                        this.udrb .linearVelocity.addTime(this.ldh, this.world.timeStep);  
                     }
 
             }
@@ -1523,7 +1534,7 @@ V3D.View.prototype = {
                 var rbdphaser = this.addPhaser(body, dphaser);
                 rbdphaser.body.linearVelocity.addTime(heading, this.world.timeStep);
                 drone.userData.dpcnt = this.randMinMax(0,1000);
-                adddphas = 1;
+                this.adddphas = 1;
             }
             else {
                 drone.userData.dpcnt +=1;
@@ -1552,16 +1563,16 @@ V3D.View.prototype = {
             var len = this.distms.length();
             var self = this;
             if(len > 4000){
-                this.dronedist(1000, this.distms, rb);
+                this.dronedist(1000, this.distms, this.udrb );
             }
             if(len > 2800 && len <= 4000){
-                this.dronedist(50, this.distms, rb);
+                this.dronedist(50, this.distms, this.udrb );
             }
             if( len > 2100 && len <= 2800) {
-                this.dronedist(30, this.distms, rb);
+                this.dronedist(30, this.distms, this.udrb );
             }
             if ( len > 1100 && len <= 2100){
-                this.dronedist(10, this.distms, rb);
+                this.dronedist(10, this.distms, this.udrb  );
             }
             if( len <= 1100 ) {
                 drone.userData.rtm = 0;
@@ -1570,7 +1581,7 @@ V3D.View.prototype = {
 
         }
         drone.userData.bincount ? drone.userData.bincount = 0 : drone.userData.bincount = 1;
-        return adddphas;
+        return this.adddphas;
 
     },
     dronedist: function(val, distms, rb) {

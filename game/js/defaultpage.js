@@ -6,9 +6,9 @@
 
 var url = window.location.href;
 // change to live 
+
 // setting 0: accel, 1: deccel, 2: shoot, 3: in/out, 4: sfx, 5: stay logged in, 6: look sensitivity, 7: snd volume
 var settingsarr = [ 32, 38, 40, 0, 1, 0, 5, 5];
-//var settingsarr = [ 32, 38, 40, 1, 1, 0, 2.5, 5];
 var currply	= { username: 0, password: '' };
 var num_emails = 1;
 document.getElementById('')
@@ -469,8 +469,8 @@ function loadUser (data, initialload) {
 	else {
 		document.getElementById( 'adjlooksenb' ).style.display = 'none';
 		document.getElementById( 'adjlookhead' ).style.display = 'none';
-		looksen = settingsarr[7];
-		settingsarr[7] = 10;
+		looksen = settingsarr[6];
+		settingsarr[6] = 10;
 	}
 
 	currply = { id: data.id, username: data.username, password: data.password };
@@ -507,14 +507,14 @@ function updateSettings (ev) {
 	xhttp.open("POST", url, true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	if ( !ismobile ) {
-		settingsarr[7] = looksen;
+		settingsarr[6] = looksen;
 	}
 	xhttp.send( 'id=' + currply.id + '&settings='+settingsarr + '&username='+ currply.username );
 	var udset = document.getElementById('udset');
 	udset.style.display = 'none';
 	udsetoff.style.display = 'block';	
 	if ( !ismobile ) {
-		settingsarr[7] = 10;
+		settingsarr[6] = 10;
 	}
 }
 
@@ -792,14 +792,16 @@ function loginAni () {
 }
 	
 window.onload = function() {
-	var ios = parseFloat(
-	('' + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent) || [0,''])[1])
-	.replace('undefined', '3_2').replace('_', '.').replace('_', '')
-	) || 0;
-	if ( ios && ios <= 10 ) {
-		document.getElementById('loadMultiGame').className += ' disablea';
-		document.getElementById('ios10dis').style.display = 'block';
-	}
+
+	// change to live
+	// var ios = parseFloat(
+	// ('' + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent) || [0,''])[1])
+	// .replace('undefined', '3_2').replace('_', '.').replace('_', '')
+	// ) || 0;
+	// if ( ios && ios <= 10 ) {
+	// 	document.getElementById('loadMultiGame').className += ' disablea';
+	// 	document.getElementById('ios10dis').style.display = 'block';
+	// }
 
 	var data = document.getElementById('consoleData');
 	data = JSON.parse(data.value);
@@ -825,16 +827,16 @@ window.onload = function() {
 		else {
 			document.getElementById( 'adjlooksenb' ).style.display = 'none';
 			document.getElementById( 'adjlookhead' ).style.display = 'none';
-			looksen = settingsarr[7];
-			settingsarr[7] = 10;
+			looksen = settingsarr[6];
+			settingsarr[6] = 10;
 		}
 	}
 	else {
 		document.getElementById('outsidesf').style.background = '#000000';
 		if( !ismobile ) {
 			document.getElementById( 'adjlooksen' ).style.display = 'none';
-			looksen = settingsarr[7];
-			settingsarr[7] = 10;
+			looksen = settingsarr[6];
+			settingsarr[6] = 10;
 		}
 	}
 
@@ -842,25 +844,28 @@ window.onload = function() {
 	// change to live
 	//updatePages.navFunc( { target: { id: 'snav' }} );
 }
-window.onerror = function myErrorHandler(errormsg, url_e, l_no) {
-	if ( num_emails <= 3) {
-	    document.getElementById('container').style.display = 'none';
-		var errscreen = document.getElementById('errScreen')
-		errscreen.style.display = 'block';
-		errscreen.innerHTML = '<div id="errdiv">Sorry drone war 1 is not available at this time </div>';
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("POST", url, true);
-		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xhttp.send( 'errormsg=' + errormsg + '&url_e='+url_e + '&l_no='+ l_no + '&userdata=' + document.getElementById('userdata').value );
-		num_emails ++;
-	    return false;
-	}
-}
+
+// change to live
+
+// window.onerror = function myErrorHandler(errormsg, url_e, l_no) {
+// 	if ( num_emails <= 3) {
+// 	    document.getElementById('container').style.display = 'none';
+// 		var errscreen = document.getElementById('errScreen')
+// 		errscreen.style.display = 'block';
+// 		errscreen.innerHTML = '<div id="errdiv">Sorry drone war 1 is not available at this time </div>';
+// 		var xhttp = new XMLHttpRequest();
+// 		xhttp.open("POST", url, true);
+// 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+// 		xhttp.send( 'errormsg=' + errormsg + '&url_e='+url_e + '&l_no='+ l_no + '&userdata=' + document.getElementById('userdata').value );
+// 		num_emails ++;
+// 	    return false;
+// 	}
+// }
 
 
 	
 // change to live
-//runGame(0);
+runGame(1);
 //initgame();
 //var page = { target: { id: 'wanav' } };
 //navFunc(a);

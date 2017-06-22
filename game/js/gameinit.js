@@ -691,6 +691,9 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                         }
 
                         if ( btd.indexOf(body.body.shapes.id) != -1 || mesh.userData.tbd == 1 ) {
+                            if ( mesh.userData.tbd ) { 
+                                v3d.playDroneEx();
+                            }
                             if( body.ld ) {
                                 var ms = {pos: []};
                                 if ( body.ms == 'ms1' ) {

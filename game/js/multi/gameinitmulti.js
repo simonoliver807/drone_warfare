@@ -130,6 +130,8 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
     var planetexname;
     var msrotpct = 0.05;
     var grad = -0.1;
+    var distDroneShip = v3d.tvec( 0, 0, 0 );
+    var mspos_1_2 = { pos: [] };
 
 
     // change to live 
@@ -635,7 +637,6 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                     while (i--){
                         body = bodys[i];
                         mesh = meshs[i];
-
                         // change to live glowFloat.value
                         // check if asteroid needs breaking down, destroying, or respawning
                          if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > pex_t && endsequence > 0 ){
@@ -738,6 +739,9 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                         // after lead drone is respawned need to wait befor it can be destroyed again
                         if ( mesh.userData.tbd < 0 ) {
                             mesh.userData.tbd += 1;
+                            if ( mesh.userData.tbd === 0 && body.disabled ) {
+                                body.disabled = 1;
+                            }
                         }
                         if(!body.getSleep()){ // if body didn't sleep
                             // apply rigidbody position and rotation to mesh
@@ -787,29 +791,46 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                             }
                             if ( body.tbd ) {
                                 body.tbd = 0;
+                                if( host && body.ld === 1 || !host && body.ld === 2 ) {
+                                    dronesarr.push( { id: body.id + '' + 7777, ld: body.ld, body: { position: { x: body.body.position.x, y: body.body.position.y, z: body.body.position.z }, linearVelocity: { x: 0, y: 0, z: 0  } } } );
+                                }
                             }
+                            if ( mesh.userData.tbd ) { 
+                                distDroneShip.subVectors( containerMesh.position, mesh.position );
+                                if ( distDroneShip.x > 2000 || distDroneShip.y > 2000 || distDroneShip.z > 2000 ) {
+                                    v3d.playDroneEx( 1 );   
+                                }
+                                else {
+                                    v3d.playDroneEx( 0 );
+                                }
+                             }
 
                             if( body.ld ) {
                                 if( host && body.ld === 1 || !host && body.ld === 2 ) {
-                                    var ms = {pos: []};
                                     if ( body.ms == 'ms1' ) {
-                                        ms.pos = [ v3d.ms1pos.x, v3d.ms1pos.y, v3d.ms1pos.z ];
+                                        mspos_1_2.pos = [ v3d.ms1pos.x, v3d.ms1pos.y, v3d.ms1pos.z ];
                                     }
                                     if ( body.ms == 'ms2' ) {
-                                       ms.pos = [ v3d.ms2pos.x, v3d.ms2pos.y, v3d.ms2pos.z ];
+                                       mspos_1_2.pos = [ v3d.ms2pos.x, v3d.ms2pos.y, v3d.ms2pos.z ];
                                     }
                                     self.loadExdrone( mesh );
-                                    var pos = self.dronePos(ms);
+                                    var pos = self.dronePos( mspos_1_2 );
                                     body.body.position.set(pos[0]/100,pos[1]/100,pos[2]/100); 
-                                    mesh.userData.tbd = -2;
+                                    mesh.userData.tbd = -5;
                                     //body.tbd = 0;
                                 }
                                 else {
+
+
                                     self.loadExdrone( mesh );
                                     body.body.position.set(20000, 10000, 10000);
                                     // was expart 2 times because pos was updateing before the expart was being fired by other player
                                     // was increase from -2 to -8
-                                    mesh.userData.tbd = - 8;
+                                    mesh.userData.tbd = -1200;
+                                    body.disabled = 1;
+                                    console.log('disabled ' + body.id);
+
+
 
                                 }
                             }
@@ -997,7 +1018,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                         if(dbody.name == 'drone') {
 
                             //if ( ( dbody.prevpos.x === dbody.body.position.x && dbody.prevpos.y === dbody.body.position.y && dbody.prevpos.z === dbody.body.position.z) && dbody.ld !== 0 && anibincnt === 10 && !dbody.nrtm && dbody.rtm == 2 ) {
-                             if ( ( dbody.prevpos.x === dbody.body.position.x && dbody.prevpos.y === dbody.body.position.y && dbody.prevpos.z === dbody.body.position.z) && dbody.ld !== 0 && anibincnt === 10 ) {
+                            if ( ( dbody.prevpos.x === dbody.body.position.x && dbody.prevpos.y === dbody.body.position.y && dbody.prevpos.z === dbody.body.position.z) && dbody.ld !== 0 && anibincnt === 10 ) {
                                 dbody.rtm = 1;
                                 host ? dbody.ld = 1 : dbody.ld = 2;
                             }
@@ -1447,7 +1468,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                     }
 
                }
-               for(var i=0;i<numofdrone;i++){
+               for(var i=0; i <= numofdrone; i++){
 
                     if(dpm < numofdrone/numofms){
 
@@ -1464,6 +1485,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                             bodys[i].rtm = 0;
                             bodys[bodysNum].ms = ms[msnum].msname;
                             bodys[bodysNum].tbd = 0;
+                            bodys[bodysNum].disabled = 0;
 
                             bodys[bodysNum].prevpos = new OIMO.Vec3( bodys[bodysNum].body.position.x, bodys[bodysNum].body.position.y, bodys[bodysNum].body.position.z );
                             // nrtm : never return to ms
@@ -1657,6 +1679,16 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                 gamecore.server_updates = [];
                 gamecore.ms1y = { y: 0, t: 1 };
                 gamecore.ms2y = { y: 0, t: 1 };
+                if(!host){
+                    bodys[0].body.position.set( 0.2, 0, -1 );
+                    bodys[1].body.position.set(0,0,0);
+                    bodys[1].body.sleepPosition.set(0,0,0);
+                }
+                else {
+                    bodys[0].body.position.set( 0, 0, 0 );
+                    bodys[1].body.position.set( 0.2, 0, -1 );
+                    bodys[1].body.sleepPosition.set( 0.2, 0, -1 );
+                }
                 if ( !gamecore.respawning ){
                     gamecore.levelGen(x982y);
                 }
@@ -1707,16 +1739,6 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                     V3D.dphasers.remove(V3D.dphasers.children[i]);
                     i--;
 
-                }
-                if(!host){
-                    bodys[0].body.position.set( 0.2, 0, -1 );
-                    bodys[1].body.position.set(0,0,0);
-                    bodys[1].body.sleepPosition.set(0,0,0);
-                }
-                else {
-                    bodys[0].body.position.set( 0, 0, 0 );
-                    bodys[1].body.position.set( 0.2, 0, -1 );
-                    bodys[1].body.sleepPosition.set( 0.2, 0, -1 );
                 }
                 startlevel = 0;
                 // v3d.ms1y.t = 0;

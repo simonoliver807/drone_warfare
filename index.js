@@ -77,8 +77,8 @@ let transporter = nodemailer.createTransport({
 //   db.close();
 // });
 // change to live
-let dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
-//let dburl = "mongodb://localhost:27017/test";
+// let dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
+let dburl = "mongodb://localhost:27017/test";
 
 mongoose.connect(dburl);
 mongoose.Promise = global.Promise;
@@ -177,6 +177,8 @@ app.get('/', function (req, res) {
 			    	}
 
 		    		db.collection('players').findOne( { username: username }, function (err, result) {
+
+		    			debugger
 		    			let user = 0;
 		    			if ( result ) {  user = '{ "id": "' + result._id.toString() + '", "username": "' + result.username + '", "password": "' + result.password + '", "settings":"' + result.settings +'"}' }
 
@@ -433,7 +435,7 @@ io.on('connection', (client) => {
 				if( err ) {
 					var htmlString = '<b>error message: ' + err + '<br> error stack: ' + err.stack + '</b>';
 					var textString = 'error message: ' + err + 'error stack: ' + err.stack ;
-					sendEmail( 'DB error', htmlString, textString );
+					( 'DB error', htmlString, textString );
 				}
 				// send the game id to the client
 				client.emit('gamestart', { id: multi.id , host: 1, playerid: client.id });
