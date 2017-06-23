@@ -120,7 +120,7 @@ var fs = require('fs');
 
         if ( !this.valshp1 ) {
           console.log('failed validation');
-          debugger
+          // debugger
           if( id == this.clients.player1.id ){
             this.clients['player1'].emit('resetply', this.player_manifest[id].body.position );
           }
@@ -463,6 +463,7 @@ var fs = require('fs');
     try {
       this.il = input.length;
       this.dronearr[pl_uuid] = [];
+      // change to live
       while( this.il-- ) {
         input[ this.il ] = parseFloat( input[ this.il ] );
       }

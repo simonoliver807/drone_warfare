@@ -5,7 +5,7 @@ requirejs(['multi/autoGameMulti','asteroid', 'planetex', 'oimo','three','lib/OBJ
             	var main = new MAINMULTI;
             	main.init();
 
-            	// change to live
+            	//change to live
             	// var autoGame = new AUTOGAMEMULTI;
             	// autoGame.init();
 

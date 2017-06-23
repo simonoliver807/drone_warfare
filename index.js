@@ -178,7 +178,6 @@ app.get('/', function (req, res) {
 
 		    		db.collection('players').findOne( { username: username }, function (err, result) {
 
-		    			debugger
 		    			let user = 0;
 		    			if ( result ) {  user = '{ "id": "' + result._id.toString() + '", "username": "' + result.username + '", "password": "' + result.password + '", "settings":"' + result.settings +'"}' }
 

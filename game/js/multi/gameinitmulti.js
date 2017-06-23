@@ -740,7 +740,8 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                         if ( mesh.userData.tbd < 0 ) {
                             mesh.userData.tbd += 1;
                             if ( mesh.userData.tbd === 0 && body.disabled ) {
-                                body.disabled = 1;
+                                body.disabled = 0;
+                                console.log('enabled ' + body.id );
                             }
                         }
                         if(!body.getSleep()){ // if body didn't sleep
@@ -761,37 +762,43 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                             }
                         } 
 
-                        if( dronelaunch >= dronelaunchTime) {
-                            var newld = 1;
-                            while ( newld ){
-                                if( bodys[newld].name == "drone" && !bodys[newld].ld && !bodys[newld].nrtm ) {
-                                    host ? bodys[newld].ld = 1 : bodys[newld].ld = 2;
-                                    bodys[newld].nrtm = 1;
-                                    newld = 0;
-                                    dronelaunch = 0;
-                                }
-                                if ( newld == bodys.length - 1 ) {
-                                    newld = 0;
-                                    dronelaunch = -1;
-                                }
-                                if ( newld > 0 && newld < bodys.length ) {
-                                    newld +=1;
-                                }
-                            }
-                        }
+                        // change to live 
+
+                        // if( dronelaunch >= dronelaunchTime) {
+                        //     var newld = 1;
+                        //     while ( newld ){
+                        //         if( bodys[newld].name == "drone" && !bodys[newld].ld && !bodys[newld].nrtm ) {
+                        //             host ? bodys[newld].ld = 1 : bodys[newld].ld = 2;
+                        //             bodys[newld].nrtm = 1;
+                        //             // pass over to other ply that this drone needs to be nrtm
+                        //             dronesarr.push( { id: bodys[newld].id + '' + 6666, ld: bodys[newld].ld, body: { position: { x: bodys[newld].body.position.x, y: bodys[newld].body.position.y, z: bodys[newld].body.position.z }, linearVelocity: { x: 0, y: 0, z: 0  } } } );
+                        //             newld = 0;
+                        //             dronelaunch = 0;
+                        //         }
+                        //         if ( newld == bodys.length - 1 ) {
+                        //             newld = 0;
+                        //             dronelaunch = -1;
+                        //         }
+                        //         if ( newld > 0 && newld < bodys.length ) {
+                        //             newld +=1;
+                        //         }
+                        //     }
+                        // }
 
                         if ( btd.indexOf(body.body.shapes.id) != -1 || mesh.userData.tbd == 1 || body.tbd) {
 
                             // if a player drone has come through from the server as tbd
+                            var ply1dply1 = 0;
                             if (body.tbd) { 
                                 mesh.userData.tbd = 1; 
+                                ply1dply1 = 1;
                             }
                             if ( mesh.userData.tbd && !body.tbd) {
                                 dronesarr.push( { id: body.id + '' + 9999, ld: body.ld, body: { position: { x: body.body.position.x, y: body.body.position.y, z: body.body.position.z }, linearVelocity: { x: 0, y: 0, z: 0  } } } );
                             }
                             if ( body.tbd ) {
                                 body.tbd = 0;
-                                if( host && body.ld === 1 || !host && body.ld === 2 ) {
+                                if( ( host && body.ld === 1 || !host && body.ld === 2 ) && body.nrtm ) {
                                     dronesarr.push( { id: body.id + '' + 7777, ld: body.ld, body: { position: { x: body.body.position.x, y: body.body.position.y, z: body.body.position.z }, linearVelocity: { x: 0, y: 0, z: 0  } } } );
                                 }
                             }
@@ -804,8 +811,8 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                                     v3d.playDroneEx( 0 );
                                 }
                              }
+                            if( body.ld && body.nrtm ) {
 
-                            if( body.ld ) {
                                 if( host && body.ld === 1 || !host && body.ld === 2 ) {
                                     if ( body.ms == 'ms1' ) {
                                         mspos_1_2.pos = [ v3d.ms1pos.x, v3d.ms1pos.y, v3d.ms1pos.z ];
@@ -825,13 +832,11 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                                     self.loadExdrone( mesh );
                                     body.body.position.set(20000, 10000, 10000);
                                     // was expart 2 times because pos was updateing before the expart was being fired by other player
-                                    // was increase from -2 to -8
-                                    mesh.userData.tbd = -1200;
-                                    body.disabled = 1;
-                                    console.log('disabled ' + body.id);
-
-
-
+                                    if ( !ply1dply1 ) {
+                                        mesh.userData.tbd = -600;
+                                        body.disabled = 1;
+                                        console.log('disabled ' + body.id);
+                                    }
                                 }
                             }
                             else {
@@ -1026,8 +1031,12 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                                 dbody.prevpos.set( dbody.body.position.x, dbody.body.position.y, dbody.body.position.z);
                             }
 
-                            if ( dbody.ld ) { drone.userData.ld = dbody.ld; }
-                            if ( drone.userData.ld ) { dbody.ld = drone.userData.ld; }
+                            if ( dbody.ld ) { 
+                                drone.userData.ld = dbody.ld;
+                            }
+                            if ( drone.userData.ld ) {
+                                dbody.ld = drone.userData.ld; 
+                            }
                             if ( dbody.rtm ) { 
                                 drone.userData.rtm = 1; dbody.rtm = 2;
                             }
@@ -1468,9 +1477,12 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                     }
 
                }
+               if ( !startlevel ){
+                    numofdrone --;
+               }
                for(var i=0; i <= numofdrone; i++){
 
-                    if(dpm < numofdrone/numofms){
+                    if(dpm <= numofdrone/numofms){
 
 
                         var pos = this.dronePos(ms[msnum]);
