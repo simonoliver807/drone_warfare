@@ -865,7 +865,7 @@ window.onload = function() {
 
 	
 // change to live
-//runGame(1);
+runGame(1);
 //initgame();
 //var page = { target: { id: 'wanav' } };
 //navFunc(a);
