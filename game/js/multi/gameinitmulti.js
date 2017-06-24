@@ -134,6 +134,9 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
     var mspos_1_2 = { pos: [] };
 
 
+    var recordDroneEx = 0;
+
+
     // change to live 
     // var changelevel;
 
@@ -741,7 +744,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                             mesh.userData.tbd += 1;
                             if ( mesh.userData.tbd === 0 && body.disabled ) {
                                 body.disabled = 0;
-                                console.log('enabled ' + body.id );
+                              //  console.log('enabled ' + body.id );
                             }
                         }
                         if(!body.getSleep()){ // if body didn't sleep
@@ -764,26 +767,26 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
 
                         // change to live 
 
-                        // if( dronelaunch >= dronelaunchTime) {
-                        //     var newld = 1;
-                        //     while ( newld ){
-                        //         if( bodys[newld].name == "drone" && !bodys[newld].ld && !bodys[newld].nrtm ) {
-                        //             host ? bodys[newld].ld = 1 : bodys[newld].ld = 2;
-                        //             bodys[newld].nrtm = 1;
-                        //             // pass over to other ply that this drone needs to be nrtm
-                        //             dronesarr.push( { id: bodys[newld].id + '' + 6666, ld: bodys[newld].ld, body: { position: { x: bodys[newld].body.position.x, y: bodys[newld].body.position.y, z: bodys[newld].body.position.z }, linearVelocity: { x: 0, y: 0, z: 0  } } } );
-                        //             newld = 0;
-                        //             dronelaunch = 0;
-                        //         }
-                        //         if ( newld == bodys.length - 1 ) {
-                        //             newld = 0;
-                        //             dronelaunch = -1;
-                        //         }
-                        //         if ( newld > 0 && newld < bodys.length ) {
-                        //             newld +=1;
-                        //         }
-                        //     }
-                        // }
+                        if( dronelaunch >= dronelaunchTime) {
+                            var newld = 1;
+                            while ( newld ){
+                                if( bodys[newld].name == "drone" && !bodys[newld].ld && !bodys[newld].nrtm ) {
+                                    host ? bodys[newld].ld = 1 : bodys[newld].ld = 2;
+                                    bodys[newld].nrtm = 1;
+                                    // pass over to other ply that this drone needs to be nrtm
+                                    dronesarr.push( { id: bodys[newld].id + '' + 6666, ld: bodys[newld].ld, body: { position: { x: bodys[newld].body.position.x, y: bodys[newld].body.position.y, z: bodys[newld].body.position.z }, linearVelocity: { x: 0, y: 0, z: 0  } } } );
+                                    newld = 0;
+                                    dronelaunch = 0;
+                                }
+                                if ( newld == bodys.length - 1 ) {
+                                    newld = 0;
+                                    dronelaunch = -1;
+                                }
+                                if ( newld > 0 && newld < bodys.length ) {
+                                    newld +=1;
+                                }
+                            }
+                        }
 
                         if ( btd.indexOf(body.body.shapes.id) != -1 || mesh.userData.tbd == 1 || body.tbd) {
 
@@ -833,9 +836,12 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                                     body.body.position.set(20000, 10000, 10000);
                                     // was expart 2 times because pos was updateing before the expart was being fired by other player
                                     if ( !ply1dply1 ) {
-                                        mesh.userData.tbd = -600;
+                                        mesh.userData.tbd = -300;
                                         body.disabled = 1;
-                                        console.log('disabled ' + body.id);
+                                        //console.log('disabled ' + body.id);
+                                    }
+                                    else {
+                                        mesh.userData.tbd = -5;
                                     }
                                 }
                             }
@@ -1598,6 +1604,13 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                 return [x,y,z];
             },
             loadExdrone: function( drone ) {
+
+                if ( recordDroneEx === drone.id ) {
+                    console.log('2 ex: ' + drone.id);
+                }
+                 recordDroneEx = drone.id;
+
+
 
                 V3D.exdrone1.userData.active = true;
                 var exdrone = V3D.exdrone1.children[0].clone();

@@ -594,7 +594,7 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
         }
         if (  this.bodys[i].id === pldata[tpos] && !stopupdate && this.bodys[i].disabled  ) { 
           updatepos = 1;
-          console.log('this drone is disabled: ' + this.bodys[i].id );
+          //console.log('this drone is disabled: ' + this.bodys[i].id );
         }
 
         var indexpos = this.exrtmarr.indexOf( this.bodys[i].id );

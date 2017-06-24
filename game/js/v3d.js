@@ -1365,9 +1365,6 @@ V3D.View.prototype = {
       //  shplv.multiplyScalar(len + appvelmag);
      //   rb.body.linearVelocity.addEqual(shplv);
     },
-    raycastloop: function() {
-
-    },
     playDroneEx: function( vol ) {
 
         if ( settingsarr[4]) {
