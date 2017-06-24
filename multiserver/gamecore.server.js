@@ -77,6 +77,10 @@ var fs = require('fs');
     this.id1 = game_instance.player1;
     this.id2 = 0;
     this.currpos = [];
+
+
+    // remove from live
+    this.recordDroneEx = 0;
    
     // Start a fast paced timer for measuring time easier
      this.create_timer()
@@ -167,10 +171,12 @@ var fs = require('fs');
 
                 // }
 
+                // remove from live
                 // if ( num.substr(-4, num.length) == '9999' ) {      
 
                 //   updatepos = 1;
-                //   console.log('9999 ' + num);
+                //   this.recordDroneEx ++;
+                //   console.log( '9999 ' + num + ' - ' + this.recordDroneEx );
 
                 // }
 
@@ -360,7 +366,16 @@ var fs = require('fs');
               this.pldata[ id ][this.currpos[pl]+2]  = this.dronearr[ id ][i][2];
               this.pldata[ id ][this.currpos[pl]+3]  = this.dronearr[ id ][i][6]; 
               this.pldata[ id ][this.currpos[pl]+4]  = this.dronearr[ id ][i][7]; 
-              this.currpos[ pl ] += 5;      
+              this.currpos[ pl ] += 5;    
+
+
+              // remove for live
+              var anum = this.dronearr[ id ][i][6] + '';
+              if( anum.match('9999')) {
+                this.recordDroneEx ++;
+                console.log( '9999:  ' + this.dronearr[ id ][i][6] + ' - ' + this.recordDroneEx ); 
+              }
+
         }
         pl ++;
 

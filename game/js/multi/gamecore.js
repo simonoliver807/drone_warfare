@@ -63,6 +63,12 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
    //   this.firepx = 0;
 
 
+      this.current_time = 0;
+      this.plyudcount = 0;
+      this.udtarget = 0;
+      this.udprevious = 0; 
+
+
     }
 
     game_core.prototype.v_lerp = function(v, tv, t) {
@@ -420,10 +426,10 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
       // other player position = lerp(past_pos, target_pos, current_time)
 
       // Find the position in the timeline of updates we stored.
-      var current_time = this.client_time
-        , count = this.server_updates.length - 1
-        , target = null
-        , previous = null
+        this.current_time = this.client_time
+        , this.plyudcount = this.server_updates.length - 1
+        , this.udtarget = null
+        , this.udprevious = null
 
       // We look from the 'oldest' updates, since the newest ones are at the
       // end (list.length-1 for example). This will be expensive only when
@@ -445,24 +451,24 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
 
       // 34.99600000000109
 
-      for (var i=0; i<count; i++) {
+      for (var i=0; i<this.plyudcount; i++) {
         //
 
         var point = this.server_updates[i]
         var next_point = this.server_updates[i + 1]
 
         // Compare our point in time with the server times we have
-        if (current_time > point.t && current_time < next_point.t ) {
-          target = next_point
-          previous = point
+        if (this.current_time > point.t && this.current_time < next_point.t ) {
+          this.udtarget = next_point
+          this.udprevious = point
           break
         }
       }
       // With no target we store the last known
       // server position and move to that instead
-      if (! target) {
-        target = this.server_updates[0]
-        previous = this.server_updates[0]
+      if (! this.udtarget) {
+        this.udtarget = this.server_updates[0]
+        this.udprevious = this.server_updates[0]
       }
 
       // Now that we have a target and a previous destination,
@@ -470,12 +476,12 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
       // This is simple percentage maths, value/target = [0,1] range of numbers.
       // lerp requires the 0,1 value to lerp to? thats the one.
 
-      if (target && previous) {
+      if (this.udtarget && this.udprevious) {
 
-        this.target_time = target.t
+        this.target_time = this.udtarget.t
 
-        var difference = this.target_time - current_time;
-        var max_difference = (target.t - previous.t);
+        var difference = this.target_time - this.current_time;
+        var max_difference = (this.udtarget.t - this.udprevious.t);
         var time_point = (difference / max_difference);
 
         // Because we use the same target and previous in extreme cases
@@ -487,21 +493,21 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
 
 
         // go update the drones and the ms
-        this.updatedrones( target.vals.pldata, previous, target.t );
-        this.updatems( target );
+        this.updatedrones( this.udtarget.vals.pldata, this.udprevious, this.udtarget.t );
+        this.updatems( this.udtarget );
 
 
-        if ( target.vals.playerid != this.player_self.id) {
-          var id = target.vals.playerid;
+        if ( this.udtarget.vals.playerid != this.player_self.id) {
+          var id = this.udtarget.vals.playerid;
 
 
           // The other players positions in this timeline, behind us and in front of us
-          var other_target_pos = (target.vals) ? this.tvec3.set(target.vals.pldata[0], target.vals.pldata[1], target.vals.pldata[2]) : new OIMO.Vec3();
-          var other_past_pos = (previous.vals) ? this.pvec3.set(previous.vals.pldata[0], previous.vals.pldata[1],previous.vals.pldata[2] ) : other_target_pos;  //set to target if this guy is new
+          var other_target_pos = (this.udtarget.vals) ? this.tvec3.set(this.udtarget.vals.pldata[0], this.udtarget.vals.pldata[1], this.udtarget.vals.pldata[2]) : new OIMO.Vec3();
+          var other_past_pos = (this.udprevious.vals) ? this.pvec3.set(this.udprevious.vals.pldata[0], this.udprevious.vals.pldata[1],this.udprevious.vals.pldata[2] ) : other_target_pos;  //set to target if this guy is new
 
-          this.ply2mesh.userData.tquat.set( target.vals.pldata[3], target.vals.pldata[4], target.vals.pldata[5], target.vals.pldata[6] );
-          this.ply2mesh.userData.pquat.set( previous.vals.pldata[3], previous.vals.pldata[4], previous.vals.pldata[5], previous.vals.pldata[6] );  //set to target if this guy is new
-          if( target.vals.pldata[7] ){ this.ply2mesh.children[5].material.visible = true; }
+          this.ply2mesh.userData.tquat.set( this.udtarget.vals.pldata[3], this.udtarget.vals.pldata[4], this.udtarget.vals.pldata[5], this.udtarget.vals.pldata[6] );
+          this.ply2mesh.userData.pquat.set( this.udprevious.vals.pldata[3], this.udprevious.vals.pldata[4], this.udprevious.vals.pldata[5], this.udprevious.vals.pldata[6] );  //set to target if this guy is new
+          if( this.udtarget.vals.pldata[7] ){ this.ply2mesh.children[5].material.visible = true; }
           else { this.ply2mesh.children[5].material.visible = false; }
 
           //this.ply2mesh.userData.multiq.slerp( this.tquat, time_point );
@@ -560,7 +566,7 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
             this.droneprev.copy( this.bodys[i].body.position );
 
           //  this.dronepldata.set( pldata[ tpos -3 ], pldata[ tpos -2 ], pldata[ tpos-1 ]  );
-            this.dronetarget.set( pldata[ tpos -3 ], pldata[ tpos -2 ], pldata[ tpos-1 ]  );
+            this.dronetarget.set( pldata[ tpos -3 ], pldata[ tpos -2 ], pldata[ tpos-1 ] );
 
             this.subvec.sub( this.dronetarget, this.droneprev );
 
@@ -683,6 +689,7 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
           var num = dronebodys[i].id + '';  
           if( num.match('9999') || num.match('8888') || num.match('7777') || num.match('6666') ) {
             this.temparrDrone = this.temparrDrone.concat( dronebodys[i].body.position.x, dronebodys[i].body.position.y, dronebodys[i].body.position.z, dronebodys[i].body.linearVelocity.x, dronebodys[i].body.linearVelocity.y, dronebodys[i].body.linearVelocity.z, dronebodys[i].id, dronebodys[i].ld )
+            console.log( num + ' drone ex ' );
           }
           else {
             this.pldata[this.currpos]    = dronebodys[i].body.position.x;

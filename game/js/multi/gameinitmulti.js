@@ -132,10 +132,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
     var grad = -0.1;
     var distDroneShip = v3d.tvec( 0, 0, 0 );
     var mspos_1_2 = { pos: [] };
-
-
-    var recordDroneEx = 0;
-
+    var ply1dply1 = 0;
 
     // change to live 
     // var changelevel;
@@ -791,7 +788,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                         if ( btd.indexOf(body.body.shapes.id) != -1 || mesh.userData.tbd == 1 || body.tbd) {
 
                             // if a player drone has come through from the server as tbd
-                            var ply1dply1 = 0;
+                            ply1dply1 = 0;
                             if (body.tbd) { 
                                 mesh.userData.tbd = 1; 
                                 ply1dply1 = 1;
@@ -1605,13 +1602,6 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
             },
             loadExdrone: function( drone ) {
 
-                if ( recordDroneEx === drone.id ) {
-                    console.log('2 ex: ' + drone.id);
-                }
-                 recordDroneEx = drone.id;
-
-
-
                 V3D.exdrone1.userData.active = true;
                 var exdrone = V3D.exdrone1.children[0].clone();
                 exdrone.position.set( drone.position.x, drone.position.y, drone.position.z);
@@ -1704,16 +1694,6 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                 gamecore.server_updates = [];
                 gamecore.ms1y = { y: 0, t: 1 };
                 gamecore.ms2y = { y: 0, t: 1 };
-                if(!host){
-                    bodys[0].body.position.set( 0.2, 0, -1 );
-                    bodys[1].body.position.set(0,0,0);
-                    bodys[1].body.sleepPosition.set(0,0,0);
-                }
-                else {
-                    bodys[0].body.position.set( 0, 0, 0 );
-                    bodys[1].body.position.set( 0.2, 0, -1 );
-                    bodys[1].body.sleepPosition.set( 0.2, 0, -1 );
-                }
                 if ( !gamecore.respawning ){
                     gamecore.levelGen(x982y);
                 }
@@ -1800,6 +1780,16 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                 }
                 else {
                     document.getElementById('level'+x982y+'Img').style.display = 'none';
+                }
+                if(!host){
+                    bodys[0].body.position.set( 0.2, 0, -1 );
+                    bodys[1].body.position.set(0,0,0);
+                    bodys[1].body.sleepPosition.set(0,0,0);
+                }
+                else {
+                    bodys[0].body.position.set( 0, 0, 0 );
+                    bodys[1].body.position.set( 0.2, 0, -1 );
+                    bodys[1].body.sleepPosition.set( 0.2, 0, -1 );
                 }
             },
             lgd: function(l) {
