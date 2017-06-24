@@ -373,7 +373,13 @@ var fs = require('fs');
               var anum = this.dronearr[ id ][i][6] + '';
               if( anum.match('9999')) {
                 this.recordDroneEx ++;
-                console.log( '9999:  ' + this.dronearr[ id ][i][6] + ' - ' + this.recordDroneEx ); 
+                fs.writeFile("/tmp/test", "Hey there!", function(err) {
+                    if(err) {
+                        return console.log(err);
+                    }
+
+                    console.log("The file was saved!");
+                }); 
               }
 
         }
