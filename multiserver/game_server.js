@@ -34,9 +34,22 @@ function game_server ( levels ) {
     this.levels = levels;
     this.game_count = 0;
     this.games = {};
-
+    this.b = 0;
+    this.ms1y = 0;
+    this.ms2y = 0;   
+    this.ab = 0;
+    this.pldata = 0;
+    this.input_commands = 0;
+    this.droneData = 0;
+    this.input_time = 0;
+    this.gid = 0;
+    this.pl_uuid = 0;
     // a local queue of messages we delay if faking latency
     this.messages = [];
+
+    this.droneCount = 0;
+    this.tmpDronearr = [];
+    this.droneExplnum = 0;
 
     setInterval(function() {
       this._dt  = new Date().getTime() - this._dte
@@ -49,37 +62,65 @@ function game_server ( levels ) {
   game_server.prototype.setgd = function( data ) {
 
 
-    var b = data[0];
-    var ms1y = 0;
-    var ms2y = 0;
+    this.b = data[0];
+    this.ms1y = 0;
+    this.ms2y = 0;
 
-    var ab = b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength );
-    var pldata = new Float32Array( ab );
+    this.ab = this.b.buffer.slice( this.b.byteOffset, this.b.byteOffset + this.b.byteLength );
+    this.pldata = new Float32Array( this.ab );
     
-    var input_commands = [];
-    var droneData = [];
-    for (var i = 0; i < pldata.length; i++) {
+    this.input_commands = [];
+    this.droneData = [];
+    this.droneCount = 0;
+    this.tmpDronearr = [];
+    for (var i = 0; i < this.pldata.length; i++) {
         if( i < 11 ){
-          input_commands.push(  pldata[i] );
+          this.input_commands.push(  this.pldata[i] );
         }
         if ( i == 11 ) { 
-          var input_time = pldata[i];
+          this.input_time = this.pldata[i];
         }
         if( i == 12 ) {
-          ms1y = pldata[i];
+          this.ms1y = this.pldata[i];
         }
          if( i == 13 ) {
-          ms2y = pldata[i];
+          this.ms2y = this.pldata[i];
         }
         if ( i > 13) {
-          droneData.push ( pldata[i] );
+
+          if ( this.droneCount <= 7 ) {
+            this.tmpDronearr.push( this.pldata[i] );  
+            this.droneCount ++;
+          }
+          //this.droneData.push ( this.pldata[i] );
+        }
+        if ( this.droneCount === 8 ){
+
+          this.droneExplnum = this.tmpDronearr[6] + '';
+          if ( this.droneExplnum.match('9999') ) {
+            this.games[ this.gid ].explarr[ pl_uuid ] = this.games[ this.gid ].explarr[ pl_uuid ].concat( this.tmpDronearr )
+          }
+          else {
+            this.droneData = this.droneData.concat( this.tmpDronearr );
+          }
+          this.droneCount = 0;
+          this.tmpDronearr = [];
         }
     }
-    var pl_uuid = data[1];
-    var gid = data[2];
+    this.pl_uuid = data[1];
+    this.gid = data[2];
+
+    for ( var i = 0; i < this.droneData.length; i++ ) {
+
+      var num = this.droneData[i] + '';
+      if ( num.match('9999') && num.length <= 8 ) {
+        console.log( 'drone ex ' +  this.droneData[i] );
+      }
+
+    }
 
     try {
-      this.games[ gid ].handle_server_input( input_commands, ms1y, ms2y, droneData, input_time, pl_uuid );
+      this.games[ this.gid ].handle_server_input( this.input_commands, this.ms1y, this.ms2y, this.droneData, this.input_time, this.pl_uuid );
     }
     catch (err) {
       console.log( err );

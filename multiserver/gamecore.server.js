@@ -81,6 +81,8 @@ var fs = require('fs');
     this.packet;
     this.pl;
 
+    this.explarr = [];
+
     // remove from live
     // this.tmparr = [];
     // this.shouldEmit1 = 0;
@@ -375,17 +377,10 @@ var fs = require('fs');
               this.pldata[ id ][this.currpos[ this.pl ]+3]  = this.dronearr[ id ][i][6]; 
               this.pldata[ id ][this.currpos[ this.pl ]+4]  = this.dronearr[ id ][i][7]; 
               this.currpos[ this.pl ] += 5;  
-
-              // remove for live
-              var anum = this.dronearr[ id ][i][6] + '';
-              if( anum.match('9999')) {
-                //debugger
-                console.log( anum );
-                this.recordDroneEx ++;
-              }
-
         }
         this.pl ++;
+
+
 
       }
       catch (err) {
@@ -487,10 +482,14 @@ var fs = require('fs');
     try {
       this.il = input.length;
       this.dronearr[pl_uuid] = [];
+
+
       // change to live delete if tested
-      while( this.il-- ) {
-        input[ this.il ] = parseFloat( input[ this.il ] );
-      }
+      // while( this.il-- ) {
+      //   input[ this.il ] = parseFloat( input[ this.il ] );
+      // }
+
+
       // Store the input on the player instance for processing in the physics loop
       this.player_manifest[ pl_uuid ].inputs.push({ pos: [input[0],input[1],input[2]], lv: [input[3],input[4],input[5]], rot: [input[6],input[7],input[8],input[9]], phaser: input[10], time: input_time });
       this.player_manifest[ pl_uuid ].ms1y.y = ms1y;
