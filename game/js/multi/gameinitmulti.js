@@ -795,6 +795,8 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
                             }
                             if ( mesh.userData.tbd && !body.tbd) {
                                 dronesarr.push( { id: body.id + '' + 9999, ld: body.ld, body: { position: { x: body.body.position.x, y: body.body.position.y, z: body.body.position.z }, linearVelocity: { x: 0, y: 0, z: 0  } } } );
+                                // remove from live
+                                console.log( body.id + ' drone ex ' );
                             }
                             if ( body.tbd ) {
                                 body.tbd = 0;

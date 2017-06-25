@@ -78,6 +78,15 @@ var fs = require('fs');
     this.id2 = 0;
     this.currpos = [];
 
+    this.packet;
+    this.pl;
+
+    // remove from live
+    // this.tmparr = [];
+    // this.shouldEmit1 = 0;
+    // this.shouldEmit2 = 0;
+
+
 
     // remove from live
     this.recordDroneEx = 0;
@@ -327,11 +336,10 @@ var fs = require('fs');
 
   game_core.prototype.server_prepare_update = function() {
 
-    var ld = 0;
+    this.packet = {};
 
-    var packet = {};
-
-    var pl = 0;
+    this.pl = 0;
+    //this.shouldEmit1 = this.shouldEmit2 = 2;
 
 
     for (var id in this.player_manifest) {
@@ -361,24 +369,23 @@ var fs = require('fs');
 
         this.currpos = [ 12, 12 ];
         for (var i = 0; i < this.dronearr[id].length; i++) {
-              this.pldata[ id ][this.currpos[pl]]    = this.dronearr[ id ][i][0];
-              this.pldata[ id ][this.currpos[pl]+1]  = this.dronearr[ id ][i][1];
-              this.pldata[ id ][this.currpos[pl]+2]  = this.dronearr[ id ][i][2];
-              this.pldata[ id ][this.currpos[pl]+3]  = this.dronearr[ id ][i][6]; 
-              this.pldata[ id ][this.currpos[pl]+4]  = this.dronearr[ id ][i][7]; 
-              this.currpos[ pl ] += 5;    
-
+              this.pldata[ id ][this.currpos[ this.pl ]]    = this.dronearr[ id ][i][0];
+              this.pldata[ id ][this.currpos[ this.pl ]+1]  = this.dronearr[ id ][i][1];
+              this.pldata[ id ][this.currpos[ this.pl ]+2]  = this.dronearr[ id ][i][2];
+              this.pldata[ id ][this.currpos[ this.pl ]+3]  = this.dronearr[ id ][i][6]; 
+              this.pldata[ id ][this.currpos[ this.pl ]+4]  = this.dronearr[ id ][i][7]; 
+              this.currpos[ this.pl ] += 5;  
 
               // remove for live
               var anum = this.dronearr[ id ][i][6] + '';
               if( anum.match('9999')) {
+                //debugger
+                console.log( anum );
                 this.recordDroneEx ++;
-                console.log( '9999:  ' + this.dronearr[ id ][i][6] + ' - ' + this.recordDroneEx ); 
               }
 
         }
-        pl ++;
-
+        this.pl ++;
 
       }
       catch (err) {
@@ -388,17 +395,19 @@ var fs = require('fs');
 
     }
 
-      packet[this.id1] = {
-        pldata: this.pldata[ this.id1 ].buffer,
-        playerid: this.id1,
+    this.tmparr = this.dronearr;
+
+    this.packet[this.id1] = {
+      pldata: this.pldata[ this.id1 ].buffer,
+      playerid: this.id1,
+    }
+    if ( this.id2 ) {
+      this.packet[this.id2] = {
+        pldata: this.pldata[ this.id2 ].buffer,
+        playerid: this.id2,
       }
-      if ( this.id2 ) {
-        packet[this.id2] = {
-          pldata: this.pldata[ this.id2 ].buffer,
-          playerid: this.id2,
-        }
-      }
-    return packet
+    }
+    return this.packet
   }
 
   //
@@ -478,7 +487,7 @@ var fs = require('fs');
     try {
       this.il = input.length;
       this.dronearr[pl_uuid] = [];
-      // change to live
+      // change to live delete if tested
       while( this.il-- ) {
         input[ this.il ] = parseFloat( input[ this.il ] );
       }
