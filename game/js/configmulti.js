@@ -2,12 +2,12 @@ requirejs(['multi/autoGameMulti','asteroid', 'planetex', 'oimo','three','lib/OBJ
         function (AUTOGAMEMULTI, ASTEROID, PLANETEX, OIMO, THREE, OBJLOADER, SOCKET_IO,TGALoader, MTLLoader,TRACKBALLCONTROLS, V3D, GAMECORE, GAMEINITMULTI, MAINMULTI) {
             	
 
-            	//var main = new MAINMULTI;
-            	//main.init();
+            	var main = new MAINMULTI;
+            	main.init();
 
             	//change to live
-            	var autoGame = new AUTOGAMEMULTI;
-            	autoGame.init();
+            	// var autoGame = new AUTOGAMEMULTI;
+            	// autoGame.init();
 
         }
     );
