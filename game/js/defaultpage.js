@@ -8,7 +8,7 @@ var url = window.location.href;
 // change to live 
 
 // setting 0: accel, 1: deccel, 2: shoot, 3: in/out, 4: sfx, 5: stay logged in, 6: look sensitivity, 7: snd volume
-var settingsarr = [ 32, 38, 40, 0, 4, 0, 5, 5];
+var settingsarr = [ 32, 38, 40, 0, 1, 0, 5, 5];
 var currply	= { username: 0, password: '' };
 var num_emails = 1;
 document.getElementById('')
