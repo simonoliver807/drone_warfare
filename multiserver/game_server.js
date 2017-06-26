@@ -73,6 +73,11 @@ function game_server ( levels ) {
     this.droneData = [];
     this.droneCount = 0;
     this.tmpDronearr = [];
+
+    this.pl_uuid = data[1];
+    this.gid = data[2];
+
+
     for (var i = 0; i < this.pldata.length; i++) {
         if( i < 11 ){
           this.input_commands.push(  this.pldata[i] );
@@ -98,7 +103,11 @@ function game_server ( levels ) {
 
           this.droneExplnum = this.tmpDronearr[6] + '';
           if ( this.droneExplnum.match('9999') ) {
-            this.games[ this.gid ].explarr[ pl_uuid ] = this.games[ this.gid ].explarr[ pl_uuid ].concat( this.tmpDronearr )
+
+            debugger
+
+            this.tmpDronearr = [ this.tmpDronearr[0], this.tmpDronearr[1], this.tmpDronearr[2], this.tmpDronearr[6], this.tmpDronearr[7] ]
+            this.games[ this.gid ].explarr[ this.pl_uuid ] = this.games[ this.gid ].explarr[ this.pl_uuid ].concat( this.tmpDronearr );
           }
           else {
             this.droneData = this.droneData.concat( this.tmpDronearr );
@@ -107,28 +116,23 @@ function game_server ( levels ) {
           this.tmpDronearr = [];
         }
     }
-    this.pl_uuid = data[1];
-    this.gid = data[2];
 
-    for ( var i = 0; i < this.droneData.length; i++ ) {
+    // for ( var i = 0; i < this.droneData.length; i++ ) {
 
-      var num = this.droneData[i] + '';
-      if ( num.match('9999') && num.length <= 8 ) {
-        console.log( 'drone ex ' +  this.droneData[i] );
-      }
+    //   var num = this.droneData[i] + '';
+    //   if ( num.match('9999') && num.length <= 8 ) {
+    //     console.log( 'drone ex ' +  this.droneData[i] );
+    //   }
 
-    }
+    // }
 
     try {
       this.games[ this.gid ].handle_server_input( this.input_commands, this.ms1y, this.ms2y, this.droneData, this.input_time, this.pl_uuid );
     }
     catch (err) {
+      debugger
       console.log( err );
     }
-      // if ( data_type == 'l' ) {
-      //   // A client is asking for lag simulation
-      //   this.fake_latency = parseFloat(message_parts[1])
-      // }
   }
 
   // A simple wrapper for logging so we can toggle it,

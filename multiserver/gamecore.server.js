@@ -81,7 +81,7 @@ var fs = require('fs');
     this.packet;
     this.pl;
 
-    this.explarr = [];
+    this.explarr = new Object;
 
     // remove from live
     // this.tmparr = [];
@@ -347,10 +347,10 @@ var fs = require('fs');
     for (var id in this.player_manifest) {
 
       if ( this.player_manifest[id].name == 'player1' ) {
-        this.pldata[id] = new Float32Array(  12 + ( this.dronearr[ id ].length * 5 ));
+        this.pldata[id] = new Float32Array(  12 + ( this.dronearr[ id ].length * 5 ) + ( this.explarr[ id ].length ) );
       }
       if ( this.player_manifest[id].name == 'player2' ) {
-        this.pldata[id] = new Float32Array(  12 + ( this.dronearr[ id ].length * 5 ));
+        this.pldata[id] = new Float32Array(  12 + ( this.dronearr[ id ].length * 5 ) + ( this.explarr[ id ].length ) );
       }
 
 
@@ -380,17 +380,36 @@ var fs = require('fs');
         }
         this.pl ++;
 
-
-
       }
       catch (err) {
         console.log(err)
         debugger
       }
 
-    }
 
-    this.tmparr = this.dronearr;
+
+
+      for ( var j = 0; j < this.pldata[ id ].length; j++ ) {
+        var num = this.pldata[ id ][j] + ''; 
+         if ( num.substr(-4, num.length) == '9999' ) {
+          console.log('pl expl ' + num);
+        }  
+      }
+
+      if ( this.explarr[ id ].length ) {
+
+        var k = 12 + ( this.dronearr[ id ].length * 5 );
+        console.log( 'server ex: ' + this.explarr[ id ] + ' id: ' + id );
+        for ( var j = 0; j < this.explarr[ id ].length; j++ ) {
+          
+          this.pldata[ id ][ k ] = this.explarr[ id ][ j ];
+          k++ ;
+        }
+        this.explarr[ id ] = [];
+
+      }
+
+    }
 
     this.packet[this.id1] = {
       pldata: this.pldata[ this.id1 ].buffer,
@@ -460,6 +479,9 @@ var fs = require('fs');
       this.player_manifest[ game.player2 ].ms1y =  { y: 0 };
       this.player_manifest[ game.player2 ].ms2y =  { y: 0 };
       this.id2 = game.player2;
+
+      this.explarr[ this.id1 ] = [ ];
+      this.explarr[ this.id2 ] = [ ];
 
       // start the server creating and sending packets to both the clients
       setInterval( function() {

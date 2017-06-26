@@ -321,7 +321,7 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 			    				}
 			    				if ( self.host ) {
 
-			    					self.notDrone = 0;
+			    					self.notDrone = 1;
 
 				    				self.notMS = 0;
 

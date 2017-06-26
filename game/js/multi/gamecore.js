@@ -68,6 +68,9 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
       this.udtarget = 0;
       this.udprevious = 0; 
 
+      this.point = 0;
+      this.next_point = 0;
+
 
     }
 
@@ -459,13 +462,13 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
       for (var i=0; i<this.plyudcount; i++) {
         //
 
-        var point = this.server_updates[i]
-        var next_point = this.server_updates[i + 1]
+        this.point = this.server_updates[i]
+        this.next_point = this.server_updates[i + 1]
 
         // Compare our point in time with the server times we have
-        if (this.current_time > point.t && this.current_time < next_point.t ) {
-          this.udtarget = next_point
-          this.udprevious = point
+        if (this.current_time > this.point.t && this.current_time < this.next_point.t ) {
+          this.udtarget = this.next_point
+          this.udprevious = this.point
           break
         }
       }
