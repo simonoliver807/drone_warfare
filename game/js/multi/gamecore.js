@@ -222,7 +222,7 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
 
     game_core.prototype.setdrone = function( data ) {
       
-      if ( this.bodys && this.firstStream ){
+      if ( this.bodys && this.firstStream === 1 ){
         this.host ? document.getElementById( 'respawntxt' ).innerHTML = 'Player 2 Joined' : document.getElementById( 'respawntxt' ).innerHTML = 'loading game';
         var currpos = 0;
         var ddata = new Float32Array( data[ this.player_self.id ].pldata );
