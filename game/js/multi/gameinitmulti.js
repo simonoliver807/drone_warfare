@@ -1693,6 +1693,7 @@ define(['oimo','v3d','multi/gamecore', 'asteroid', 'planetex'], function(OIMO,V3
             },
             levelGen: function( restart ) {
                 restart ? x982y = 1 : x982y += 1 ;
+                gamecore.firstStream = 2;
                 gamecore.server_updates = [];
                 gamecore.ms1y = { y: 0, t: 1 };
                 gamecore.ms2y = { y: 0, t: 1 };
