@@ -723,32 +723,32 @@ function runGame(numpl) {
 	game.style.display = 'block';
 
 	//******** minified change to live *************/////////
-	// var s = document.createElement("script");
-	// s.type = "text/javascript";
-	// s.src = "js_min/require.js";
-	// if( numpl ) {
-	// 	s.setAttribute('data-main', 'js_min/configmulti.js');
-	// }
-	// else {
-	// 	s.setAttribute('data-main', 'js_min/config.js')
-	// }
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js_min/require.js";
+	if( numpl ) {
+		s.setAttribute('data-main', 'js_min/configmulti.js');
+	}
+	else {
+		s.setAttribute('data-main', 'js_min/config.js')
+	}
 
 
 	//******** unminified *************///////////
 	var s = document.createElement("script");
-	s.type = "text/javascript";
-	s.src = "js/require.js";
-		if( numpl ) {
-		s.setAttribute('data-main', 'js/configmulti.js');
-	}
-	else {
-		s.setAttribute('data-main', 'js/config.js')
-	}
+	// s.type = "text/javascript";
+	// s.src = "js/require.js";
+	// 	if( numpl ) {
+	// 	s.setAttribute('data-main', 'js/configmulti.js');
+	// }
+	// else {
+	// 	s.setAttribute('data-main', 'js/config.js')
+	// }
 
-	if (window.screen.height < 768) {
-		document.getElementById('arrowmarginup').className += ' fa-1';
-		document.getElementById('arrowmargindown').className += ' fa-1';
-	}
+	// if (window.screen.height < 768) {
+	// 	document.getElementById('arrowmarginup').className += ' fa-1';
+	// 	document.getElementById('arrowmargindown').className += ' fa-1';
+	// }
 
 	var head = document.getElementsByTagName("head")[0];
 	head.appendChild(s);
@@ -847,20 +847,20 @@ window.onload = function() {
 
 // change to live
 
-// window.onerror = function myErrorHandler(errormsg, url_e, l_no) {
-// 	if ( num_emails <= 3) {
-// 	    document.getElementById('container').style.display = 'none';
-// 		var errscreen = document.getElementById('errScreen')
-// 		errscreen.style.display = 'block';
-// 		errscreen.innerHTML = '<div id="errdiv">Sorry drone war 1 is not available at this time </div>';
-// 		var xhttp = new XMLHttpRequest();
-// 		xhttp.open("POST", url, true);
-// 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-// 		xhttp.send( 'errormsg=' + errormsg + '&url_e='+url_e + '&l_no='+ l_no + '&userdata=' + document.getElementById('userdata').value );
-// 		num_emails ++;
-// 	    return false;
-// 	}
-// }
+window.onerror = function myErrorHandler(errormsg, url_e, l_no) {
+	if ( num_emails <= 3) {
+	    document.getElementById('container').style.display = 'none';
+		var errscreen = document.getElementById('errScreen')
+		errscreen.style.display = 'block';
+		errscreen.innerHTML = '<div id="errdiv">Sorry drone war 1 is not available at this time </div>';
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", url, true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send( 'errormsg=' + errormsg + '&url_e='+url_e + '&l_no='+ l_no + '&userdata=' + document.getElementById('userdata').value );
+		num_emails ++;
+	    return false;
+	}
+}
 
 
 	
