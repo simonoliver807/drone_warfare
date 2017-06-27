@@ -134,7 +134,7 @@ var fs = require('fs');
         }
 
         if ( !this.valshp1 ) {
-          console.log('failed validation');
+          //console.log('failed validation');
           // debugger
           if( id == this.clients.player1.id ){
             this.clients['player1'].emit('resetply', this.player_manifest[id].body.position );
@@ -201,7 +201,7 @@ var fs = require('fs');
           }
           catch (err) {
             //debugger
-            console.log(err.stack);
+            console.log(err);
             
           }
         }
@@ -388,18 +388,18 @@ var fs = require('fs');
 
 
 
-
-      for ( var j = 0; j < this.pldata[ id ].length; j++ ) {
-        var num = this.pldata[ id ][j] + ''; 
-         if ( num.substr(-4, num.length) == '9999' ) {
-          console.log('pl expl ' + num);
-        }  
-      }
+      // remove from live
+      // for ( var j = 0; j < this.pldata[ id ].length; j++ ) {
+      //   var num = this.pldata[ id ][j] + ''; 
+      //    if ( num.substr(-4, num.length) == '9999' ) {
+      //     console.log('pl expl ' + num);
+      //   }  
+      // }
 
       if ( this.explarr[ id ].length ) {
 
         var k = 12 + ( this.dronearr[ id ].length * 5 );
-        console.log( 'server ex: ' + this.explarr[ id ] + ' id: ' + id );
+        //console.log( 'server ex: ' + this.explarr[ id ] + ' id: ' + id );
         for ( var j = 0; j < this.explarr[ id ].length; j++ ) {
           
           this.pldata[ id ][ k ] = this.explarr[ id ][ j ];
@@ -518,11 +518,11 @@ var fs = require('fs');
       this.player_manifest[ pl_uuid ].ms2y.y = ms2y;
       if( ms1y ) {
         this.t1 ++;
-        console.log('t1: ' + this.t1);
+        //console.log('t1: ' + this.t1);
       }
       if( ms2y ) {
         this.t2 ++;
-        console.log('t2 ' + this.t2);
+        //console.log('t2 ' + this.t2);
       }
       this.droneloop = drone.length / 8;
       this.dlcurrps = 0;

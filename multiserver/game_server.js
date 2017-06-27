@@ -200,7 +200,7 @@ function game_server ( levels ) {
 
  game_server.prototype.levelgen = function( data ) {
 
-  console.log( this.games[data.gid].lastlevelchange + ' lastlevelchange' )
+  //console.log( this.games[data.gid].lastlevelchange + ' lastlevelchange' )
   if( typeof this.games[data.gid].lastlevelchange != 'undefined' ) {
     if ( this.games[data.gid].lastlevelchange === 0 || ( this.games[data.gid].local_time - this.games[data.gid].lastlevelchange ) > 5 ) {
       this.games[data.gid].lastlevelchange = this.games[data.gid].local_time;
@@ -219,7 +219,7 @@ function game_server ( levels ) {
     }
   }
   else {
-    console.log('lastlevelchange ' + this.games[data.gid].lastlevelchange)
+    //console.log('lastlevelchange ' + this.games[data.gid].lastlevelchange)
   }
  }
 
