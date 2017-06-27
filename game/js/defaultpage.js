@@ -735,7 +735,7 @@ function runGame(numpl) {
 
 
 	//******** unminified *************///////////
-	var s = document.createElement("script");
+	//var s = document.createElement("script");
 	// s.type = "text/javascript";
 	// s.src = "js/require.js";
 	// 	if( numpl ) {
@@ -794,14 +794,14 @@ function loginAni () {
 window.onload = function() {
 
 	// change to live
-	// var ios = parseFloat(
-	// ('' + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent) || [0,''])[1])
-	// .replace('undefined', '3_2').replace('_', '.').replace('_', '')
-	// ) || 0;
-	// if ( ios && ios <= 10 ) {
-	// 	document.getElementById('loadMultiGame').className += ' disablea';
-	// 	document.getElementById('ios10dis').style.display = 'block';
-	// }
+	var ios = parseFloat(
+	('' + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent) || [0,''])[1])
+	.replace('undefined', '3_2').replace('_', '.').replace('_', '')
+	) || 0;
+	if ( ios && ios <= 10 ) {
+		document.getElementById('loadMultiGame').className += ' disablea';
+		document.getElementById('ios10dis').style.display = 'block';
+	}
 
 	var data = document.getElementById('consoleData');
 	data = JSON.parse(data.value);

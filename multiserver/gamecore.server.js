@@ -91,7 +91,7 @@ var fs = require('fs');
 
 
     // remove from live
-    this.recordDroneEx = 0;
+    //this.recordDroneEx = 0;
    
     // Start a fast paced timer for measuring time easier
      this.create_timer()

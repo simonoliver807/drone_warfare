@@ -1076,7 +1076,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                         }
                         if( bodys[bodysNum].name == 'shp1' ){
                             // change to live
-                            if ( startlevel ) { bodys[ bodysNum ].r1 = 15; } 
+                            if ( startlevel ) { bodys[ bodysNum ].r1 = 1500; } 
                             v3d.setBodys(bodys[bodysNum]);
                         }
                         bodysNum += 1;
@@ -1504,7 +1504,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                 bodys[0].body.position.set(0,0,0);
                 // change to live
                 if ( restart ) {
-                    bodys[0].r1 = 15000000000; 
+                    bodys[0].r1 = 1500; 
                 }
                 startlevel = 0;
                 v3d.ms1y.t = 0;
