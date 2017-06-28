@@ -356,6 +356,13 @@ define(['multi/gameinitmulti','v3d'], function(GAMEINITMULTI,V3D){
 		    	v3d.h = window.innerHeight;
 		    	v3d.w = window.innerWidth;
 
+		    	perw = v3d.w * 0.01;
+				perh = v3d.h * 0.01;
+				perwr = v3d.w - perw;
+				perwl = perw;
+				perhu = v3d.h - perh;
+				perhd = perh
+
 		    	v3d.controls.handleResize();
 
 			}

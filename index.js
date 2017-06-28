@@ -77,8 +77,8 @@ let transporter = nodemailer.createTransport({
 //   db.close();
 // });
 // change to live
-let dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
-//let dburl = "mongodb://localhost:27017/test";
+// let dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
+let dburl = "mongodb://localhost:27017/test";
 
 mongoose.connect(dburl);
 mongoose.Promise = global.Promise;

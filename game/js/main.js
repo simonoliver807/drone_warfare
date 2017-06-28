@@ -361,6 +361,12 @@ define(['gameinit','v3d'], function(GAMEINIT,V3D){
 		    	v3d.renderer.setSize( window.innerWidth, window.innerHeight );
 		    	v3d.h = window.innerHeight;
 		    	v3d.w = window.innerWidth;
+		    	perw = v3d.w * 0.01;
+				perh = v3d.h * 0.01;
+				perwr = v3d.w - perw;
+				perwl = perw;
+				perhu = v3d.h - perh;
+				perhd = perh
 
 		    	v3d.controls.handleResize();
 
