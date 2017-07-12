@@ -10,7 +10,7 @@ main#main.site-main(role='main')
             .fw-row
               .fw-col-xs-12
                 .form-wrapper.contact-form
-                  form.fw_form_fw_form(data-fw-form-id='fw_form', method='post', action='/', data-fw-ext-forms-type='contact-forms')
+                  form#commentsubmit.fw_form_fw_form(data-fw-form-id='fw_form', method='post', action='/', data-fw-ext-forms-type='contact-forms')
                     input(type='hidden', name='fwf', value='fw_form')
                     //- input#_nonce_271fca0b2bb618b7f84815c4d944dab4(type='hidden', name='_nonce_271fca0b2bb618b7f84815c4d944dab4', value='6289f0d319')
                     //- input(type='hidden', name='_wp_http_referer', value='/website/comments/')
@@ -39,7 +39,7 @@ main#main.site-main(role='main')
                             input#commentname( type='text', placeholder='your name', name='commentname',  required='required' )
                     .fw-row
                       .fw-col-xs-12.form-builder-item.form-builder-item      
-                        input#commentsubmit(type='submit', value='Send')
+                        input#commentsubmitbutton(type='submit', value='Send')
 
     // .entry-content
   // #post-##

@@ -27,10 +27,10 @@ var game_core = require('./gamecore.server.js')
 
 
 function game_server ( levels ) {
-    this.fake_latency = 0;
-    this.local_time = 0;
-    this._dt  = new Date().getTime();
-    this._dte = new Date().getTime();
+    // this.fake_latency = 0;
+    // this.local_time = 0;
+    // this._dt  = new Date().getTime();
+    // this._dte = new Date().getTime();
     this.levels = levels;
     this.game_count = 0;
     this.games = {};
@@ -51,11 +51,11 @@ function game_server ( levels ) {
     this.tmpDronearr = [];
     this.droneExplnum = 0;
 
-    setInterval(function() {
-      this._dt  = new Date().getTime() - this._dte
-      this._dte = new Date().getTime()
-      this.local_time += game_server._dt / 1000.0
-    }, 4)
+    // setInterval(function() {
+    //   this._dt  = new Date().getTime() - this._dte
+    //   this._dte = new Date().getTime()
+    //   this.local_time += game_server._dt / 1000.0
+    // }, 4)
 
   }
 

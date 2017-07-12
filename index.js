@@ -77,8 +77,8 @@ let transporter = nodemailer.createTransport({
 //   db.close();
 // });
 // change to live
-let dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
-//let dburl = "mongodb://localhost:27017/test";
+//let dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
+let dburl = "mongodb://localhost:27017/test";
 
 mongoose.connect(dburl);
 mongoose.Promise = global.Promise;
@@ -210,8 +210,8 @@ app.get('/', function (req, res) {
 
 app.locals.levels = 0;
 app.post('/', function (req, res) {
-	//console.log('deal with post')
-	//console.log(req.body);
+	// console.log('deal with post')
+	// console.log(req.body);
 	if(req.body.name && req.body.comment){
 		mc.connect(dburl, function(err, db) {
 			if(!err) {
@@ -219,8 +219,9 @@ app.post('/', function (req, res) {
 			    	if (err) throw err
 
 			    	//cp('send to db');
-			    	res.render( 'index', { title: 'Drone War 1' })
+			    	//res.render( 'index', { title: 'Drone War 1' })
 			    	if( result.length == 0 ){
+			    		let now = new Date();
 				    	db.collection('comments').insertOne( {
 							'name' 		: req.body.name,
 							'comment' 	: req.body.comment,
@@ -540,7 +541,7 @@ function sendEmail( sub, htmlString, textString){
 
 		transporter.sendMail(mailOptions, (error, info) => {
 
-			debugger;
+			//debugger;
 
 		    if (error) {
 		        return console.log(error);
@@ -564,7 +565,7 @@ function sendEmail( sub, htmlString, textString){
 }
  
 // change to live
-//reload(server, app).reload();
+reload(server, app).reload();
  
 server.listen(app.get('port'), function(){
   console.log("Web server listening on port " + app.get('port') + " Date: " + new Date())

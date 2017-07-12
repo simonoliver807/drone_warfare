@@ -271,6 +271,9 @@ optgroup {
 #cntrl {
 	margin-left: 3%;
 }
+#code_blog {
+	display: none;
+}
 #cup {
 	position: relative;	
 	pointer-events: none;

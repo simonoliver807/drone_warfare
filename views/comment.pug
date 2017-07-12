@@ -1,6 +1,6 @@
 #comments.comments-area
   h2.comments-title
-    P= comments.length + ' thoughts on “Drone Warfare”'
+    P#numcomments= (comments.length-1 ) + ' - thoughts on “Drone Warfare”'
   ol.comment-list
     - var i = 0;
     each comment in comments

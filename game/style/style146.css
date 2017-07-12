@@ -268,8 +268,15 @@ optgroup {
 	position: relative;
 	pointer-events: none;
 }
+.codeBlog {
+	background:#0c1021;
+	color:#f8f8f8
+}
 #cntrl {
 	margin-left: 3%;
+}
+#code_blog {
+	display: none;
 }
 #cup {
 	position: relative;	

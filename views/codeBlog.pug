@@ -1,0 +1,115 @@
+#code_blog.site-content
+  .container
+    .blog-header
+      h1.blog-title Drone War 1 Blog
+      p.lead.blog-description Code Examples of the things that were really good fun
+    .row
+      .col-md-8.blog-main
+        .blog-post
+          h2.blog-post-title 
+          p.blog-post-meta
+            | January 1, 2014 by 
+            a(href='#') nabooleo
+          p
+            | This blog is going to allow me to talk about the devlopment parts of the game that were crucial, the parts that were the most fun.
+          hr
+          p
+            | To start I am going to show how I did the multiplayer stuff. Turns out after alot of reading and a lot of figuring out it is not that difficult to set up a basic
+            | multiplayer server. Ok so syncing an entire game across the server is a bit more difficult, the code shown is just a basic three demo that will run across two 
+            | browser window.
+          p
+            | The folder to download has a working version. All you have to do is, from the top level of the folder run
+            pre.codeBlog
+              | node index.js
+          p 
+            | After reading loads about mutiplayer servers the basis for my code came from
+          p
+            a(href='http://buildnewgames.com/real-time-multiplayer/') http://buildnewgames.com/real-time-multiplayer/
+          p 
+            | Please read this as this was the basis for my code.
+          P
+            | I am going to take it for granted that you know three.js and need a multiplayer system for your amazing game. if you do not know three.js go &nbsp
+            a(href='https://threejs.org/docs/index.html#manual/introduction/Creating-a-scene') here
+            |  &nbsp I have used three.js, along with my multiplayer code, to have a sphere and a cube that can be controlled seperatly by two differnet browsers
+            | using the arrow keys.
+            | If you then navigate to http://localhost:9000 on your Chrome/Safari browser,
+          h2 How it works
+          p
+            | As each browser loads the first is assigned as player 1 (Yellow) and the second as player 2 (Green). This was done using websockets running on the browser and
+            |  on the server with the 
+            a(href='https://socket.io/') javacript socket.io framework
+            | &nbsp on the server connection is made with
+            pre.codeBlog
+              |  io.on(<span style="color:#61ce3c">'connection'</span>, (client) <span style="color:#fbde2d">=</span><span style="color:#fbde2d">></span> {
+              |   gameserver.join_game( client );
+              |  })  
+          h3 Sub-heading
+          p
+            | Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+          pre.
+          p
+            | Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.
+          h3 Sub-heading
+          p
+            | Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
+          ul
+            li Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+            li Donec id elit non mi porta gravida at eget metus.
+            li Nulla vitae elit libero, a pharetra augue.
+          p
+            | Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.
+          ol
+            li Vestibulum id ligula porta felis euismod semper.
+            li
+              | Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+            li Maecenas sed diam eget risus varius blandit sit amet non magna.
+          p
+            | Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.
+        // /.blog-post
+        // /.blog-post
+      // /.blog-main
+      .col-md-3.col-md-offset-1.blog-sidebar
+        .sidebar-module.sidebar-module-inset
+          h4 About
+          p
+            | The game took a year to build. That included all the three.js code, the multiplayer server and learning and introducing custom shaders into the game.
+            | Wanted to give something back from my experiences with this project.
+        .sidebar-module
+          h4 Archives
+          ol.list-unstyled
+            li
+              a(href='#') March 2014
+            li
+              a(href='#') February 2014
+            li
+              a(href='#') January 2014
+            li
+              a(href='#') December 2013
+            li
+              a(href='#') November 2013
+            li
+              a(href='#') October 2013
+            li
+              a(href='#') September 2013
+            li
+              a(href='#') August 2013
+            li
+              a(href='#') July 2013
+            li
+              a(href='#') June 2013
+            li
+              a(href='#') May 2013
+            li
+              a(href='#') April 2013
+        .sidebar-module
+          h4 Elsewhere
+          ol.list-unstyled
+            li
+              a(href='#') GitHub
+            li
+              a(href='#') Twitter
+            li
+              a(href='#') Facebook
+      // /.blog-sidebar
+    // /.row
+  // /.container

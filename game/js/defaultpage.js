@@ -111,6 +111,11 @@ var updatePages = (function () {
 				hs_comm = 'block';
 				currentpage = { pagetc: 'web_app', classtc: 'wali' }
 			}
+			if ( target.id.match('cbnav') ){
+				disablePage( currentpage.pagetc, currentpage.classtc, 'code_blog', 'cbli' );
+				hs_comm = 'block';
+				currentpage = { pagetc: 'code_blog', classtc: 'cbli' }
+			}
 			if ( target.id.match('lnav') ){
 				disablePage( 'login-page', currentpage.classtc, 'login-page', 'slli' );
 				currentpage = { pagetc: 'login-page', classtc: 'slli' }
@@ -120,7 +125,8 @@ var updatePages = (function () {
 				document.getElementById('snav').style.display = 'block';
 				disablePage( currentpage.pagetc, currentpage.classtc, 'settings', 'slli' );
 				disablePage( 'dronewar1', 'dwli', 'settings', 'slli' );	
-				disablePage( 'web_app', 'wali', 'settings', 'slli' );	
+				disablePage( 'web_app', 'wali', 'settings', 'slli' );
+				disablePage( 'code_blog', 'cbli', 'settings', 'slli' );		
 				hs_comm = 'none';
 				window.addEventListener( 'keydown', glowBadge.updateBadge, false );
 				currentpage = { pagetc: 'settings', classtc: 'slli' };
@@ -145,6 +151,7 @@ document.getElementById('sndfxbutton').addEventListener( 'click', setButton);
 document.getElementById('insidesf').addEventListener( 'click', setButton);
 document.getElementById('outsidesf').addEventListener( 'click', setButton);
 document.getElementById('dwnav').addEventListener( 'click', updatePages.navFunc);
+document.getElementById('cbnav').addEventListener( 'click', updatePages.navFunc);
 document.getElementById('wanav').addEventListener( 'click', updatePages.navFunc);
 document.getElementById('lnav').addEventListener( 'click', updatePages.navFunc);
 document.getElementById('snav').addEventListener( 'click', updatePages.navFunc);
@@ -521,7 +528,7 @@ function updateSettings (ev) {
 document.getElementById('commentsubmit').addEventListener( 'submit', function(event) { 
 
 	event.preventDefault();
-	document.getElementById('commentsubmit').disabled = true; 
+	document.getElementById('commentsubmitbutton').disabled = true; 
 	var name = document.getElementById('commentname').value;
 	var comment = document.getElementById('textarea_1').value;
 
@@ -559,6 +566,11 @@ document.getElementById('commentsubmit').addEventListener( 'submit', function(ev
 	commentitem.getElementsByTagName('time')[0].innerHTML = fulldate;
 	commentitem.getElementsByTagName('p')[0].innerHTML = comment;
 	document.getElementsByClassName('comment-list')[0].appendChild(commentitem);
+	var numcomments = document.getElementById('numcomments');
+	var com = numcomments.innerHTML.split( '-' );
+	var firstChar = ~~com[0];
+	firstChar ++;
+	numcomments.innerHTML = firstChar + ' -' + com[1];
 
  });
 function setButton(event) {
@@ -804,7 +816,7 @@ window.onload = function() {
 	}
 
 	var data = document.getElementById('consoleData');
-	data = JSON.parse(data.value);
+	data.value ? data = JSON.parse(data.value) : data = [];
 	for( var i = 0; i < data.length; i++ ) {
 		var dataObj = data[i];
 		console.log( '%c' + dataObj, 'background: #222; color: #bada55' );
@@ -814,7 +826,7 @@ window.onload = function() {
 	if (n.match(/Android/i) || n.match(/webOS/i) || n.match(/iPhone/i) || n.match(/iPad/i) || n.match(/iPod/i) || n.match(/BlackBerry/i) || n.match(/Windows Phone/i)) {
 		ismobile = 1;
 	}
-	if ( userdata != '0' ) { 
+	if ( userdata != '0' && userdata != "" ) { 
 		loadUser( JSON.parse( userdata ), 1 ); 
 		document.getElementById( 'looklevel2b' ).style.backgroundColor = 'rgb(0, 122, 204)'; 
 		document.getElementById( 'sndlevel2b' ).style.backgroundColor = 'rgb(0, 122, 204)'; 
@@ -867,8 +879,8 @@ window.onerror = function myErrorHandler(errormsg, url_e, l_no) {
 // change to live
 //runGame(1);
 //initgame();
-//var page = { target: { id: 'wanav' } };
-//navFunc(a);
+var page = { target: { id: 'cbnav' } };
+updatePages.navFunc(page);
 
 
 
