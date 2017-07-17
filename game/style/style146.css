@@ -330,6 +330,9 @@ optgroup {
     transform: translate(-50%, -50%);
     z-index: 2;
 }
+.fbde2d{
+	color: #fbde2d;
+}
 .mobconcaret {
 	font-size: 20px;
 }

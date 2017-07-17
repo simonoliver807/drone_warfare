@@ -15,30 +15,32 @@
           hr
           p
             | To start I am going to show how I did the multiplayer stuff. Turns out after alot of reading and a lot of figuring out it is not that difficult to set up a basic
-            | multiplayer server. Ok so syncing an entire game across the server is a bit more difficult, the code shown is just a basic three demo that will run across two 
-            | browser window.
+            | multiplayer server. Ok so syncing an entire game across the server is a bit more difficult, the code shown is just a basic three.js demo that will run, multiple two 
+            | player games acsross mobile, tablet and desktop browser windows.
           p
-            | The folder to download has a working version. All you have to do is, from the top level of the folder run
+            | The folder to download has a working version. All you have to do is, from the top level of that folder run node.js commands, as it is a node.js server.
             pre.codeBlog
+              | npm install
               | node index.js
           p 
+            | This will install all packages and start the server. Packages I used were PUG, Express and Socket.io
             | After reading loads about mutiplayer servers the basis for my code came from
           p
             a(href='http://buildnewgames.com/real-time-multiplayer/') http://buildnewgames.com/real-time-multiplayer/
           p 
-            | Please read this as this was the basis for my code.
+            | Please read this as this acticle was where I started.
           P
             | I am going to take it for granted that you know three.js and need a multiplayer system for your amazing game. if you do not know three.js go &nbsp
             a(href='https://threejs.org/docs/index.html#manual/introduction/Creating-a-scene') here
-            |  &nbsp I have used three.js, along with my multiplayer code, to have a sphere and a cube that can be controlled seperatly by two differnet browsers
-            | using the arrow keys.
-            | If you then navigate to http://localhost:9000 on your Chrome/Safari browser,
+            |  &nbsp I have used three.js, along with my multiplayer code, to have two spheres that can be controlled seperatly by two differnet browsers
+            | using the arrow keys and 'w' for up and 's' for down.
+            | If you then navigate to http://localhost:9000 on your Chrome/Safari browser.
           h2 How it works
           p
             | As each browser loads the first is assigned as player 1 (Yellow) and the second as player 2 (Green). This was done using websockets running on the browser and
             |  on the server with the 
-            a(href='https://socket.io/') javacript socket.io framework
-            | &nbsp on the server connection is made with
+            a(href='https://socket.io/') javacript socket.io framework &nbsp
+            | the connection is made from the client 'app/gamecore.js' and the server 'index.js'
             pre.codeBlog
               |  io.on(<span style="color:#61ce3c">'connection'</span>, (client) <span style="color:#fbde2d">=</span><span style="color:#fbde2d">></span> {
               |   gameserver.join_game( client );
