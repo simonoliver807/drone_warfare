@@ -11,12 +11,14 @@ html {
 	-ms-text-size-adjust: 100%;
 	height: 100%;
 	width: 100%;
+	margin: 0;
+	padding: 0;
 }
 
 body {
 	margin: 0;
 	height: 100%;
-	/*overflow: hidden;*/
+	padding: 0;
 	width: 100%;
 	
 }
@@ -270,7 +272,12 @@ optgroup {
 }
 .codeBlog {
 	background:#0c1021;
-	color:#f8f8f8
+	color:#f8f8f8;
+	font-size: 14px;
+	overflow: auto;
+	 word-break: normal !important;
+    word-wrap: normal !important;
+    white-space: pre !important;
 }
 #cntrl {
 	margin-left: 3%;
@@ -686,9 +693,9 @@ optgroup {
 #insidesf {
 	width: 96px;
 }
-#outsidesf {
+/*#outsidesf {
 	width: 96px;
-}
+}*/
 .sliderstylea {
 	background-color: #ddd;
 	border-radius: .25rem;

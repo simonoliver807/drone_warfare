@@ -4,7 +4,7 @@
       h1.blog-title Drone War 1 Blog
       p.lead.blog-description Code Examples of the things that were really good fun
     .row
-      .col-md-8.blog-main
+      .col-12.blog-main
         .blog-post
           h2.blog-post-title 
           p.blog-post-meta
@@ -30,88 +30,87 @@
           p 
             | Please read this as this acticle was where I started.
           P
-            | I am going to take it for granted that you know three.js and need a multiplayer system for your amazing game. if you do not know three.js go &nbsp
+            | I am going to take it for granted that you know three.js and need a multiplayer system for your amazing game. If you do not know three.js go &nbsp
             a(href='https://threejs.org/docs/index.html#manual/introduction/Creating-a-scene') here
             |  &nbsp I have used three.js, along with my multiplayer code, to have two spheres that can be controlled seperatly by two differnet browsers
             | using the arrow keys and 'w' for up and 's' for down.
-            | If you then navigate to http://localhost:9000 on your Chrome/Safari browser.
+            | If you then navigate to http://localhost:9001 on your Chrome/Safari browser.
           h2 How it works
           p
             | As each browser loads the first is assigned as player 1 (Yellow) and the second as player 2 (Green). This was done using websockets running on the browser and
             |  on the server with the 
             a(href='https://socket.io/') javacript socket.io framework &nbsp
             | the connection is made from the client 'app/gamecore.js' and the server 'index.js'
-            pre.codeBlog
-              |  io.on(<span style="color:#61ce3c">'connection'</span>, (client) <span style="color:#fbde2d">=</span><span style="color:#fbde2d">></span> {
-              |   gameserver.join_game( client );
-              |  })  
-          h3 Sub-heading
+            | It is not necessary for this demo but I included it anyway, the server nominates player 1 as a host client. This client handles any game data that is required by both players.
+            | For example the planet explosion is fired on player 1 then all data is passed to player 2 who then fires it's planet explosion based on this data. Really simple idea that I hope you understand because syncing data
+            | gets really complicated really quickly, fun though. 
+          h4 index.js
           p
-            | Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-          pre.
+            | This handles the connection request made by the client to the server, asking to start a new game, as shown in following code section. It creates the initial game data and then passes it back to the client, with the emit, and to game_server.js where the new game
+            | is then started and stored in memory. <br />
+            | It also creates an setGameData event that handles game data emitted by both clients and also passes it to game_server.js
+          pre.codeBlog io.<span style="color:#fbde2d">on</span>('connection', (client) <span style="color:#fbde2d">=</span><span style="color:#fbde2d">></span> {
+            = "\n"
+            <span style="color:#fbde2d">  if</span> ( <span style="color:#8da6ce">app</span>.locals.host ) { <br/>    gameData <span style="color:#fbde2d">=</span> { <span style="color:#d8fa3c">game_id</span>: uuidv1(), <span style="color:#d8fa3c">player1</span>: client.<span style="color:#fbde2d">id</span>,<span style="color:#d8fa3c">player2</span>: 'player2' };
+            <span style="color:#666">    // send the game id to the client </span></br>
+            |     client.emit( 'gamestart', gameData ); 
+            |     gameserver.join_game( gameData, client ); 
+            |     numberOfGame <span style="color:#fbde2d">+</span><span style="color:#fbde2d">=</span> <span style="color:#d8fa3c">1</span>;
+            |   }
+            = "\n"
+            <span style="color:#fbde2d">  if</span> ( !<span style="color:#8da6ce">app</span>.locals.host ) { </br>
+            |     gameData.player2 <span style="color:#fbde2d">=</span> client.<span style="color:#fbde2d">id</span>;
+            |     client.emit('gamestart', gameData );     
+            |     gameserver.join_game( gameData, client ); 
+            |   }
+            = "\n" 
+            <span style="color:#8da6ce">  app</span>.locals.host ? <span style="color:#8da6ce">app</span>.locals.host <span style="color:#fbde2d">=</span> <span style="color:#d8fa3c">0</span> : <span style="color:#8da6ce">app</span>.locals.host <span style="color:#fbde2d">=</span><span style="color:#d8fa3c"> 1</span>; </br></br>
+
+            |   client.on(<span style="color:#61ce3c">'setGamedata'</span>, <span style="color:#fbde2d">function</span> ( data ) {
+            ="\n" 
+            <span style="color:#fbde2d">    try</span>
+            |  {
+            |      gameserver.setGamedata( data );
+            |     }
+            ="\n"
+            <span style="color:#fbde2d">    catch</span> (err) { console.log( err ) } </br>
+            |   })
+            | })
+          h4 game_server.js
           p
-            | Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.
-          h3 Sub-heading
+            | Is where each game is created and a record stored in this.games object using the join_game function. This function creates a new instance of the gamecore.server.js which is
+            | the core game server code. The is also a setGameData() function that reads in the buffer data sent from the client and converts it back into a new Float32Array.
+          h4 gamecore.server.js
           p
-            | Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
-          ul
-            li Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-            li Donec id elit non mi porta gravida at eget metus.
-            li Nulla vitae elit libero, a pharetra augue.
+            | The module that handles input and output streams on the server, storing current positions for both players, running the server in an authoritive manner.
+          h4 gamecore.js
           p
-            | Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.
-          ol
-            li Vestibulum id ligula porta felis euismod semper.
-            li
-              | Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-            li Maecenas sed diam eget risus varius blandit sit amet non magna.
+            | The module that handles input and output streams on the client, then updating the two player positions. This is done using the server in an authoritive manner, utimatly it 
+            | decides the player positions. Running the client slightly behind the server and updating with data stream closet in time to the client time.
+            | Code below shows the client being set to run behind the server and recording the server fps which ideally should run the same as the client fps.
+            | It also show the latest data stream being added to the array of server updates that will ultimately be used to update player 2's position.
+          pre.codeBlog client_onserverupdate_received<span style="color:#fbde2d">:</span> function ( <span style="color:#fbde2d">data</span> ) { <br/>
+            |    server_time <span style="color:#fbde2d">=</span> <span style="color:#fbde2d">data</span><span style="color:#fbde2d">.</span>t;
+            |    serverfps <span style="color:#fbde2d">=</span> <span style="color:#d8fa3c">Math</span><span style="color:#fbde2d">.</span>
+            <span style="color:#8da6ce">floor</span>(<span style="color:#d8fa3c">1</span> <span style="color:#fbde2d">/</span> <span style="color:#fbde2d">data</span><span style="color:#fbde2d">.</span>fps); 
+            <span style="color:#666">  // offset the client time according to the server time </span> <br/>
+            |   client_time <span style="color:#fbde2d">=</span> server_time <span style="color:#fbde2d">-</span> net_offset;
+            ="\n"
+            <span style="color:#666">  // keep the inputs at array length 60</span> <br />
+            |   server_updates<span style="color:#fbde2d">.</span>push( <span style="color:#fbde2d">data</span> );
+            ="\n"
+            <span style="color:#fbde2d">  if</span> ( server_updates<span style="color:#fbde2d">.</span><span style="color:#8da6ce">length</span> <span style="color:#fbde2d">>=</span> ( <span style="color:#d8fa3c">60</span> )) { <br/>
+            |     server_updates<span style="color:#fbde2d">.</span>splice(<span style="color:#d8fa3c">0</span>, <span style="color:#d8fa3c">1</span>);
+            |   }
+            | },
+          h4 mp.js
           p
-            | Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.
+            | Creates and renders the THREE.js meshs based on the position allocated by the server.
+
+
+         
         // /.blog-post
         // /.blog-post
       // /.blog-main
-      .col-md-3.col-md-offset-1.blog-sidebar
-        .sidebar-module.sidebar-module-inset
-          h4 About
-          p
-            | The game took a year to build. That included all the three.js code, the multiplayer server and learning and introducing custom shaders into the game.
-            | Wanted to give something back from my experiences with this project.
-        .sidebar-module
-          h4 Archives
-          ol.list-unstyled
-            li
-              a(href='#') March 2014
-            li
-              a(href='#') February 2014
-            li
-              a(href='#') January 2014
-            li
-              a(href='#') December 2013
-            li
-              a(href='#') November 2013
-            li
-              a(href='#') October 2013
-            li
-              a(href='#') September 2013
-            li
-              a(href='#') August 2013
-            li
-              a(href='#') July 2013
-            li
-              a(href='#') June 2013
-            li
-              a(href='#') May 2013
-            li
-              a(href='#') April 2013
-        .sidebar-module
-          h4 Elsewhere
-          ol.list-unstyled
-            li
-              a(href='#') GitHub
-            li
-              a(href='#') Twitter
-            li
-              a(href='#') Facebook
-      // /.blog-sidebar
     // /.row
   // /.container

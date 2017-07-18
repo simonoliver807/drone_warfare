@@ -2,7 +2,9 @@
 
 //multiplayer
 const express = require('express')
+// change to live
 const http = require('http')
+//const https = require('https');
 const lc = require('./logtoclient');
 const nodemailer = require('nodemailer');
 const logger = require('morgan')
@@ -23,11 +25,18 @@ const EventEmitter = require('events');
 class MyEmitter extends EventEmitter {};
 const myEmitter = new MyEmitter();
 
+//change to live
+// let privateKey  = fs.readFileSync('keys/device.key', 'utf8');
+// let certificate = fs.readFileSync('keys/localhost.crt', 'utf8');
+// let credentials = {key: privateKey, cert: certificate};
+
 // pass comment to the client
 let cp = new lc();
  // set up ws and monitor
 let app = express();
+// change to live
 let server = http.createServer(app);
+//let server = https.createServer( credentials, app );
 const io = require('socket.io')(server);
 let gameserver;
 
@@ -77,8 +86,8 @@ let transporter = nodemailer.createTransport({
 //   db.close();
 // });
 // change to live
-//let dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
-let dburl = "mongodb://localhost:27017/test";
+let dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
+//let dburl = "mongodb://localhost:27017/test";
 
 mongoose.connect(dburl);
 mongoose.Promise = global.Promise;
@@ -362,6 +371,8 @@ app.post('/', function (req, res) {
 		 var textString = 'error message: ' + req.body.errormsg + ' url: ' + req.body.url_e + ' line number: ' + req.body.l_no + ' user data: ' + req.body.userdata; // plain text body
 		 sendEmail( 'client error', htmlString, textString );
 	}
+	// add to fb
+	if ( req.body.signed_request ) { res.redirect('/');}
 })
 app.on('error', function(err) {
  console.log('err'); 
@@ -565,7 +576,7 @@ function sendEmail( sub, htmlString, textString){
 }
  
 // change to live
-reload(server, app).reload();
+//reload(server, app).reload();
  
 server.listen(app.get('port'), function(){
   console.log("Web server listening on port " + app.get('port') + " Date: " + new Date())

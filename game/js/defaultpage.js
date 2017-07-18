@@ -718,49 +718,50 @@ function calcSliderVal( x, w , zero) {
 
 function runGame(numpl) {
 
-	var radios = document.getElementsByName('radio_3698130');
+	// var radios = document.getElementsByName('radio_3698130');
 
-	for (var i = 0, length = radios.length; i < length; i++) {
-	    if (radios[i].checked) {
+	// for (var i = 0, length = radios.length; i < length; i++) {
+	//     if (radios[i].checked) {
 	        
-	       document.getElementById('insideship').value = radios[i].value;
+	//        document.getElementById('insideship').value = radios[i].value;
 
-	        break;
-	    }
-	}
+	//         break;
+	//     }
+	// }
 	document.body.className += ' custom-background-image';
 	var page = document.getElementById('page');
 	page.style.display = 'none';
 	var game = document.getElementById('game-content');	
 	game.style.display = 'block';
+	document.body.style.overflow = 'hidden';
 
 	//******** minified change to live *************/////////
-	var s = document.createElement("script");
-	s.type = "text/javascript";
-	s.src = "js_min/require.js";
-	if( numpl ) {
-		s.setAttribute('data-main', 'js_min/configmulti.js');
-	}
-	else {
-		s.setAttribute('data-main', 'js_min/config.js')
-	}
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js_min/require.js";
+	// if( numpl ) {
+	// 	s.setAttribute('data-main', 'js_min/configmulti.js');
+	// }
+	// else {
+	// 	s.setAttribute('data-main', 'js_min/config.js')
+	// }
 
 
 	//******** unminified *************///////////
-	//var s = document.createElement("script");
-	// s.type = "text/javascript";
-	// s.src = "js/require.js";
-	// 	if( numpl ) {
-	// 	s.setAttribute('data-main', 'js/configmulti.js');
-	// }
-	// else {
-	// 	s.setAttribute('data-main', 'js/config.js')
-	// }
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js/require.js";
+		if( numpl ) {
+		s.setAttribute('data-main', 'js/configmulti.js');
+	}
+	else {
+		s.setAttribute('data-main', 'js/config.js')
+	}
 
-	// if (window.screen.height < 768) {
-	// 	document.getElementById('arrowmarginup').className += ' fa-1';
-	// 	document.getElementById('arrowmargindown').className += ' fa-1';
-	// }
+	if (window.screen.height < 768) {
+		document.getElementById('arrowmarginup').className += ' fa-1';
+		document.getElementById('arrowmargindown').className += ' fa-1';
+	}
 
 	var head = document.getElementsByTagName("head")[0];
 	head.appendChild(s);
@@ -879,8 +880,8 @@ window.onerror = function myErrorHandler(errormsg, url_e, l_no) {
 // change to live
 //runGame(1);
 //initgame();
-var page = { target: { id: 'cbnav' } };
-updatePages.navFunc(page);
+// var page = { target: { id: 'cbnav' } };
+// updatePages.navFunc(page);
 
 
 
