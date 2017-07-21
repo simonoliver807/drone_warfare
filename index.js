@@ -3,8 +3,8 @@
 //multiplayer
 const express = require('express')
 // change to live
-const http = require('http')
-//const https = require('https');
+//const http = require('http')
+const https = require('https');
 const lc = require('./logtoclient');
 const nodemailer = require('nodemailer');
 const logger = require('morgan')
@@ -26,17 +26,17 @@ class MyEmitter extends EventEmitter {};
 const myEmitter = new MyEmitter();
 
 //change to live
-// let privateKey  = fs.readFileSync('keys/device.key', 'utf8');
-// let certificate = fs.readFileSync('keys/localhost.crt', 'utf8');
-// let credentials = {key: privateKey, cert: certificate};
+let privateKey  = fs.readFileSync('keys/device.key', 'utf8');
+let certificate = fs.readFileSync('keys/localhost.crt', 'utf8');
+let credentials = {key: privateKey, cert: certificate};
 
 // pass comment to the client
 let cp = new lc();
  // set up ws and monitor
 let app = express();
 // change to live
-let server = http.createServer(app);
-//let server = https.createServer( credentials, app );
+//let server = http.createServer(app);
+let server = https.createServer( credentials, app );
 const io = require('socket.io')(server);
 let gameserver;
 
@@ -86,8 +86,8 @@ let transporter = nodemailer.createTransport({
 //   db.close();
 // });
 // change to live
-let dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
-//let dburl = "mongodb://localhost:27017/test";
+//let dburl = "mongodb://nabooleo:ax31zcm@ds145848.mlab.com:45848/gamedata";
+let dburl = "mongodb://localhost:27017/test";
 
 mongoose.connect(dburl);
 mongoose.Promise = global.Promise;
@@ -217,6 +217,13 @@ app.get('/', function (req, res) {
 
 })
 
+app.get('/download', function(req, res){
+
+  var file = __dirname + '/multiplayer_server.zip';
+  res.download(file);
+
+});
+
 app.locals.levels = 0;
 app.post('/', function (req, res) {
 	// console.log('deal with post')
@@ -294,7 +301,7 @@ app.post('/', function (req, res) {
 		});	
 
 	}
-	if ( req.body.username && req.body.password && req.body.email ) {
+	if ( req.body.username && req.body.password && req.body.email && req.body.email != 'facebook' ) {
 		let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		if ( req.body.email.match( re ) ) {
 			mc.connect(dburl, function(err, db) {
@@ -332,6 +339,51 @@ app.post('/', function (req, res) {
 			res.send(' email is invalid ');
 		}
 	}
+	if ( req.body.username && req.body.password && req.body.email == 'facebook' ) {
+
+		mc.connect(dburl, function(err, db) {
+				if ( err ) throw err
+				db.collection('players').findOne(
+
+					{ username: req.body.username, password: req.body.password },
+					function( err, plyresult) {
+
+						if ( !plyresult ) {
+							db.collection('players').insertOne({
+								username: req.body.username,
+								password: req.body.password,
+								email: req.body.email,
+								settings: req.body.settings,
+								last_login: new Date() }, 
+								function ( err, result ){
+									res.json( { id: result.insertedId.toString(), username: req.body.username, password: req.body.password, settings: req.body.settings  } );
+									db.close();
+								}
+							);
+						}
+						else {
+							db.collection('players').update(
+					    		{ _id: plyresult._id },
+					    		{ $set:
+					    			{ last_login: new Date() }
+					    		}				    		
+					    	)
+					    	let settingsarr = plyresult.settings.split(','); 
+					    	if ( ~~settingsarr[5]) {
+					    		res.set( 'Set-Cookie', 'username=' + req.body.username + ';max-age='+259200+';HttpOnly');
+							}
+							res.json( { id: plyresult._id.toString(), username: req.body.username, password: req.body.password, settings: plyresult.settings  } );
+
+						}
+					}
+				);
+
+			});
+
+
+
+	}
+
 	if ( req.body.id) {
 		mc.connect(dburl, function(err, db) {
 			if ( err ) throw err
@@ -576,7 +628,7 @@ function sendEmail( sub, htmlString, textString){
 }
  
 // change to live
-//reload(server, app).reload();
+reload(server, app).reload();
  
 server.listen(app.get('port'), function(){
   console.log("Web server listening on port " + app.get('port') + " Date: " + new Date())

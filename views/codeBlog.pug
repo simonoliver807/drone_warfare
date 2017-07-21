@@ -8,22 +8,23 @@
         .blog-post
           h2.blog-post-title 
           p.blog-post-meta
-            | January 1, 2014 by 
-            a(href='#') nabooleo
+            | July 19, 2017
           p
             | This blog is going to allow me to talk about the devlopment parts of the game that were crucial, the parts that were the most fun.
+            ="\n" 
+          a(href="/download") download multiplayer server here
+
           hr
           p
             | To start I am going to show how I did the multiplayer stuff. Turns out after alot of reading and a lot of figuring out it is not that difficult to set up a basic
             | multiplayer server. Ok so syncing an entire game across the server is a bit more difficult, the code shown is just a basic three.js demo that will run, multiple two 
             | player games acsross mobile, tablet and desktop browser windows.
           p
-            | The folder to download has a working version. All you have to do is, from the top level of that folder run node.js commands, as it is a node.js server.
+            | The folder to download has a working version. All you have to do is, from the top level of that folder run node index.js, as it is a node.js server.
             pre.codeBlog
-              | npm install
               | node index.js
           p 
-            | This will install all packages and start the server. Packages I used were PUG, Express and Socket.io
+            | Node packages I used are PUG, Express and Socket.io
             | After reading loads about mutiplayer servers the basis for my code came from
           p
             a(href='http://buildnewgames.com/real-time-multiplayer/') http://buildnewgames.com/real-time-multiplayer/
@@ -85,7 +86,7 @@
             | The module that handles input and output streams on the server, storing current positions for both players, running the server in an authoritive manner.
           h4 gamecore.js
           p
-            | The module that handles input and output streams on the client, then updating the two player positions. This is done using the server in an authoritive manner, utimatly it 
+            | The module that handles input and output streams on the client, then updating the two player positions. This is done using the server in an authoritive manner, ultimatly it 
             | decides the player positions. Running the client slightly behind the server and updating with data stream closet in time to the client time.
             | Code below shows the client being set to run behind the server and recording the server fps which ideally should run the same as the client fps.
             | It also show the latest data stream being added to the array of server updates that will ultimately be used to update player 2's position.

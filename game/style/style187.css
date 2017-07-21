@@ -270,6 +270,23 @@ optgroup {
 	position: relative;
 	pointer-events: none;
 }
+/* The Close Button (x) */
+.close {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    font-size: 35px;
+    font-weight: bold;
+    font-family: Verdana,sans-serif;
+}
+
+.close:hover,
+.close:focus {
+    color: red;
+    cursor: pointer;
+}
+
+}
 .codeBlog {
 	background:#0c1021;
 	color:#f8f8f8;
@@ -397,9 +414,10 @@ optgroup {
   position: relative;
   z-index: 1;
   background: #FFFFFF;
+  min-width: 293px;
   max-width: 360px;
   margin: 0 auto 100px;
-  padding: 45px 45px 0 45px;
+  padding: 50px 45px 1px 45px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
@@ -511,12 +529,17 @@ optgroup {
 }
 
 #login-page {
-  display: none;
-  right: 10%;
-  margin: auto;
-  position: absolute;
-  top: 6%;
-  width: 35%;
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 275px;
 }
 #looklevel1 {
 	background-color: #ddd;

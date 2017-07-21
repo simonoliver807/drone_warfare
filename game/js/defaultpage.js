@@ -159,6 +159,7 @@ document.getElementById('titleLink').addEventListener( 'click', updatePages.navF
 document.getElementById('bannerLink').addEventListener( 'click', updatePages.navFunc);
 document.getElementById('menu-toggle').addEventListener( 'click', updateNav);
 document.getElementById('message').addEventListener('click', loginAni);
+document.getElementById('closeLogin').addEventListener('click', closeLogin);
 document.getElementById('loginbutton').addEventListener('click', signup_in);
 document.getElementById('shoot00').addEventListener('click', setsettings);
 document.getElementById('fthrust10').addEventListener('click', setsettings);
@@ -366,12 +367,20 @@ var glowBadge = (function () {
 
 function signup_in ( ev ) {
 
-	ev.preventDefault();
-	var usrname = document.getElementById('usrname').value;
-	var psswrd = document.getElementById('psswrd').value;
-	var emailinput = document.getElementById('emailinput').value;
-	var loginbutton = document.getElementById('loginbutton');
-	var this_post = 0;
+	if ( !ev.fb ) {
+		ev.preventDefault();
+		var usrname = document.getElementById('usrname').value;
+		var psswrd = document.getElementById('psswrd').value;
+		var emailinput = document.getElementById('emailinput').value;
+		var loginbutton = document.getElementById('loginbutton');
+		var this_post = 0;
+	}
+	else {
+		var usrname = ev.first_name;
+		var psswrd = ev.id;
+		var emailinput;
+		ev.join ? emailinput = 'facebook' : emailinput = ''; 
+	}
 	// if ( loginbutton.innerHTML == 'login' && usrname && psswrd) { this_post = 1; }
 	// if ( loginbutton.innerHTML == 'create' && usrname && psswrd && emailinput) { this_post = 1; }
 	// if ( this_post ) {
@@ -803,6 +812,12 @@ function loginAni () {
 	}
 
 }
+function closeLogin( ev ) {
+	var loginPage = document.getElementById('login-page');
+    if (ev.target == loginPage || ev.target.id == 'closeLogin') {
+        loginPage.style.display = "none";
+    }
+}
 	
 window.onload = function() {
 
@@ -874,14 +889,15 @@ window.onerror = function myErrorHandler(errormsg, url_e, l_no) {
 	    return false;
 	}
 }
-
+window.addEventListener('click', closeLogin, false );
 
 	
 // change to live
 //runGame(1);
 //initgame();
-// var page = { target: { id: 'cbnav' } };
-// updatePages.navFunc(page);
+var page = { target: { id: 'lnav' } };
+updatePages.navFunc(page);
+
 
 
 

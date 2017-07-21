@@ -32,6 +32,8 @@ html(lang='en-US', manifest='dronewar1_187.appcache', type='text/cache-manifest'
       ga('create', 'UA-91047098-1', 'auto');
       ga('send', 'pageview');
   body.no-sidebar
+    script(type='text/Javascript', src='js/fb/fb.js')
+    #fb-root
     #page.site
       .site-inner
         a.skip-link.screen-reader-text(href='#content') Skip to content
@@ -83,7 +85,6 @@ html(lang='en-US', manifest='dronewar1_187.appcache', type='text/cache-manifest'
           include game_comments.pug
           // .site-main
           include comment.pug
-          h1#fb-welcome
           span#siteseal
             script(async='', type='text/javascript', src='https://seal.godaddy.com/getSeal?sealID=FPnl1EpGZEGKSQsP5ALMhRQG8HEwgE72PFL5YmP4ZnFqzOHM7qgicAFU8qMU')
 
@@ -112,14 +113,14 @@ html(lang='en-US', manifest='dronewar1_187.appcache', type='text/cache-manifest'
     script(type='x-shader/x-vertex', id='engineGlowvs')!= engineGlowvs
 
     // change to live
-    //script(type='text/Javascript', src='js/defaultpage.js')
+    script(type='text/Javascript', src='js/defaultpage.js')
     //script(type='text/Javascript', src='js/lib/dat.gui.js')
-    script(type='text/Javascript', src='js_min/defaultpage.js')
+    //script(type='text/Javascript', src='js_min/defaultpage.js')
 
     // change to live
-    //script(src="/reload/reload.js")
-    //script(src='//localhost:35729/livereload.js')
-    //script(src='//192.168.1.107:35729/livereload.js')
+    script(src="/reload/reload.js")
+    script(src='//localhost:35729/livereload.js')
+    script(src='//192.168.1.107:35729/livereload.js')
 
 
 
