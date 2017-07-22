@@ -3,8 +3,8 @@
 window.fbAsyncInit = function() {
   FB.init({
     // change to live
-    //appId      : '1881737042044781',
-    appId      : '776504849184714',
+    appId      : '1881737042044781',
+    //appId      : '776504849184714',
     xfbml      : true,
     version    : 'v2.9'
   });

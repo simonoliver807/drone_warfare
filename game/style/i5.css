@@ -38,6 +38,9 @@ and (orientation : landscape) {
 		left: 15%;
     	top: 57%;
 	}
+	#login-page {
+	    padding-top: 6px;
+	}
 	#minusforcebut {
     	height: 50%;
     	width: 50%;
@@ -88,9 +91,8 @@ and (orientation : portrait) {
     	top: 76%;
 	}
 	#login-page {
-   		width: 80%;
-   		top: 5%;
-   	}
+	    padding-top: 75px;
+	}
 	#tapaccel {
 		width: 12%;
 	}

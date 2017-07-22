@@ -50,6 +50,9 @@ and (orientation : landscape) {
 		left: 37%;
     	top: -18%;
 	}
+	#login-page {
+	    padding-top: 35px;
+	}
 	#minusforcebut {
 		background-color: #00FF00;
 		border-radius: 100%;
@@ -112,9 +115,8 @@ and (orientation : portrait) {
     	top: -7%;
 	}
 	#login-page {
-   		width: 80%;
-   		top: 5%;
-   	}
+	    padding-top: 75px;
+	}
 	#minusforcebut {
 		background-color: #00FF00;
 		border-radius: 100%;
