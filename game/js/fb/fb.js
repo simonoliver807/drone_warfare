@@ -45,8 +45,8 @@ window.fbAsyncInit = function() {
    if (d.getElementById(id)) {return;}
    js = d.createElement(s); js.id = id;
    // change to live
-   //js.src = "//connect.facebook.net/en_US/sdk.js";
-   js.src = "//connect.facebook.net/en_US/sdk/debug.js";
+   js.src = "//connect.facebook.net/en_US/sdk.js";
+   //js.src = "//connect.facebook.net/en_US/sdk/debug.js";
    fjs.parentNode.insertBefore(js, fjs);
  }(document, 'script', 'facebook-jssdk'));
 

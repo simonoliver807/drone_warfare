@@ -159,7 +159,6 @@ document.getElementById('titleLink').addEventListener( 'click', updatePages.navF
 document.getElementById('bannerLink').addEventListener( 'click', updatePages.navFunc);
 document.getElementById('menu-toggle').addEventListener( 'click', updateNav);
 document.getElementById('message').addEventListener('click', loginAni);
-document.getElementById('closeLogin').addEventListener('click', closeLogin);
 document.getElementById('loginbutton').addEventListener('click', signup_in);
 document.getElementById('shoot00').addEventListener('click', setsettings);
 document.getElementById('fthrust10').addEventListener('click', setsettings);
@@ -745,27 +744,27 @@ function runGame(numpl) {
 	document.body.style.overflow = 'hidden';
 
 	//******** minified change to live *************/////////
-	// var s = document.createElement("script");
-	// s.type = "text/javascript";
-	// s.src = "js_min/require.js";
-	// if( numpl ) {
-	// 	s.setAttribute('data-main', 'js_min/configmulti.js');
-	// }
-	// else {
-	// 	s.setAttribute('data-main', 'js_min/config.js')
-	// }
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js_min/require.js";
+	if( numpl ) {
+		s.setAttribute('data-main', 'js_min/configmulti.js');
+	}
+	else {
+		s.setAttribute('data-main', 'js_min/config.js')
+	}
 
 
 	//******** unminified *************///////////
-	var s = document.createElement("script");
-	s.type = "text/javascript";
-	s.src = "js/require.js";
-		if( numpl ) {
-		s.setAttribute('data-main', 'js/configmulti.js');
-	}
-	else {
-		s.setAttribute('data-main', 'js/config.js')
-	}
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js/require.js";
+	// 	if( numpl ) {
+	// 	s.setAttribute('data-main', 'js/configmulti.js');
+	// }
+	// else {
+	// 	s.setAttribute('data-main', 'js/config.js')
+	// }
 
 	if (window.screen.height < 768) {
 		document.getElementById('arrowmarginup').className += ' fa-1';
@@ -895,8 +894,8 @@ window.addEventListener('click', closeLogin, false );
 // change to live
 //runGame(1);
 //initgame();
-var page = { target: { id: 'lnav' } };
-updatePages.navFunc(page);
+// var page = { target: { id: 'lnav' } };
+// updatePages.navFunc(page);
 
 
 
