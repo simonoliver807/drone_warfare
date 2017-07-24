@@ -323,6 +323,15 @@ optgroup {
 .dh20 {
 	height: 20px;
 }
+.dh15 {
+	height: 15px;
+}
+.dw75 {
+	width: 75%;
+}
+.dw25 {
+	width: 25%;
+}
 .disablea {
 	color: #ddd;
 	opacity: 0.5;
@@ -337,17 +346,25 @@ optgroup {
 #droneCount {
 
 	background: rgba(0, 0, 0, .5);
+	border-radius: 5px;
 	color: #888a1a;
-	display: none;
-	position: absolute;
-	margin-left: 0;
-	right: 21%;
+	display: block;
+	max-width: 685px;
+	margin: 0 auto;
 	top: 25%;
-	width: 50%;
+}
+#droneCountRow {
+
+	position: absolute;
+    margin-left: 0;
+    top: 25%;
+    width: 100%;
+
 }
 #droneIcon {
 	
 	height: 85%;
+	margin-left: 5%;
 	width: 7%;
 
 }
@@ -601,6 +618,11 @@ optgroup {
 .mb28 {
 	margin-bottom: 28px;
 }
+.ml5 {
+
+	margin-left: 5%;
+
+}
 .menu-toggle.toggled-on {
     background-color: #1a1a1a;
     border-color: #1a1a1a;
@@ -793,6 +815,19 @@ optgroup {
    		width: 40%;
    	}
 }*/
+
+@media (max-width: 576px) {
+
+
+	.col-xs-2 {
+		width: 25%;
+	}
+	.col-xs-10 {
+		width: 75%;
+	}
+
+
+}
 
 /*iphone 6 plus*/
  @media only screen 
