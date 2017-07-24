@@ -533,6 +533,18 @@ function updateSettings (ev) {
 	if ( !ismobile ) {
 		settingsarr[6] = 10;
 	}
+	// log the player out
+	if( !settingsarr[5] ) {
+		FB.getLoginStatus(function(response) {
+            if (response.status === 'connected') {
+                FB.logout(function(response) {
+                    console.log('logged out')
+
+                });
+            }
+        });
+	}
+
 }
 
 document.getElementById('commentsubmit').addEventListener( 'submit', function(event) { 
@@ -814,7 +826,7 @@ function loginAni () {
 }
 function closeLogin( ev ) {
 	var loginPage = document.getElementById('login-page');
-	if ( ev.target ) {
+	if ( ev.target != undefined ) {
 	    if (ev.target == loginPage || ev.target.id == 'closeLogin') {
 	        loginPage.style.display = "none";
 	    }
