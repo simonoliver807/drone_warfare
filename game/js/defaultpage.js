@@ -538,7 +538,6 @@ function updateSettings (ev) {
 		FB.getLoginStatus(function(response) {
             if (response.status === 'connected') {
                 FB.logout(function(response) {
-                    console.log('logged out')
 
                 });
             }

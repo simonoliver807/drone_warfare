@@ -1,6 +1,6 @@
 "use strict";
+var loginFB = 0;
 window.fbAsyncInit = function() {
-  var x = 0;
   FB.init({
     // change to live
     appId      : '1881737042044781',
@@ -16,8 +16,6 @@ window.fbAsyncInit = function() {
   function onLogin(response, join) {
     if (response.status == 'connected') {
       FB.api('/me?fields=first_name', function(data) {
-        // var welcomeBlock = document.getElementById('fb-welcome');
-        // welcomeBlock.innerHTML = 'Hello, ' + data.first_name + '!';
         data.fb = 1;
         data.join = join;
         signup_in( data );
@@ -28,12 +26,17 @@ window.fbAsyncInit = function() {
 
 
   FB.getLoginStatus(function(response) {
-    // Check login status on load, and if the user is
-    // already logged in, go directly to the welcome message.
     if (response.status == 'connected') {
       onLogin(response, 0);
     } 
   });
+  function logIntoFB() {
+      FB.getLoginStatus(function(response) {
+        if (response.status != 'connected') {
+          onLogin(response, 1);
+        } 
+      });
+  }
 };
 
 (function(d, s, id){
