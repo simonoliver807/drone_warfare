@@ -146,7 +146,7 @@ var updatePages = (function () {
 
 document.getElementById('loadGame').addEventListener( 'click', initgame);
 document.getElementById('loadMultiGame').addEventListener( 'click', initgame);
-document.getElementById('startGame').addEventListener( 'click', initgame);
+// document.getElementById('startGame').addEventListener( 'click', initgame);
 document.getElementById('sndfxbutton').addEventListener( 'click', setButton);
 document.getElementById('insidesf').addEventListener( 'click', setButton);
 document.getElementById('outsidesf').addEventListener( 'click', setButton);
@@ -207,6 +207,8 @@ function loadmobstyle() {
 
 function initgame( ev ) { 
 
+	document.body.style.overflow = 'hidden';
+	window.removeEventListener( 'click', closeLogin, false );
 	var isChrome = navigator.userAgent.match('Chrome');
 
 	if( isChrome ) {
@@ -741,7 +743,6 @@ function runGame(numpl) {
 	page.style.display = 'none';
 	var game = document.getElementById('game-content');	
 	game.style.display = 'block';
-	document.body.style.overflow = 'hidden';
 
 	//******** minified change to live *************/////////
 	var s = document.createElement("script");
@@ -766,10 +767,10 @@ function runGame(numpl) {
 	// 	s.setAttribute('data-main', 'js/config.js')
 	// }
 
-	if (window.screen.height < 768) {
-		document.getElementById('arrowmarginup').className += ' fa-1';
-		document.getElementById('arrowmargindown').className += ' fa-1';
-	}
+	// if (window.screen.height < 768) {
+	// 	document.getElementById('arrowmarginup').className += ' fa-1';
+	// 	document.getElementById('arrowmargindown').className += ' fa-1';
+	// }
 
 	var head = document.getElementsByTagName("head")[0];
 	head.appendChild(s);
@@ -813,9 +814,11 @@ function loginAni () {
 }
 function closeLogin( ev ) {
 	var loginPage = document.getElementById('login-page');
-    if (ev.target == loginPage || ev.target.id == 'closeLogin') {
-        loginPage.style.display = "none";
-    }
+	if ( ev.target ) {
+	    if (ev.target == loginPage || ev.target.id == 'closeLogin') {
+	        loginPage.style.display = "none";
+	    }
+	 }
 }
 	
 window.onload = function() {
@@ -888,7 +891,7 @@ window.onerror = function myErrorHandler(errormsg, url_e, l_no) {
 	    return false;
 	}
 }
-window.addEventListener('click', closeLogin, false );
+window.addEventListener('click', closeLogin, false);
 
 	
 // change to live

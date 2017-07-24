@@ -286,10 +286,10 @@ app.post('/', function (req, res) {
 				    			{ last_login: new Date() }
 				    		}				    		
 				    	)
-				    	let settingsarr = result.settings.split(','); 
-				    	if ( ~~settingsarr[5]) {
-				    		res.set( 'Set-Cookie', 'username=' + req.body.username + ';max-age='+259200+';HttpOnly');
-						}
+				    	//let settingsarr = result.settings.split(','); 
+				  //   	if ( ~~settingsarr[5]) {
+				  //   		res.set( 'Set-Cookie', 'username=' + req.body.username + ';max-age='+259200+';HttpOnly');
+						// }
 				    	res.json( { id: result._id.toString(), username: req.body.username, password: req.body.password, settings: result.settings  } );
 				    }
 				    else {

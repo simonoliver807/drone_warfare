@@ -201,7 +201,7 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
 
     game_core.prototype.resetply = function(data) {
 
-       console.log('failed validation')
+       //console.log('failed validation')
        this.bodys[0].body.position.x = data.x;
        this.bodys[0].body.position.y = data.y;
        this.bodys[0].body.position.z = data.z;
@@ -216,7 +216,7 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
         if(data.host){
           this.host = 1;
         }
-        console.log(data);
+        //console.log(data);
 
     }
 
@@ -290,10 +290,6 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
           while ( this.ud > 14 ) {
             this.tbdnum = this.server_updates[ this.server_updates.length - 1 ].vals.pldata[this.ud] + ''; 
             if( this.tbdnum.match('7777') || this.tbdnum.match('8888') || this.tbdnum.match('9999') || this.tbdnum.match('6666')  ) {
-
-              if( this.tbdnum.match('9999') ) {
-                console.log('id: ' + this.tbdnum );
-              }
 
               this.exrtmarr = this.exrtmarr.concat( ~~this.tbdnum.substr( 0, this.tbdnum.length-4 ), this.server_updates[ this.server_updates.length - 1 ].t,  this.tbdnum.slice( this.tbdnum.length - 4, this.tbdnum.length ) );
               this.server_updates[ this.server_updates.length - 1 ].vals.pldata[ this.ud - 3 ] = 0;
@@ -757,14 +753,14 @@ define(['socket_io','oimo'], function(SOCKET_IO,OIMO) {
       }
     }
 
-    game_core.prototype.remove_player = function(id) {
-      // Note: at some point we may need to cleanup player_set
-      // removing out-of-range players with no recent updates.
-      this.playercount--
-      //this.emit('remove_mesh', id)
-      delete this.player_set[id]
-      console.log('Player quit: ' + this.playercount + ' remaining')
-    }
+    // game_core.prototype.remove_player = function(id) {
+    //   // Note: at some point we may need to cleanup player_set
+    //   // removing out-of-range players with no recent updates.
+    //   this.playercount--
+    //   //this.emit('remove_mesh', id)
+    //   delete this.player_set[id]
+    //   console.log('Player quit: ' + this.playercount + ' remaining')
+    // }
 
     game_core.prototype.add_player = function(id, pos, idx) {
       // player must exist so that we can apply the update.

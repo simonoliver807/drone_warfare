@@ -1,0 +1,81 @@
+
+
+
+ /*ipdad landscape*/
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : landscape) { 
+
+	#arrowmarginup {
+		margin-left: 18px;
+	    margin-top: -8px;
+	}
+	#arrowmargindown {
+		margin-left: 18px;
+	    margin-top: -6px;
+	}
+	#cl {
+    	top: 36%;
+    	left: 5%;
+	}
+	#cup {
+		left: 35%;
+	}
+	#cr {
+		left: 66%;
+    	top: 36%;
+	}
+	#cd {
+		left: 14%;
+    	top: 73%;
+	}
+	.mobconcaret {
+    	font-size: 30px;
+	}
+
+
+}
+/*ipad portrait*/
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) { 
+
+	#addforcebut {
+		width: 40px;
+	}
+	#minusforcebut {
+		width: 40px;
+	}
+	#cl {
+    	top: 36%;
+    	left: 5%;
+	}
+	#cup {
+		left: 27%;
+	}
+	#cr {
+		left: 50%;
+    	top: 36%;
+	}
+	#cd {
+		left: -7%;
+    	top: 73%;
+	}
+	#arrowmarginup {
+		margin-left: 7px;
+    	margin-top: -13px;
+	    font-size: 28px
+	}
+	#arrowmargindown {
+	    margin-left: 7px;
+    	margin-top: -11px;
+    	font-size: 28px;
+	}
+	.mobconcaret {
+    	font-size: 35px;
+	}
+
+
+}

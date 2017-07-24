@@ -1,8 +1,8 @@
-requirejs(['multi/autoGameMulti','asteroid', 'planetex', 'oimo','three','lib/OBJLoader',
-		   'socket_io','lib/TGALoader','lib/MTLLoader','lib/trackballcontrols','v3d',
+requirejs(['multi/autoGameMulti','asteroid', 'planetex', 'oimo','three', 'setRespawn',
+            'lib/OBJLoader', 'socket_io','lib/TGALoader','lib/MTLLoader','lib/trackballcontrols','v3d',
 		   'multi/gamecore','multi/gameinitmulti','multi/mainmulti'],
         function (
-        	AUTOGAMEMULTI, ASTEROID, PLANETEX, OIMO, THREE, OBJLOADER, 
+        	AUTOGAMEMULTI, ASTEROID, PLANETEX, OIMO, SETRESPAWN, THREE, OBJLOADER, 
         	SOCKET_IO,TGALoader, MTLLoader,TRACKBALLCONTROLS, V3D, 
         	GAMECORE, GAMEINITMULTI, MAINMULTI) {
             	

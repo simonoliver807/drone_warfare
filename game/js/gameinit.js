@@ -1,4 +1,4 @@
-define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANETEX) {
+define(['oimo', 'v3d', 'asteroid', 'planetex', 'setRespawn'], function(OIMO,V3D,ASTEROID,PLANETEX,SETRESPAWN) {
 
     "use strict";
       
@@ -120,6 +120,10 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
     var planetexname;
     var msrotpct = 0.05;
     var grad = -0.1;
+    var distDroneShip = v3d.tvec( 0, 0, 0 );
+    var droneShot = 0;
+    var tt = new Date();
+
 
         return {
 
@@ -453,7 +457,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                                 if( bodys[0].r1 === 0){ 
                                     endsequence = -200; 
 
-                                        document.getElementById('respawnImg').style.display = 'block';
+                                        SETRESPAWN( tt, droneShot, x982y);
                                         if( V3D.ms1_1arrpos === 99 && endsequence < 0 ){
                                             if ( V3D.ms2_1arrpos === 0 || V3D.ms2_1arrpos === 99) {
                                                 var currentLevel = x982y + 1;
@@ -530,10 +534,8 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                         body = bodys[i];
                         mesh = meshs[i];
 
-                        // check if asteroid needs breaking down, destroying, or respawning
                         // change to live 
                         if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > pex_t && endsequence > 0 ){
-                        //if ( v3d.scene.children[V3D.mesharrpos.planetGlow].material.uniforms.glowFloat.value > 0.6 && endsequence > 0 ){
 
                             // radius is set in the module
                             var a123 = planetex.create( true, 250 );
@@ -546,7 +548,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                                     a123.position.copy( planets[i].position);
                                 }
                             }
-                            document.getElementById('respawnImg').style.display = 'block';
+                            SETRESPAWN( tt, droneShot, x982y);
                             endsequence = -200;
                             planetexarr.push( a123 );
                             v3d.scene.add( a123 );
@@ -692,7 +694,16 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
 
                         if ( btd.indexOf(body.body.shapes.id) != -1 || mesh.userData.tbd == 1 ) {
                             if ( mesh.userData.tbd ) { 
-                                v3d.playDroneEx();
+
+                                 distDroneShip.subVectors( containerMesh.position, mesh.position );
+                                if ( distDroneShip.x > 2000 || distDroneShip.y > 2000 || distDroneShip.z > 2000 ) {
+                                    v3d.playDroneEx( 1 );   
+                                }
+                                else {
+                                    v3d.playDroneEx( 0 );
+                                }
+                                droneShot ++;
+
                             }
                             if( body.ld ) {
                                 var ms = {pos: []};
@@ -1076,7 +1087,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                         }
                         if( bodys[bodysNum].name == 'shp1' ){
                             // change to live
-                            if ( startlevel ) { bodys[ bodysNum ].r1 = 1500; } 
+                           if ( startlevel ) { bodys[ bodysNum ].r1 = 150; } 
                             v3d.setBodys(bodys[bodysNum]);
                         }
                         bodysNum += 1;
@@ -1504,7 +1515,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                 bodys[0].body.position.set(0,0,0);
                 // change to live
                 if ( restart ) {
-                    bodys[0].r1 = 1500; 
+                    bodys[0].r1 = 150; 
                 }
                 startlevel = 0;
                 v3d.ms1y.t = 0;
@@ -1528,6 +1539,7 @@ define(['oimo', 'v3d', 'asteroid', 'planetex'], function(OIMO,V3D,ASTEROID,PLANE
                 endsequence = 100;
                 if ( restart ) {
                     document.getElementById('respawnImg').style.display = 'none';
+                    document.getElementById('droneCount').style.display = 'none';
                     v3d.sight.material.transparent = false;
                     v3d.sight.material.opacity = 1;
                     dronelaunchTime = 60;

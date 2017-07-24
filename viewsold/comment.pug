@@ -1,0 +1,26 @@
+#comments.comments-area
+  h2.comments-title
+    P#numcomments= (comments.length-1 ) + ' - thoughts on “Drone Warfare”'
+  ol.comment-list
+    - var i = 0;
+    each comment in comments
+      - i++;
+      li(id = 'comnum' + i) 
+        article
+          footer.comment-meta
+            .comment-author.vcard
+              b.fn= comment.name
+              span.says says:
+            // .comment-author
+            .comment-metadata
+              a(href='')
+                time= comment.date
+            // .comment-metadata
+          // .comment-meta
+          .comment-content
+            p= comment.comment
+          // .comment-content
+        // .comment-body
+      // #comment-##
+  // .comment-list
+// .comments-area
