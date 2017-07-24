@@ -1,10 +1,10 @@
 "use strict";
-var loginFB = 0;
 window.fbAsyncInit = function() {
+  var x = 0;
   FB.init({
     // change to live
-    appId      : '1881737042044781',
-    //appId      : '776504849184714',
+    //appId      : '1881737042044781',
+    appId      : '776504849184714',
     xfbml      : true,
     version    : 'v2.9'
   });
@@ -16,6 +16,8 @@ window.fbAsyncInit = function() {
   function onLogin(response, join) {
     if (response.status == 'connected') {
       FB.api('/me?fields=first_name', function(data) {
+        // var welcomeBlock = document.getElementById('fb-welcome');
+        // welcomeBlock.innerHTML = 'Hello, ' + data.first_name + '!';
         data.fb = 1;
         data.join = join;
         signup_in( data );
@@ -26,17 +28,22 @@ window.fbAsyncInit = function() {
 
 
   FB.getLoginStatus(function(response) {
+    // Check login status on load, and if the user is
+    // already logged in, go directly to the welcome message.
     if (response.status == 'connected') {
       onLogin(response, 0);
     } 
+    else {
+      if ( x ) {
+          FB.login(function(response) {
+            onLogin(response, 1);
+          }, {scope: 'public_profile, email'});
+      }
+      if ( !x ) {
+        x = 1;
+      }
+    }
   });
-  function logIntoFB() {
-      FB.getLoginStatus(function(response) {
-        if (response.status != 'connected') {
-          onLogin(response, 1);
-        } 
-      });
-  }
 };
 
 (function(d, s, id){

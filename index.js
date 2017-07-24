@@ -5,8 +5,8 @@
 //multiplayer
 const express = require('express')
 // change to live
-const http = require('http')
-//const https = require('https');
+//const http = require('http')
+const https = require('https');
 const lc = require('./logtoclient');
 const nodemailer = require('nodemailer');
 const logger = require('morgan')
@@ -28,17 +28,17 @@ class MyEmitter extends EventEmitter {};
 const myEmitter = new MyEmitter();
 
 //change to live
-// let privateKey  = fs.readFileSync('keys/device.key', 'utf8');
-// let certificate = fs.readFileSync('keys/localhost.crt', 'utf8');
-// let credentials = {key: privateKey, cert: certificate};
+let privateKey  = fs.readFileSync('keys/device.key', 'utf8');
+let certificate = fs.readFileSync('keys/localhost.crt', 'utf8');
+let credentials = {key: privateKey, cert: certificate};
 
 // pass comment to the client
 let cp = new lc();
  // set up ws and monitor
 let app = express();
 // change to live
-let server = http.createServer(app);
-//let server = https.createServer( credentials, app );
+//let server = http.createServer(app);
+let server = https.createServer( credentials, app );
 const io = require('socket.io')(server);
 let gameserver;
 
