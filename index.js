@@ -5,8 +5,8 @@
 //multiplayer
 const express = require('express')
 // change to live
-//const http = require('http')
-const https = require('https');
+const http = require('http')
+//const https = require('https');
 const lc = require('./logtoclient');
 const nodemailer = require('nodemailer');
 const logger = require('morgan')
@@ -28,17 +28,17 @@ class MyEmitter extends EventEmitter {};
 const myEmitter = new MyEmitter();
 
 //change to live
-let privateKey  = fs.readFileSync('keys/device.key', 'utf8');
-let certificate = fs.readFileSync('keys/localhost.crt', 'utf8');
-let credentials = {key: privateKey, cert: certificate};
+// let privateKey  = fs.readFileSync('keys/device.key', 'utf8');
+// let certificate = fs.readFileSync('keys/localhost.crt', 'utf8');
+// let credentials = {key: privateKey, cert: certificate};
 
 // pass comment to the client
 let cp = new lc();
  // set up ws and monitor
 let app = express();
 // change to live
-//let server = http.createServer(app);
-let server = https.createServer( credentials, app );
+let server = http.createServer(app);
+//let server = https.createServer( credentials, app );
 const io = require('socket.io')(server);
 let gameserver;
 
@@ -288,9 +288,11 @@ app.post('/', function (req, res) {
 				    			{ last_login: new Date() }
 				    		}				    		
 				    	)
-				    	let settingsarr = result.settings.split(','); 
-				    	if ( ~~settingsarr[5]) {
-				    		res.set( 'Set-Cookie', 'username=' + req.body.username + ';max-age='+259200+';HttpOnly');
+				    	if ( result.email != 'facebook' ) {
+					    	let settingsarr = result.settings.split(','); 
+					    	if ( ~~settingsarr[5]) {
+					    		res.set( 'Set-Cookie', 'username=' + req.body.username + ';max-age='+259200+';HttpOnly');
+							}
 						}
 				    	res.json( { id: result._id.toString(), username: req.body.username, password: req.body.password, settings: result.settings  } );
 				    }
@@ -325,6 +327,7 @@ app.post('/', function (req, res) {
 									db.close();
 								}
 							);
+							res.set( 'Set-Cookie', 'username=' + req.body.username + ';max-age='+259200+';HttpOnly');
 						}
 						else {
 							let sent = 0;
@@ -370,10 +373,6 @@ app.post('/', function (req, res) {
 					    			{ last_login: new Date() }
 					    		}				    		
 					    	)
-					    	let settingsarr = plyresult.settings.split(','); 
-					    	if ( ~~settingsarr[5]) {
-					    		res.set( 'Set-Cookie', 'username=' + req.body.username + ';max-age='+259200+';HttpOnly');
-							}
 							res.json( { id: plyresult._id.toString(), username: req.body.username, password: req.body.password, settings: plyresult.settings  } );
 
 						}
@@ -389,35 +388,54 @@ app.post('/', function (req, res) {
 	if ( req.body.id) {
 		mc.connect(dburl, function(err, db) {
 			if ( err ) throw err
-			// if( req.body.settings.slice(-1) == 1 ) {
-			// 	let ip = req.ip
-			// }
-			// else {
-			// 	let ip = ''
-			// }
-			db.collection('players').update( 
-				{ _id: ObjectId( req.body.id ) },
-	    		{ $set:
-	    			{ settings: req.body.settings }
-	    		},	
-				function (err, result) {
-					if ( err ) {
-						res.send( 'there has been a problem with the settings update' );
+			db.collection('players').findOne( {  _id: ObjectId( req.body.id ) },
+				function( err, plyresult) {
+
+					if ( plyresult.email == 'facebook' ){
+
+						let settingsarr = req.body.settings.split(','); 
+						// keep facebook user always logined in so the settings page acts as a log on/ log off
+						settingsarr[5] = 1;
+						settingsarr = settingsarr.toString();
+						db.collection('players').update( 
+							{ _id: ObjectId( req.body.id ) },
+				    		{ $set:
+				    			{ settings: settingsarr }
+				    		},	
+							function (err, result) {
+								if ( err ) {
+									res.send( 'there has been a problem with the settings update' );
+								}
+								db.close();
+							}
+						);
+
 					}
 					else {
-						debugger
-						let settingsarr = req.body.settings.split(','); 
-				    	if ( ~~settingsarr[5]) {
-				    		res.set( 'Set-Cookie', 'username=' + req.body.username + ';max-age='+259200+';HttpOnly');
-						}
-						if( !~~settingsarr[5] ) {
-							res.clearCookie('username');
-						}
-						res.json( { settings: req.body.settings } );
+						db.collection('players').update( 
+							{ _id: ObjectId( req.body.id ) },
+				    		{ $set:
+				    			{ settings: req.body.settings }
+				    		},	
+							function (err, result) {
+								if ( err ) {
+									res.send( 'there has been a problem with the settings update' );
+								}
+								else {
+									let settingsarr = req.body.settings.split(','); 
+							    	if ( ~~settingsarr[5]) {
+							    		res.set( 'Set-Cookie', 'username=' + req.body.username + ';max-age='+259200+';HttpOnly');
+									}
+									if( !~~settingsarr[5] ) {
+										res.clearCookie('username');
+									}
+									res.json( { settings: req.body.settings } );
+								}
+								db.close();
+							}
+						);
 					}
-					db.close();
-				}
-			);
+				});
 		});
 	}
 	if ( req.body.errormsg ) {
@@ -630,7 +648,7 @@ function sendEmail( sub, htmlString, textString){
 }
  
 // change to live
-reload(server, app).reload();
+//reload(server, app).reload();
  
 server.listen(app.get('port'), function(){
   console.log("Web server listening on port " + app.get('port') + " Date: " + new Date())
