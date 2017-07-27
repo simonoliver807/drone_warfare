@@ -826,11 +826,9 @@ function loginAni () {
 }
 function closeLogin( ev ) {
 	var loginPage = document.getElementById('login-page');
-	if ( typeof ev.target !== undefined ) {
-	    if (ev.target == loginPage || ev.target.id == 'closeLogin') {
-	        loginPage.style.display = "none";
-	    }
-	 }
+    if (ev.target == loginPage || ev.target.id == 'closeLogin') {
+        loginPage.style.display = "none";
+    }
 }
 	
 window.onload = function() {
