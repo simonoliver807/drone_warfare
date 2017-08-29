@@ -406,7 +406,7 @@ function signup_in ( ev ) {
 		xhttp.send( 'username='+usrname+'&password='+psswrd+'&email='+emailinput+'&settings='+settingsarr );
 	
 }
-function loadUser (data, initialload) {
+function loadUser (data ) {
 
 	document.getElementById('navusr').innerHTML = 'Welcome ' + data.username + ' |';
 
@@ -492,9 +492,12 @@ function loadUser (data, initialload) {
 
 	currply = { id: data.id, username: data.username, password: data.password };
 	updatePages.navFunc({ target: { id: 'snav'}});
-	if ( initialload ) {
-		updatePages.navFunc({ target: { id: 'dwnav'}});
-	}
+	updatePages.navFunc({ target: { id: 'dwnav'}});
+	// problem with facebook going to setting page on load
+	//updatePages.navFunc({ target: { id: 'snav'}});
+	// if ( initialload ) {
+	// 	updatePages.navFunc({ target: { id: 'dwnav'}});
+	// }
 }
 
 function updateSettings (ev) {
@@ -757,32 +760,32 @@ function runGame(numpl) {
 	game.style.display = 'block';
 
 	//******** minified change to live *************/////////
-	// var s = document.createElement("script");
-	// s.type = "text/javascript";
-	// s.src = "js_min/require.js";
-	// if( numpl ) {
-	// 	s.setAttribute('data-main', 'js_min/configmulti.js');
-	// }
-	// else {
-	// 	s.setAttribute('data-main', 'js_min/config.js')
-	// }
+	var s = document.createElement("script");
+	s.type = "text/javascript";
+	s.src = "js_min/require.js";
+	if( numpl ) {
+		s.setAttribute('data-main', 'js_min/configmulti.js');
+	}
+	else {
+		s.setAttribute('data-main', 'js_min/config.js')
+	}
 
 
 	//******** unminified *************///////////
-	var s = document.createElement("script");
-	s.type = "text/javascript";
-	s.src = "js/require.js";
-		if( numpl ) {
-		s.setAttribute('data-main', 'js/configmulti.js');
-	}
-	else {
-		s.setAttribute('data-main', 'js/config.js')
-	}
+	// var s = document.createElement("script");
+	// s.type = "text/javascript";
+	// s.src = "js/require.js";
+	// 	if( numpl ) {
+	// 	s.setAttribute('data-main', 'js/configmulti.js');
+	// }
+	// else {
+	// 	s.setAttribute('data-main', 'js/config.js')
+	// }
 
-	if (window.screen.height < 768) {
-		document.getElementById('arrowmarginup').className += ' fa-1';
-		document.getElementById('arrowmargindown').className += ' fa-1';
-	}
+	// if (window.screen.height < 768) {
+	// 	document.getElementById('arrowmarginup').className += ' fa-1';
+	// 	document.getElementById('arrowmargindown').className += ' fa-1';
+	// }
 
 	var head = document.getElementsByTagName("head")[0];
 	head.appendChild(s);
@@ -855,7 +858,7 @@ window.onload = function() {
 		ismobile = 1;
 	}
 	if ( userdata != '0' && userdata != "" ) { 
-		loadUser( JSON.parse( userdata ), 1 ); 
+		loadUser( JSON.parse( userdata ) ); 
 		document.getElementById( 'looklevel2b' ).style.backgroundColor = 'rgb(0, 122, 204)'; 
 		document.getElementById( 'sndlevel2b' ).style.backgroundColor = 'rgb(0, 122, 204)'; 
 		document.getElementById( 'looklevel1b' ).style.marginBottom = '28px'; 
