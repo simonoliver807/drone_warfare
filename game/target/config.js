@@ -1,0 +1,1 @@
+requirejs(["autoGame","asteroid","oimo","planetex","setRespawn","three","lib/improvedNoise","lib/OBJLoader","lib/TGALoader","lib/MTLLoader","lib/trackballcontrols","v3d","gameinit","main"],function(e,i,a,o,r,t,l,n,b,d,s,m,L,c){var p=new c;p.init()});

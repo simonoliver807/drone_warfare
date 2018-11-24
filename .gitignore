@@ -1,10 +1,3 @@
-game/target/*
-game/node_modules/*
-game/Gruntfile.js
-ssa.sh
-.rebooted
-Gruntfile.js
-.DS_Store
 
 
 
