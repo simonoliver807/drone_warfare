@@ -24,6 +24,7 @@
     "async": "^2.1.4",
     "body-parser": "^1.18.3",
     "bson": "^4.0.0",
+    "dateformat": "^3.0.3",
     "express": "^4.14.0",
     "mongodb": "^2.2.20",
     "mongoose": "^4.7.7",
