@@ -28,9 +28,11 @@
     "mongodb": "^2.2.20",
     "mongoose": "^4.7.7",
     "monitor.io": "^0.1.0",
+    "morgan": "^1.9.1",
     "node-uuid": "^1.4.7",
     "nodemailer": "^4.0.1",
     "pug": "^2.0.0-beta6",
+    "reload": "^1.1.7",
     "socket.io": "^1.7.2"
   },
   "devDependencies": {
@@ -38,8 +40,6 @@
     "grunt-concurrent": "^2.3.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-nodemon": "^0.4.2",
-    "morgan": "^1.9.1",
-    "node-watch": "^0.4.1",
-    "reload": "^1.1.7"
+    "node-watch": "^0.4.1"
   }
 }
