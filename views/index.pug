@@ -1,6 +1,7 @@
 // (lang='en-US', manifest='dronewar1_146.appcache', type='text/cache-manifest')// change to live
 doctype html
-html(lang='en-US', manifest='dronewar1_237.appcache', type='text/cache-manifest')
+// html(lang='en-US', manifest='dronewar1_237.appcache', type='text/cache-manifest')
+html(lang='en-US')
   head
     meta(charset='UTF-8')
     title= title
@@ -58,9 +59,11 @@ html(lang='en-US', manifest='dronewar1_237.appcache', type='text/cache-manifest'
                     li#dwli.current-menu-item
                       a#dwnav(href='#') Drone War 1
                     li#wali
-                      a#wanav(href='#') Web App
+                      a#wanav(href='#') web App
                     li#cbli
                       a#cbnav(href='#') Code
+                    li#eurli
+                      a#eurnav(href='#') Eurotherm
                     li#slli
                       a#lnav(href='#') Login/Sign Up
                       a#snav(href='#') Settings
@@ -78,6 +81,9 @@ html(lang='en-US', manifest='dronewar1_237.appcache', type='text/cache-manifest'
           include dronewar1.pug
           include webApp.pug
           include codeBlog.pug
+
+          include offer_health.pug
+
           include settings.pug
           include login.pug
           footer.entry-footer
@@ -113,7 +119,7 @@ html(lang='en-US', manifest='dronewar1_237.appcache', type='text/cache-manifest'
     script(type='x-shader/x-vertex', id='engineGlowvs')!= engineGlowvs
 
     // change to live
-    //script(type='text/Javascript', src='js/defaultpage.js')
+    // script(type='text/Javascript', src='js/defaultpage.js')
     //script(type='text/Javascript', src='js/lib/dat.gui.js')
     script(type='text/Javascript', src='js_min/defaultpage.js')
 

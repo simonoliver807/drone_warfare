@@ -810,6 +810,14 @@ optgroup {
 	display: none;
 }
 
+
+
+#offer_health {
+	display: none;
+	padding: 0;
+}
+
+
 /* @media (max-width: 992px) {
   	#login-page {
    		width: 40%;

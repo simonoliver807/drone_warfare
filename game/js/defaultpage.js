@@ -83,6 +83,7 @@ function bufferSound(msg) {
 var updatePages = (function () {
 
 	var currentpage = { pagetc: 'dronewar1', classtc: 'dwli' };
+
 	
 	var disablePage = function( pagetc, classtc, newpage, newclass ) {
 
@@ -116,6 +117,17 @@ var updatePages = (function () {
 				hs_comm = 'block';
 				currentpage = { pagetc: 'code_blog', classtc: 'cbli' }
 			}
+
+
+			if ( target.id.match('eurnav') ){
+				disablePage( currentpage.pagetc, currentpage.classtc, 'offer_health', 'eurli' );
+				hs_comm = 'block';
+				currentpage = { pagetc: 'offer_health', classtc: 'eurli' }
+			}
+
+
+
+
 			if ( target.id.match('lnav') ){
 				disablePage( 'login-page', currentpage.classtc, 'login-page', 'slli' );
 				currentpage = { pagetc: 'login-page', classtc: 'slli' }
@@ -152,6 +164,11 @@ document.getElementById('insidesf').addEventListener( 'click', setButton);
 document.getElementById('outsidesf').addEventListener( 'click', setButton);
 document.getElementById('dwnav').addEventListener( 'click', updatePages.navFunc);
 document.getElementById('cbnav').addEventListener( 'click', updatePages.navFunc);
+
+
+document.getElementById('eurnav').addEventListener( 'click', updatePages.navFunc);
+
+
 document.getElementById('wanav').addEventListener( 'click', updatePages.navFunc);
 document.getElementById('lnav').addEventListener( 'click', updatePages.navFunc);
 document.getElementById('snav').addEventListener( 'click', updatePages.navFunc);
@@ -885,7 +902,8 @@ window.onload = function() {
 
 
 	// change to live
-	//updatePages.navFunc( { target: { id: 'snav' }} );
+	updatePages.navFunc( { target: { id: 'dwnav' }} );
+
 }
 
 // change to live
