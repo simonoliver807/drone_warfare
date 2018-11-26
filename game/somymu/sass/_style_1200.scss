@@ -1,0 +1,92 @@
+@media (max-width: 1200px) {
+    body {
+        background-color: #fff;
+    }
+	ul {
+		padding: 0;
+	}
+	.blueHeader {
+		.zeroPaddingLeft {
+			width: 25%;
+		}
+	}
+	.chart-col-8{
+		width: 60%;
+	}
+	.container {
+  		width: 100%;
+	}
+	.col-md-2 {
+		width: 16%;
+	}
+	.col-md-3 {
+		width: 23%;
+	}
+	.custom-col-md-3 {
+
+		width: 25%;
+	} 
+	.custom-col-md-4 {
+		padding: 0 0 0 20px;
+		width: 37%;
+	}
+	.col-md-8 {
+		width: 60%;
+	}
+	.custom-col-md-8 {
+		width: 66.6666%;
+	}
+	.col-md-9 {
+		//width: 63%;
+		width: 73%;
+	}
+	.elementContainer {
+		overflow: hidden;
+		width: 90%;
+	}
+	.leftPadding15 {
+		padding-left: 25px;
+	}
+	.moduleButtonLabel {
+		font-size: 15px;
+
+	}
+	.sliderNavContainer {
+	  display: inline-block;
+	  overflow: hidden;
+	  width: 90%;
+	}
+	.sliderNavContainer1200 {
+		width: 90%;
+	}
+	.sliderNavFiller{
+		display: inline-block;
+		height: 10px;
+		width: 0px;
+	}
+	.sliderRow {
+		  display: inline-block;
+		  overflow-y: hidden;
+		  overflow-x: hidden;
+		  padding: 0;
+		  height: 160px;
+		  width: 60%;
+	}
+	.sliderRowFiller {
+		width: 0px;
+	}
+	.ui3 {
+		.elementContainer {
+			overflow: hidden;
+			width: 95%;
+		}
+		.elementWrapper {
+			padding: 0;
+		}
+		.sliderRow {
+			padding: 0;
+		}
+	}
+}
+
+

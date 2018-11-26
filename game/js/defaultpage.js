@@ -124,6 +124,11 @@ var updatePages = (function () {
 				hs_comm = 'block';
 				currentpage = { pagetc: 'offer_health', classtc: 'eurli' }
 			}
+			if ( target.id.match('somymunav') ){
+				disablePage( currentpage.pagetc, currentpage.classtc, 'somymu', 'somymuli' );
+				hs_comm = 'block';
+				currentpage = { pagetc: 'somymu', classtc: 'somymuli' }
+			}
 
 
 
@@ -167,6 +172,7 @@ document.getElementById('cbnav').addEventListener( 'click', updatePages.navFunc)
 
 
 document.getElementById('eurnav').addEventListener( 'click', updatePages.navFunc);
+document.getElementById('somymunav').addEventListener( 'click', updatePages.navFunc);
 
 
 document.getElementById('wanav').addEventListener( 'click', updatePages.navFunc);

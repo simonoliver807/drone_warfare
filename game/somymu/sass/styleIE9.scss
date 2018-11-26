@@ -1,0 +1,351 @@
+//colors
+$black:  #000;
+$white: #fff;
+$color_plum_approx: rgb(136, 54, 130);
+$color_mariner_approx: rgb(31, 116, 201);
+$color_sunglow_approx: rgb(253, 199, 50);
+$color_alizarin_crimson_approx: rgb(226, 40, 47);
+$color_chateau_green_approx: rgb(79, 189, 85);
+
+//fonts
+$font_0: Open Sans;
+
+//urls
+$url_0: url();
+
+.body {
+	font-family: $font_0;
+}
+.ie9 {
+	.selector {
+		border: 1px solid $black;
+		width: 1px;
+	}
+	.col-md-8 {
+		width: 66%;
+		float: left;
+	}
+	.col-md-2 {
+		width: 16%;
+		float: left;
+	}
+    .tooltip-inner {
+    background-color: $black;
+    border-radius: 0;
+    color: $white;
+    font-size: 12px;
+    width: 17px;
+    max-width: 320px;
+    padding: 6px 5px;
+    text-align: center;
+    text-decoration: none;
+    z-index: 99999999;
+    }
+    .tooltip.top .tooltip-arrow {
+    border-top-color: #000;
+    border-width: 12px 12px 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -12px;
+    }
+	.moduleButtonContainer {
+		width: 50px;
+		height: 125px;
+	}
+	.maxMin {
+		border-bottom: 1px solid $black;
+		border-top: 1px solid $black;
+		height: 100%;
+		margin: 0 auto;
+		width: 33%;
+	}
+	.sliderScale {
+		border-left: 1px solid $black;
+		height: 100%;
+		margin: 0 auto;
+		width: 1px;
+	}
+	.scaleMiddle {
+		border-top: 1px solid $black;
+		bottom: 50%;
+		height: 1px;
+		left: 27%;
+		position: relative;
+		width: 50%;
+	}
+	.slider {
+		background: $url_0;
+		border-left: 0;
+		width: 100%;
+		.handleStyle {
+			background: $url_0 repeat scroll 0 0 rgba(0, 0, 0, 0);
+			border: 0 none;
+			//Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+			border-radius: 0;
+			color: $black;
+			height: 5px;
+			left: 0;
+			width: 30px;
+			&:hover {
+				background: $url_0;
+				border: 0;
+				color: $black;
+			}
+            &:focus {
+                outline: none;
+            }
+		}
+	}
+	.sliderColumn {
+		display: inline-block;
+	}
+	.sliderSpacer {
+		width: 8.06%;
+		display: inline-block;
+	}
+	.sliderContainer {
+		display: inline-block;
+		height: 125px;
+		list-style: outside none none;
+		margin: 0 auto;
+		padding: 0 15px;
+		width: 35px;
+	}
+	.factorIcon {
+		//Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+		border-radius: 20px;
+		width: 30px;
+		height: 30px;
+	}
+	.overlayDiv {
+		//Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+		border-radius: 20px;
+		position: relative;
+		z-index: 999999;
+	}
+	#moduleButton0 {
+		border: 2px solid $color_plum_approx;
+		.overlayDiv0 {
+			height: 0;
+			margin: 13px 0 0 13px;
+			width: 0;
+		}
+		.overlayDiv1 {
+			height: 5px;
+			margin: 13px 0 0 13px;
+			width: 5px;
+			background-color: $color_plum_approx;
+		}
+		.overlayDiv2 {
+			height: 8px;
+			margin: 11px 0 0 12px;
+			width: 8px;
+			background-color: $color_plum_approx;
+		}
+		.overlayDiv3 {
+			height: 14px;
+			margin: 8px 0 0 8px;
+			width: 14px;
+			background-color: $color_plum_approx;
+		}
+		.overlayDiv4 {
+			height: 22px;
+			margin: 4px 0 0 4px;
+			width: 22px;
+			background-color: $color_plum_approx;
+		}
+		.overlayDiv5 {
+			height: 30px;
+			width: 30px;
+			background-color: $color_plum_approx;
+		}
+	}
+	#moduleButton1 {
+		border: 2px solid $color_mariner_approx;
+		.overlayDiv0 {
+			height: 0;
+			margin: 13px 0 0 13px;
+			width: 0;
+		}
+		.overlayDiv1 {
+			height: 5px;
+			margin: 13px 0 0 13px;
+			width: 5px;
+			background-color: $color_mariner_approx;
+		}
+		.overlayDiv2 {
+			height: 8px;
+			margin: 11px 0 0 12px;
+			width: 8px;
+			background-color: $color_mariner_approx;
+		}
+		.overlayDiv3 {
+			height: 14px;
+			margin: 8px 0 0 8px;
+			width: 14px;
+			background-color: $color_mariner_approx;
+		}
+		.overlayDiv4 {
+			height: 22px;
+			margin: 4px 0 0 4px;
+			width: 22px;
+			background-color: $color_mariner_approx;
+		}
+		.overlayDiv5 {
+			height: 30px;
+			width: 30px;
+			background-color: $color_mariner_approx;
+		}
+	}
+	#moduleButton2 {
+		border: 2px solid $color_sunglow_approx;
+		.overlayDiv0 {
+			height: 0;
+			margin: 13px 0 0 13px;
+			width: 0;
+		}
+		.overlayDiv1 {
+			height: 5px;
+			margin: 13px 0 0 13px;
+			width: 5px;
+			background-color: $color_sunglow_approx;
+		}
+		.overlayDiv2 {
+			height: 8px;
+			margin: 11px 0 0 12px;
+			width: 8px;
+			background-color: $color_sunglow_approx;
+		}
+		.overlayDiv3 {
+			height: 14px;
+			margin: 8px 0 0 8px;
+			width: 14px;
+			background-color: $color_sunglow_approx;
+		}
+		.overlayDiv4 {
+			height: 22px;
+			margin: 4px 0 0 4px;
+			width: 22px;
+			background-color: $color_sunglow_approx;
+		}
+		.overlayDiv5 {
+			height: 30px;
+			width: 30px;
+			background-color: $color_sunglow_approx;
+		}
+	}
+	#moduleButton3 {
+		border: 2px solid $color_alizarin_crimson_approx;
+		.overlayDiv0 {
+			height: 0;
+			margin: 13px 0 0 13px;
+			width: 0;
+		}
+		.overlayDiv1 {
+			height: 5px;
+			margin: 13px 0 0 13px;
+			width: 5px;
+			background-color: $color_alizarin_crimson_approx;
+		}
+		.overlayDiv2 {
+			height: 8px;
+			margin: 11px 0 0 12px;
+			width: 8px;
+			background-color: $color_alizarin_crimson_approx;
+		}
+		.overlayDiv3 {
+			height: 14px;
+			margin: 8px 0 0 8px;
+			width: 14px;
+			background-color: $color_alizarin_crimson_approx;
+		}
+		.overlayDiv4 {
+			height: 22px;
+			margin: 4px 0 0 4px;
+			width: 22px;
+			background-color: $color_alizarin_crimson_approx;
+		}
+		.overlayDiv5 {
+			height: 30px;
+			width: 30px;
+			background-color: $color_alizarin_crimson_approx;
+		}
+	}
+	#moduleButton4 {
+		border: 2px solid $color_chateau_green_approx;
+		.overlayDiv0 {
+			height: 0;
+			margin: 13px 0 0 13px;
+			width: 0;
+		}
+		.overlayDiv1 {
+			height: 5px;
+			margin: 13px 0 0 13px;
+			width: 5px;
+			background-color: $color_chateau_green_approx;
+		}
+		.overlayDiv2 {
+			height: 8px;
+			margin: 11px 0 0 12px;
+			width: 8px;
+			background-color: $color_chateau_green_approx;
+		}
+		.overlayDiv3 {
+			height: 14px;
+			margin: 8px 0 0 8px;
+			width: 14px;
+			background-color: $color_chateau_green_approx;
+		}
+		.overlayDiv4 {
+			height: 22px;
+			margin: 4px 0 0 4px;
+			width: 22px;
+			background-color: $color_chateau_green_approx;
+		}
+		.overlayDiv5 {
+			height: 30px;
+			width: 30px;
+			background-color: $color_chateau_green_approx;
+		}
+	}
+	.tooltip.right .tooltip-arrow {
+		border-right-color: $black;
+		border-width: 12px 12px 12px 0;
+		left: 0;
+		margin-top: -12px;
+		top: 50%;
+	}
+}
+ie9.fillerDiv25 {
+	height: 25%;
+}
+#sliderColumn0 .handleStyle {
+	background-color: $white;
+	border-bottom: 3px solid $color_plum_approx;
+	border-top: 3px solid $color_plum_approx;
+}
+#sliderColumn1 .handleStyle {
+	background-color: $white;
+	border-bottom: 3px solid $color_mariner_approx;
+	border-top: 3px solid $color_mariner_approx;
+}
+#sliderColumn2 .handleStyle {
+	background-color: $white;
+	border-bottom: 3px solid $color_sunglow_approx;
+	border-top: 3px solid $color_sunglow_approx;
+}
+#sliderColumn3 .handleStyle {
+	background-color: $white;
+	border-bottom: 3px solid $color_alizarin_crimson_approx;
+	border-top: 3px solid $color_alizarin_crimson_approx;
+}
+#sliderColumn4 .handleStyle {
+	background-color: $white;
+	border-bottom: 3px solid $color_chateau_green_approx;
+	border-top: 3px solid $color_chateau_green_approx;
+}
+#sliderColumn5 .handleStyle {
+	background-color: $white;
+	border-bottom: 3px solid $color_plum_approx;
+	border-top: 3px solid $color_plum_approx;
+}

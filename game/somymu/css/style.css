@@ -1,0 +1,1673 @@
+ul {
+  padding: 0; }
+
+a:hover {
+  text-decoration: none; }
+
+/* main page */
+.selector {
+  border: 1px solid black;
+  width: 1px; }
+
+.col-lg-8 {
+  width: 63%;
+  float: left; }
+
+.custom-col-lg-8-sliderRow {
+  width: 66%; }
+
+.custom-col-md-3 {
+  padding-left: 0;
+  width: 25%; }
+
+.custom-col-md-4 {
+  padding: 0 0 0 20px;
+  height: 160px; }
+
+/*.custom-col-md-8 {
+	width: 60%;
+}*/
+.col-md-2 {
+  width: 16%;
+  float: left; }
+
+footer {
+  position: relative;
+  z-index: 9999; }
+
+.resetContainer {
+  padding: 0;
+  position: fixed;
+  z-index: 9999; }
+
+.hideVisibility {
+  visibility: hidden; }
+
+#game-content {
+  padding-top: 195px; }
+
+#labelsFirstCol {
+  height: 100%; }
+
+.labelsBackground {
+  width: 96%;
+  height: 100%;
+  background: #fff;
+  position: absolute;
+  z-index: -100; }
+
+.backgroundCBC {
+  background: #73c1ca !important; }
+
+.selectBackground {
+  background: #73c1ca !important;
+  color: #fff; }
+
+.setTransition {
+  -webkit-transition: right 1s linear;
+  -moz-transition: right 1s linear;
+  -ms-transition: right 1s linear;
+  -o-transition: right 1s linear;
+  transition: right 1s linear; }
+
+.navbar {
+  border: 0; }
+
+.navbar-inverse {
+  background-color: #2797ba;
+  border-color: #fff; }
+
+.fixedHeader {
+  position: fixed;
+  width: 100%;
+  z-index: 998; }
+
+.whiteHeader {
+  background: #fff; }
+
+.tabShare {
+  background: #73c1ca !important;
+  color: #fff !important;
+  text-align: center; }
+
+.shareDropDown {
+  background: #73c1ca;
+  border-top: 1px solid #73c1ca;
+  display: none;
+  height: 100px;
+  position: relative;
+  width: 100%; }
+
+#shareHideBorder {
+  position: absolute;
+  top: -1px;
+  left: 1px;
+  width: 51.5%;
+  height: 1px;
+  background-color: #73c1ca; }
+
+#tabDecide {
+  border-right: 1px solid white;
+  width: 100%; }
+
+#tabShare {
+  width: 100%; }
+
+.blueHeader {
+  background: #1597a7; }
+  .blueHeader .zeroPaddingLeft {
+    padding-left: 0; }
+
+.moduleHeader {
+  height: 35px; }
+
+#questiontext1 {
+  color: #000;
+  display: none;
+  margin-top: 75px;
+  min-height: 75px; }
+
+.sliderNav {
+  height: 30px;
+  background: none; }
+  .sliderNav .zeroPaddingRight {
+    padding-right: 0;
+    background-clip: content-box; }
+
+.sliderNavButtonUI2 {
+  display: none; }
+
+.selectedCBC {
+  background: #73c1ca !important; }
+
+.selectedCBC45 {
+  background: #73c1ca !important;
+  height: 45px; }
+
+.sliderNavContainer {
+  display: inline-block;
+  overflow: hidden;
+  width: 518px; }
+
+.sliderNavFiller {
+  display: none; }
+
+.sliderNavWrapper {
+  cursor: default;
+  height: 100%;
+  margin: 0;
+  position: relative;
+  right: 0px; }
+
+.sliderLabelContainer {
+  display: inline-block;
+  font-size: 9pt;
+  list-style: none;
+  text-align: center;
+  width: 105px; }
+
+.navButtonContainer {
+  display: inline-block;
+  list-style: none;
+  width: 14px; }
+
+.sliderNavButton {
+  color: #1597a7; }
+  .sliderNavButton button {
+    background: 0; }
+
+.chartKey {
+  width: 91%; }
+
+.chartKeyText {
+  cursor: default;
+  font-family: "Open Sans";
+  font-size: 8pt;
+  line-height: 12px;
+  padding-left: 5px; }
+
+.chart-key-col {
+  float: left;
+  width: 60%;
+  padding-right: 0px; }
+
+.goldBadge {
+  background-color: #b19369; }
+
+.silverBadge {
+  background-color: #4c4f4c; }
+
+.bronzeBadge {
+  background-color: #965a38; }
+
+.chartKeyRow {
+  height: 17px; }
+
+.heightFiller20 {
+  height: 20px;
+  width: 100%; }
+
+.heightFiller10 {
+  height: 10px;
+  width: 100%; }
+
+.heightFiller5 {
+  height: 5px;
+  width: 100%; }
+
+.chartKeyDiv1 {
+  background: #883682;
+  width: 12px;
+  height: 12px; }
+
+.chartKeyDiv2 {
+  background: #1f74c9;
+  width: 12px;
+  height: 12px; }
+
+.chartKeyDiv3 {
+  background: #fdc732;
+  width: 12px;
+  height: 12px; }
+
+.chartKeyDiv4 {
+  background: #e2282f;
+  width: 12px;
+  height: 12px; }
+
+.chartKeyDiv5 {
+  background: #4fbd55;
+  width: 12px;
+  height: 12px; }
+
+.positionWidth {
+  width: 20%;
+  text-align: center;
+  padding: 0; }
+
+.chartContainer {
+  height: 102px;
+  margin: 0 auto;
+  position: relative;
+  width: 102px; }
+
+.defaultChartHeader {
+  height: 45px;
+  background-color: #edf1f1;
+  border-bottom: 1px solid #fff; }
+
+.chartHeaderNoBackground {
+  height: 45px;
+  border-bottom: 1px solid #fff; }
+
+.chartWidth-lg {
+  padding-right: 0px;
+  width: 39.333%;
+  padding-left: 20px; }
+
+.firstNoBackground {
+  background-color: none;
+  height: 205px; }
+
+/* fillers */
+.fillerDiv25 {
+  height: 25%; }
+
+/* bs tooltip */
+.tooltip1 {
+  display: none;
+  cursor: default;
+  position: relative; }
+  .tooltip1.right {
+    left: 30px;
+    top: -42px; }
+    .tooltip1.right .tooltip1-inner {
+      padding: 25%;
+      width: 37px; }
+  .tooltip1.top {
+    left: -20px;
+    top: -20px;
+    transform: rotate(270deg); }
+    .tooltip1.top .tooltip1-inner {
+      /*padding: 21%;*/
+      width: 39px; }
+
+.tooltip1-inner {
+  background-color: #1597a7;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  border-radius: 0;
+  margin: 0 6px 0 0;
+  max-width: 320px;
+  text-align: center; }
+
+.tooltip1.right .tooltip1-arrow {
+  left: -4px;
+  height: 0;
+  border-style: solid;
+  border-width: 2.5px 5px 2.5px 0;
+  border-color: transparent #1597a7 transparent;
+  position: absolute;
+  top: 11px;
+  width: 0; }
+
+.tooltip1.top .tooltip1-arrow {
+  border-color: #1597a7 transparent transparent;
+  border-style: solid;
+  border-width: 5px 5px 0;
+  height: 0;
+  left: 15px;
+  position: absolute;
+  top: 20px;
+  width: 0; }
+
+.tooltipValue {
+  color: #fff;
+  font-family: "Open Sans";
+  font-size: 16px;
+  font-weight: 600;
+  padding: 6%;
+  text-align: center; }
+
+/* bs dropdown */
+.dropdown-menu {
+  border: 1px solid #2797ba;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  border-radius: 0; }
+
+.dropdown-menu:before {
+  position: absolute;
+  top: -7px;
+  left: 9px;
+  display: inline-block;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #ccc;
+  border-left: 7px solid transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  content: ''; }
+
+.dropdown-menu:after {
+  position: absolute;
+  top: -6px;
+  left: 10px;
+  display: inline-block;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #ffffff;
+  border-left: 6px solid transparent;
+  content: ''; }
+
+.canvasBackground {
+  display: block; }
+
+/* button styling*/
+.moduleButtonLabel {
+  font-weight: 600;
+  font-size: 17px; }
+
+.scrollButtonLeft {
+  color: #e9eaed;
+  position: absolute;
+  left: 36%;
+  top: 50%;
+  font-size: 32px; }
+
+.scrollButtonRight {
+  color: #e9eaed;
+  position: absolute;
+  left: 62%;
+  top: 50%; }
+
+/* slider scale */
+.maxMin {
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  height: 100%;
+  margin: 0 auto;
+  width: 100%; }
+
+.sliderScale {
+  border-left: 1px solid black;
+  height: 100%;
+  margin: 0 auto;
+  width: 1px; }
+
+.scaleMiddle {
+  border-top: 1px solid black;
+  bottom: 50%;
+  height: 1px;
+  left: 27%;
+  position: relative;
+  width: 50%; }
+
+/* the slider styling*/
+.elementWrapper {
+  position: relative;
+  height: 100%;
+  right: 0px; }
+
+.elementContainer {
+  height: 100%;
+  overflow: hidden; }
+
+.results .first {
+  background-color: #fff;
+  height: 205px; }
+  .results .first .result-header {
+    background-color: #1597a7;
+    border-bottom: 1px solid white;
+    height: 45px;
+    color: #fff; }
+
+.resultsDisplayNone {
+  display: none; }
+
+.sliderRow {
+  display: inline-block;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  padding-top: 5px;
+  height: 160px; }
+
+.sliderRowFiller {
+  width: 20px;
+  display: inline-block;
+  list-style: none;
+  height: 5px; }
+
+.labelRow {
+  overflow: hidden;
+  height: 20px; }
+
+.sliderSpacer {
+  display: inline-block; }
+
+.sliderContainer {
+  display: inline-block;
+  height: 160px;
+  list-style: outside none none;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 105px; }
+
+.sliderLabel {
+  padding-left: 0px; }
+
+.sliderLabelMobile {
+  display: none; }
+
+/* remove default style from slider elements */
+.slider {
+  background: url("");
+  border: 0;
+  height: 106px;
+  /*    width:100%;*/
+  position: relative;
+  margin: 14.5px auto 0 auto;
+  width: 12px; }
+
+.sliderTotal {
+  color: #000;
+  cursor: default;
+  font-size: 20px;
+  font-weight: 600;
+  left: 2%;
+  position: absolute;
+  text-align: center;
+  top: 41%;
+  width: 100px;
+  z-index: 995; }
+
+/* style the slider handles per column */
+.sliderStyle0 .handleStyle {
+  color: #883682; }
+
+.sliderStyle1 .handleStyle {
+  color: #1f74c9; }
+
+.sliderStyle2 .handleStyle {
+  color: #fdc732; }
+
+.sliderStyle3 .handleStyle {
+  color: #e2282f; }
+
+.sliderStyle4 .handleStyle {
+  color: #4fbd55; }
+
+.sliderStyle5 .handleStyle {
+  color: #d10b49; }
+
+.slider .handleStyle {
+  background: 0;
+  border: 0 none;
+  height: 24px;
+  left: -6px;
+  position: absolute;
+  width: 22px; }
+  .slider .handleStyle .handleBackground {
+    width: 19px;
+    height: 15px;
+    position: relative;
+    top: -21px;
+    left: 2px;
+    background: #fff;
+    z-index: -1; }
+
+.slider .handleStyle:hover {
+  background: 0;
+  border: 0; }
+
+/* style the factor button */
+.factorIcon {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto; }
+
+.overlayDiv {
+  position: relative;
+  z-index: 100;
+  width: 50px;
+  height: 50px; }
+
+/* factor button 0 */
+.greyOut {
+  background: #d3d3d3;
+  /* The Fallback */
+  background: rgba(211, 211, 211, 0.5);
+  position: absolute;
+  z-index: 997;
+  width: 61.5%; }
+  .greyOut .greyOutPlus {
+    height: 15%;
+    width: 10%; }
+
+.greyOutClick {
+  cursor: default; }
+
+.factorWrapper {
+  display: table;
+  height: 75%;
+  width: 100%; }
+
+.buttonColumn {
+  height: 100px;
+  @inlcude no-select;
+  width: 30%;
+  margin: 0;
+  display: table-cell;
+  vertical-align: middle; }
+
+.labelColumn {
+  display: table-cell;
+  vertical-align: middle;
+  width: 70%; }
+
+.highLightOverlay {
+  position: absolute;
+  z-index: 998; }
+
+.ui2 .elementRow {
+  display: inline-block;
+  height: 160px;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  padding: 5px 0 0 0; }
+.ui2 .scorerRowFiller {
+  width: 43px;
+  display: inline-block;
+  list-style: none;
+  height: 5px; }
+.ui2 .scorerOverlayLeft {
+  background: #fff;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  width: 30px;
+  z-index: 99; }
+.ui2 .scorerOverlayRight {
+  background: #fff;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 30px;
+  z-index: 99; }
+
+/* slider scale */
+.ui3 .centerLine {
+  border-top: 1px solid;
+  height: 1px;
+  width: 100%; }
+.ui3 .chartHeaderNoBackground {
+  height: 205px; }
+.ui3 .elementWrapper {
+  display: table;
+  padding-left: 25px;
+  width: 100%;
+  padding-right: 10px; }
+.ui3 .elementContainer {
+  overflow: none; }
+.ui3 #labels {
+  display: none; }
+.ui3 .maxMinYN {
+  border-left: 1px solid;
+  border-right: 1px solid;
+  display: table-cell;
+  height: 10px;
+  /* position: absolute; */
+  vertical-align: middle;
+  width: 549px; }
+.ui3 .middleScale {
+  width: 2px;
+  height: 20px;
+  background: #000;
+  position: absolute;
+  margin-left: 50%; }
+.ui3 .results .defaultChartHeader {
+  background-color: #fff;
+  height: 205px; }
+  .ui3 .results .defaultChartHeader .result-header {
+    background-color: #1597a7;
+    border-bottom: 1px solid white;
+    height: 45px;
+    color: #fff; }
+.ui3 .scaleContainer {
+  position: absolute;
+  top: 6px;
+  width: 100%; }
+.ui3 .sliderContainerYN {
+  display: table-cell;
+  height: 100%;
+  vertical-align: middle;
+  width: 100%; }
+.ui3 .sliderNav {
+  display: none; }
+.ui3 .sliderRow {
+  padding-right: 15px;
+  padding-left: 25px; }
+.ui3 custom-col-8-sliderRow {
+  width: 60%; }
+.ui3 .sliderRowFiller {
+  display: none; }
+.ui3 .sliderUI3 {
+  background: 0;
+  border: none;
+  height: 20px; }
+  .ui3 .sliderUI3 .handleStyle {
+    background: none repeat scroll 0 center transparent;
+    border: 0 none;
+    height: 0;
+    margin-left: 14px;
+    margin-top: 6px;
+    width: 0; }
+    .ui3 .sliderUI3 .handleStyle .handleBackground {
+      width: 19px;
+      height: 15px;
+      position: relative;
+      top: -21px;
+      left: 2px;
+      background: #fff;
+      z-index: -1; }
+  .ui3 .sliderUI3 .handleStyle:hover {
+    border: 0; }
+  .ui3 .sliderUI3 .scaleYes {
+    position: absolute;
+    right: 0;
+    top: -30px; }
+  .ui3 .sliderUI3 .scaleNo {
+    position: absolute;
+    left: 0;
+    top: -30px; }
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px; } }
+/* factor button 0 */
+#moduleButton0 .overlayDiv1 {
+  background: radial-gradient(circle farthest-side, #883682 3.99px, #fff 4.99px, #fff 22.5px, #883682 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton0 .overlayDiv2 {
+  background: radial-gradient(circle farthest-side, #883682 8.99px, #fff 9.99px, #fff 22.5px, #883682 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton0 .overlayDiv3 {
+  background: radial-gradient(circle farthest-side, #883682 13.99px, #fff 14.99px, #fff 22.5px, #883682 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton0 .overlayDiv4 {
+  background: radial-gradient(circle farthest-side, #883682 18.99px, #fff 19.99px, #fff 22.5px, #883682 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton0 .overlayDiv5 {
+  background: radial-gradient(circle farthest-side, #883682 23.99px, #fff 24.99px, #fff 22.5px, #fff 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+/* factor button 0 with background color  */
+#moduleButton0 .bc.overlayDiv1 {
+  background: radial-gradient(circle farthest-side, #883682 3.99px, #73c1ca 4.99px, #73c1ca 22.5px, #883682 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton0 .bc.overlayDiv2 {
+  background: radial-gradient(circle farthest-side, #883682 8.99px, #73c1ca 9.99px, #73c1ca 22.5px, #883682 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton0 .bc.overlayDiv3 {
+  background: radial-gradient(circle farthest-side, #883682 13.99px, #73c1ca 14.99px, #73c1ca 22.5px, #883682 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton0 .bc.overlayDiv4 {
+  background: radial-gradient(circle farthest-side, #883682 18.99px, #73c1ca 19.99px, #73c1ca 22.5px, #883682 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton0 .bc.overlayDiv5 {
+  background: radial-gradient(circle farthest-side, #883682 23.99px, #73c1ca 24.99px, #73c1ca 22.5px, #73c1ca 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+/* factor button 1 */
+#moduleButton1 .overlayDiv1 {
+  background: radial-gradient(circle farthest-side, #1f74c9 3.99px, #fff 4.99px, #fff 22.5px, #1f74c9 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton1 .overlayDiv2 {
+  background: radial-gradient(circle farthest-side, #1f74c9 8.99px, #fff 9.99px, #fff 22.5px, #1f74c9 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton1 .overlayDiv3 {
+  background: radial-gradient(circle farthest-side, #1f74c9 13.99px, #fff 14.99px, #fff 22.5px, #1f74c9 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton1 .overlayDiv4 {
+  background: radial-gradient(circle farthest-side, #1f74c9 18.99px, #fff 19.99px, #fff 22.5px, #1f74c9 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton1 .overlayDiv5 {
+  background: radial-gradient(circle farthest-side, #1f74c9 23.99px, #fff 24.99px, #fff 22.5px, #1f74c9 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+/* factor button 0 with background color  */
+#moduleButton1 .bc.overlayDiv1 {
+  background: radial-gradient(circle farthest-side, #1f74c9 3.99px, #73c1ca 4.99px, #73c1ca 22.5px, #1f74c9 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton1 .bc.overlayDiv2 {
+  background: radial-gradient(circle farthest-side, #1f74c9 8.99px, #73c1ca 9.99px, #73c1ca 22.5px, #1f74c9 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton1 .bc.overlayDiv3 {
+  background: radial-gradient(circle farthest-side, #1f74c9 13.99px, #73c1ca 14.99px, #73c1ca 22.5px, #1f74c9 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton1 .bc.overlayDiv4 {
+  background: radial-gradient(circle farthest-side, #1f74c9 18.99px, #73c1ca 19.99px, #73c1ca 22.5px, #1f74c9 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton1 .bc.overlayDiv5 {
+  background: radial-gradient(circle farthest-side, #1f74c9 23.99px, #73c1ca 24.99px, #73c1ca 22.5px, #73c1ca 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+/* factor button 2 */
+#moduleButton2 .overlayDiv1 {
+  background: radial-gradient(circle farthest-side, #fdc732 3.99px, #fff 4.99px, #fff 22.5px, #fdc732 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton2 .overlayDiv2 {
+  background: radial-gradient(circle farthest-side, #fdc732 8.99px, #fff 9.99px, #fff 22.5px, #fdc732 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton2 .overlayDiv3 {
+  background: radial-gradient(circle farthest-side, #fdc732 13.99px, #fff 14.99px, #fff 22.5px, #fdc732 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton2 .overlayDiv4 {
+  background: radial-gradient(circle farthest-side, #fdc732 18.99px, #fff 19.99px, #fff 22.5px, #fdc732 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton2 .overlayDiv5 {
+  background: radial-gradient(circle farthest-side, #fdc732 23.99px, #fff 24.99px, #fff 22.5px, #fdc732 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+/* factor button 0 with background color  */
+#moduleButton2 .bc.overlayDiv {
+  background: radial-gradient(circle farthest-side, #fdc732 3.99px, #73c1ca 4.99px, #73c1ca 22.5px, #fdc732 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton2 .bc.overlayDiv2 {
+  background: radial-gradient(circle farthest-side, #fdc732 8.99px, #73c1ca 9.99px, #73c1ca 22.5px, #fdc732 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton2 .bc.overlayDiv3 {
+  background: radial-gradient(circle farthest-side, #fdc732 13.99px, #73c1ca 14.99px, #73c1ca 22.5px, #fdc732 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton2 .bc.overlayDiv4 {
+  background: radial-gradient(circle farthest-side, #fdc732 18.99px, #73c1ca 19.99px, #73c1ca 22.5px, #fdc732 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton2 .bc.overlayDiv5 {
+  background: radial-gradient(circle farthest-side, #fdc732 23.99px, #73c1ca 24.99px, #73c1ca 22.5px, #73c1ca 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+/* factor button 3 */
+#moduleButton3 .overlayDiv1 {
+  background: radial-gradient(circle farthest-side, #e2282f 3.99px, #fff 4.99px, #fff 22.5px, #e2282f 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton3 .overlayDiv2 {
+  background: radial-gradient(circle farthest-side, #e2282f 8.99px, #fff 9.99px, #fff 22.5px, #e2282f 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton3 .overlayDiv3 {
+  background: radial-gradient(circle farthest-side, #e2282f 13.99px, #fff 14.99px, #fff 22.5px, #e2282f 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton3 .overlayDiv4 {
+  background: radial-gradient(circle farthest-side, #e2282f 18.99px, #fff 19.99px, #fff 22.5px, #e2282f 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton3 .overlayDiv5 {
+  background: radial-gradient(circle farthest-side, #e2282f 23.99px, #fff 24.99px, #fff 22.5px, #e2282f 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+/* factor button 0 with background color  */
+#moduleButton3 .bc.overlayDiv1 {
+  background: radial-gradient(circle farthest-side, #e2282f 3.99px, #73c1ca 4.99px, #73c1ca 22.5px, #e2282f 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton3 .bc.overlayDiv2 {
+  background: radial-gradient(circle farthest-side, #e2282f 8.99px, #73c1ca 9.99px, #73c1ca 22.5px, #e2282f 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton3 .bc.overlayDiv3 {
+  background: radial-gradient(circle farthest-side, #e2282f 13.99px, #73c1ca 14.99px, #73c1ca 22.5px, #e2282f 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton3 .bc.overlayDiv4 {
+  background: radial-gradient(circle farthest-side, #e2282f 18.99px, #73c1ca 19.99px, #73c1ca 22.5px, #e2282f 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton3 .bc.overlayDiv5 {
+  background: radial-gradient(circle farthest-side, #e2282f 23.99px, #73c1ca 24.99px, #73c1ca 22.5px, #73c1ca 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+/* factor button 4 */
+#moduleButton4 .overlayDiv1 {
+  background: radial-gradient(circle farthest-side, #4fbd55 3.99px, #fff 4.99px, #fff 22.5px, #4fbd55 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton4 .overlayDiv2 {
+  background: radial-gradient(circle farthest-side, #4fbd55 8.99px, #fff 9.99px, #fff 22.5px, #4fbd55 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton4 .overlayDiv3 {
+  background: radial-gradient(circle farthest-side, #4fbd55 13.99px, #fff 14.99px, #fff 22.5px, #4fbd55 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton4 .overlayDiv4 {
+  background: radial-gradient(circle farthest-side, #4fbd55 18.99px, #fff 19.99px, #fff 22.5px, #4fbd55 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton4 .overlayDiv5 {
+  background: radial-gradient(circle farthest-side, #4fbd55 23.99px, #fff 24.99px, #fff 22.5px, #4fbd55 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+/* factor button 0 with background color  */
+#moduleButton4 .bc.overlayDiv1 {
+  background: radial-gradient(circle farthest-side, #4fbd55 3.99px, #73c1ca 4.99px, #73c1ca 22.5px, #4fbd55 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton4 .bc.overlayDiv2 {
+  background: radial-gradient(circle farthest-side, #4fbd55 8.99px, #73c1ca 9.99px, #73c1ca 22.5px, #4fbd55 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton4 .bc.overlayDiv3 {
+  background: radial-gradient(circle farthest-side, #4fbd55 13.99px, #73c1ca 14.99px, #73c1ca 22.5px, #4fbd55 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton4 .bc.overlayDiv4 {
+  background: radial-gradient(circle farthest-side, #4fbd55 18.99px, #73c1ca 19.99px, #73c1ca 22.5px, #4fbd55 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton4 .bc.overlayDiv5 {
+  background: radial-gradient(circle farthest-side, #4fbd55 23.99px, #73c1ca 24.99px, #73c1ca 22.5px, #73c1ca 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+/* factor button 5 */
+#moduleButton5 .overlayDiv1 {
+  background: radial-gradient(circle farthest-side, #d10b49 3.99px, #fff 4.99px, #fff 22.5px, #d10b49 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton5 .overlayDiv2 {
+  background: radial-gradient(circle farthest-side, #d10b49 8.99px, #fff 9.99px, #fff 22.5px, #d10b49 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton5 .overlayDiv3 {
+  background: radial-gradient(circle farthest-side, #d10b49 13.99px, #fff 14.99px, #fff 22.5px, #d10b49 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton5 .overlayDiv4 {
+  background: radial-gradient(circle farthest-side, #d10b49 18.99px, #fff 19.99px, #fff 22.5px, #d10b49 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton5 .overlayDiv5 {
+  background: radial-gradient(circle farthest-side, #d10b49 23.99px, #fff 24.99px, #fff 22.5px, #d10b49 23.75px, #fff 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+/* factor button 0 with background color  */
+#moduleButton5 .bc.overlayDiv1 {
+  background: radial-gradient(circle farthest-side, #d10b49 3.99px, #73c1ca 4.99px, #73c1ca 22.5px, #d10b49 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton5 .bc.overlayDiv2 {
+  background: radial-gradient(circle farthest-side, #d10b49 8.99px, #73c1ca 9.99px, #73c1ca 22.5px, #d10b49 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton5 .bc.overlayDiv3 {
+  background: radial-gradient(circle farthest-side, #d10b49 13.99px, #73c1ca 14.99px, #73c1ca 22.5px, #d10b49 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton5 .bc.overlayDiv4 {
+  background: radial-gradient(circle farthest-side, #d10b49 18.99px, #73c1ca 19.99px, #73c1ca 22.5px, #d10b49 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+#moduleButton5 .bc.overlayDiv5 {
+  background: radial-gradient(circle farthest-side, #d10b49 23.99px, #73c1ca 24.99px, #73c1ca 22.5px, #73c1ca 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent;
+  width: 100%;
+  height: 100%; }
+
+/* style the scorer buttons per column */
+#scorerStyle0 .scorer {
+  background: radial-gradient(circle farthest-side, #883682 24px, #fff 4.99px, #fff 22.5px, #883682 23.75px, #fff 25px) repeat scroll 0 0 transparent; }
+
+#scorerStyle0 .bc.scorer {
+  background: radial-gradient(circle farthest-side, #883682 24px, #73c1ca 4.99px, #73c1ca 22.5px, #883682 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent; }
+
+#scorerStyle1 .scorer {
+  background: radial-gradient(circle farthest-side, #1f74c9 24px, #fff 9.99px, #fff 22.5px, #1f74c9 23.75px, #fff 25px) repeat scroll 0 0 transparent; }
+
+#scorerStyle1 .bc.scorer {
+  background: radial-gradient(circle farthest-side, #1f74c9 24px, #73c1ca 4.99px, #73c1ca 22.5px, #1f74c9 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent; }
+
+#scorerStyle2 .scorer {
+  background: radial-gradient(circle farthest-side, #fdc732 24px, #fff 9.99px, #fff 22.5px, #fdc732 23.75px, #fff 25px) repeat scroll 0 0 transparent; }
+
+#scorerStyle2 .bc.scorer {
+  background: radial-gradient(circle farthest-side, #fdc732 24px, #73c1ca 4.99px, #73c1ca 22.5px, #fdc732 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent; }
+
+#scorerStyle3 .scorer {
+  background: radial-gradient(circle farthest-side, #e2282f 24px, #fff 9.99px, #fff 22.5px, #e2282f 23.75px, #fff 25px) repeat scroll 0 0 transparent; }
+
+#scorerStyle3 .bc.scorer {
+  background: radial-gradient(circle farthest-side, #e2282f 24px, #73c1ca 4.99px, #73c1ca 22.5px, #e2282f 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent; }
+
+#scorerStyle4 .scorer {
+  background: radial-gradient(circle farthest-side, #4fbd55 24px, #fff 9.99px, #fff 22.5px, #4fbd55 23.75px, #fff 25px) repeat scroll 0 0 transparent; }
+
+#scorerStyle4 .bc.scorer {
+  background: radial-gradient(circle farthest-side, #4fbd55 24px, #73c1ca 4.99px, #73c1ca 22.5px, #4fbd55 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent; }
+
+#scorerStyle5 .scorer {
+  background: radial-gradient(circle farthest-side, #d10b49 24px, #fff 9.99px, #fff 22.5px, #d10b49 23.75px, #fff 25px) repeat scroll 0 0 transparent; }
+
+#scorerStyle5 .bc.scorer {
+  background: radial-gradient(circle farthest-side, #d10b49 24px, #73c1ca 4.99px, #73c1ca 22.5px, #d10b49 23.75px, #73c1ca 25px) repeat scroll 0 0 transparent; }
+
+.postionWidth {
+  width: 47px; }
+
+/* fillers */
+.fillerDiv25 {
+  height: 25%; }
+
+/* button styling*/
+.moduleButtonLabel {
+  font-weight: 600; }
+
+.scorer {
+  color: #fff;
+  display: table;
+  font-size: 18px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  height: 100%;
+  position: relative;
+  width: 100%; }
+
+.scorerLabelText {
+  display: none; }
+
+/* the slider styling*/
+.elementWrapper {
+  position: relative;
+  height: 100%;
+  right: 0px; }
+
+.scorerRow {
+  display: inline-block;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  padding-top: 5px;
+  height: 100px; }
+
+.scorerContainer {
+  display: inline-block;
+  height: 100px;
+  list-style: outside none none;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 105px; }
+
+.buttonColumn {
+  height: 100px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+.scorerValue {
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle; }
+
+.overflowXadd {
+  overflow-x: scroll !important; }
+
+@media (max-width: 1200px) {
+  body {
+    background-color: #fff; }
+
+  ul {
+    padding: 0; }
+
+  .blueHeader .zeroPaddingLeft {
+    width: 25%; }
+
+  .chart-col-8 {
+    width: 60%; }
+
+  .container {
+    width: 100%; }
+
+  .col-md-2 {
+    width: 16%; }
+
+  .col-md-3 {
+    width: 23%; }
+
+  .custom-col-md-3 {
+    width: 25%; }
+
+  .custom-col-md-4 {
+    padding: 0 0 0 20px;
+    width: 37%; }
+
+  .col-md-8 {
+    width: 60%; }
+
+  .custom-col-md-8 {
+    width: 66.6666%; }
+
+  .col-md-9 {
+    width: 73%; }
+
+  .elementContainer {
+    overflow: hidden;
+    width: 90%; }
+
+  .leftPadding15 {
+    padding-left: 25px; }
+
+  .moduleButtonLabel {
+    font-size: 15px; }
+
+  .sliderNavContainer {
+    display: inline-block;
+    overflow: hidden;
+    width: 90%; }
+
+  .sliderNavContainer1200 {
+    width: 90%; }
+
+  .sliderNavFiller {
+    display: inline-block;
+    height: 10px;
+    width: 0px; }
+
+  .sliderRow {
+    display: inline-block;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding: 0;
+    height: 160px;
+    width: 60%; }
+
+  .sliderRowFiller {
+    width: 0px; }
+
+  .ui3 .elementContainer {
+    overflow: hidden;
+    width: 95%; }
+  .ui3 .elementWrapper {
+    padding: 0; }
+  .ui3 .sliderRow {
+    padding: 0; } }
+@media (max-width: 992px) {
+  body {
+    background: #fff; }
+
+  .container {
+    width: 100%; }
+
+  .col-sm-3 {
+    padding: 0;
+    width: 100%; }
+
+  .custom-col-md-4 {
+    height: 110px; }
+
+  .col-sm-4 {
+    padding: 0;
+    width: 100%; }
+
+  .col-sm-5 {
+    padding: 0;
+    width: 100%; }
+
+  .col-sm-7 {
+    padding: 0;
+    float: none;
+    width: 100%; }
+
+  .col-sm-9 {
+    padding: 0;
+    width: 100%; }
+
+  .col-sm-12 {
+    padding: 0; }
+
+  .container {
+    width: 100%;
+    padding: 0;
+    margin: 0; }
+
+  .row {
+    margin: 0; }
+
+  .chart-key-col {
+    padding: 0 0 0 40px; }
+
+  .chartWidth-sm {
+    width: 17%;
+    float: left; }
+
+  #game-content {
+    padding: 0; }
+
+  .greyOutClick {
+    margin-left: 20px; }
+
+  #questiontext1 {
+    display: block; }
+
+  #fixedHeader {
+    display: none; }
+
+  .sliderNav {
+    display: none; }
+
+  .sliderNavWrapper {
+    transition: none; }
+
+  div.ui-slider {
+    display: inline-block;
+    height: 10px;
+    margin: 0 2% 0 20px;
+    overflow: visible;
+    padding: 0;
+    position: relative;
+    top: 4px;
+    width: 95%;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -ms-border-radius: 1em;
+    border-radius: 1em; }
+
+  .sliderRow {
+    height: 100%;
+    overflow: hidden;
+    padding: 0 0 0 0;
+    width: 100%; }
+
+  .sliderRowFiller {
+    width: 10px; }
+
+  .sliderBackground0 {
+    border: medium none;
+    float: left;
+    height: 10px;
+    width: 0%;
+    padding-right: 7px;
+    background: #883682;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -ms-border-radius: 1em;
+    border-radius: 1em; }
+
+  .sliderBackground1 {
+    border: medium none;
+    height: 10px;
+    width: 0%;
+    padding-right: 7px;
+    background: #1f74c9;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -ms-border-radius: 1em;
+    border-radius: 1em; }
+
+  .sliderBackground2 {
+    border: medium none;
+    height: 10px;
+    width: 0%;
+    padding-right: 7px;
+    background: #fdc732;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -ms-border-radius: 1em;
+    border-radius: 1em; }
+
+  .sliderBackground3 {
+    border: medium none;
+    height: 10px;
+    width: 0%;
+    padding-right: 7px;
+    background: #e2282f;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -ms-border-radius: 1em;
+    border-radius: 1em; }
+
+  .sliderBackground4 {
+    border: medium none;
+    height: 10px;
+    width: 0%;
+    padding-right: 7px;
+    background: #4fbd55;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -ms-border-radius: 1em;
+    border-radius: 1em; }
+
+  .sliderBackground5 {
+    border: medium none;
+    height: 10px;
+    width: 0%;
+    padding-right: 7px;
+    background: #883682;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -ms-border-radius: 1em;
+    border-radius: 1em; }
+
+  .sliderContainer {
+    border-bottom: 1px solid #A8A8A8;
+    height: 66px;
+    list-style: outside none none;
+    margin: 0 auto;
+    text-align: center;
+    width: 100% !important; }
+
+  .sliderLabelMobile {
+    display: block; }
+
+  /* style the slider handles per column */
+  #sliderStyle0 .handleStyle {
+    color: #883682; }
+
+  #sliderStyle1 .handleStyle {
+    color: #1f74c9; }
+
+  #sliderStyle2 .handleStyle {
+    color: #fdc732; }
+
+  #sliderStyle3 .handleStyle {
+    color: #e2282f; }
+
+  #sliderStyle4 .handleStyle {
+    color: #4fbd55; }
+
+  #sliderStyle5 .handleStyle {
+    color: #883682; }
+
+  .slider .handleStyle {
+    background: #fff;
+    height: 12px;
+    margin: 2px 0 0 -15px;
+    outline: 0 none;
+    position: absolute;
+    top: 50%;
+    width: 30px;
+    z-index: 1; }
+    .slider .handleStyle .handleBackground {
+      background: 0; }
+
+  .slider .handleStyle:hover {
+    background: #fff;
+    height: 12px;
+    margin: 2x 0 0 -15px;
+    outline: 0 none;
+    position: absolute;
+    top: 50%;
+    width: 30px;
+    z-index: 1; }
+
+  .elementContainer {
+    overflow: initial;
+    width: 98%; }
+
+  .elementWrapperWidth {
+    width: 100% !important; }
+
+  .maxMin {
+    display: none; }
+
+  .sliderScale {
+    border-left: 0;
+    height: 100%;
+    margin: 0 auto;
+    width: 0px; }
+
+  .scaleMiddle {
+    border-top: 0;
+    bottom: 0;
+    height: 0;
+    left: 0;
+    position: relative;
+    width: 0; }
+
+  .slider {
+    border: 1px solid #dddddd;
+    background: #eeeeee url("images/ui-bg_highlight-soft_100_eeeeee_1x100.png") 50% top repeat-x;
+    color: #333333;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+    height: 14%;
+    width: 100%;
+    margin: 15px 0 0 0; }
+
+  .sliderTotal {
+    left: 2%; }
+
+  .centerText {
+    text-align: center; }
+
+  .factorWrapper {
+    display: table;
+    width: 100%;
+    margin: 0; }
+
+  .buttonColumn {
+    display: table-footer-group;
+    height: 100%; }
+
+  .labelColumn {
+    display: table-header-group;
+    text-align: center; }
+
+  .factorOverlay {
+    width: 100%;
+    height: 75px;
+    pointer-events: none;
+    position: absolute;
+    z-index: 999; }
+
+  .factorOverlay0 {
+    background-color: rgba(255, 153, 255, 0.6); }
+
+  .factorOverlay1 {
+    background-color: rgba(153, 255, 255, 0.6); }
+
+  .factorOverlay2 {
+    background-color: rgba(255, 255, 204, 0.6); }
+
+  .factorOverlay3 {
+    background-color: rgba(255, 102, 102, 0.6); }
+
+  .factorOverlay4 {
+    background-color: rgba(153, 255, 153, 0.6); }
+
+  .factorOverlay5 {
+    background-color: rgba(255, 255, 204, 0.6); }
+
+  .ui1 .elementWrapper {
+    position: static;
+    height: 100%;
+    padding: 15px 0 0 0;
+    right: 0px !important;
+    -moz-transition-property: none;
+    -webkit-transition-property: none;
+    -o-transition-property: none;
+    transition-property: none; }
+  .ui1 .tooltip1 {
+    display: none;
+    cursor: default;
+    position: relative; }
+    .ui1 .tooltip1.top {
+      left: -32px;
+      top: -27px;
+      transform: rotate(270deg); }
+      .ui1 .tooltip1.top .tooltip1-inner {
+        padding: 5%;
+        width: 37px; }
+
+  .ui2 .elementRow {
+    overflow-x: scroll;
+    width: 100%; }
+  .ui2 .elementWrapper {
+    /*position: relative;*/
+    height: 100%;
+    padding: 15px 0 0 0; }
+  .ui2 .scorerLabelContainer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: table; }
+  .ui2 .scorerRowFiller {
+    width: 10px; }
+  .ui2 .scorerLabelText {
+    color: #000;
+    cursor: default;
+    display: table-cell;
+    font-size: 8pt;
+    text-align: center; }
+  .ui2 .sliderNavButtonUI2 {
+    background: #fff;
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    width: 35px;
+    z-index: 1000; }
+  .ui2 .sliderNavRightUI2 {
+    right: 0px; }
+  .ui2 .sliderNavFunction {
+    background: #fff;
+    color: #73c1ca;
+    height: 50%;
+    position: absolute;
+    top: 25%;
+    width: 100%; }
+  .ui2 .sliderRow {
+    padding-top: 5px; }
+
+  /* slider scale */
+  .ui3 .centerLine {
+    border-top: 1px solid;
+    height: 1px;
+    width: 100%; }
+  .ui3 .elementWrapper {
+    display: block;
+    margin-top: 25px;
+    padding: 0; }
+  .ui3 .maxMinYN {
+    display: none; }
+  .ui3 .middleScale {
+    display: none; }
+  .ui3 .sliderUI3 {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 15px;
+    height: 10px;
+    /*margin: 0 2% 0 20px;*/
+    margin: 0;
+    width: 100%;
+    background: url("images/ui-bg_highlight-soft_100_eeeeee_1x100.png") repeat-x scroll 50% top #eeeeee;
+    border: 1px solid #dddddd; }
+    .ui3 .sliderUI3 .handleStyle {
+      background: #fff;
+      border: 0 none;
+      height: 0px;
+      left: -6px;
+      margin-top: 1px;
+      position: absolute;
+      width: 0px; }
+      .ui3 .sliderUI3 .handleStyle .handleBackground {
+        background: #fff;
+        width: 12px;
+        height: 12px;
+        position: relative;
+        top: -15px;
+        left: 2px; }
+    .ui3 .sliderUI3 .handleStyle:hover {
+      background: #fff;
+      border: 0; }
+    .ui3 .sliderUI3 .scaleNo {
+      position: absolute;
+      right: 97.5%;
+      top: -29px; }
+    .ui3 .sliderUI3 .scaleYes {
+      position: absolute;
+      right: 0;
+      top: -29px; }
+  .ui3 .sliderBackground0 {
+    border: medium none;
+    float: left;
+    height: 10px;
+    width: 0%;
+    padding-right: 0;
+    background: #883682;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -ms-border-radius: 1em;
+    border-radius: 1em; }
+  .ui3 .sliderBackground1 {
+    border: medium none;
+    float: left;
+    height: 10px;
+    width: 0%;
+    padding-right: 0;
+    background: #1f74c9;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -ms-border-radius: 1em;
+    border-radius: 1em; }
+  .ui3 .sliderBackground2 {
+    border: medium none;
+    float: left;
+    height: 10px;
+    width: 0%;
+    padding-right: 0;
+    background: #fdc732;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -ms-border-radius: 1em;
+    border-radius: 1em; }
+  .ui3 .sliderBackground3 {
+    border: medium none;
+    float: left;
+    height: 10px;
+    width: 0%;
+    padding-right: 0;
+    background: #e2282f;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -ms-border-radius: 1em;
+    border-radius: 1em; }
+  .ui3 .sliderBackground4 {
+    border: medium none;
+    float: left;
+    height: 10px;
+    width: 0%;
+    padding-right: 0;
+    background: #4fbd55;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -ms-border-radius: 1em;
+    border-radius: 1em; }
+  .ui3 .sliderBackground5 {
+    border: medium none;
+    float: left;
+    height: 10px;
+    width: 0%;
+    padding-right: 0;
+    background: #883682;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -ms-border-radius: 1em;
+    border-radius: 1em; }
+  .ui3 .sliderBackgroundMiddle {
+    height: 100%;
+    width: 50%;
+    float: left; }
+  .ui3 .scaleContainer {
+    display: block;
+    width: 100%; }
+  .ui3 .sliderContainerYN {
+    display: block; }
+  .ui3 .sliderRow {
+    height: 70px;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0 15px 0 15px; }
+  .ui3 .sliderRowFiller {
+    display: none; }
+  .ui3 .tooltip1 {
+    left: -18px;
+    top: -12px; }
+    .ui3 .tooltip1 .tooltip1-inner {
+      padding: 35%; } }
+@media (max-width: 320px) {
+  .col-xs-4 {
+    width: 33.33333333%; } }
+
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,502 @@
+
+@media (max-width: 992px) {
+
+	body {
+		background: $w;
+	}
+	.container {
+  		width: 100%;
+	}
+	.col-sm-3 {
+		padding: 0;
+		width: 100%;
+	}
+	.custom-col-md-4 {
+		height: 110px;
+	}
+	.col-sm-4 {
+		padding: 0;
+		width: 100%;
+	}
+	.col-sm-5 {
+		padding: 0;
+		width: 100%;
+	}
+	.col-sm-7 {
+		padding: 0;
+		float: none;
+		width: 100%;
+	}
+	.col-sm-9 {
+		padding: 0;
+		width: 100%;
+	}
+	.col-sm-12 {
+		padding: 0;
+	}
+	.container {
+		width: 100%;
+		padding: 0;
+		margin: 0;
+	}
+	.row {
+		margin: 0;	
+	}
+	.chart-key-col {
+		padding: 0 0 0 40px;
+	}
+	.chartWidth-sm {
+		width:17%;
+		float: left;
+	}
+	#game-content {
+		padding: 0;
+	}
+	.greyOutClick {
+		margin-left: 20px;
+	}
+	#questiontext1 {
+		display: block;
+	}
+	#fixedHeader {
+		display: none;
+	}
+	.sliderNav {
+		display: none;
+	}
+	.sliderNavWrapper {
+		transition: none;
+	}
+	div.ui-slider {
+	    display: inline-block;
+	    height: 10px;
+	    margin: 0 2% 0 20px;
+	    overflow: visible;
+	    padding: 0;
+	    position: relative;
+	    top: 4px;
+	    width: 95%;
+	    @include border-radius(1em);
+	}
+	.sliderRow {
+		height: 100%;
+		overflow: hidden;
+		padding: 0 0 0 0;
+		width: 100%;
+	}
+	.sliderRowFiller {
+		width:10px;
+	}
+	.sliderBackground0 {
+		border: medium none;
+		float: left;
+    	height: 10px;
+    	width: 0%;
+    	padding-right: 7px;
+  		background: $color1;
+  		@include border-radius(1em);
+	}
+	.sliderBackground1 {
+		border: medium none;
+    	height: 10px;
+    	width: 0%;
+    	padding-right: 7px;
+  		background: $color2;
+  		@include border-radius(1em);
+	}
+	.sliderBackground2 {
+		border: medium none;
+    	height: 10px;
+    	width: 0%;
+    	padding-right: 7px;
+  		background: $color3;
+  		@include border-radius(1em);
+	}
+	.sliderBackground3 {
+		border: medium none;
+    	height: 10px;
+    	width: 0%;
+    	padding-right: 7px;
+  		background: $color4;
+  		@include border-radius(1em);
+	}
+	.sliderBackground4 {
+		border: medium none;
+    	height: 10px;
+    	width: 0%;
+    	padding-right: 7px;
+  		background: $color5;
+  		@include border-radius(1em);
+	}
+	.sliderBackground5 {
+		border: medium none;
+    	height: 10px;
+    	width: 0%;
+    	padding-right: 7px;
+  		background: $color1;
+  		@include border-radius(1em);
+	}
+	.sliderContainer {
+		border-bottom: 1px solid #A8A8A8;
+	    height: 66px;
+	    list-style: outside none none;
+	    margin: 0 auto;
+	    text-align: center;
+		width: 100% !important;
+	}
+	.sliderLabelMobile {
+		display: block;	
+	 }
+	
+		/* style the slider handles per column */
+	#sliderStyle0 .handleStyle {
+	    color: rgb(136, 54, 130);
+	}
+	#sliderStyle1 .handleStyle {
+	    color: rgb(31, 116, 201);
+	}
+	#sliderStyle2 .handleStyle {
+	    color: rgb(253, 199, 50);
+	}
+	#sliderStyle3 .handleStyle {
+	    color: rgb(226, 40, 47);
+	}
+	#sliderStyle4 .handleStyle {
+	    color: rgb(79, 189, 85);
+	}
+	#sliderStyle5 .handleStyle {
+	    color: rgb(136, 54, 130);
+	}
+	.slider .handleStyle {
+	    background: $w;
+	    height: 12px;
+    	margin: 2px 0 0 -15px;
+    	outline: 0 none;
+    	position: absolute;
+    	top: 50%;
+    	width: 30px;
+    	z-index: 1;
+		.handleBackground{
+			background: 0;
+		}
+	}
+	.slider .handleStyle:hover {
+	    background: $w;
+	    height: 12px;
+    	margin: 2x 0 0 -15px;
+    	outline: 0 none;
+    	position: absolute;
+    	top: 50%;
+    	width: 30px;
+    	z-index: 1;
+	}
+	.elementContainer {
+		overflow: initial;
+		width: 98%;
+	}
+	.elementWrapperWidth {
+		width: 100% !important;
+	}
+	.maxMin {
+	    display:none;
+	}
+	.sliderScale {
+	  border-left: 0;
+	  height: 100%;
+	  margin: 0 auto;
+	  width: 0px;
+	}
+	.scaleMiddle {
+	  border-top: 0;
+	  bottom: 0;
+	  height: 0;
+	  left: 0;
+	  position: relative;
+	  width: 0;
+	}
+	.slider {
+	  border: 1px solid #dddddd;
+	  background: #eeeeee url("images/ui-bg_highlight-soft_100_eeeeee_1x100.png") 50% top repeat-x;
+	  color: #333333;
+	  @include border-radius(5px);
+	  height: 14%;
+  	  width: 100%;
+  	  margin: 15px 0 0 0;
+	}
+	.sliderTotal {
+		left: 2%;
+	}
+	.centerText {
+		text-align: center;
+	}
+	.factorWrapper {
+		display: table;
+		width: 100%;
+		margin: 0;
+	}
+	.buttonColumn {
+		display: table-footer-group;
+		height: 100%;
+	}
+	.labelColumn {
+		display: table-header-group;
+		text-align: center;
+	}
+	.factorOverlay {
+		width: 100%;
+		height: 75px;
+		pointer-events: none;
+		position: absolute;
+		z-index: 999;
+	}
+	.factorOverlay0 {
+		background-color: rgba(255, 153, 255, 0.6);
+	}
+	.factorOverlay1 {
+		background-color: rgba(153, 255, 255, 0.6);
+	}
+	.factorOverlay2 {
+		background-color: rgba(255, 255, 204, 0.6);
+	}
+	.factorOverlay3 {
+		background-color: rgba(255, 102, 102, 0.6);
+	}
+	.factorOverlay4 {
+		background-color: rgba(153, 255, 153, 0.6);
+	}
+		.factorOverlay5 {
+		background-color: rgba(255, 255, 204, 0.6);
+	}
+	
+	// UI1 slider style 
+	.ui1 {
+		.elementWrapper {
+			position: static;
+			height: 100%;
+			padding: 15px 0 0 0;
+			right: 0px !important;
+			-moz-transition-property: none;
+			-webkit-transition-property: none;
+			-o-transition-property: none;
+			transition-property: none;
+		}
+        .tooltip1 {
+            display: none;
+            cursor: default;
+            position: relative;
+                &.top {
+                    left: -32px;
+                    top: -27px;
+                    transform: rotate(270deg);
+                    .tooltip1-inner{
+                        padding: 5%;
+                        width: 37px;
+                    }
+                }
+        }
+	}
+	
+	// 992 UI2 scorer style 
+	.ui2 {
+		.elementRow {
+			overflow-x: scroll;
+			width: 100%;
+		}
+		.elementWrapper {
+			/*position: relative;*/
+			height: 100%;
+			padding: 15px 0 0 0;
+		}
+		.scorerLabelContainer {
+			position:absolute;
+			width:100%;
+			height:100%;
+			display:table;
+		}
+		.scorerRowFiller {
+			width: 10px
+		}
+		.scorerLabelText {
+			color: $b;
+			cursor: default;
+			display:table-cell;
+			font-size: 8pt;
+			text-align:center;	
+		}
+		.sliderNavButtonUI2 {
+			background: $w;
+			display: block;
+			height: 100%;
+			position: absolute;
+			top: 0px;
+			width: 35px;
+			z-index: 1000;
+		}
+		.sliderNavLeftUI2 {
+			
+		}
+		.sliderNavRightUI2 {
+			right: 0px;
+		}
+		.sliderNavFunction {
+			background: $w;
+			color: $cbc;
+			height: 50%;
+		    position: absolute;
+		    top: 25%;
+		    width: 100%;
+		}
+		#sliderNavLeftUI2 {
+		}
+		.sliderRow {
+			padding-top: 5px;
+		}
+
+	}
+
+	// UI 3 style 
+	/* slider scale */
+	.ui3 {
+		.centerLine {
+			border-top: 1px solid;
+			height: 1px;
+			width: 100%;
+		}
+		.elementWrapper {
+			display: block;
+			margin-top: 25px;
+			padding: 0;
+		}
+		.maxMinYN {
+			display: none;
+		}
+		.middleScale {
+		  display: none;
+		}
+		.sliderUI3 {
+			display: inline-block;
+			font-weight: 600;
+			font-size: 15px;
+			height: 10px;
+			/*margin: 0 2% 0 20px;*/
+			margin: 0;
+			width: 100%;
+			background: url("images/ui-bg_highlight-soft_100_eeeeee_1x100.png") repeat-x scroll 50% top #eeeeee;
+			border: 1px solid #dddddd;
+					.handleStyle {
+						background: #fff;
+						border: 0 none;
+						height: 0px;
+						left: -6px;
+						margin-top: 1px;
+						position: absolute;
+						width: 0px;
+							.handleBackground{
+								background: $w;
+								width: 12px;
+								height: 12px;
+								position: relative;
+								top: -15px;
+								left: 2px;
+							}
+					}
+					.handleStyle:hover {
+						background: #fff;
+						border:0;
+					}
+					.scaleNo {
+						position: absolute;
+						right: 97.5%;
+						top: -29px;
+					}
+					.scaleYes {
+						position: absolute;
+						right: 0;
+						top: -29px;
+					}
+		}
+		.sliderBackground0 {
+			border: medium none;
+			float: left;
+    		height: 10px;
+    		width: 0%;
+    		padding-right: 0;
+  			background: $color1;
+  			@include border-radius(1em);
+		}	
+		.sliderBackground1 {
+			border: medium none;
+			float: left;
+    		height: 10px;
+    		width: 0%;
+    		padding-right: 0;
+  			background: $color2;
+  			@include border-radius(1em);
+		}
+		.sliderBackground2 {
+			border: medium none;
+			float: left;
+    		height: 10px;
+    		width: 0%;
+    		padding-right: 0;
+  			background: $color3;
+  			@include border-radius(1em);
+		}
+		.sliderBackground3 {
+			border: medium none;
+			float: left;
+    		height: 10px;
+    		width: 0%;
+    		padding-right: 0;
+  			background: $color4;
+  			@include border-radius(1em);
+		}
+		.sliderBackground4 {
+			border: medium none;
+			float: left;
+    		height: 10px;
+    		width: 0%;
+    		padding-right: 0;
+  			background: $color5;
+  			@include border-radius(1em);
+		}.sliderBackground5 {
+			border: medium none;
+			float: left;
+    		height: 10px;
+    		width: 0%;
+    		padding-right: 0;
+  			background: $color1;
+  			@include border-radius(1em);
+		}
+		.sliderBackgroundMiddle {
+			height: 100%;
+			width: 50%;
+			float: left;
+		}
+		.scaleContainer {
+			display: block;
+			width: 100%;
+		}
+		.sliderContainerYN {
+			display: block;
+		} 
+		.sliderRow {
+			height: 70px;
+			overflow-x: hidden;
+			margin: 0;
+			padding: 0 15px 0 15px;
+		}
+		.sliderRowFiller {
+			display: none;
+		}
+		.tooltip1 {
+			left: -18px;
+			top: -12px;
+			.tooltip1-inner {
+				padding: 35%;
+			}
+		}
+		
+		
+	}
+}

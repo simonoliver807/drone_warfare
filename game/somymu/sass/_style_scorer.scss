@@ -1,0 +1,67 @@
+
+.postionWidth {
+	width:47px;
+}
+
+/* fillers */
+.fillerDiv25 {
+    height: 25%;
+}
+
+/* button styling*/
+.moduleButtonLabel {
+    font-weight: 600;
+}
+
+.scorer {
+  color: $w;
+  display: table;
+  font-size: 18px;
+  @include no-select;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+.scorerLabelContainer {
+
+}
+.scorerLabelText {
+	display:none;
+}
+/* the slider styling*/
+.elementWrapper {	
+	position: relative;
+	height: 100%;
+	right: 0px;
+}
+.scorerRow { 
+    display: inline-block;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding-top: 5px;
+    height: 100px;
+
+}
+.scorerContainer {
+   display: inline-block;
+    height: 100px;
+    list-style: outside none none;
+    margin: 0 auto; 
+	padding: 0 20px;
+	width: 105px;	
+	}
+
+.buttonColumn {
+	height : 100px;
+	@include no-select;
+}
+.scorerValue {
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+}
+.overflowXadd{
+	overflow-x: scroll !important;
+}

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Somymu</title>
+
+    <!-- Bootstrap core CSS -->
+     <link rel="stylesheet" type="text/css" href="lib/jquery-ui/jquery-ui.css" />
+     <link href="css/bootstrap.min.css" rel="stylesheet">
+     <link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="lib/html5shiv/html5shiv.min.js"></script>
+      <script src="lib/respond/respond.min.js"></script>
+    <![endif]-->
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" type="text/css" href="css/custom.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+     <!-- <link rel="stylesheet" type="text/css" href="css/styleUI2.css" />-->
+     <link rel="stylesheet" type="text/css" href="css/styleie9.css" />
+  </head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+             <a class="navbar-brand" href="#"><img src="images/logosmall.png" class="img-responsive" /></a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="navbar-collapse collapse" id="navbarCollapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><div style="font-size:18px;color:#000;" id="screenSize"></div></a></li>
+                <li><a href="#">HOME</a></li>
+                <li><a href="#catergories">CATERGORIES</a></li>
+                <li><a href="#">LOG IN</a></li>
+                <li><a href="#">HELP</a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+ 
+<div id="questiontext1">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <h1>Who will win the Premier League 2014/15</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="fixedHeader" class="fixedHeader">
+    <div class="whiteHeader">
+        <div class="container">
+            <div id="questiontext">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <h1>Who will win the Premier Leagure 2014/15</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="blueHeader">
+        <div class="container">
+            <div id="Div1">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <div class="dropdown">
+                                <button id="tabTap" class="tab" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        
+                                     1 <span>Tap</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                    ...
+                                </ul>
+                            </div>
+                        </div>
+				        <div class="col-sm-6 col-md-6 col-lg-6">
+                             <div class="dropdown">
+                                <button id="tabSlide" class="tab" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">    
+                                     2 <span>Slide</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                    ...
+                                </ul>
+                            </div>
+                        </div>
+				        <div class="col-sm-3 col-md-3 col-lg-3 zeroPaddingLeft">
+                             <div style="float:left;  width: 50%;">
+                                 <div class="dropdown">
+                                     <button id="tabDecide" class="tab" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">      
+                                         3 <span>Decide</span>
+                                     </button>
+                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                        ...
+                                     </ul>
+                                  </div>
+                              </div>
+                              <div style="float:left; width: 50%;">
+                              <button id="tabShare" class="tab tabShare" type="button">
+                                   <span>Now Share</span>
+                              </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="labels">
+        <div class="container">
+            <div id="Div2">
+                <div class="container">
+                    <div id="sliderNav" class="row sliderNav">
+                        <div id="labelsFirstCol" class="col-sm-3 col-md-3 col-lg-3"></div>
+                        <div id="labelsSecondCol" class="col-sm-6 col-md-6 col-lg-6 zeroPaddingRight">
+                            <div id="labelsBackground" class="labelsBackground"></div>
+                            <div class="navButtonContainer">
+                                <div class="sliderNavButton">
+	                                <button class="sliderNavFunction fa fa-chevron-left fa-2x" id="sliderNavLeft"></button>
+	                            </div>
+                            </div>
+
+                            <div class="sliderNavContainer">
+                                <div class="sliderNavContainer1200">
+                                    <ul id="sliderNavWrapper" class="sliderNavWrapper setTransition">
+                                        <li class="sliderNavFiller"></li>
+                                    </ul>
+                                </div>
+                            </div>   
+                            <div style="float:right;" class="navButtonContainer right">
+	                            <div class="sliderNavButton">
+			                        <button class="sliderNavFunction fa fa-chevron-right fa-2x" id="sliderNavRight"></button>
+		                        </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <div id="game-content">
+       <div class="container">
+            <div id="Div3">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-9 col-md-9 col-lg-9" id="modules">
+					        <div class="row moduleHeader"></div>
+                        </div>
+				        <div id="resultsCol" class="col-sm-3 custom-col-md-3 col-lg-3">
+                            <ul id="results" class="results">
+
+					        </ul>
+					        <div id="shareDropDown" class="shareDropDown">
+					        	<div id="shareHideBorder"></div>
+					        </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>  
+        </div>
+        <div id="highLightOverlay1" highLightOverlay1="" class="highLightOverlay" ></div>
+        <div id="highLightOverlay2" highLightOverlay2="" class="highLightOverlay" ></div>
+    </div>
+
+
+        <footer>
+		 <div class="container">
+            <div class="row">
+                <div class="col-sm-3 col-md-3 col-lg-3">
+					<img class="img-responsive" src="Images/Logo.png" alt="">
+                    <p>Lorum Ipsem</p>
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    Menu
+                </div>
+				<div class="col-sm-2 col-md-2 col-lg-2">
+                    Menu
+                </div>
+				<div class="col-sm-2 col-md-2 col-lg-2">
+                    Twitter
+					Facebook
+                </div>
+				<div class="col-sm-2 col-md-2 col-lg-3">
+                    Twitter Feed
+                </div>
+            </div>
+			 </div>
+        </footer>
+       <input id="jsonInput" type="hidden" value='[ { "value": 10, "color": "#ca97af" }, { "value": 0, "color": "#883682" }, { "value": 10, "color": "#76A3A8" }, { "value": 0, "color": "#1F74C9" }, { "value": 10, "color": "#FFE680" }, { "value": 0, "color": "#FDC732" }, { "value": 10, "color": "#F5BF93" }, { "value": 0, "color": "#E2282F" }, { "value": 10, "color": "#D8E8AE" }, { "value": 0, "color": "#4FBD55" } , { "value": 10, "color": "#d10b49" }, { "value": 0, "color": "#acdcaa" } ]'>
+   <!--  <input id="jsonInput" type="hidden" value='[ { "value": 10, "color": "#ca97af" }, { "value": 0, "color": "#883682" }, { "value": 10, "color": "#76A3A8" }, { "value": 0, "color": "#1F74C9" },{ "value": 10, "color": "#FFE680" }, { "value": 0, "color": "#FDC732" }]'>-->
+
+    <script type="text/javascript" src="lib/jquery/jquery-2.1.3.js"></script>
+    <script type="text/javascript" src="lib/jquery-ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="lib/jqueryUItouchPunch/jquery.ui.touch-punch.js"></script>
+<!--    <script type="text/javascript" src="lib/jqueryMobile/jquery.mobile-1.4.5.js"></script>-->
+    <script type="text/javascript" src="lib/tinysort/tinysort.js"></script>
+    <script type="text/javascript" src="lib/chartJS/Chart.min.js"></script>
+    <script type="text/javascript" src="lib/niceScroll/niceScroll.js"></script>
+     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script type="text/javascript" src="lib/ie10-viewport-bug-workaround/ie10-viewport-bug-workaround.js"></script>  
+    <script type="text/javascript" src="bower_components/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
+    <script type="text/javascript" src="bower_components/bootstrap-sass/assets/javascripts/bootstrap/collapse.js"></script>
+    <script type="text/javascript" src="bower_components/bootstrap-sass/assets/javascripts/bootstrap/transition.js"></script>
+    <script type="text/javascript" src="bower_components/bootstrap-sass/assets/javascripts/bootstrap/carousel.js"></script>
+    <script type="text/javascript" src="js/bs-tooltip-events.js"></script>
+    <script type="text/javascript" src="js/elementModules.js"></script>
+    <script type="text/javascript" src="js/highLight.js"></script>
+    <script type="text/javascript" src="js/templates/templateModule.js"></script>
+    <script type="text/javascript" src="js/sliderModules.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script src="js/custom.js"></script>
+    
+</body>
+</html>

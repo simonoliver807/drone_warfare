@@ -806,17 +806,34 @@ optgroup {
 	width: 100%;
 	height: 100%;
 }
+#dwli {
+	width: 122px;
+}
+#wali {
+	width: 95px;
+}
+#cbli {
+	width: 70px;
+}
+#eurli {
+	width: 109px;
+}
+#somymuli {
+	width: 109px;
+}
+#slli {
+	width: 137px;
+}
 #web_app {
 	display: none;
 }
-
-
-
 #offer_health {
 	display: none;
 	padding: 0;
 }
-
+#somymu {
+	display: none;
+}
 
 /* @media (max-width: 992px) {
   	#login-page {

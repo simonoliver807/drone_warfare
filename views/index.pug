@@ -63,6 +63,8 @@ html(lang='en-US')
                       a#cbnav(href='#') Code
                     li#eurli
                       a#eurnav(href='#') Eurotherm
+                    li#somymuli
+                      a#somymunav(href='#') Somymu
                     li#slli
                       a#lnav(href='#') Login/Sign Up
                       a#snav(href='#') Settings
@@ -82,6 +84,7 @@ html(lang='en-US')
           include codeBlog.pug
 
           include offer_health.pug
+          include somymu.pug
 
           include settings.pug
           include login.pug
@@ -118,7 +121,7 @@ html(lang='en-US')
     script(type='x-shader/x-vertex', id='engineGlowvs')!= engineGlowvs
 
     // change to live
-    // script(type='text/Javascript', src='js/defaultpage.js')
+    //script(type='text/Javascript', src='js/defaultpage.js')
     //script(type='text/Javascript', src='js/lib/dat.gui.js')
     script(type='text/Javascript', src='js_min/defaultpage.js')
 
